@@ -193,6 +193,11 @@ const isBubbleConcept = (
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
+const smoothstep = (value: number) => {
+  const clamped = clamp01(value);
+  return clamped * clamped * (3 - 2 * clamped);
+};
+
 const circlePath = (center: Point, radius: number) =>
   `M ${center.x - radius},${center.y} ` +
   `a ${radius},${radius} 0 1,0 ${radius * 2},0 ` +
@@ -600,23 +605,26 @@ export const LogoAnimation: React.FC<LogoAnimationProps> = ({
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
   );
   const sinePulse = 0.5 + 0.5 * Math.sin(bulbSparkFrame * 0.55 - Math.PI / 2);
-  const bubbleBulbProgress = clamp01(bulbSparkFrame / 55);
-  const bubbleTwoPulse = Math.pow(
-    0.5 - 0.5 * Math.cos(bubbleBulbProgress * Math.PI * 4),
-    1.18
-  );
-  const bubbleBulbEnvelope = interpolate(
-    bulbSparkFrame,
-    [0, 8, 50, 55],
-    [0, 1, 1, 0.35],
-    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-  );
+  const bubbleBulbProgress = clamp01(bulbSparkFrame / 72);
+  const bubbleBulbAttack = smoothstep(bulbSparkFrame / 12);
+  const bubbleTwoPulse =
+    0.5 - 0.5 * Math.cos(bubbleBulbProgress * Math.PI * 4);
+  const bubbleBulbSettle = smoothstep((bulbSparkFrame - 60) / 12);
+  const bubblePulsingGlow = 0.18 + bubbleTwoPulse * 0.82;
+  const bubbleAnimatedGlow =
+    bubbleBulbAttack *
+    (bubblePulsingGlow * (1 - bubbleBulbSettle) + 0.3 * bubbleBulbSettle);
   const filamentFlash = bubbleConcept
-    ? frame > 300
-      ? 0.35
-      : bubbleBulbEnvelope * (0.22 + bubbleTwoPulse * 0.78)
+    ? bulbSparkFrame < 0
+      ? 0
+      : bulbSparkFrame <= 72
+        ? bubbleAnimatedGlow
+        : 0.3
     : bulbEnvelope * (0.5 + sinePulse * 0.5);
   const visibleFilamentFlash = filamentFlash * (1 - rawLogoProgress);
+  const cavityIllumination = bubbleConcept
+    ? (0.12 + filamentFlash * 0.88) * (1 - rawLogoProgress)
+    : 1;
   const filamentStrokeWidth = 0.75 + visibleFilamentFlash * 1.1;
   const filamentColor = visibleFilamentFlash;
 
@@ -924,14 +932,14 @@ export const LogoAnimation: React.FC<LogoAnimationProps> = ({
                   cy="285"
                   r="116"
                   fill="url(#cavityShadow)"
-                  opacity={1 - rawLogoProgress}
+                  opacity={cavityIllumination}
                 />
                 <circle
                   cx="1120"
                   cy="285"
                   r="132"
                   fill="url(#bulbGlow)"
-                  opacity={visibleFilamentFlash}
+                  opacity={bubbleConcept ? 1 : filamentFlash}
                   style={{ mixBlendMode: 'screen' }}
                 />
               </g>
@@ -951,21 +959,49 @@ export const LogoAnimation: React.FC<LogoAnimationProps> = ({
             {/* Bulb top glossy reflection arc */}
             <path
               d={PATHS_C[2].d}
-              fill={visibleFilamentFlash > 0.3 ? '#ffe066' : LOGO_COLORS.red}
+              fill={
+                bubbleConcept
+                  ? filamentStroke
+                  : filamentFlash > 0.3
+                    ? '#ffe066'
+                    : LOGO_COLORS.red
+              }
             />
 
             {/* Bulb base cap accent */}
             <path d={PATHS_C[3].d} fill={LOGO_COLORS.red} />
 
-            {/* Bulb Filament Line - Lights up with brilliant electric warmth */}
-            <path
-              d={PATHS_C[4].d}
-              fill="none"
-              stroke={filamentStroke}
-              strokeWidth={filamentStrokeWidth}
-              strokeMiterlimit={10}
-              filter={visibleFilamentFlash > 0.2 ? 'url(#filamentGlow)' : undefined}
-            />
+            {bubbleConcept ? (
+              <>
+                {/* Soft filtered duplicate fades continuously, avoiding a filter snap. */}
+                <path
+                  d={PATHS_C[4].d}
+                  fill="none"
+                  stroke="#ffd866"
+                  strokeWidth={filamentStrokeWidth + 1.8}
+                  strokeMiterlimit={10}
+                  opacity={visibleFilamentFlash * 0.72}
+                  filter="url(#filamentGlow)"
+                />
+                {/* Crisp filament stays above the glow and returns to raw red. */}
+                <path
+                  d={PATHS_C[4].d}
+                  fill="none"
+                  stroke={filamentStroke}
+                  strokeWidth={filamentStrokeWidth}
+                  strokeMiterlimit={10}
+                />
+              </>
+            ) : (
+              <path
+                d={PATHS_C[4].d}
+                fill="none"
+                stroke={filamentStroke}
+                strokeWidth={filamentStrokeWidth}
+                strokeMiterlimit={10}
+                filter={filamentFlash > 0.2 ? 'url(#filamentGlow)' : undefined}
+              />
+            )}
           </g>
 
           {/* ======================================================== */}

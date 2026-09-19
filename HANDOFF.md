@@ -180,6 +180,25 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceProps> = ({ onDockCompl
 };
 ```
 
+### 3.4 What Goes in the Hero Section Post-Docking? (Columns 8–12 Visual Stage)
+
+With the entrance animation gracefully docking into `#navbar-brand-logo`, **brand duplication is eliminated**. The Hero visual stage (Columns 8–12, 40% canvas width) is freed to become an active, living demonstration of the incubator's energy.
+
+An interactive visual comparison lab has been created at [`E:/GEC/concepts/hero-directions.html`](file:///E:/GEC/concepts/hero-directions.html) with 3 selectable directions and a side-by-side mode:
+
+1. **Option 1 (Recommended): The Interactive Venture Ecosystem Orbit**
+   - Concentric orbital rings with dashed tracks rotating at varied velocities.
+   - Central glowing incubator nucleus (`GEC CORE // ₹50L SEED POOL`).
+   - 4 floating interactive nodes with active beacons (`SDP Cohort 04`, `₹1.2Cr+ Funding`, `40+ Mentors`, `E-Summit 2026`).
+   - 3D perspective mouse tilt (`perspective(800px) rotateX(...) rotateY(...)`).
+2. **Option 2: The Cinematic Founder Showcase Reel & HUD**
+   - 4:3 architectural media container with tactical corner crosshairs (`+`) and audio visualizer bars.
+   - Dynamic stage silhouette showing real founder pitch deck preview (`₹25L Health AI Roundcommitted 78%`).
+   - Live HUD badges (`REC ● [60 FPS] // E-SUMMIT DEMO DAY`) and founder quote callout.
+3. **Option 3: The Zero-to-Venture Pipeline Blueprint Stepper**
+   - Technical schematic stepper across 4 stages: `01 Discovery` → `02 Prototype` → `03 Incubation` → `04 Demo Day`.
+   - Interactive step selection dynamically lighting up pathway conduits and revealing stage deliverables and deadlines.
+
 ---
 
 ## 4. Public Website Architecture (`wireframes-v2/`)

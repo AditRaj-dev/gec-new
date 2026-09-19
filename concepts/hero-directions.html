@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GEC Hero Section — 3 Visual Directions (Post-Navbar Logo Docking)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gec-cream: #FCF8ED;
+      --gec-sand: #F4E2CA;
+      --gec-crimson: #A3040F;
+      --gec-crimson-hover: #80030B;
+      --gec-charcoal: #222222;
+      --gec-gold: #FBCA05;
+      --gec-blue: #1E40AF;
+      --gec-green: #10B981;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --shadow-tactile: 4px 4px 0px rgba(163, 4, 15, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #11141a;
+      color: #f1f3f7;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Studio Bar */
+    .studio-header {
+      background: #181d27;
+      border-bottom: 2px solid var(--gec-crimson);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .studio-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .studio-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--gec-gold);
+      background: rgba(251, 202, 5, 0.12);
+      border: 1px solid rgba(251, 202, 5, 0.3);
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .studio-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .selector-tabs {
+      display: flex;
+      background: #0d1017;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .tab-btn.active {
+      background: var(--gec-crimson);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(163, 4, 15, 0.4);
+    }
+
+    .studio-links {
+      display: flex;
+      gap: 10px;
+    }
+    .studio-link-btn {
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .studio-link-btn:hover {
+      border-color: var(--gec-gold);
+      color: var(--gec-gold);
+    }
+
+    /* Direction Explanation Banner */
+    .direction-context-banner {
+      background: #1e2433;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px 24px;
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .banner-highlight {
+      color: var(--gec-gold);
+      font-weight: 700;
+    }
+
+    /* Canvas Stage */
+    .stage-wrapper {
+      padding: 30px 20px 60px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    .canvas-container {
+      width: 100%;
+      max-width: 1440px;
+      background: var(--gec-cream);
+      color: var(--gec-charcoal);
+      border: 2px solid var(--gec-crimson);
+      border-radius: 8px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: max-width 0.3s ease;
+    }
+
+    /* Sticky Navbar Inside Canvas (Docking proof) */
+    .mock-navbar {
+      height: 74px;
+      border-bottom: 2px solid var(--gec-crimson);
+      background: rgba(252, 248, 237, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .docked-brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+    .docked-badge-indicator {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 800;
+      color: #ffffff;
+      background: var(--gec-green);
+      padding: 1px 4px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+    .brand-svg-mark {
+      width: 36px;
+      height: 36px;
+    }
+    .brand-text-stack {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gec-crimson);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 700;
+      color: var(--gec-charcoal);
+      letter-spacing: 0.12em;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+
+    .mock-nav-links {
+      display: flex;
+      gap: 26px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gec-charcoal);
+    }
+    .mock-nav-link {
+      cursor: pointer;
+      opacity: 0.75;
+      transition: opacity 0.15s;
+    }
+    .mock-nav-link:hover, .mock-nav-link.active {
+      opacity: 1;
+      color: var(--gec-crimson);
+    }
+
+    .mock-nav-cta {
+      background: var(--gec-crimson);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.06em;
+      border: 1px solid var(--gec-crimson);
+      box-shadow: 2px 2px 0px rgba(163, 4, 15, 0.3);
+      cursor: pointer;
+    }
+
+    /* Hero Section Canvas */
+    .mock-hero-section {
+      padding: 48px 36px;
+      min-height: 600px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      background: radial-gradient(circle at 80% 30%, rgba(244, 226, 202, 0.45) 0%, transparent 70%);
+    }
+
+    /* Left Column (Columns 1-7) */
+    .hero-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--gec-crimson);
+      text-transform: uppercase;
+      background: rgba(163, 4, 15, 0.08);
+      border: 1px solid rgba(163, 4, 15, 0.2);
+      padding: 5px 12px;
+      border-radius: 30px;
+      width: fit-content;
+    }
+    .hero-eyebrow::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gec-crimson);
+    }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: 52px;
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--gec-charcoal);
+    }
+    .hero-h1 span.crimson {
+      color: var(--gec-crimson);
+    }
+
+    .hero-motto-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #92400e;
+      background: rgba(251, 202, 5, 0.18);
+      border: 1.5px solid var(--gec-gold);
+      padding: 6px 14px;
+      border-radius: 99px;
+      width: fit-content;
+    }
+
+    .hero-body {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #3f3f46;
+      max-width: 58ch;
+    }
+
+    .hero-cta-cluster {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .btn-primary-cta {
+      background: var(--gec-crimson);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 13px 24px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gec-crimson);
+      box-shadow: 3px 3px 0px var(--gec-charcoal);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.1s ease;
+    }
+    .btn-primary-cta:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px var(--gec-charcoal);
+    }
+    .btn-secondary-cta {
+      background: transparent;
+      color: var(--gec-charcoal);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 13px 22px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gec-charcoal);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-secondary-cta:hover {
+      background: rgba(34, 34, 34, 0.05);
+    }
+
+    .hero-telemetry-ribbon {
+      display: flex;
+      gap: 20px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(34, 34, 34, 0.2);
+      margin-top: 10px;
+    }
+    .telemetry-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .telemetry-val {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gec-crimson);
+    }
+    .telemetry-lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: #71717a;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Right Column (Columns 8-12): The Options Showcase Stage */
+    .hero-right-col {
+      position: relative;
+      width: 100%;
+      min-height: 480px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========================================================================
+       OPTION 1: Interactive Venture Ecosystem Orbit
+       ========================================================================= */
+    .option-orbit-container {
+      width: 100%;
+      height: 480px;
+      background: #0f131a;
+      border: 2px solid var(--gec-crimson);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+    }
+
+    .orbit-canvas-bg {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(rgba(251, 202, 5, 0.06) 1px, transparent 1px),
+        radial-gradient(rgba(163, 4, 15, 0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+
+    .orbit-stage-badge {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 10;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      color: #e2e8f0;
+      background: rgba(15, 19, 26, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pulse-green-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gec-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--gec-green);
+      animation: pulse-beacon 1.5s infinite;
+    }
+    @keyframes pulse-beacon {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+
+    /* Orbital Rings */
+    .orbit-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .ring-inner {
+      width: 170px;
+      height: 170px;
+      border-color: rgba(251, 202, 5, 0.25);
+      animation: spin-clockwise 22s linear infinite;
+    }
+    .ring-middle {
+      width: 290px;
+      height: 290px;
+      border-color: rgba(163, 4, 15, 0.35);
+      animation: spin-counter 34s linear infinite;
+    }
+    .ring-outer {
+      width: 410px;
+      height: 410px;
+      border-color: rgba(255, 255, 255, 0.12);
+      animation: spin-clockwise 48s linear infinite;
+    }
+
+    @keyframes spin-clockwise {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    @keyframes spin-counter {
+      from { transform: translate(-50%, -50%) rotate(360deg); }
+      to { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+
+    /* Central Incubator Core */
+    .orbit-central-core {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--gec-crimson) 20%, #450a0a 100%);
+      border: 2px solid var(--gec-gold);
+      box-shadow: 0 0 28px rgba(163, 4, 15, 0.6), inset 0 0 14px rgba(251, 202, 5, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 5;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .orbit-central-core:hover {
+      transform: scale(1.08);
+    }
+    .core-spark {
+      font-size: 16px;
+    }
+    .core-txt {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.08em;
+    }
+
+    /* Orbiting Nodes (Interactive) */
+    .orbit-node {
+      position: absolute;
+      background: #181e2b;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+      z-index: 6;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .orbit-node:hover {
+      transform: scale(1.12);
+      border-color: var(--gec-gold);
+      box-shadow: 0 8px 24px rgba(251, 202, 5, 0.3);
+    }
+
+    .node-cohort {
+      top: 60px;
+      right: 45px;
+      border-color: var(--gec-green);
+    }
+    .node-funding {
+      bottom: 70px;
+      left: 35px;
+      border-color: var(--gec-gold);
+    }
+    .node-mentors {
+      top: 130px;
+      left: 20px;
+      border-color: var(--gec-blue);
+    }
+    .node-summit {
+      bottom: 90px;
+      right: 35px;
+      border-color: var(--gec-crimson);
+    }
+
+    .orbit-interactive-toast {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #94a3b8;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* =========================================================================
+       OPTION 2: Cinematic Founder Showcase Reel & HUD
+       ========================================================================= */
+    .option-reel-container {
+      width: 100%;
+      height: 480px;
+      background: #090c10;
+      border: 2px solid var(--gec-crimson);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reel-screen {
+      position: relative;
+      flex: 1;
+      background: linear-gradient(135deg, #161b26 0%, #0d1117 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Tactical HUD Crosshairs */
+    .hud-corner {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--gec-crimson);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .hud-tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+    .hud-tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+    .hud-bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+    .hud-br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+    /* HUD Top Ribbon */
+    .hud-top-bar {
+      position: absolute;
+      top: 16px;
+      left: 28px;
+      right: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #ffffff;
+    }
+    .hud-rec-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .rec-dot {
+      width: 6px;
+      height: 6px;
+      background: #ef4444;
+      border-radius: 50%;
+      animation: pulse-beacon 1s infinite;
+    }
+
+    /* Founder Silhouette & Stage Vector */
+    .founder-stage-scene {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stage-spotlight {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(251, 202, 5, 0.15) 0%, transparent 65%);
+      top: 20%;
+    }
+    .founder-mic-stand {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 140px;
+      background: #475569;
+    }
+    .founder-mic-stand::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: -8px;
+      width: 20px;
+      height: 14px;
+      background: #94a3b8;
+      border-radius: 4px;
+    }
+
+    /* Floating Pitch Slides HUD */
+    .pitch-deck-preview-card {
+      position: absolute;
+      top: 80px;
+      right: 32px;
+      width: 180px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1.5px solid var(--gec-gold);
+      border-radius: 6px;
+      padding: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      z-index: 10;
+      animation: float-gentle 4s ease-in-out infinite;
+    }
+    @keyframes float-gentle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .pitch-card-tag {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 800;
+      color: var(--gec-gold);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .pitch-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .pitch-metric-bar {
+      height: 4px;
+      width: 100%;
+      background: #334155;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .pitch-metric-fill {
+      height: 100%;
+      width: 78%;
+      background: var(--gec-gold);
+    }
+
+    /* Bottom Quote HUD */
+    .reel-bottom-hud {
+      position: absolute;
+      bottom: 18px;
+      left: 24px;
+      right: 24px;
+      background: rgba(13, 17, 23, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 3px solid var(--gec-crimson);
+      border-radius: 4px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .quote-txt {
+      font-size: 11.5px;
+      color: #e2e8f0;
+      font-style: italic;
+    }
+    .quote-author {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--gec-gold);
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    /* Sound Visualizer Bars */
+    .audio-eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+    .eq-bar {
+      width: 3px;
+      background: var(--gec-crimson);
+      border-radius: 1px;
+      animation: eq-bounce 0.8s ease infinite alternate;
+    }
+    .eq-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 90%; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+    .eq-bar:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+    @keyframes eq-bounce {
+      from { height: 25%; }
+      to { height: 100%; }
+    }
+
+    /* =========================================================================
+       OPTION 3: Zero-to-Venture Pipeline Blueprint Stepper
+       ========================================================================= */
+    .option-blueprint-container {
+      width: 100%;
+      height: 480px;
+      background: var(--gec-sand);
+      border: 2px solid var(--gec-crimson);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+      background-image: 
+        linear-gradient(rgba(163, 4, 15, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(163, 4, 15, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .bp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid rgba(163, 4, 15, 0.25);
+      padding-bottom: 10px;
+    }
+    .bp-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gec-crimson);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .bp-telemetry {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--gec-charcoal);
+      opacity: 0.7;
+    }
+
+    /* Stepper Track */
+    .bp-stepper-track {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 12px 0;
+      position: relative;
+    }
+    .bp-stepper-track::before {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 14px;
+      bottom: 14px;
+      width: 2px;
+      background: rgba(163, 4, 15, 0.3);
+      z-index: 1;
+    }
+
+    .bp-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(252, 248, 237, 0.92);
+      border: 1px solid rgba(163, 4, 15, 0.2);
+      border-radius: 6px;
+      padding: 10px 14px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: all 0.15s ease;
+    }
+    .bp-step-item:hover {
+      border-color: var(--gec-crimson);
+      transform: translateX(4px);
+    }
+    .bp-step-item.active {
+      border: 2px solid var(--gec-crimson);
+      background: #ffffff;
+      box-shadow: 3px 3px 0px rgba(163, 4, 15, 0.3);
+    }
+
+    .bp-step-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--gec-sand);
+      border: 2px solid var(--gec-crimson);
+      color: var(--gec-crimson);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .bp-step-item.active .bp-step-circle {
+      background: var(--gec-crimson);
+      color: #ffffff;
+    }
+
+    .bp-step-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .bp-step-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gec-charcoal);
+    }
+    .bp-step-desc {
+      font-size: 10.5px;
+      color: #64748b;
+      line-height: 1.3;
+    }
+
+    /* Active Detail Drawer */
+    .bp-active-detail-box {
+      background: #ffffff;
+      border: 1.5px solid var(--gec-gold);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .bp-detail-left {
+      display: flex;
+      flex-direction: column;
+    }
+    .bp-detail-tag {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 800;
+      color: #a16207;
+      text-transform: uppercase;
+    }
+    .bp-detail-deliverable {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gec-charcoal);
+    }
+    .bp-apply-btn {
+      background: var(--gec-crimson);
+      color: #ffffff;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    /* =========================================================================
+       SIDE-BY-SIDE / COMPARISON GRID
+       ========================================================================= */
+    .side-by-side-grid {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      padding: 20px 0;
+    }
+    .card-preview-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card-header-badge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gec-gold);
+      text-transform: uppercase;
+    }
+    .badge-sub {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* Modal / Toast Alert */
+    .interactive-toast-banner {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      border: 1.5px solid var(--gec-gold);
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      animation: slide-up 0.25s ease-out;
+    }
+    @keyframes slide-up {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .mock-hero-section {
+        grid-template-columns: 1fr;
+        padding: 36px 24px;
+      }
+      .side-by-side-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Studio Header Navigation Bar -->
+  <header class="studio-header">
+    <div class="studio-brand">
+      <span class="studio-tag">Interactive Design Lab</span>
+      <div class="studio-title">GEC Hero Visual Stage Exploration</div>
+    </div>
+
+    <!-- Active Direction Switcher Tabs -->
+    <div class="selector-tabs">
+      <button class="tab-btn active" id="tab-opt1" onclick="switchHeroDirection('opt1')">
+        <span>●</span> Option 1: Ecosystem Orbit
+      </button>
+      <button class="tab-btn" id="tab-opt2" onclick="switchHeroDirection('opt2')">
+        <span>●</span> Option 2: Founder Reel HUD
+      </button>
+      <button class="tab-btn" id="tab-opt3" onclick="switchHeroDirection('opt3')">
+        <span>●</span> Option 3: Pipeline Blueprint
+      </button>
+      <button class="tab-btn" id="tab-all" onclick="switchHeroDirection('all')">
+        <span>⊞</span> Side-by-Side (All 3)
+      </button>
+    </div>
+
+    <div class="studio-links">
+      <a href="../wireframes-v2/index.html" class="studio-link-btn">← Public Wireframes</a>
+      <a href="../cms-wireframes/index.html" class="studio-link-btn">CMS Console ↗</a>
+    </div>
+  </header>
+
+  <!-- Explanatory Context Banner -->
+  <div class="direction-context-banner">
+    <div>
+      <span class="banner-highlight">Docking Handshake Verified:</span> 
+      The entrance animation has transformed into the sticky navbar logo (top-left). Below is what occupies Columns 8–12 of the Hero Section.
+    </div>
+    <div style="font-family: var(--font-mono); font-size: 11px;">
+      HERO GRID: 7:5 ASYMMETRIC SPLIT (1440px MAX-W)
+    </div>
+  </div>
+
+  <!-- Stage Canvas Wrapper -->
+  <main class="stage-wrapper">
+    <div class="canvas-container" id="canvas-root">
+
+      <!-- STICKY NAVBAR (Demonstrating Docked Logo Placement) -->
+      <nav class="mock-navbar">
+        <div class="docked-brand-logo" title="Brand logo docked from entrance animation">
+          <!-- GEC Mark Vector -->
+          <svg class="brand-svg-mark" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="46" stroke="#A3040F" stroke-width="6" fill="#FCF8ED"/>
+            <path d="M72 50H48V58H64C62 66 54 70 48 70C36 70 28 62 28 50C28 38 36 30 48 30C55 30 61 34 63 39" stroke="#A3040F" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="68" cy="34" r="5" fill="#FBCA05"/>
+          </svg>
+          <div class="brand-text-stack">
+            <span class="brand-name">GALGOTIAS</span>
+            <span class="brand-sub">Entrepreneurship Cell</span>
+          </div>
+          <span class="docked-badge-indicator">DOCKED IN TOPBAR</span>
+        </div>
+
+        <div class="mock-nav-links">
+          <span class="mock-nav-link active">[Home]</span>
+          <span class="mock-nav-link">[About]</span>
+          <span class="mock-nav-link">[Teams]</span>
+          <span class="mock-nav-link">[Initiatives]</span>
+          <span class="mock-nav-link">[Stories]</span>
+        </div>
+
+        <button class="mock-nav-cta" onclick="showToast('Opened General E-Cell Application Modal')">
+          [JOIN / GET INVOLVED CTA]
+        </button>
+      </nav>
+
+      <!-- HERO SECTION CANVAS (Single Direction Mode) -->
+      <div class="mock-hero-section" id="single-hero-view">
+
+        <!-- Left Column: Frozen Copy & Brand Architecture (Columns 1-7) -->
+        <div class="hero-left-col">
+          <div class="hero-eyebrow">Galgotias Entrepreneurship Cell</div>
+          
+          <h1 class="hero-h1">
+            Ideas Begin Here.<br>
+            <span class="crimson">Builders Grow Here.</span>
+          </h1>
+
+          <div class="hero-motto-pill">
+            ★ INNOVATE · INSPIRE · IMPACT
+          </div>
+
+          <p class="hero-body">
+            Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.
+          </p>
+
+          <div class="hero-cta-cluster">
+            <button class="btn-primary-cta" onclick="showToast('Navigating to Initiatives Pipeline')">
+              Explore Initiatives →
+            </button>
+            <button class="btn-secondary-cta" onclick="showToast('Navigating to About GEC Heritage')">
+              Discover GEC
+            </button>
+          </div>
+
+          <div class="hero-telemetry-ribbon">
+            <div class="telemetry-item">
+              <span class="telemetry-val">40+</span>
+              <span class="telemetry-lbl">Active Startups</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-val">₹1.2Cr+</span>
+              <span class="telemetry-lbl">Venture Funding</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="telemetry-val">1,200+</span>
+              <span class="telemetry-lbl">Student Builders</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Visual Stage (Columns 8-12) -->
+        <div class="hero-right-col" id="hero-stage-slot">
+          <!-- Dynamic Option Inserted Here via switchHeroDirection() -->
+        </div>
+
+      </div>
+
+      <!-- SIDE-BY-SIDE 3-COLUMN VIEW -->
+      <div class="side-by-side-grid" id="side-by-side-view">
+        
+        <!-- Option 1 Preview Card -->
+        <div class="card-preview-wrapper">
+          <div class="card-header-badge">
+            <span class="badge-label">Option 1: Ecosystem Orbit</span>
+            <span class="badge-sub">Living Constellation</span>
+          </div>
+          <div id="slot-opt1"></div>
+        </div>
+
+        <!-- Option 2 Preview Card -->
+        <div class="card-preview-wrapper">
+          <div class="card-header-badge">
+            <span class="badge-label">Option 2: Founder Reel HUD</span>
+            <span class="badge-sub">Authentic Social Proof</span>
+          </div>
+          <div id="slot-opt2"></div>
+        </div>
+
+        <!-- Option 3 Preview Card -->
+        <div class="card-preview-wrapper">
+          <div class="card-header-badge">
+            <span class="badge-label">Option 3: Pipeline Blueprint</span>
+            <span class="badge-sub">Tactile Stepper</span>
+          </div>
+          <div id="slot-opt3"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Interactive Toast Notification -->
+  <div class="interactive-toast-banner" id="studio-toast">
+    <span style="color:var(--gec-gold);">⚡ GEC LAB:</span>
+    <span id="toast-text">Action feedback</span>
+  </div>
+
+  <!-- HTML Templates for the 3 Options -->
+  <template id="tmpl-opt1">
+    <div class="option-orbit-container" onmousemove="handleOrbitTilt(event, this)" onmouseleave="resetOrbitTilt(this)">
+      <div class="orbit-canvas-bg"></div>
+      
+      <div class="orbit-stage-badge">
+        <span class="pulse-green-dot"></span>
+        <span>INTERACTIVE ECOSYSTEM ORBIT</span>
+      </div>
+
+      <!-- Rotating Orbit Concentric Tracks -->
+      <div class="orbit-ring ring-outer"></div>
+      <div class="orbit-ring ring-middle"></div>
+      <div class="orbit-ring ring-inner"></div>
+
+      <!-- Center Incubator Nucleus Core -->
+      <div class="orbit-central-core" onclick="showToast('GEC Central Incubator Core: ₹50L Seed Allocation Pool')">
+        <span class="core-spark">⚡</span>
+        <span class="core-txt">GEC CORE<br>INCUBATOR</span>
+      </div>
+
+      <!-- Orbiting Interactive Nodes -->
+      <div class="orbit-node node-cohort" onclick="showToast('SDP Cohort 04: 182 Applications Received · Review Stage Active')">
+        <span class="pulse-green-dot"></span>
+        <span>SDP Cohort 04</span>
+      </div>
+
+      <div class="orbit-node node-funding" onclick="showToast('Venture Funding: ₹1.2Cr+ Secured Across 14 Student Startups')">
+        <span style="color:var(--gec-gold);">●</span>
+        <span>₹1.2Cr+ Seed Pool</span>
+      </div>
+
+      <div class="orbit-node node-mentors" onclick="showToast('Mentorship Council: 40+ VCs, Angel Investors, & Alumni Founders')">
+        <span style="color:var(--gec-blue);">●</span>
+        <span>40+ Mentors</span>
+      </div>
+
+      <div class="orbit-node node-summit" onclick="showToast('E-Summit 2026: 3-Day Flagship Global Entrepreneurship Summit')">
+        <span style="color:var(--gec-crimson);">★</span>
+        <span>E-Summit '26</span>
+      </div>
+
+      <div class="orbit-interactive-toast">
+        Hover nodes or drag cursor to tilt orbit plane
+      </div>
+    </div>
+  </template>
+
+  <template id="tmpl-opt2">
+    <div class="option-reel-container">
+      <!-- Tactical Corner Crosshairs -->
+      <div class="hud-corner hud-tl"></div>
+      <div class="hud-corner hud-tr"></div>
+      <div class="hud-corner hud-bl"></div>
+      <div class="hud-corner hud-br"></div>
+
+      <!-- Top HUD Ribbon -->
+      <div class="hud-top-bar">
+        <div class="hud-rec-tag">
+          <span class="rec-dot"></span>
+          <span>REC ● [60 FPS] // E-SUMMIT DEMO DAY</span>
+        </div>
+        <div style="color: var(--gec-gold); font-weight: 700; cursor: pointer;" onclick="showToast('Switched founder audio track to Room 102')">
+          [AUDIO: AMBIENT 🔊]
+        </div>
+      </div>
+
+      <!-- Founder Pitch Scene Simulator -->
+      <div class="reel-screen">
+        <div class="founder-stage-scene">
+          <div class="stage-spotlight"></div>
+          
+          <!-- Illustrated vector silhouette speaker -->
+          <svg width="180" height="220" viewBox="0 0 100 120" style="position: absolute; bottom: 0; left: 35%;">
+            <!-- Founder Figure -->
+            <circle cx="45" cy="30" r="16" fill="#334155" />
+            <path d="M20 110 C20 65 70 65 70 110 Z" fill="#1e293b" />
+            <!-- Pitch gesture arm -->
+            <path d="M58 65 L78 45 L85 52" stroke="#475569" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+
+          <div class="founder-mic-stand"></div>
+
+          <!-- Floating Holographic Pitch Deck -->
+          <div class="pitch-deck-preview-card" onclick="showToast('Inspecting Pitch Slide: MedTech Health AI Deck (Cohort 03)')">
+            <div class="pitch-card-tag">● LIVE PITCH SLIDE</div>
+            <div class="pitch-card-title">Galgotias Health AI: ₹25L Pre-Seed Round</div>
+            <div class="pitch-metric-bar">
+              <div class="pitch-metric-fill"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:5px; font-family:var(--font-mono); font-size:8px; color:#94a3b8;">
+              <span>ASK: ₹25L</span>
+              <span style="color:var(--gec-gold);">COMMITTED 78%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Quote & Equalizer HUD -->
+        <div class="reel-bottom-hud">
+          <div>
+            <div class="quote-txt">"Started in a hostel room, raised ₹25L seed with GEC incubation."</div>
+            <div class="quote-author">— Aryavart S., Founder @ MedTech (B.Tech '24)</div>
+          </div>
+
+          <div class="audio-eq-bars" title="Realtime Audio Visualizer">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tmpl-opt3">
+    <div class="option-blueprint-container">
+      <div class="bp-header">
+        <div class="bp-title">FROM ZERO TO VENTURE · INCUBATION PIPELINE</div>
+        <div class="bp-telemetry">STAGE 02 / 04 ACTIVE</div>
+      </div>
+
+      <!-- 4 Connected Pipeline Stages -->
+      <div class="bp-stepper-track">
+        <div class="bp-step-item" onclick="selectBlueprintStep(1, this, 'Hackathons, Mixer Nights & Co-founder Matchmaking', '₹0 Equity · Open to all 1st & 2nd Year Students')">
+          <div class="bp-step-circle">01</div>
+          <div class="bp-step-info">
+            <span class="bp-step-title">Discovery & Ideation</span>
+            <span class="bp-step-desc">Problem discovery workshops & team formation mixers</span>
+          </div>
+        </div>
+
+        <div class="bp-step-item active" onclick="selectBlueprintStep(2, this, 'Maker Labs, 1-on-1 Mentorship & Rapid Prototype Testing', 'Seed grants up to ₹1,00,000 for verified hardware/software MVPs')">
+          <div class="bp-step-circle">02</div>
+          <div class="bp-step-info">
+            <span class="bp-step-title">Prototype Validation</span>
+            <span class="bp-step-desc">Maker Lab access, MVP architecture & technical advisory</span>
+          </div>
+        </div>
+
+        <div class="bp-step-item" onclick="selectBlueprintStep(3, this, '12-Week Intensive Incubation & Legal/IP Incorporation Support', 'GEC Incubation Agreement & Direct Angel Network Access')">
+          <div class="bp-step-circle">03</div>
+          <div class="bp-step-info">
+            <span class="bp-step-title">12-Week SDP Incubation</span>
+            <span class="bp-step-desc">Go-to-market execution, regulatory compliance & traction sprints</span>
+          </div>
+        </div>
+
+        <div class="bp-step-item" onclick="selectBlueprintStep(4, this, 'Demo Day Pitch in front of 20+ Tier-1 Angels & Venture Capitalists', '₹50,00,000+ total commitment pool during annual E-Summit')">
+          <div class="bp-step-circle">04</div>
+          <div class="bp-step-info">
+            <span class="bp-step-title">Demo Day & Seed Fund</span>
+            <span class="bp-step-desc">Direct institutional VC pitch & angel syndicate allocation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Milestone Deliverable Drawer -->
+      <div class="bp-active-detail-box">
+        <div class="bp-detail-left">
+          <span class="bp-detail-tag" id="bp-stage-tag">ACTIVE STAGE 02 FOCUS</span>
+          <span class="bp-detail-deliverable" id="bp-deliverable-text">Maker Labs, 1-on-1 Mentorship & Rapid Prototype Testing</span>
+        </div>
+        <button class="bp-apply-btn" onclick="showToast('Opened Application for Active Pipeline Stage 02')">
+          Apply to Track →
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <!-- JavaScript Interaction Logic -->
+  <script>
+    let activeDirection = 'opt1';
+
+    function renderActiveOption() {
+      const heroSlot = document.getElementById('hero-stage-slot');
+      const tmpl = document.getElementById('tmpl-' + activeDirection);
+      if (heroSlot && tmpl) {
+        heroSlot.innerHTML = '';
+        heroSlot.appendChild(tmpl.content.cloneNode(true));
+      }
+    }
+
+    function switchHeroDirection(mode) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('tab-' + mode);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const singleView = document.getElementById('single-hero-view');
+      const sideBySideView = document.getElementById('side-by-side-view');
+
+      if (mode === 'all') {
+        singleView.style.display = 'none';
+        sideBySideView.style.display = 'grid';
+
+        // Populate the 3 side-by-side slots
+        ['opt1', 'opt2', 'opt3'].forEach(opt => {
+          const slot = document.getElementById('slot-' + opt);
+          const tmpl = document.getElementById('tmpl-' + opt);
+          if (slot && tmpl) {
+            slot.innerHTML = '';
+            slot.appendChild(tmpl.content.cloneNode(true));
+          }
+        });
+        showToast('Side-by-Side Comparison: Compare all 3 Hero directions');
+      } else {
+        sideBySideView.style.display = 'none';
+        singleView.style.display = 'grid';
+        activeDirection = mode;
+        renderActiveOption();
+        
+        const names = {
+          opt1: 'Option 1: Interactive Venture Ecosystem Orbit',
+          opt2: 'Option 2: Cinematic Founder Showcase Reel & HUD',
+          opt3: 'Option 3: Zero-to-Venture Pipeline Blueprint Stepper'
+        };
+        showToast(`Loaded ${names[mode]}`);
+      }
+    }
+
+    // 3D Perspective Tilt for Option 1
+    function handleOrbitTilt(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rotateX = ((y - cy) / cy) * -12;
+      const rotateY = ((x - cx) / cx) * 12;
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      card.style.transition = 'none';
+    }
+
+    function resetOrbitTilt(card) {
+      card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      card.style.transition = 'transform 0.5s ease-out';
+    }
+
+    // Pipeline Step Selection for Option 3
+    function selectBlueprintStep(num, el, deliverable, terms) {
+      document.querySelectorAll('.bp-step-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('bp-stage-tag').innerText = `ACTIVE STAGE 0${num} FOCUS`;
+      document.getElementById('bp-deliverable-text').innerText = deliverable;
+      showToast(`Selected Stage 0${num}: ${deliverable} (${terms})`);
+    }
+
+    // Toast Alert Engine
+    let toastTimeout;
+    function showToast(text) {
+      const toast = document.getElementById('studio-toast');
+      const txt = document.getElementById('toast-text');
+      txt.innerText = text;
+      toast.style.display = 'flex';
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3500);
+    }
+
+    // Initial render on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderActiveOption();
+    });
+  </script>
+</body>
+</html>
