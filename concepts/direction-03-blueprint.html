@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Direction 03 — Blueprint</title>
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body { background: #f3f0e9; color: var(--ink); }
+    .blueprint {
+      display: grid;
+      grid-template-columns: 56% 44%;
+      background: #f3f0e9;
+    }
+    .visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(20, 120, 185, .07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 120, 185, .07) 1px, transparent 1px),
+        #f7f6f2;
+      background-size: 32px 32px;
+      border-right: 1px solid rgba(16,26,44,.12);
+    }
+    .visual::before {
+      content: "";
+      position: absolute;
+      width: 72%;
+      aspect-ratio: 1;
+      border: clamp(22px, 3.2vw, 52px) solid rgba(202,45,36,.08);
+      border-radius: 50%;
+      transform: translate(-34%, 29%);
+    }
+    .visual .brand-logo {
+      position: relative;
+      width: min(51vw, 780px);
+      transform: translateX(4%);
+      filter: drop-shadow(0 24px 40px rgba(16,26,44,.12));
+    }
+    .copy {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(36px, 5vw, 80px);
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,204,5,.24), transparent 19%),
+        #ca2d24;
+      color: #fffaf0;
+    }
+    .copy::after {
+      content: "G";
+      position: absolute;
+      right: -4vw;
+      bottom: -15vw;
+      color: rgba(255,255,255,.055);
+      font: 800 min(47vw, 620px)/1 Georgia, serif;
+    }
+    .copy .eyebrow { color: #ffe678; }
+    .headline {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: auto 0;
+      font: 500 clamp(46px, 5.2vw, 84px)/.94 Georgia, "Times New Roman", serif;
+      letter-spacing: -.045em;
+    }
+    .headline em { color: #ffe678; font-style: italic; }
+    @media (max-width: 640px) {
+      .blueprint { grid-template-columns: 1fr; grid-template-rows: 58% 42%; }
+      .visual { border-right: 0; border-bottom: 1px solid rgba(16,26,44,.12); background-size: 24px 24px; }
+      .visual::before { width: 92vw; transform: translate(-39%, 26%); }
+      .visual .brand-logo { width: 80vw; max-width: none; transform: translateY(1vh); }
+      .copy { padding: 24px 22px calc(22px + env(safe-area-inset-bottom)); }
+      .copy .eyebrow { font-size: 8px; }
+      .headline { margin: 11px 0 18px; max-width: 330px; font-size: clamp(34px, 10vw, 48px); }
+      .copy::after { right: -14vw; bottom: -25vw; font-size: 92vw; }
+    }
+  </style>
+</head>
+<body>
+  <main class="entry-frame blueprint" aria-label="Blueprint entry animation concept">
+    <section class="visual">
+      <img class="brand-logo" src="../out/logo-transparent.png" alt="Galgotias Entrepreneurship Cell" />
+    </section>
+    <section class="copy">
+      <p class="eyebrow">The builder's entrance</p>
+      <h1 class="headline">Ideas begin as a <em>blueprint.</em></h1>
+    </section>
+  </main>
+</body>
+</html>

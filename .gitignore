@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Production build artifacts
+build/
+
+# Output renders, video exports, and temp browser capture profiles
+out/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

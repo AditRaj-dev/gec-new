@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Direction 01 — Orbit</title>
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body { background: #f7f6f2; color: var(--ink); }
+    .orbit {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(255, 204, 5, .13), transparent 24%),
+        radial-gradient(circle at 50% 50%, transparent 0 31%, rgba(202, 45, 36, .06) 31.2% 31.5%, transparent 31.7%),
+        #f7f6f2;
+    }
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      top: 50%;
+      translate: -50% -50%;
+      border-radius: 50%;
+      border: 1px solid rgba(16, 26, 44, .08);
+    }
+    .orbit::before { width: min(70vw, 830px); aspect-ratio: 1; }
+    .orbit::after { width: min(48vw, 560px); aspect-ratio: 1; border-style: dashed; }
+    .red-orbit {
+      position: absolute;
+      width: min(64vw, 780px);
+      aspect-ratio: 1;
+      border: clamp(10px, 1.3vw, 18px) solid transparent;
+      border-top-color: var(--red);
+      border-right-color: var(--red);
+      border-radius: 50%;
+      rotate: -22deg;
+      filter: drop-shadow(0 18px 28px rgba(202, 45, 36, .11));
+    }
+    .red-orbit::after {
+      content: "";
+      position: absolute;
+      right: 4%;
+      bottom: 12%;
+      width: 11px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--yellow);
+      box-shadow: 0 0 0 9px rgba(255, 204, 5, .16), 0 0 48px 15px rgba(255, 204, 5, .22);
+    }
+    .center {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      width: min(82vw, 1100px);
+      text-align: center;
+    }
+    .center .brand-logo { width: min(66vw, 900px); }
+    .center .eyebrow { color: var(--red); }
+    @media (max-width: 640px) {
+      .orbit::before { width: 132vw; }
+      .orbit::after { width: 86vw; }
+      .red-orbit { width: 112vw; transform: translateY(-2vh); }
+      .center { gap: 20px; width: 100%; padding: 0 18px; transform: translateY(-2vh); }
+      .center .brand-logo { width: 80vw; max-width: none; }
+      .center .eyebrow { font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="entry-frame orbit" aria-label="Orbit entry animation concept">
+    <div class="red-orbit" aria-hidden="true"></div>
+    <section class="center">
+      <p class="eyebrow">Ideas entering orbit</p>
+      <img class="brand-logo" src="../out/logo-transparent.png" alt="Galgotias Entrepreneurship Cell" />
+    </section>
+  </main>
+</body>
+</html>
