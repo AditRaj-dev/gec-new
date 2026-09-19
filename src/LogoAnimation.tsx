@@ -3,6 +3,7 @@ import { interpolate as interpolateSvgPath } from 'flubber';
 import {
   Easing,
   interpolate,
+  interpolateColors,
   spring,
   useCurrentFrame,
   useVideoConfig,
@@ -623,15 +624,32 @@ export const LogoAnimation: React.FC<LogoAnimationProps> = ({
     : bulbEnvelope * (0.5 + sinePulse * 0.5);
   const visibleFilamentFlash = filamentFlash * (1 - rawLogoProgress);
   const cavityIllumination = bubbleConcept
-    ? (0.12 + filamentFlash * 0.88) * (1 - rawLogoProgress)
-    : 1;
+    ? visibleFilamentFlash
+    : 1 - rawLogoProgress;
   const filamentStrokeWidth = 0.75 + visibleFilamentFlash * 1.1;
   const filamentColor = visibleFilamentFlash;
 
   // Interpolated color between #c43128 and #ffcc00
-  const filamentStroke = filamentColor > 0.05
-    ? `rgb(${Math.round(196 + filamentColor * 59)}, ${Math.round(49 + filamentColor * 155)}, ${Math.round(40 - filamentColor * 40)})`
-    : LOGO_COLORS.red;
+  const filamentStroke =
+    visibleFilamentFlash <= 0
+      ? LOGO_COLORS.red
+      : interpolateColors(
+          visibleFilamentFlash,
+          [0, 1],
+          [LOGO_COLORS.red, '#ffcc00']
+        );
+
+  const bulbReflectionFill = bubbleConcept
+    ? visibleFilamentFlash <= 0
+      ? LOGO_COLORS.red
+      : interpolateColors(
+          visibleFilamentFlash,
+          [0, 1],
+          [LOGO_COLORS.red, '#ffe066']
+        )
+    : visibleFilamentFlash > 0.3
+      ? '#ffe066'
+      : LOGO_COLORS.red;
 
   // =========================================================================
   // 4. SUBTITLE: "GALGOTIAS ENTREPRENEURSHIP CELL" (Frames 85 - 130)
@@ -939,7 +957,7 @@ export const LogoAnimation: React.FC<LogoAnimationProps> = ({
                   cy="285"
                   r="132"
                   fill="url(#bulbGlow)"
-                  opacity={bubbleConcept ? 1 : filamentFlash}
+                  opacity={bubbleConcept ? 1 : visibleFilamentFlash}
                   style={{ mixBlendMode: 'screen' }}
                 />
               </g>
@@ -959,13 +977,7 @@ export const LogoAnimation: React.FC<LogoAnimationProps> = ({
             {/* Bulb top glossy reflection arc */}
             <path
               d={PATHS_C[2].d}
-              fill={
-                bubbleConcept
-                  ? filamentStroke
-                  : filamentFlash > 0.3
-                    ? '#ffe066'
-                    : LOGO_COLORS.red
-              }
+              fill={bulbReflectionFill}
             />
 
             {/* Bulb base cap accent */}

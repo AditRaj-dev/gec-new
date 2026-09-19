@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GEC Hero Section — 3 Visual Directions (Post-Navbar Logo Docking)</title>
+  <title>GEC Hero Section — Refined Interactive Visual Lab (Post-Navbar Logo Docking)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #11141a;
+      background: #0b0f17;
       color: #f1f3f7;
       font-family: var(--font-sans);
       min-height: 100vh;
@@ -39,14 +39,14 @@
 
     /* Top Studio Bar */
     .studio-header {
-      background: #181d27;
+      background: #141923;
       border-bottom: 2px solid var(--gec-crimson);
-      padding: 12px 24px;
+      padding: 10px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 12px;
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -59,26 +59,34 @@
     }
     .studio-tag {
       font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 10px;
+      font-weight: 800;
       letter-spacing: 0.12em;
       color: var(--gec-gold);
       background: rgba(251, 202, 5, 0.12);
       border: 1px solid rgba(251, 202, 5, 0.3);
-      padding: 3px 8px;
+      padding: 4px 8px;
       border-radius: 4px;
       text-transform: uppercase;
     }
     .studio-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: -0.01em;
     }
 
+    .studio-controls-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Direction Switcher Tabs */
     .selector-tabs {
       display: flex;
-      background: #0d1017;
+      background: #090c12;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 6px;
       padding: 3px;
@@ -91,17 +99,17 @@
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
-      padding: 8px 14px;
+      padding: 7px 12px;
       border-radius: 4px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       transition: all 0.15s ease;
     }
     .tab-btn:hover {
       color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
     }
     .tab-btn.active {
       background: var(--gec-crimson);
@@ -109,9 +117,56 @@
       box-shadow: 0 2px 6px rgba(163, 4, 15, 0.4);
     }
 
+    /* Replay Morph Button */
+    .btn-replay-morph {
+      background: linear-gradient(135deg, #A3040F 0%, #ca2d24 100%);
+      border: 1px solid var(--gec-gold);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 7px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 0 12px rgba(163, 4, 15, 0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-replay-morph:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 18px rgba(251, 202, 5, 0.6);
+    }
+
+    /* Viewport Resizer Tabs */
+    .viewport-tabs {
+      display: flex;
+      background: #090c12;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .vp-btn {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .vp-btn.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
     .studio-links {
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
     .studio-link-btn {
       text-decoration: none;
@@ -132,9 +187,9 @@
       color: var(--gec-gold);
     }
 
-    /* Direction Explanation Banner */
+    /* Explanatory Context Banner */
     .direction-context-banner {
-      background: #1e2433;
+      background: #141b26;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 10px 24px;
       font-size: 12px;
@@ -151,7 +206,7 @@
 
     /* Canvas Stage */
     .stage-wrapper {
-      padding: 30px 20px 60px;
+      padding: 24px 20px 60px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -165,14 +220,63 @@
       color: var(--gec-charcoal);
       border: 2px solid var(--gec-crimson);
       border-radius: 8px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: max-width 0.3s ease;
+      position: relative;
+      transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Sticky Navbar Inside Canvas (Docking proof) */
+    /* =========================================================================
+       ENTRANCE MORPH FULLSCREEN SIMULATOR OVERLAY
+       ========================================================================= */
+    #entrance-curtain {
+      position: fixed;
+      inset: 0;
+      background: var(--gec-cream);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .morph-logo-actor {
+      position: absolute;
+      width: 320px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      transform-origin: top left;
+    }
+
+    .morph-logo-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 10px 25px rgba(163, 4, 15, 0.25));
+    }
+
+    .curtain-status-pill {
+      position: absolute;
+      bottom: 40px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gec-crimson);
+      background: rgba(163, 4, 15, 0.08);
+      border: 1px solid rgba(163, 4, 15, 0.25);
+      padding: 8px 18px;
+      border-radius: 99px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: pulse-beacon 1.2s infinite;
+    }
+
+    /* STICKY NAVBAR (Demonstrating Docked Logo Placement) */
     .mock-navbar {
       height: 74px;
       border-bottom: 2px solid var(--gec-crimson);
@@ -192,6 +296,7 @@
       align-items: center;
       gap: 12px;
       position: relative;
+      cursor: pointer;
     }
     .docked-badge-indicator {
       position: absolute;
@@ -202,7 +307,7 @@
       font-weight: 800;
       color: #ffffff;
       background: var(--gec-green);
-      padding: 1px 4px;
+      padding: 1px 5px;
       border-radius: 3px;
       letter-spacing: 0.05em;
     }
@@ -265,21 +370,21 @@
 
     /* Hero Section Canvas */
     .mock-hero-section {
-      padding: 48px 36px;
+      padding: 44px 36px;
       min-height: 600px;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 40px;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 36px;
       align-items: center;
       position: relative;
-      background: radial-gradient(circle at 80% 30%, rgba(244, 226, 202, 0.45) 0%, transparent 70%);
+      background: radial-gradient(circle at 82% 28%, rgba(244, 226, 202, 0.5) 0%, transparent 68%);
     }
 
     /* Left Column (Columns 1-7) */
     .hero-left-col {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
       z-index: 2;
     }
     .hero-eyebrow {
@@ -308,7 +413,7 @@
 
     .hero-h1 {
       font-family: var(--font-display);
-      font-size: 52px;
+      font-size: 50px;
       line-height: 1.08;
       font-weight: 800;
       letter-spacing: -0.01em;
@@ -335,17 +440,17 @@
     }
 
     .hero-body {
-      font-size: 16px;
+      font-size: 15.5px;
       line-height: 1.6;
       color: #3f3f46;
-      max-width: 58ch;
+      max-width: 56ch;
     }
 
     .hero-cta-cluster {
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
-      margin-top: 6px;
+      margin-top: 4px;
     }
     .btn-primary-cta {
       background: var(--gec-crimson);
@@ -386,9 +491,9 @@
     .hero-telemetry-ribbon {
       display: flex;
       gap: 20px;
-      padding-top: 18px;
+      padding-top: 16px;
       border-top: 1px dashed rgba(34, 34, 34, 0.2);
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .telemetry-item {
       display: flex;
@@ -412,7 +517,7 @@
     .hero-right-col {
       position: relative;
       width: 100%;
-      min-height: 480px;
+      min-height: 500px;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
@@ -424,8 +529,8 @@
        ========================================================================= */
     .option-orbit-container {
       width: 100%;
-      height: 480px;
-      background: #0f131a;
+      height: 500px;
+      background: #0d1117;
       border: 2px solid var(--gec-crimson);
       border-radius: var(--radius-md);
       position: relative;
@@ -433,29 +538,36 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
     }
 
     .orbit-canvas-bg {
       position: absolute;
       inset: 0;
       background-image: 
-        radial-gradient(rgba(251, 202, 5, 0.06) 1px, transparent 1px),
-        radial-gradient(rgba(163, 4, 15, 0.08) 1px, transparent 1px);
-      background-size: 28px 28px;
-      background-position: 0 0, 14px 14px;
+        radial-gradient(rgba(251, 202, 5, 0.08) 1px, transparent 1px),
+        radial-gradient(rgba(163, 4, 15, 0.1) 1px, transparent 1px);
+      background-size: 26px 26px;
+      background-position: 0 0, 13px 13px;
     }
 
-    .orbit-stage-badge {
+    /* Top Orbit Tool Controls */
+    .orbit-top-controls {
       position: absolute;
       top: 14px;
       left: 16px;
-      z-index: 10;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 15;
+    }
+    .orbit-stage-badge {
       font-family: var(--font-mono);
       font-size: 10px;
       font-weight: 800;
       color: #e2e8f0;
-      background: rgba(15, 19, 26, 0.85);
+      background: rgba(13, 17, 23, 0.9);
       border: 1px solid rgba(255, 255, 255, 0.15);
       padding: 4px 10px;
       border-radius: 4px;
@@ -464,17 +576,41 @@
       gap: 6px;
     }
     .pulse-green-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       background: var(--gec-green);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--gec-green);
+      box-shadow: 0 0 10px var(--gec-green);
       animation: pulse-beacon 1.5s infinite;
     }
     @keyframes pulse-beacon {
       0% { transform: scale(0.9); opacity: 0.6; }
       50% { transform: scale(1.3); opacity: 1; }
       100% { transform: scale(0.9); opacity: 0.6; }
+    }
+
+    .orbit-speed-pills {
+      display: flex;
+      gap: 4px;
+      background: rgba(0,0,0,0.6);
+      padding: 3px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .speed-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .speed-btn.active {
+      background: var(--gec-gold);
+      color: #000;
     }
 
     /* Orbital Rings */
@@ -490,20 +626,20 @@
     .ring-inner {
       width: 170px;
       height: 170px;
-      border-color: rgba(251, 202, 5, 0.25);
+      border-color: rgba(251, 202, 5, 0.28);
       animation: spin-clockwise 22s linear infinite;
     }
     .ring-middle {
       width: 290px;
       height: 290px;
-      border-color: rgba(163, 4, 15, 0.35);
+      border-color: rgba(163, 4, 15, 0.38);
       animation: spin-counter 34s linear infinite;
     }
     .ring-outer {
-      width: 410px;
-      height: 410px;
-      border-color: rgba(255, 255, 255, 0.12);
-      animation: spin-clockwise 48s linear infinite;
+      width: 420px;
+      height: 420px;
+      border-color: rgba(255, 255, 255, 0.14);
+      animation: spin-clockwise 50s linear infinite;
     }
 
     @keyframes spin-clockwise {
@@ -517,12 +653,12 @@
 
     /* Central Incubator Core */
     .orbit-central-core {
-      width: 86px;
-      height: 86px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background: radial-gradient(circle, var(--gec-crimson) 20%, #450a0a 100%);
       border: 2px solid var(--gec-gold);
-      box-shadow: 0 0 28px rgba(163, 4, 15, 0.6), inset 0 0 14px rgba(251, 202, 5, 0.4);
+      box-shadow: 0 0 32px rgba(163, 4, 15, 0.65), inset 0 0 16px rgba(251, 202, 5, 0.5);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -533,14 +669,14 @@
       transition: transform 0.2s;
     }
     .orbit-central-core:hover {
-      transform: scale(1.08);
+      transform: scale(1.1);
     }
     .core-spark {
-      font-size: 16px;
+      font-size: 18px;
     }
     .core-txt {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: 8.5px;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: 0.08em;
@@ -549,35 +685,35 @@
     /* Orbiting Nodes (Interactive) */
     .orbit-node {
       position: absolute;
-      background: #181e2b;
+      background: rgba(20, 26, 38, 0.95);
       border: 1.5px solid rgba(255, 255, 255, 0.2);
       border-radius: 20px;
-      padding: 6px 12px;
+      padding: 7px 13px;
       display: flex;
       align-items: center;
       gap: 7px;
       font-family: var(--font-mono);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #ffffff;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
       z-index: 6;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
     .orbit-node:hover {
       transform: scale(1.12);
       border-color: var(--gec-gold);
-      box-shadow: 0 8px 24px rgba(251, 202, 5, 0.3);
+      box-shadow: 0 8px 24px rgba(251, 202, 5, 0.35);
     }
 
     .node-cohort {
-      top: 60px;
-      right: 45px;
+      top: 65px;
+      right: 40px;
       border-color: var(--gec-green);
     }
     .node-funding {
-      bottom: 70px;
+      bottom: 75px;
       left: 35px;
       border-color: var(--gec-gold);
     }
@@ -587,25 +723,47 @@
       border-color: var(--gec-blue);
     }
     .node-summit {
-      bottom: 90px;
+      bottom: 95px;
       right: 35px;
       border-color: var(--gec-crimson);
     }
 
-    .orbit-interactive-toast {
+    /* Dynamic Node Telemetry Drawer */
+    .orbit-node-detail-drawer {
       position: absolute;
       bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 6px 14px;
-      border-radius: 99px;
+      left: 16px;
+      right: 16px;
+      background: rgba(13, 17, 23, 0.94);
+      border: 1.5px solid var(--gec-gold);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      animation: slide-up 0.2s ease;
+    }
+    .node-detail-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gec-gold);
+    }
+    .node-detail-desc {
+      font-size: 11px;
+      color: #cbd5e1;
+    }
+    .btn-node-action {
+      background: var(--gec-crimson);
+      color: #fff;
       font-family: var(--font-mono);
       font-size: 10px;
-      color: #94a3b8;
-      pointer-events: none;
-      white-space: nowrap;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
     }
 
     /* =========================================================================
@@ -613,13 +771,13 @@
        ========================================================================= */
     .option-reel-container {
       width: 100%;
-      height: 480px;
+      height: 500px;
       background: #090c10;
       border: 2px solid var(--gec-crimson);
       border-radius: var(--radius-md);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
       display: flex;
       flex-direction: column;
     }
@@ -627,7 +785,7 @@
     .reel-screen {
       position: relative;
       flex: 1;
-      background: linear-gradient(135deg, #161b26 0%, #0d1117 100%);
+      background: linear-gradient(135deg, #151a24 0%, #0d1016 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -637,8 +795,8 @@
     /* Tactical HUD Crosshairs */
     .hud-corner {
       position: absolute;
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       border: 2px solid var(--gec-crimson);
       z-index: 10;
       pointer-events: none;
@@ -648,7 +806,7 @@
     .hud-bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
     .hud-br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
 
-    /* HUD Top Ribbon */
+    /* Top HUD Ribbon with Story Selector */
     .hud-top-bar {
       position: absolute;
       top: 16px;
@@ -657,29 +815,33 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 10;
+      z-index: 15;
       font-family: var(--font-mono);
       font-size: 10px;
       color: #ffffff;
     }
-    .hud-rec-tag {
+    .story-selector-pills {
       display: flex;
-      align-items: center;
-      gap: 6px;
+      gap: 4px;
+    }
+    .story-pill-btn {
       background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
       padding: 3px 8px;
       border-radius: 3px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
     }
-    .rec-dot {
-      width: 6px;
-      height: 6px;
-      background: #ef4444;
-      border-radius: 50%;
-      animation: pulse-beacon 1s infinite;
+    .story-pill-btn.active {
+      background: var(--gec-crimson);
+      border-color: var(--gec-crimson);
+      color: #fff;
     }
 
-    /* Founder Silhouette & Stage Vector */
+    /* Founder Stage Scene Simulator */
     .founder-stage-scene {
       width: 100%;
       height: 100%;
@@ -690,18 +852,19 @@
     }
     .stage-spotlight {
       position: absolute;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(251, 202, 5, 0.15) 0%, transparent 65%);
-      top: 20%;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(251, 202, 5, 0.18) 0%, transparent 68%);
+      top: 15%;
+      transition: background 0.3s ease;
     }
     .founder-mic-stand {
       position: absolute;
-      bottom: 70px;
+      bottom: 85px;
       left: 50%;
       transform: translateX(-50%);
       width: 4px;
-      height: 140px;
+      height: 130px;
       background: #475569;
     }
     .founder-mic-stand::before {
@@ -715,38 +878,39 @@
       border-radius: 4px;
     }
 
-    /* Floating Pitch Slides HUD */
+    /* Floating Holographic Pitch Deck */
     .pitch-deck-preview-card {
       position: absolute;
-      top: 80px;
+      top: 75px;
       right: 32px;
-      width: 180px;
-      background: rgba(15, 23, 42, 0.92);
+      width: 195px;
+      background: rgba(15, 23, 42, 0.94);
       border: 1.5px solid var(--gec-gold);
       border-radius: 6px;
-      padding: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      padding: 12px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65);
       z-index: 10;
+      cursor: pointer;
       animation: float-gentle 4s ease-in-out infinite;
+      transition: transform 0.2s;
     }
-    @keyframes float-gentle {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
+    .pitch-deck-preview-card:hover {
+      transform: scale(1.05) translateY(-4px);
     }
     .pitch-card-tag {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: 8.5px;
       font-weight: 800;
       color: var(--gec-gold);
       text-transform: uppercase;
       margin-bottom: 4px;
     }
     .pitch-card-title {
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
       color: #ffffff;
-      line-height: 1.25;
-      margin-bottom: 6px;
+      line-height: 1.3;
+      margin-bottom: 8px;
     }
     .pitch-metric-bar {
       height: 4px;
@@ -759,6 +923,7 @@
       height: 100%;
       width: 78%;
       background: var(--gec-gold);
+      transition: width 0.4s ease;
     }
 
     /* Bottom Quote HUD */
@@ -767,7 +932,7 @@
       bottom: 18px;
       left: 24px;
       right: 24px;
-      background: rgba(13, 17, 23, 0.9);
+      background: rgba(13, 17, 23, 0.92);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-left: 3px solid var(--gec-crimson);
       border-radius: 4px;
@@ -784,7 +949,7 @@
     }
     .quote-author {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: 9.5px;
       color: var(--gec-gold);
       font-weight: 700;
       margin-top: 3px;
@@ -795,7 +960,7 @@
       display: flex;
       align-items: flex-end;
       gap: 3px;
-      height: 18px;
+      height: 20px;
     }
     .eq-bar {
       width: 3px;
@@ -817,7 +982,7 @@
        ========================================================================= */
     .option-blueprint-container {
       width: 100%;
-      height: 480px;
+      height: 500px;
       background: var(--gec-sand);
       border: 2px solid var(--gec-crimson);
       border-radius: var(--radius-md);
@@ -826,7 +991,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
       background-image: 
         linear-gradient(rgba(163, 4, 15, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(163, 4, 15, 0.05) 1px, transparent 1px);
@@ -838,7 +1003,7 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1.5px solid rgba(163, 4, 15, 0.25);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
     .bp-title {
       font-family: var(--font-mono);
@@ -852,33 +1017,48 @@
       font-family: var(--font-mono);
       font-size: 9.5px;
       color: var(--gec-charcoal);
-      opacity: 0.7;
+      opacity: 0.75;
     }
 
-    /* Stepper Track */
+    /* Stepper Track with Conduit */
     .bp-stepper-track {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin: 12px 0;
+      margin: 10px 0;
       position: relative;
     }
     .bp-stepper-track::before {
       content: "";
       position: absolute;
       left: 17px;
-      top: 14px;
-      bottom: 14px;
-      width: 2px;
-      background: rgba(163, 4, 15, 0.3);
+      top: 16px;
+      bottom: 16px;
+      width: 3px;
+      background: rgba(163, 4, 15, 0.25);
       z-index: 1;
+    }
+    .bp-conduit-pulse {
+      position: absolute;
+      left: 17px;
+      top: 16px;
+      width: 3px;
+      height: 40px;
+      background: var(--gec-gold);
+      box-shadow: 0 0 10px var(--gec-gold);
+      z-index: 1;
+      animation: conduit-flow 3s ease-in-out infinite;
+    }
+    @keyframes conduit-flow {
+      0% { top: 16px; opacity: 1; }
+      100% { top: 220px; opacity: 0; }
     }
 
     .bp-step-item {
       display: flex;
       align-items: flex-start;
       gap: 14px;
-      background: rgba(252, 248, 237, 0.92);
+      background: rgba(252, 248, 237, 0.94);
       border: 1px solid rgba(163, 4, 15, 0.2);
       border-radius: 6px;
       padding: 10px 14px;
@@ -942,7 +1122,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
     }
     .bp-detail-left {
       display: flex;
@@ -973,7 +1153,7 @@
     }
 
     /* =========================================================================
-       SIDE-BY-SIDE / COMPARISON GRID
+       SIDE-BY-SIDE / COMPARISON GRID & VOTING SYSTEM
        ========================================================================= */
     .side-by-side-grid {
       display: none;
@@ -1002,6 +1182,66 @@
     .badge-sub {
       font-size: 11px;
       color: #94a3b8;
+    }
+    .vote-option-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .vote-option-btn:hover {
+      background: var(--gec-crimson);
+      border-color: var(--gec-crimson);
+    }
+    .vote-option-btn.voted {
+      background: var(--gec-gold);
+      color: #000;
+      border-color: var(--gec-gold);
+    }
+
+    /* Comparison Metric Matrix Table */
+    .comparison-matrix-section {
+      margin-top: 30px;
+      background: #10151f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      grid-column: 1 / -1;
+    }
+    .matrix-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gec-gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      color: #cbd5e1;
+    }
+    .matrix-table th, .matrix-table td {
+      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: left;
+    }
+    .matrix-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
     }
 
     /* Modal / Toast Alert */
@@ -1042,27 +1282,58 @@
 </head>
 <body>
 
+  <!-- Fullscreen Entrance-to-Navbar Morph Curtain -->
+  <div id="entrance-curtain">
+    <div class="morph-logo-actor" id="morph-actor">
+      <!-- High-fidelity GEC Mark Vector -->
+      <svg class="morph-logo-svg" viewBox="0 0 400 120" fill="none">
+        <circle cx="60" cy="60" r="50" stroke="#A3040F" stroke-width="7" fill="#FCF8ED"/>
+        <path d="M84 60H56V70H74C72 80 62 85 55 85C40 85 30 74 30 60C30 46 40 35 55 35C64 35 71 40 73 47" stroke="#A3040F" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="80" cy="40" r="6" fill="#FBCA05"/>
+        <text x="130" y="58" font-family="'Cinzel', serif" font-weight="800" font-size="28" fill="#A3040F" letter-spacing="2">GALGOTIAS</text>
+        <text x="132" y="82" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="12" fill="#222222" letter-spacing="4">ENTREPRENEURSHIP CELL</text>
+      </svg>
+    </div>
+    <div class="curtain-status-pill" id="curtain-label">
+      ● STAGE 1: LOGO CONVERGENCE AT VIEWPORT CENTER
+    </div>
+  </div>
+
   <!-- Studio Header Navigation Bar -->
   <header class="studio-header">
     <div class="studio-brand">
-      <span class="studio-tag">Interactive Design Lab</span>
-      <div class="studio-title">GEC Hero Visual Stage Exploration</div>
+      <span class="studio-tag">Refined Lab v2</span>
+      <div class="studio-title">GEC Hero Visual Stage Studio</div>
     </div>
 
-    <!-- Active Direction Switcher Tabs -->
-    <div class="selector-tabs">
-      <button class="tab-btn active" id="tab-opt1" onclick="switchHeroDirection('opt1')">
-        <span>●</span> Option 1: Ecosystem Orbit
+    <div class="studio-controls-cluster">
+      <!-- Morph Replay Button -->
+      <button class="btn-replay-morph" onclick="triggerEntranceMorphReplay()">
+        <span>▶</span> Replay Entrance → Topbar Morph
       </button>
-      <button class="tab-btn" id="tab-opt2" onclick="switchHeroDirection('opt2')">
-        <span>●</span> Option 2: Founder Reel HUD
-      </button>
-      <button class="tab-btn" id="tab-opt3" onclick="switchHeroDirection('opt3')">
-        <span>●</span> Option 3: Pipeline Blueprint
-      </button>
-      <button class="tab-btn" id="tab-all" onclick="switchHeroDirection('all')">
-        <span>⊞</span> Side-by-Side (All 3)
-      </button>
+
+      <!-- Active Direction Switcher Tabs -->
+      <div class="selector-tabs">
+        <button class="tab-btn active" id="tab-opt1" onclick="switchHeroDirection('opt1')">
+          <span>●</span> Option 1: Ecosystem Orbit
+        </button>
+        <button class="tab-btn" id="tab-opt2" onclick="switchHeroDirection('opt2')">
+          <span>●</span> Option 2: Founder Reel HUD
+        </button>
+        <button class="tab-btn" id="tab-opt3" onclick="switchHeroDirection('opt3')">
+          <span>●</span> Option 3: Pipeline Blueprint
+        </button>
+        <button class="tab-btn" id="tab-all" onclick="switchHeroDirection('all')">
+          <span>⊞</span> Side-by-Side (All 3)
+        </button>
+      </div>
+
+      <!-- Viewport Resizer Tabs -->
+      <div class="viewport-tabs">
+        <button class="vp-btn active" id="vp-desk" onclick="setCanvasViewport('1440px', this)">1440px</button>
+        <button class="vp-btn" id="vp-tab" onclick="setCanvasViewport('768px', this)">768px</button>
+        <button class="vp-btn" id="vp-mob" onclick="setCanvasViewport('390px', this)">390px</button>
+      </div>
     </div>
 
     <div class="studio-links">
@@ -1074,11 +1345,11 @@
   <!-- Explanatory Context Banner -->
   <div class="direction-context-banner">
     <div>
-      <span class="banner-highlight">Docking Handshake Verified:</span> 
-      The entrance animation has transformed into the sticky navbar logo (top-left). Below is what occupies Columns 8–12 of the Hero Section.
+      <span class="banner-highlight">Architecture Verified:</span> 
+      The entrance animation transforms into the sticky navbar logo (top-left). Below is the active visual engine occupying Columns 8–12 of the Hero Section.
     </div>
     <div style="font-family: var(--font-mono); font-size: 11px;">
-      HERO GRID: 7:5 ASYMMETRIC SPLIT (1440px MAX-W)
+      HERO GRID: 7:5 ASYMMETRIC SPLIT
     </div>
   </div>
 
@@ -1087,8 +1358,8 @@
     <div class="canvas-container" id="canvas-root">
 
       <!-- STICKY NAVBAR (Demonstrating Docked Logo Placement) -->
-      <nav class="mock-navbar">
-        <div class="docked-brand-logo" title="Brand logo docked from entrance animation">
+      <nav class="mock-navbar" id="master-mock-navbar">
+        <div class="docked-brand-logo" id="target-dock-slot" title="Brand logo docked from entrance animation">
           <!-- GEC Mark Vector -->
           <svg class="brand-svg-mark" viewBox="0 0 100 100" fill="none">
             <circle cx="50" cy="50" r="46" stroke="#A3040F" stroke-width="6" fill="#FCF8ED"/>
@@ -1110,7 +1381,7 @@
           <span class="mock-nav-link">[Stories]</span>
         </div>
 
-        <button class="mock-nav-cta" onclick="showToast('Opened General E-Cell Application Modal')">
+        <button class="mock-nav-cta" onclick="showToast('Opened General E-Cell Membership Application Modal')">
           [JOIN / GET INVOLVED CTA]
         </button>
       </nav>
@@ -1136,10 +1407,10 @@
           </p>
 
           <div class="hero-cta-cluster">
-            <button class="btn-primary-cta" onclick="showToast('Navigating to Initiatives Pipeline')">
+            <button class="btn-primary-cta" onclick="showToast('Navigating to Initiatives: Explore Programs')">
               Explore Initiatives →
             </button>
-            <button class="btn-secondary-cta" onclick="showToast('Navigating to About GEC Heritage')">
+            <button class="btn-secondary-cta" onclick="showToast('Navigating to About GEC: Heritage & Leadership')">
               Discover GEC
             </button>
           </div>
@@ -1177,6 +1448,9 @@
             <span class="badge-sub">Living Constellation</span>
           </div>
           <div id="slot-opt1"></div>
+          <button class="vote-option-btn" id="vote-opt1" onclick="voteForOption('opt1')">
+            ★ Vote for Option 1 (Recommended)
+          </button>
         </div>
 
         <!-- Option 2 Preview Card -->
@@ -1186,6 +1460,9 @@
             <span class="badge-sub">Authentic Social Proof</span>
           </div>
           <div id="slot-opt2"></div>
+          <button class="vote-option-btn" id="vote-opt2" onclick="voteForOption('opt2')">
+            ★ Vote for Option 2
+          </button>
         </div>
 
         <!-- Option 3 Preview Card -->
@@ -1195,6 +1472,50 @@
             <span class="badge-sub">Tactile Stepper</span>
           </div>
           <div id="slot-opt3"></div>
+          <button class="vote-option-btn" id="vote-opt3" onclick="voteForOption('opt3')">
+            ★ Vote for Option 3
+          </button>
+        </div>
+
+        <!-- Architectural Evaluation Matrix -->
+        <div class="comparison-matrix-section">
+          <div class="matrix-title">ARCHITECTURAL EVALUATION MATRIX</div>
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Evaluation Dimension</th>
+                <th>Option 1: Ecosystem Orbit</th>
+                <th>Option 2: Founder Reel HUD</th>
+                <th>Option 3: Pipeline Blueprint</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Primary Cognitive Focus</strong></td>
+                <td>Network scale, active incubator energy, dynamic cohorts</td>
+                <td>Human founder legitimacy, funding proof, emotional resonance</td>
+                <td>Step-by-step roadmap clarity, zero-friction progression</td>
+              </tr>
+              <tr>
+                <td><strong>Tech Stack Complexity</strong></td>
+                <td>HTML5 Canvas / CSS Spring Physics (Low payload, 60fps)</td>
+                <td>Compressed HTML5 Video Loop + SVG HUD Overlay</td>
+                <td>Pure SVG / DOM state machine (Zero external dependencies)</td>
+              </tr>
+              <tr>
+                <td><strong>Mobile Responsiveness</strong></td>
+                <td>Folds smoothly into a compact interactive radar (390px)</td>
+                <td>Folds into an autoplay 16:9 media card with play button</td>
+                <td>Stacks vertically into a clean 4-step accordion checklist</td>
+              </tr>
+              <tr>
+                <td><strong>Maintenance Cost</strong></td>
+                <td>Dynamic JSON node data feed (hooked to CMS Module 06)</td>
+                <td>Periodic video clip updates after annual demo days</td>
+                <td>Low maintenance; matches annual academic curriculum</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
@@ -1208,54 +1529,72 @@
     <span id="toast-text">Action feedback</span>
   </div>
 
-  <!-- HTML Templates for the 3 Options -->
+  <!-- =========================================================================
+       HTML TEMPLATES FOR THE 3 OPTIONS
+       ========================================================================= -->
+
+  <!-- Option 1 Template -->
   <template id="tmpl-opt1">
-    <div class="option-orbit-container" onmousemove="handleOrbitTilt(event, this)" onmouseleave="resetOrbitTilt(this)">
+    <div class="option-orbit-container" id="orbit-root" onmousemove="handleOrbitTilt(event, this)" onmouseleave="resetOrbitTilt(this)">
       <div class="orbit-canvas-bg"></div>
       
-      <div class="orbit-stage-badge">
-        <span class="pulse-green-dot"></span>
-        <span>INTERACTIVE ECOSYSTEM ORBIT</span>
+      <!-- Top Orbit Tool Controls -->
+      <div class="orbit-top-controls">
+        <div class="orbit-stage-badge">
+          <span class="pulse-green-dot"></span>
+          <span>INTERACTIVE ECOSYSTEM ORBIT</span>
+        </div>
+        <div class="orbit-speed-pills">
+          <button class="speed-btn" onclick="setOrbitSpeed(0.5, this)">0.5x</button>
+          <button class="speed-btn active" onclick="setOrbitSpeed(1.0, this)">1.0x</button>
+          <button class="speed-btn" onclick="setOrbitSpeed(2.0, this)">2.0x</button>
+        </div>
       </div>
 
       <!-- Rotating Orbit Concentric Tracks -->
-      <div class="orbit-ring ring-outer"></div>
-      <div class="orbit-ring ring-middle"></div>
-      <div class="orbit-ring ring-inner"></div>
+      <div class="orbit-ring ring-outer" id="ring-outer"></div>
+      <div class="orbit-ring ring-middle" id="ring-middle"></div>
+      <div class="orbit-ring ring-inner" id="ring-inner"></div>
 
       <!-- Center Incubator Nucleus Core -->
-      <div class="orbit-central-core" onclick="showToast('GEC Central Incubator Core: ₹50L Seed Allocation Pool')">
+      <div class="orbit-central-core" onclick="openOrbitNodeData('core')">
         <span class="core-spark">⚡</span>
         <span class="core-txt">GEC CORE<br>INCUBATOR</span>
       </div>
 
       <!-- Orbiting Interactive Nodes -->
-      <div class="orbit-node node-cohort" onclick="showToast('SDP Cohort 04: 182 Applications Received · Review Stage Active')">
+      <div class="orbit-node node-cohort" onclick="openOrbitNodeData('cohort')">
         <span class="pulse-green-dot"></span>
         <span>SDP Cohort 04</span>
       </div>
 
-      <div class="orbit-node node-funding" onclick="showToast('Venture Funding: ₹1.2Cr+ Secured Across 14 Student Startups')">
+      <div class="orbit-node node-funding" onclick="openOrbitNodeData('funding')">
         <span style="color:var(--gec-gold);">●</span>
         <span>₹1.2Cr+ Seed Pool</span>
       </div>
 
-      <div class="orbit-node node-mentors" onclick="showToast('Mentorship Council: 40+ VCs, Angel Investors, & Alumni Founders')">
+      <div class="orbit-node node-mentors" onclick="openOrbitNodeData('mentors')">
         <span style="color:var(--gec-blue);">●</span>
         <span>40+ Mentors</span>
       </div>
 
-      <div class="orbit-node node-summit" onclick="showToast('E-Summit 2026: 3-Day Flagship Global Entrepreneurship Summit')">
+      <div class="orbit-node node-summit" onclick="openOrbitNodeData('summit')">
         <span style="color:var(--gec-crimson);">★</span>
         <span>E-Summit '26</span>
       </div>
 
-      <div class="orbit-interactive-toast">
-        Hover nodes or drag cursor to tilt orbit plane
+      <!-- Dynamic Node Telemetry Drawer -->
+      <div class="orbit-node-detail-drawer" id="orbit-drawer" style="display:none;">
+        <div>
+          <div class="node-detail-title" id="drawer-title">SDP COHORT 04 · ACTIVE INTAKE</div>
+          <div class="node-detail-desc" id="drawer-desc">182 applications received · 12 teams shortlisted for Stage 02 Pitch</div>
+        </div>
+        <button class="btn-node-action" onclick="showToast('Opened Intake Queue for Cohort 04')">View Details →</button>
       </div>
     </div>
   </template>
 
+  <!-- Option 2 Template -->
   <template id="tmpl-opt2">
     <div class="option-reel-container">
       <!-- Tactical Corner Crosshairs -->
@@ -1264,13 +1603,14 @@
       <div class="hud-corner hud-bl"></div>
       <div class="hud-corner hud-br"></div>
 
-      <!-- Top HUD Ribbon -->
+      <!-- Top HUD Ribbon with Story Selector -->
       <div class="hud-top-bar">
-        <div class="hud-rec-tag">
-          <span class="rec-dot"></span>
-          <span>REC ● [60 FPS] // E-SUMMIT DEMO DAY</span>
+        <div class="story-selector-pills">
+          <button class="story-pill-btn active" onclick="selectReelStory(0, this)">01: MedTech AI</button>
+          <button class="story-pill-btn" onclick="selectReelStory(1, this)">02: CleanTech EV</button>
+          <button class="story-pill-btn" onclick="selectReelStory(2, this)">03: FinTech Pay</button>
         </div>
-        <div style="color: var(--gec-gold); font-weight: 700; cursor: pointer;" onclick="showToast('Switched founder audio track to Room 102')">
+        <div style="color: var(--gec-gold); font-weight: 700; cursor: pointer;" onclick="toggleReelAudio(this)">
           [AUDIO: AMBIENT 🔊]
         </div>
       </div>
@@ -1278,29 +1618,27 @@
       <!-- Founder Pitch Scene Simulator -->
       <div class="reel-screen">
         <div class="founder-stage-scene">
-          <div class="stage-spotlight"></div>
+          <div class="stage-spotlight" id="reel-spotlight"></div>
           
           <!-- Illustrated vector silhouette speaker -->
-          <svg width="180" height="220" viewBox="0 0 100 120" style="position: absolute; bottom: 0; left: 35%;">
-            <!-- Founder Figure -->
-            <circle cx="45" cy="30" r="16" fill="#334155" />
-            <path d="M20 110 C20 65 70 65 70 110 Z" fill="#1e293b" />
-            <!-- Pitch gesture arm -->
+          <svg width="190" height="230" viewBox="0 0 100 120" style="position: absolute; bottom: 0; left: 34%;">
+            <circle cx="45" cy="28" r="16" fill="#334155" />
+            <path d="M18 110 C18 64 72 64 72 110 Z" fill="#1e293b" />
             <path d="M58 65 L78 45 L85 52" stroke="#475569" stroke-width="4" stroke-linecap="round" fill="none"/>
           </svg>
 
           <div class="founder-mic-stand"></div>
 
           <!-- Floating Holographic Pitch Deck -->
-          <div class="pitch-deck-preview-card" onclick="showToast('Inspecting Pitch Slide: MedTech Health AI Deck (Cohort 03)')">
-            <div class="pitch-card-tag">● LIVE PITCH SLIDE</div>
-            <div class="pitch-card-title">Galgotias Health AI: ₹25L Pre-Seed Round</div>
+          <div class="pitch-deck-preview-card" onclick="flipReelDeckSlide()">
+            <div class="pitch-card-tag" id="deck-tag">● LIVE PITCH SLIDE</div>
+            <div class="pitch-card-title" id="deck-title">Galgotias Health AI: ₹25L Pre-Seed Round</div>
             <div class="pitch-metric-bar">
-              <div class="pitch-metric-fill"></div>
+              <div class="pitch-metric-fill" id="deck-metric-fill" style="width: 78%;"></div>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-top:5px; font-family:var(--font-mono); font-size:8px; color:#94a3b8;">
-              <span>ASK: ₹25L</span>
-              <span style="color:var(--gec-gold);">COMMITTED 78%</span>
+            <div style="display:flex; justify-content:space-between; margin-top:6px; font-family:var(--font-mono); font-size:8.5px; color:#94a3b8;">
+              <span id="deck-ask">ASK: ₹25L</span>
+              <span style="color:var(--gec-gold);" id="deck-status">COMMITTED 78%</span>
             </div>
           </div>
         </div>
@@ -1308,8 +1646,8 @@
         <!-- Bottom Quote & Equalizer HUD -->
         <div class="reel-bottom-hud">
           <div>
-            <div class="quote-txt">"Started in a hostel room, raised ₹25L seed with GEC incubation."</div>
-            <div class="quote-author">— Aryavart S., Founder @ MedTech (B.Tech '24)</div>
+            <div class="quote-txt" id="reel-quote">"Started in a hostel room, raised ₹25L seed with GEC incubation."</div>
+            <div class="quote-author" id="reel-author">— Aryavart S., Founder @ MedTech (B.Tech '24)</div>
           </div>
 
           <div class="audio-eq-bars" title="Realtime Audio Visualizer">
@@ -1323,16 +1661,19 @@
     </div>
   </template>
 
+  <!-- Option 3 Template -->
   <template id="tmpl-opt3">
     <div class="option-blueprint-container">
       <div class="bp-header">
         <div class="bp-title">FROM ZERO TO VENTURE · INCUBATION PIPELINE</div>
-        <div class="bp-telemetry">STAGE 02 / 04 ACTIVE</div>
+        <div class="bp-telemetry" id="bp-telemetry-status">STAGE 02 / 04 ACTIVE</div>
       </div>
 
-      <!-- 4 Connected Pipeline Stages -->
+      <!-- 4 Connected Pipeline Stages with Conduit Pulse -->
       <div class="bp-stepper-track">
-        <div class="bp-step-item" onclick="selectBlueprintStep(1, this, 'Hackathons, Mixer Nights & Co-founder Matchmaking', '₹0 Equity · Open to all 1st & 2nd Year Students')">
+        <div class="bp-conduit-pulse"></div>
+
+        <div class="bp-step-item" onclick="selectBlueprintStep(1, this, 'Hackathons, Mixer Nights & Co-founder Matchmaking', '₹0 Equity · Open to all 1st & 2nd Year Students', 'Ideation Sprint')">
           <div class="bp-step-circle">01</div>
           <div class="bp-step-info">
             <span class="bp-step-title">Discovery & Ideation</span>
@@ -1340,7 +1681,7 @@
           </div>
         </div>
 
-        <div class="bp-step-item active" onclick="selectBlueprintStep(2, this, 'Maker Labs, 1-on-1 Mentorship & Rapid Prototype Testing', 'Seed grants up to ₹1,00,000 for verified hardware/software MVPs')">
+        <div class="bp-step-item active" onclick="selectBlueprintStep(2, this, 'Maker Labs, 1-on-1 Mentorship & Rapid Prototype Testing', 'Seed grants up to ₹1,00,000 for verified hardware/software MVPs', 'Prototype Sprint')">
           <div class="bp-step-circle">02</div>
           <div class="bp-step-info">
             <span class="bp-step-title">Prototype Validation</span>
@@ -1348,7 +1689,7 @@
           </div>
         </div>
 
-        <div class="bp-step-item" onclick="selectBlueprintStep(3, this, '12-Week Intensive Incubation & Legal/IP Incorporation Support', 'GEC Incubation Agreement & Direct Angel Network Access')">
+        <div class="bp-step-item" onclick="selectBlueprintStep(3, this, '12-Week Intensive Incubation & Legal/IP Incorporation Support', 'GEC Incubation Agreement & Direct Angel Network Access', 'Incubation Sprint')">
           <div class="bp-step-circle">03</div>
           <div class="bp-step-info">
             <span class="bp-step-title">12-Week SDP Incubation</span>
@@ -1356,7 +1697,7 @@
           </div>
         </div>
 
-        <div class="bp-step-item" onclick="selectBlueprintStep(4, this, 'Demo Day Pitch in front of 20+ Tier-1 Angels & Venture Capitalists', '₹50,00,000+ total commitment pool during annual E-Summit')">
+        <div class="bp-step-item" onclick="selectBlueprintStep(4, this, 'Demo Day Pitch in front of 20+ Tier-1 Angels & Venture Capitalists', '₹50,00,000+ total commitment pool during annual E-Summit', 'Demo Day Round')">
           <div class="bp-step-circle">04</div>
           <div class="bp-step-info">
             <span class="bp-step-title">Demo Day & Seed Fund</span>
@@ -1371,14 +1712,16 @@
           <span class="bp-detail-tag" id="bp-stage-tag">ACTIVE STAGE 02 FOCUS</span>
           <span class="bp-detail-deliverable" id="bp-deliverable-text">Maker Labs, 1-on-1 Mentorship & Rapid Prototype Testing</span>
         </div>
-        <button class="bp-apply-btn" onclick="showToast('Opened Application for Active Pipeline Stage 02')">
+        <button class="bp-apply-btn" onclick="showToast('Opened Application Form for Active Pipeline Stage')">
           Apply to Track →
         </button>
       </div>
     </div>
   </template>
 
-  <!-- JavaScript Interaction Logic -->
+  <!-- =========================================================================
+       JAVASCRIPT LOGIC
+       ========================================================================= -->
   <script>
     let activeDirection = 'opt1';
 
@@ -1412,7 +1755,7 @@
             slot.appendChild(tmpl.content.cloneNode(true));
           }
         });
-        showToast('Side-by-Side Comparison: Compare all 3 Hero directions');
+        showToast('Side-by-Side Comparison: Evaluating all 3 Hero directions');
       } else {
         sideBySideView.style.display = 'none';
         singleView.style.display = 'grid';
@@ -1428,7 +1771,48 @@
       }
     }
 
-    // 3D Perspective Tilt for Option 1
+    /* -------------------------------------------------------------------------
+       ENTRANCE-TO-NAVBAR MORPH REPLAY ENGINE
+       ------------------------------------------------------------------------- */
+    function triggerEntranceMorphReplay() {
+      const curtain = document.getElementById('entrance-curtain');
+      const actor = document.getElementById('morph-actor');
+      const label = document.getElementById('curtain-label');
+      const targetSlot = document.getElementById('target-dock-slot');
+
+      curtain.style.display = 'flex';
+      curtain.style.opacity = '1';
+      actor.style.transform = 'translate(0px, 0px) scale(1)';
+      actor.style.opacity = '1';
+      label.innerText = '● STAGE 1: LOGO CONVERGENCE AT VIEWPORT CENTER';
+
+      // Phase 2: Calculate FLIP and initiate flight to navbar brand slot
+      setTimeout(() => {
+        label.innerText = '● STAGE 2: FLIP FLIGHT & MORPH INTO TOPBAR NAVBAR LOGO';
+
+        const actorRect = actor.getBoundingClientRect();
+        const targetRect = targetSlot.getBoundingClientRect();
+
+        const deltaX = targetRect.left - actorRect.left;
+        const deltaY = targetRect.top - actorRect.top;
+        const scale = (targetRect.height / actorRect.height) * 1.05;
+
+        actor.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
+      }, 1600);
+
+      // Phase 3: Dissolve curtain and reveal hero section below
+      setTimeout(() => {
+        curtain.style.opacity = '0';
+        setTimeout(() => {
+          curtain.style.display = 'none';
+          showToast('Docking Handshake Complete: Topbar logo locked in, Hero section unveiled!');
+        }, 500);
+      }, 2500);
+    }
+
+    /* -------------------------------------------------------------------------
+       OPTION 1: Orbit Interaction & Tilt
+       ------------------------------------------------------------------------- */
     function handleOrbitTilt(e, card) {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -1437,25 +1821,170 @@
       const cy = rect.height / 2;
       const rotateX = ((y - cy) / cy) * -12;
       const rotateY = ((x - cx) / cx) * 12;
-      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      card.style.transform = `perspective(850px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       card.style.transition = 'none';
     }
 
     function resetOrbitTilt(card) {
-      card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      card.style.transform = 'perspective(850px) rotateX(0deg) rotateY(0deg)';
       card.style.transition = 'transform 0.5s ease-out';
     }
 
-    // Pipeline Step Selection for Option 3
-    function selectBlueprintStep(num, el, deliverable, terms) {
-      document.querySelectorAll('.bp-step-item').forEach(i => i.classList.remove('active'));
-      el.classList.add('active');
-      document.getElementById('bp-stage-tag').innerText = `ACTIVE STAGE 0${num} FOCUS`;
-      document.getElementById('bp-deliverable-text').innerText = deliverable;
-      showToast(`Selected Stage 0${num}: ${deliverable} (${terms})`);
+    function setOrbitSpeed(multiplier, btn) {
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const rInner = document.getElementById('ring-inner');
+      const rMid = document.getElementById('ring-middle');
+      const rOuter = document.getElementById('ring-outer');
+      if (rInner && rMid && rOuter) {
+        rInner.style.animationDuration = `${22 / multiplier}s`;
+        rMid.style.animationDuration = `${34 / multiplier}s`;
+        rOuter.style.animationDuration = `${50 / multiplier}s`;
+      }
+      showToast(`Orbit speed updated to ${multiplier}x`);
     }
 
-    // Toast Alert Engine
+    function openOrbitNodeData(nodeId) {
+      const drawer = document.getElementById('orbit-drawer');
+      const title = document.getElementById('drawer-title');
+      const desc = document.getElementById('drawer-desc');
+      if (!drawer) return;
+
+      const data = {
+        core: { title: 'GEC CENTRAL INCUBATOR CORE', desc: '₹50,00,000 Annual Seed Grant & Co-working Allocation Pool' },
+        cohort: { title: 'SDP COHORT 04 · ACTIVE INTAKE', desc: '182 applications received across 4 tech tracks · Review in progress' },
+        funding: { title: 'VENTURE SEED POOL (₹1.2CR+)', desc: '14 Student-led startups funded · Average ticket: ₹5L to ₹15L' },
+        mentors: { title: 'VENTURE MENTORSHIP COUNCIL', desc: '40+ VC partners, angel investors, and Galgotias alumni founders' },
+        summit: { title: 'GLOBAL E-SUMMIT 2026', desc: '3-Day flagship entrepreneurship conference, pitch nights, and expo' }
+      };
+
+      drawer.style.display = 'flex';
+      title.innerText = data[nodeId].title;
+      desc.innerText = data[nodeId].desc;
+      showToast(`Inspecting: ${data[nodeId].title}`);
+    }
+
+    /* -------------------------------------------------------------------------
+       OPTION 2: Reel Story Selector
+       ------------------------------------------------------------------------- */
+    const REEL_STORIES = [
+      {
+        title: 'Galgotias Health AI: ₹25L Pre-Seed Round',
+        ask: 'ASK: ₹25L',
+        status: 'COMMITTED 78%',
+        fill: '78%',
+        quote: '"Started in a hostel room, raised ₹25L seed with GEC incubation."',
+        author: '— Aryavart S., Founder @ MedTech (B.Tech \'24)',
+        spotlight: 'rgba(251, 202, 5, 0.18)'
+      },
+      {
+        title: 'VoltDrive EV: ₹40L Maker Lab Grant',
+        ask: 'ASK: ₹40L',
+        status: 'COMMITTED 92%',
+        fill: '92%',
+        quote: '"GEC Maker Labs gave us the battery testing rig we needed to build MVP."',
+        author: '— Devanshi K., Co-founder @ VoltDrive (B.Tech \'25)',
+        spotlight: 'rgba(16, 185, 129, 0.2)'
+      },
+      {
+        title: 'PaySwift FinTech: ₹15L Seed Syndicate',
+        ask: 'ASK: ₹15L',
+        status: 'CLOSED 100%',
+        fill: '100%',
+        quote: '"Closed our angel syndicate in 48 hours after Demo Day pitch."',
+        author: '— Kabir R., Founder @ PaySwift (BCA \'24)',
+        spotlight: 'rgba(30, 64, 175, 0.25)'
+      }
+    ];
+
+    function selectReelStory(idx, btn) {
+      document.querySelectorAll('.story-pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const s = REEL_STORIES[idx];
+      document.getElementById('deck-title').innerText = s.title;
+      document.getElementById('deck-ask').innerText = s.ask;
+      document.getElementById('deck-status').innerText = s.status;
+      document.getElementById('deck-metric-fill').style.width = s.fill;
+      document.getElementById('reel-quote').innerText = s.quote;
+      document.getElementById('reel-author').innerText = s.author;
+      document.getElementById('reel-spotlight').style.background = `radial-gradient(circle, ${s.spotlight} 0%, transparent 68%)`;
+
+      showToast(`Loaded Story ${idx + 1}: ${s.title}`);
+    }
+
+    function flipReelDeckSlide() {
+      const tag = document.getElementById('deck-tag');
+      const title = document.getElementById('deck-title');
+      const ask = document.getElementById('deck-ask');
+      const status = document.getElementById('deck-status');
+
+      if (tag.innerText.includes('LIVE PITCH SLIDE')) {
+        tag.innerText = '● TRACTION METRICS';
+        title.innerText = '2,400+ Active Clinical Users · 4 Hospital Pilots';
+        ask.innerText = 'MRR: ₹3.2L';
+        status.innerText = 'MoM GROWTH +34%';
+        showToast('Inspecting Pitch Slide Page 2: Traction & Market Size');
+      } else {
+        tag.innerText = '● LIVE PITCH SLIDE';
+        title.innerText = 'Galgotias Health AI: ₹25L Pre-Seed Round';
+        ask.innerText = 'ASK: ₹25L';
+        status.innerText = 'COMMITTED 78%';
+        showToast('Flipped back to Slide Cover');
+      }
+    }
+
+    function toggleReelAudio(el) {
+      if (el.innerText.includes('AMBIENT')) {
+        el.innerText = '[AUDIO: MUTED 🔇]';
+        el.style.color = '#ef4444';
+        showToast('Muted founder audio stream');
+      } else {
+        el.innerText = '[AUDIO: AMBIENT 🔊]';
+        el.style.color = 'var(--gec-gold)';
+        showToast('Founder audio stream unmuted');
+      }
+    }
+
+    /* -------------------------------------------------------------------------
+       OPTION 3: Pipeline Blueprint Stepper
+       ------------------------------------------------------------------------- */
+    function selectBlueprintStep(num, el, deliverable, terms, sprintName) {
+      document.querySelectorAll('.bp-step-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('bp-stage-tag').innerText = `ACTIVE STAGE 0${num} FOCUS (${sprintName})`;
+      document.getElementById('bp-deliverable-text').innerText = deliverable;
+      document.getElementById('bp-telemetry-status').innerText = `STAGE 0${num} / 04 ACTIVE`;
+      showToast(`Selected Stage 0${num}: ${sprintName} · ${terms}`);
+    }
+
+    /* -------------------------------------------------------------------------
+       VIEWPORT RESIZER & VOTING ENGINE
+       ------------------------------------------------------------------------- */
+    function setCanvasViewport(width, btn) {
+      document.querySelectorAll('.vp-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const canvas = document.getElementById('canvas-root');
+      canvas.style.maxWidth = width;
+      showToast(`Canvas viewport adjusted to ${width}`);
+    }
+
+    function voteForOption(opt) {
+      document.querySelectorAll('.vote-option-btn').forEach(b => {
+        b.classList.remove('voted');
+        b.innerText = b.innerText.replace('✓ Voted', '★ Vote');
+      });
+      const target = document.getElementById('vote-' + opt);
+      if (target) {
+        target.classList.add('voted');
+        target.innerText = '✓ Voted (Saved Choice)';
+      }
+      showToast(`Preference recorded: Voted for ${opt.toUpperCase()}!`);
+    }
+
+    /* -------------------------------------------------------------------------
+       TOAST SYSTEM
+       ------------------------------------------------------------------------- */
     let toastTimeout;
     function showToast(text) {
       const toast = document.getElementById('studio-toast');
