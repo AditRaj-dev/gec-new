@@ -1,1006 +1,668 @@
-﻿/* ==========================================================================
-   GEC Editorial Magazine Pages & Book Covers
-   Loaded on-demand when reading a GEC edition
-   ========================================================================== */
+/* GEC Deskfolio editorial system: restrained archive covers and print-first pages. */
 
 .deskfolio-page-content:has(.gec-editorial-page),
 .deskfolio-page-content:has(.gec-book-cover) {
   padding: 0;
 }
 
-/* ==========================================================================
-   GEC Main Book Outer Covers (.gec-book-cover)
-   ========================================================================== */
+.gec-book-cover,
+.gec-editorial-page {
+  --gec-accent: #a3040f;
+  --gec-accent-soft: rgba(163, 4, 15, 0.08);
+  --gec-rule: rgba(34, 34, 34, 0.16);
+  --gec-paper: #fcf8ed;
+  --gec-ink: #222222;
+  --gec-muted: #69635e;
+}
 
+.gec-book-cover--summit,
+.gec-editorial-page--summit {
+  --gec-accent: #0f68a7;
+  --gec-accent-soft: rgba(15, 104, 167, 0.09);
+}
+
+.gec-book-cover--handbook,
+.gec-editorial-page--handbook {
+  --gec-accent: #8b020b;
+  --gec-accent-soft: rgba(139, 2, 11, 0.08);
+}
+
+.gec-book-cover--founders,
+.gec-editorial-page--founders {
+  --gec-accent: #8a6514;
+  --gec-accent-soft: rgba(138, 101, 20, 0.1);
+}
+
+/* Hardcover system */
 .gec-book-cover {
   position: absolute;
   inset: 0;
   box-sizing: border-box;
-  padding: clamp(1.5rem, 3.8vw, 2.75rem) clamp(1.25rem, 3.2vw, 2.5rem);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  padding: 30px 30px 26px;
+  background: #8b020b;
+  color: #fffaf0;
+  font-family: Arial, Helvetica, sans-serif;
   user-select: none;
 }
 
-.gec-book-cover--incubation {
-  background:
-    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.14) 0%, transparent 60%),
-    linear-gradient(160deg, #A3040F 0%, #750209 50%, #450004 100%);
-  color: #FFF6D6;
-  box-shadow: inset 0 0 0 1px rgba(251, 202, 5, 0.4), inset 0 0 0 8px rgba(0, 0, 0, 0.25);
-}
-
 .gec-book-cover--summit {
-  background:
-    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.16) 0%, transparent 60%),
-    linear-gradient(160deg, #0F75BC 0%, #0A4F80 50%, #052640 100%);
-  color: #EBF8FF;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), inset 0 0 0 8px rgba(0, 0, 0, 0.3);
+  background: #0f68a7;
+  color: #f5fbff;
 }
 
 .gec-book-cover--handbook {
-  background:
-    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.9) 0%, transparent 60%),
-    linear-gradient(160deg, #FFFDF8 0%, #F6EDE0 50%, #E8DCC2 100%);
+  background: #f4eddf;
   color: #222222;
-  box-shadow: inset 0 0 0 1px rgba(163, 4, 15, 0.3), inset 0 0 0 8px rgba(163, 4, 15, 0.08);
-  border-left: 18px solid #A3040F;
+  box-shadow: inset 14px 0 0 #8b020b;
 }
 
 .gec-book-cover--founders {
-  background:
-    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
-    linear-gradient(160deg, #27272A 0%, #18181B 50%, #09090B 100%);
-  color: #FDFBF7;
-  box-shadow: inset 0 0 0 1px rgba(251, 202, 5, 0.5), inset 0 0 0 8px rgba(0, 0, 0, 0.4);
+  background: #1d1d1f;
+  color: #faf8f3;
 }
 
 .gec-book-cover--back {
-  background:
-    radial-gradient(120% 90% at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 70%),
-    linear-gradient(160deg, #18181B 0%, #101012 100%);
-  color: #FAF8F5;
+  align-items: center;
+  background: #1d1d1f;
+  color: #faf8f3;
   text-align: center;
-  align-items: center;
-}
-
-.gec-book-cover__running {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-size: clamp(0.6rem, 0.85vw, 0.72rem);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  opacity: 0.85;
-  padding-bottom: 8px;
-  border-bottom: 1px solid currentColor;
-  border-bottom-color: rgba(255, 255, 255, 0.2);
-}
-.gec-book-cover--handbook .gec-book-cover__running {
-  border-bottom-color: rgba(163, 4, 15, 0.2);
-  color: #A3040F;
-}
-
-.gec-book-cover__title-block {
-  margin: auto 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.gec-book-cover__mark {
-  width: clamp(44px, 5.5vw, 64px);
-  height: clamp(44px, 5.5vw, 64px);
-  margin-bottom: 6px;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
-}
-.gec-book-cover--incubation .gec-book-cover__mark { color: #FBCA05; }
-.gec-book-cover--summit .gec-book-cover__mark { color: #EBF8FF; }
-.gec-book-cover--handbook .gec-book-cover__mark { color: #A3040F; filter: none; }
-.gec-book-cover--founders .gec-book-cover__mark { color: #FFE082; }
-
-.gec-book-cover__mark-label {
-  font-family: monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-.gec-book-cover--incubation .gec-book-cover__mark-label { color: #FBCA05; }
-.gec-book-cover--summit .gec-book-cover__mark-label { color: #8ED0FF; }
-.gec-book-cover--handbook .gec-book-cover__mark-label { color: #A3040F; }
-.gec-book-cover--founders .gec-book-cover__mark-label { color: #FFE082; }
-
-.gec-book-cover__title-block h2 {
-  font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: clamp(1.5rem, 2.6vw, 2.35rem);
-  font-weight: 900;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  margin: 0;
-  text-transform: uppercase;
-}
-.gec-book-cover--incubation h2 {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFF4D0 40%, #FBCA05 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.gec-book-cover--summit h2 {
-  background: linear-gradient(135deg, #FFFFFF 0%, #D8EEFF 50%, #A3D7FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.gec-book-cover--handbook h2 {
-  color: #1A1A1A;
-}
-.gec-book-cover--founders h2 {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFF0C0 40%, #FFE082 80%, #D4A017 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gec-book-cover__title-block p {
-  font-size: clamp(0.75rem, 0.98vw, 0.88rem);
-  line-height: 1.45;
-  margin: 4px 0 0;
-  opacity: 0.85;
-  max-width: 42ch;
-}
-
-.gec-book-cover__footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: clamp(0.62rem, 0.8vw, 0.72rem);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  padding-top: 10px;
-  border-top: 1px solid currentColor;
-  border-top-color: rgba(255, 255, 255, 0.2);
-}
-.gec-book-cover--handbook .gec-book-cover__footer {
-  border-top-color: rgba(163, 4, 15, 0.2);
-  color: #5F5650;
-}
-
-/* ==========================================================================
-   GEC Editorial Magazine Pages (.gec-editorial-page)
-   ========================================================================== */
-
-.gec-editorial-page {
-  position: absolute;
-  inset: 0;
-  box-sizing: border-box;
-  padding: clamp(1.2rem, 3.2vw, 2.25rem) clamp(1.1rem, 3vw, 2.1rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: #FFFDF8;
-  color: #222222;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow: hidden;
-  user-select: text;
-}
-
-/* Background texture & archival watermark */
-.gec-editorial-page__texture {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.012) 0 1px, transparent 1px 3px),
-    radial-gradient(100% 100% at 50% 0%, rgba(255, 255, 255, 0.6), transparent 70%);
-  z-index: 0;
-}
-
-.gec-editorial-page__watermark {
-  position: absolute;
-  right: -20px;
-  bottom: -20px;
-  width: clamp(140px, 24vw, 210px);
-  height: clamp(140px, 24vw, 210px);
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* --------------------------------------------------------------------------
-   Running Header
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__running {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.gec-editorial-page__running-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.gec-editorial-page__running-pill {
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.06);
-  color: #44403C;
-  white-space: nowrap;
-}
-
-.gec-editorial-page__kicker {
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #78716C;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.gec-editorial-page__folio-id {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #78716C;
-  white-space: nowrap;
-}
-
-/* --------------------------------------------------------------------------
-   Main Content Column
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__content {
-  position: relative;
-  z-index: 1;
-  margin: auto 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(8px, 1.3vw, 14px);
-}
-
-.gec-editorial-page__category {
-  display: inline-flex;
-  align-self: flex-start;
-  font-size: 0.58rem;
-  font-weight: 850;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #A3040F;
-}
-
-.gec-editorial-page__title {
-  font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: clamp(1.18rem, 1.85vw, 1.58rem);
-  font-weight: 900;
-  line-height: 1.14;
-  letter-spacing: -0.02em;
-  color: #111827;
-  margin: 0;
-}
-
-.gec-editorial-page__deck {
-  font-size: clamp(0.74rem, 0.94vw, 0.84rem);
-  line-height: 1.5;
-  color: #374151;
-  margin: 0;
-}
-
-/* Key Directive / Highlight Card */
-.gec-editorial-page__highlight {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: rgba(251, 202, 5, 0.12);
-  border-left: 3px solid #FBCA05;
-}
-
-.gec-editorial-page__highlight-badge {
-  font-size: 0.54rem;
-  font-weight: 850;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #92400E;
-}
-
-.gec-editorial-page__highlight p {
-  font-size: clamp(0.68rem, 0.84vw, 0.76rem);
-  line-height: 1.45;
-  font-weight: 600;
-  color: #451A03;
-  margin: 0;
-}
-
-/* --------------------------------------------------------------------------
-   Stats Grid
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 2px 0;
-  padding: 0;
-  list-style: none;
-}
-
-.gec-editorial-page__stat-card {
-  display: flex;
-  flex-direction: column;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-}
-
-.gec-editorial-page__stat-val {
-  font-family: 'Cabinet Grotesk', -apple-system, sans-serif;
-  font-size: clamp(1.15rem, 1.65vw, 1.45rem);
-  font-weight: 900;
-  line-height: 1;
-  color: #A3040F;
-  margin-bottom: 2px;
-}
-
-.gec-editorial-page__stat-lbl {
-  font-size: 0.6rem;
-  font-weight: 750;
-  line-height: 1.25;
-  color: #1F2937;
-  margin: 0;
-}
-
-.gec-editorial-page__stat-sub {
-  font-size: 0.52rem;
-  font-weight: 500;
-  color: #6B7280;
-  margin-top: 2px;
-}
-
-/* --------------------------------------------------------------------------
-   Phased Stepper / Timeline
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__stepper {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 2px 0;
-}
-
-.gec-editorial-page__step {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 8px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.gec-editorial-page__step-num {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #A3040F;
-  color: #FFF;
-  font-size: 0.58rem;
-  font-weight: 800;
-  display: grid;
-  place-items: center;
-  flex: none;
-}
-
-.gec-editorial-page__step-text {
-  font-size: clamp(0.64rem, 0.8vw, 0.72rem);
-  font-weight: 650;
-  color: #1F2937;
-}
-
-/* --------------------------------------------------------------------------
-   Items List
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.gec-editorial-page__item {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-}
-
-.gec-editorial-page__index {
-  flex: none;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.62rem;
-  font-weight: 800;
-  padding: 3px 6px;
-  border-radius: 4px;
-  background: rgba(163, 4, 15, 0.08);
-  color: #A3040F;
-  margin-top: 1px;
-}
-
-.gec-editorial-page__item-body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.gec-editorial-page__item-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-.gec-editorial-page__item-head h4 {
-  font-size: clamp(0.74rem, 0.92vw, 0.82rem);
-  font-weight: 800;
-  color: #111827;
-  margin: 0;
-}
-
-.gec-editorial-page__item-tag {
-  font-size: 0.52rem;
-  font-weight: 750;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 1px 5px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.06);
-  color: #4B5563;
-  flex: none;
-}
-
-.gec-editorial-page__item-body p {
-  font-size: clamp(0.66rem, 0.82vw, 0.74rem);
-  line-height: 1.42;
-  color: #4B5563;
-  margin: 0;
-}
-
-/* --------------------------------------------------------------------------
-   Quote / Testimonial
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__quote {
-  position: relative;
-  margin: 2px 0;
-  padding: 10px 14px;
-  border-radius: 0 8px 8px 0;
-  border-left: 3.5px solid #A3040F;
-  background: #FFFDF8;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-}
-
-.gec-editorial-page__quote-mark {
-  font-family: Georgia, serif;
-  font-size: 2.2rem;
-  line-height: 0.8;
-  color: #A3040F;
-  opacity: 0.25;
-  margin-bottom: -10px;
-}
-
-.gec-editorial-page__quote p {
-  font-family: Georgia, -apple-system, serif;
-  font-size: clamp(0.72rem, 0.92vw, 0.82rem);
-  font-style: italic;
-  line-height: 1.48;
-  color: #1F2937;
-  margin: 0;
-}
-
-.gec-editorial-page__quote cite {
-  display: block;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 0.6rem;
-  font-style: normal;
-  font-weight: 750;
-  color: #A3040F;
-  margin-top: 5px;
-  letter-spacing: 0.02em;
-}
-
-/* --------------------------------------------------------------------------
-   Action / Callout Desk
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__action {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
-  border-radius: 7px;
-  background: rgba(163, 4, 15, 0.06);
-  border: 1px solid rgba(163, 4, 15, 0.18);
-}
-
-.gec-editorial-page__action-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.gec-editorial-page__action-tag {
-  font-size: 0.52rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #A3040F;
-}
-
-.gec-editorial-page__action-label {
-  font-size: 0.62rem;
-  font-weight: 600;
-  color: #4B5563;
-}
-
-.gec-editorial-page__action-val {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: #A3040F;
-  text-align: right;
-  white-space: nowrap;
-}
-
-/* --------------------------------------------------------------------------
-   Running Footer
-   -------------------------------------------------------------------------- */
-.gec-editorial-page__footer {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.58rem;
-  font-weight: 650;
-  color: #78716C;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding-top: 6px;
-}
-
-.gec-editorial-page__footer-folio {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.gec-editorial-page__folio-num {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-weight: 800;
-  color: #1F2937;
-}
-
-/* ==========================================================================
-   THEME 1: Venture Incubation Dossier (.gec-editorial-page--incubation)
-   Crimson, Gold Foil, Warm Parchment Ivory, Archival Seal
-   ========================================================================== */
-.gec-editorial-page--incubation {
-  background-color: #FCF9F2;
-  background-image:
-    radial-gradient(ellipse at 85% 15%, rgba(251, 202, 5, 0.09) 0%, transparent 55%),
-    radial-gradient(ellipse at 15% 85%, rgba(163, 4, 15, 0.06) 0%, transparent 60%),
-    repeating-linear-gradient(0deg, rgba(163, 4, 15, 0.025) 0 1px, transparent 1px 24px);
-  box-shadow:
-    inset 0 0 0 1px rgba(163, 4, 15, 0.16),
-    inset 0 0 0 5px rgba(251, 202, 5, 0.08);
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__running {
-  border-bottom-color: rgba(163, 4, 15, 0.2);
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__running-pill {
-  background: #A3040F;
-  color: #FFF6D6;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__kicker {
-  color: #A3040F;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__folio-id {
-  color: #B45309;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__category {
-  color: #A3040F;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__title {
-  color: #7B020B;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__stat-card {
-  background: linear-gradient(135deg, #FFFDF8 0%, #FFF7E6 100%);
-  border-color: rgba(251, 202, 5, 0.45);
-  box-shadow: 0 2px 8px rgba(163, 4, 15, 0.05);
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__stat-val {
-  color: #A3040F;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__stat-lbl {
-  color: #78350F;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__item {
-  background: #FFFFFF;
-  border-color: rgba(163, 4, 15, 0.12);
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__index {
-  background: #A3040F;
-  color: #FBCA05;
-  box-shadow: 0 1px 3px rgba(163, 4, 15, 0.3);
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__item-tag {
-  background: rgba(251, 202, 5, 0.2);
-  color: #78350F;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__quote {
-  border-left-color: #FBCA05;
-  background: #FFF9EB;
-  border: 1px solid rgba(251, 202, 5, 0.3);
-  border-left-width: 4px;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__quote cite {
-  color: #A3040F;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__action {
-  background: linear-gradient(135deg, #8A0008 0%, #A3040F 100%);
-  border-color: #FBCA05;
-  box-shadow: 0 3px 10px rgba(163, 4, 15, 0.25);
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__action-tag {
-  color: #FBCA05;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__action-label {
-  color: #FFF6D6;
-}
-
-.gec-editorial-page--incubation .gec-editorial-page__action-val {
-  color: #FFFFFF;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-/* ==========================================================================
-   THEME 2: E-Summit '26 Conclave Blueprint (.gec-editorial-page--summit)
-   Blueprint Blue, Electric Cyan, HUD Telemetry Boxes, Grid Paper
-   ========================================================================== */
-.gec-editorial-page--summit {
-  background-color: #F0F6FC;
-  background-image:
-    linear-gradient(90deg, rgba(15, 117, 188, 0.08) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(15, 117, 188, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 117, 188, 0.03) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(15, 117, 188, 0.03) 1px, transparent 1px);
-  background-size: 28px 28px, 28px 28px, 7px 7px, 7px 7px;
-  box-shadow:
-    inset 0 0 0 1px rgba(15, 117, 188, 0.35),
-    inset 0 0 0 5px rgba(255, 255, 255, 0.7);
-}
-
-.gec-editorial-page--summit .gec-editorial-page__running {
-  border-bottom: 1.5px solid #0F75BC;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__running-pill {
-  background: #0B2545;
-  color: #38BDF8;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__kicker {
-  color: #0284C7;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__folio-id {
-  color: #0F75BC;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__category {
-  color: #0284C7;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__title {
-  color: #082F49;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__deck {
-  color: #334155;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__stat-card {
-  background: #FFFFFF;
-  border: 1.5px solid #0F75BC;
-  box-shadow: 0 3px 10px rgba(15, 117, 188, 0.1);
-}
-
-.gec-editorial-page--summit .gec-editorial-page__stat-val {
-  color: #0F75BC;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__stat-lbl {
-  color: #0369A1;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__step-num {
-  background: #0F75BC;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__item {
-  background: #FFFFFF;
-  border-color: rgba(15, 117, 188, 0.2);
-}
-
-.gec-editorial-page--summit .gec-editorial-page__index {
-  background: #E0F2FE;
-  color: #0284C7;
-  border: 1px solid #BAE6FD;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__item-tag {
-  background: #0F75BC;
-  color: #FFFFFF;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__action {
-  background: #0B2545;
-  border-color: #38BDF8;
-  box-shadow: 0 4px 14px rgba(11, 37, 69, 0.3);
-}
-
-.gec-editorial-page--summit .gec-editorial-page__action-tag {
-  color: #38BDF8;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__action-label {
-  color: #BAE6FD;
-}
-
-.gec-editorial-page--summit .gec-editorial-page__action-val {
-  color: #FFFFFF;
-}
-
-/* ==========================================================================
-   THEME 3: Innovator's Field Handbook (.gec-editorial-page--handbook)
-   Field Notebook, Dotted Paper, Double Red Margin Rule, Yellow Highlighters
-   ========================================================================== */
-.gec-editorial-page--handbook {
-  background-color: #FAF6ED;
-  background-image:
-    radial-gradient(circle, rgba(140, 120, 100, 0.14) 1px, transparent 1.2px);
-  background-size: 18px 18px;
-  background-position: 4px 6px;
-  border-left: 4px double rgba(163, 4, 15, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__running {
-  border-bottom: 1.5px dashed rgba(163, 4, 15, 0.25);
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__running-pill {
-  background: transparent;
-  border: 1.5px solid #A3040F;
-  color: #A3040F;
-  border-radius: 3px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__kicker {
-  color: #A3040F;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__title {
-  color: #111827;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__highlight {
-  background: #FEF9C3;
-  border-left-color: #EAB308;
-  border: 1px dashed #CA8A04;
-  border-left-width: 3.5px;
-  transform: rotate(-0.5deg);
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__stat-card {
-  background: #FFFDF9;
-  border: 1px dashed rgba(163, 4, 15, 0.3);
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__stat-val {
-  color: #A3040F;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__item {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px dashed rgba(0, 0, 0, 0.15);
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__index {
-  background: #FEE2E2;
-  color: #991B1B;
-  border: 1px solid #FCA5A5;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__item-tag {
-  background: #FEF08A;
-  color: #854D0E;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__action {
-  background: #FFF5F5;
-  border: 2px dashed #A3040F;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__action-tag {
-  color: #A3040F;
-}
-
-.gec-editorial-page--handbook .gec-editorial-page__action-val {
-  color: #991B1B;
-}
-
-/* ==========================================================================
-   THEME 4: Wall of Founders (.gec-editorial-page--founders)
-   Luxury Alumni Ledger, Obsidian Cards, Metallic Gold, Dual Hairline Trim
-   ========================================================================== */
-.gec-editorial-page--founders {
-  background-color: #FAF8F5;
-  background-image:
-    radial-gradient(ellipse at 50% 10%, rgba(251, 202, 5, 0.08) 0%, transparent 60%),
-    linear-gradient(180deg, #FAF8F5 0%, #F4EFE6 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(212, 160, 23, 0.35),
-    inset 0 0 0 5px rgba(255, 255, 255, 0.9),
-    inset 0 0 0 6px rgba(212, 160, 23, 0.2);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__running {
-  border-bottom: 1.5px solid rgba(212, 160, 23, 0.35);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__running-pill {
-  background: #18181B;
-  color: #FBCA05;
-  border: 1px solid rgba(251, 202, 5, 0.4);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__kicker {
-  color: #B45309;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__folio-id {
-  color: #D97706;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__title {
-  color: #18181B;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__stat-card {
-  background: linear-gradient(145deg, #27272A 0%, #18181B 100%);
-  border: 1.5px solid #D4A017;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__stat-val {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFF0C0 40%, #FBCA05 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__stat-lbl {
-  color: #E4D5B7;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__stat-sub {
-  color: #A1A1AA;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__item {
-  background: #FFFFFF;
-  border-color: rgba(212, 160, 23, 0.25);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__index {
-  background: #18181B;
-  color: #FBCA05;
-  border: 1px solid rgba(251, 202, 5, 0.4);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__item-tag {
-  background: rgba(251, 202, 5, 0.2);
-  color: #78350F;
-  border: 1px solid rgba(251, 202, 5, 0.4);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__quote {
-  border-left-color: #D4A017;
-  background: #FFFDF8;
-  border: 1px solid rgba(212, 160, 23, 0.25);
-  border-left-width: 4px;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__quote cite {
-  color: #B45309;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__action {
-  background: #18181B;
-  border-color: #FBCA05;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-}
-
-.gec-editorial-page--founders .gec-editorial-page__action-tag {
-  color: #FBCA05;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__action-label {
-  color: #E4D5B7;
-}
-
-.gec-editorial-page--founders .gec-editorial-page__action-val {
-  color: #FFFFFF;
 }
 
 .df-cover-foil-border {
   position: absolute;
-  inset: 10px;
-  border: 1.5px solid #fbca05;
-  border-radius: 4px;
+  inset: 12px;
+  border: 1px solid var(--cover-foil, currentColor);
+  border-radius: 2px;
+  opacity: 0.45;
   pointer-events: none;
-  box-shadow:
-    inset 0 0 0 2px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(251, 202, 5, 0.4);
 }
 
-.df-cover-foil-border.df-foil-silver {
-  border-color: #e2e8f0;
+/* Miniature cover system (92×122px) */
+.gec-book-cover--mini {
+  padding: 8px 8px 7px;
+  border-radius: 3px 6px 6px 3px;
   box-shadow:
-    inset 0 0 0 2px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(226, 232, 240, 0.4);
+    inset 2px 0 4px rgba(0, 0, 0, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.38),
+    0 1px 3px rgba(0, 0, 0, 0.22);
+}
+
+.df-cover-foil-border--mini {
+  inset: 4px;
+  border-radius: 1px;
+  opacity: 0.42;
+}
+
+.gec-book-cover__mini-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  border-bottom: 0.5px solid currentColor;
+  padding-bottom: 3px;
+}
+
+.gec-book-cover__mini-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  margin: auto 0;
+}
+
+.gec-book-cover__mini-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.gec-book-cover__mini-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 6.5px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  opacity: 0.78;
+  border-top: 0.5px solid currentColor;
+  padding-top: 3px;
+}
+
+.gec-book-cover__running {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  opacity: 0.76;
+}
+
+.gec-book-cover__running span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gec-book-cover__running span:last-child {
+  flex: none;
+}
+
+.gec-book-cover__title-block {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: end;
+  gap: 8px 14px;
+  margin: auto 0;
+  text-align: left;
+}
+
+.gec-book-cover__mark {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  align-self: start;
+  width: 54px;
+  height: 54px;
+  color: #fbca05;
+}
+
+.gec-book-cover--summit .gec-book-cover__mark {
+  color: #f5fbff;
+}
+
+.gec-book-cover--handbook .gec-book-cover__mark {
+  color: #8b020b;
+}
+
+.gec-book-cover__mark-label {
+  grid-column: 2;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.gec-book-cover__title-block h2 {
+  grid-column: 1 / -1;
+  margin: 12px 0 0;
+  max-width: 13ch;
+  color: inherit;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  text-transform: none;
+  text-wrap: balance;
+}
+
+.gec-book-cover__title-block p {
+  grid-column: 1 / -1;
+  max-width: 34ch;
+  margin: 2px 0 0;
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.48;
+  opacity: 0.72;
+  text-wrap: pretty;
+}
+
+.gec-book-cover--back .gec-book-cover__title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gec-book-cover--back .gec-book-cover__mark {
+  width: 62px;
+  height: 62px;
+}
+
+.gec-book-cover--back .gec-book-cover__title-block h2,
+.gec-book-cover--back .gec-book-cover__title-block p {
+  max-width: 24ch;
+}
+
+.gec-book-cover__footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 10px;
+  border-top: 1px solid currentColor;
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 9px;
+  font-weight: 650;
+  line-height: 1.25;
+  opacity: 0.74;
+}
+
+/* Interior editorial pages */
+.gec-editorial-page {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 24px 26px 20px;
+  background: var(--gec-paper);
+  color: var(--gec-ink);
+  font-family: Arial, Helvetica, sans-serif;
+  user-select: text;
+}
+
+.gec-editorial-page::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: var(--gec-accent);
+  content: '';
+  opacity: 0.9;
+}
+
+.gec-editorial-page__running {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 25px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gec-rule);
+}
+
+.gec-editorial-page__running-left {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  gap: 8px;
+}
+
+.gec-editorial-page__running-pill,
+.gec-editorial-page__kicker,
+.gec-editorial-page__folio-id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 8.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.gec-editorial-page__running-pill {
+  flex: none;
+  color: var(--gec-accent);
+}
+
+.gec-editorial-page__kicker {
+  overflow: hidden;
+  color: var(--gec-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gec-editorial-page__running-right,
+.gec-editorial-page__folio-id {
+  flex: none;
+}
+
+.gec-editorial-page__folio-id {
+  color: var(--gec-muted);
+}
+
+.gec-editorial-page__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  gap: 8px;
+  padding: 12px 0 10px;
+}
+
+.gec-editorial-page__category {
+  align-self: flex-start;
+  color: var(--gec-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 8.5px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.gec-editorial-page__title {
+  margin: 0;
+  max-width: 18ch;
+  color: #1d1d1f;
+  font-size: 24px;
+  font-weight: 780;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.gec-editorial-page__deck {
+  max-width: 46ch;
+  margin: 0;
+  color: #4d4945;
+  font-size: 11px;
+  line-height: 1.46;
+  text-wrap: pretty;
+}
+
+.gec-editorial-page__highlight {
+  display: grid;
+  gap: 4px;
+  margin-top: 2px;
+  padding: 8px 10px;
+  border-left: 2px solid var(--gec-accent);
+  background: var(--gec-accent-soft);
+}
+
+.gec-editorial-page__highlight-badge {
+  color: var(--gec-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 7.5px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.gec-editorial-page__highlight p {
+  margin: 0;
+  color: #332f2c;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.42;
+}
+
+.gec-editorial-page__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 2px 0 0;
+}
+
+.gec-editorial-page__stat-card {
+  min-width: 0;
+  padding: 8px 7px;
+  border: 1px solid var(--gec-rule);
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.gec-editorial-page__stat-val {
+  color: var(--gec-accent);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.gec-editorial-page__stat-lbl {
+  margin: 4px 0 0;
+  color: #2d2a28;
+  font-size: 8.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.gec-editorial-page__stat-sub {
+  display: block;
+  margin-top: 2px;
+  color: var(--gec-muted);
+  font-size: 7.5px;
+  line-height: 1.2;
+}
+
+.gec-editorial-page__stepper,
+.gec-editorial-page__list {
+  display: flex;
+  flex-direction: column;
+  margin: 2px 0 0;
+  padding: 0;
+}
+
+.gec-editorial-page__step {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+  min-height: 28px;
+  border-top: 1px solid var(--gec-rule);
+}
+
+.gec-editorial-page__step:last-child {
+  border-bottom: 1px solid var(--gec-rule);
+}
+
+.gec-editorial-page__step-num {
+  color: var(--gec-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.gec-editorial-page__step-text {
+  color: #2d2a28;
+  font-size: 9.5px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.gec-editorial-page__list {
+  list-style: none;
+}
+
+.gec-editorial-page__item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 8px;
+  padding: 7px 0;
+  border-top: 1px solid var(--gec-rule);
+}
+
+.gec-editorial-page__item:last-child {
+  border-bottom: 1px solid var(--gec-rule);
+}
+
+.gec-editorial-page__index {
+  padding-top: 1px;
+  color: var(--gec-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.gec-editorial-page__item-body,
+.gec-editorial-page__item-head {
+  min-width: 0;
+}
+
+.gec-editorial-page__item-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.gec-editorial-page__item h4 {
+  margin: 0;
+  color: #24211f;
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1.24;
+}
+
+.gec-editorial-page__item p {
+  margin: 2px 0 0;
+  color: #56504b;
+  font-size: 8.8px;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+.gec-editorial-page__item-tag {
+  flex: none;
+  color: var(--gec-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 7px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.gec-editorial-page__quote {
+  position: relative;
+  margin: 2px 0 0;
+  padding: 10px 12px 9px 28px;
+  border-left: 2px solid var(--gec-accent);
+  background: var(--gec-accent-soft);
+}
+
+.gec-editorial-page__quote-mark {
+  position: absolute;
+  top: 4px;
+  left: 9px;
+  color: var(--gec-accent);
+  font-family: Georgia, serif;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.gec-editorial-page__quote p {
+  margin: 0;
+  color: #2f2b28;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 10px;
+  line-height: 1.42;
+}
+
+.gec-editorial-page__quote cite {
+  display: block;
+  margin-top: 5px;
+  color: var(--gec-accent);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 7.5px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.gec-editorial-page__action {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: end;
+  gap: 10px;
+  margin-top: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--gec-rule);
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.gec-editorial-page__action-info {
+  display: grid;
+  gap: 2px;
+}
+
+.gec-editorial-page__action-tag,
+.gec-editorial-page__action-label {
+  font-size: 7.5px;
+  line-height: 1.2;
+}
+
+.gec-editorial-page__action-tag {
+  color: var(--gec-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.gec-editorial-page__action-label {
+  color: var(--gec-muted);
+  font-weight: 650;
+}
+
+.gec-editorial-page__action-val {
+  overflow-wrap: anywhere;
+  color: #25211f;
+  font-size: 9px;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.gec-editorial-page__footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 24px;
+  padding-top: 8px;
+  border-top: 1px solid var(--gec-rule);
+  color: var(--gec-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 8px;
+  line-height: 1.2;
+}
+
+.gec-editorial-page__footer-note {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gec-editorial-page__footer-folio {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.gec-editorial-page__folio-num {
+  color: var(--gec-accent);
+  font-size: 11px;
+  font-weight: 800;
 }

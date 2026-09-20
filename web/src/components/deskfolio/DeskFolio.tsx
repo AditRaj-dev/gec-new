@@ -38,6 +38,10 @@ export type DeskFolioProps = {
   label?: string
   /* virtualize distant sheets to reduce DOM footprint and React work */
   virtualizePages?: boolean
+  /* automatically open the front cover */
+  autoOpen?: boolean
+  /* fires when book has settled closed */
+  onClose?: () => void
 }
 
 // springs
@@ -91,6 +95,8 @@ export function DeskFolio({
   interactive = true,
   label = 'A little book — drag a corner, tap a side, or use the arrow keys to turn the pages',
   virtualizePages = false,
+  autoOpen = false,
+  onClose,
 }: DeskFolioProps) {
   const reduce = useReducedMotion()
   const sheets = useMemo(() => buildSheets(cover, pages, backCover), [cover, pages, backCover])
@@ -153,6 +159,27 @@ export function DeskFolio({
   const handlePeek = useCallback((index: number, on: boolean) => {
     setPeekIndex((cur) => (on ? index : cur === index ? null : cur))
   }, [])
+
+  const autoOpenTriggeredRef = useRef(false)
+  useEffect(() => {
+    if (!autoOpen || autoOpenTriggeredRef.current || turned !== 0) return
+    const timer = window.setTimeout(() => {
+      autoOpenTriggeredRef.current = true
+      setTurning(0)
+      setTurned(1)
+    }, 120)
+    return () => window.clearTimeout(timer)
+  }, [autoOpen, turned])
+
+  const wasOpenedRef = useRef(false)
+  useEffect(() => {
+    if (turned > 0) {
+      wasOpenedRef.current = true
+    } else if (turned === 0 && turning === null && wasOpenedRef.current) {
+      wasOpenedRef.current = false
+      onClose?.()
+    }
+  }, [turned, turning, onClose])
 
   useEffect(() => {
     if (!locked) onTurn?.(turned)

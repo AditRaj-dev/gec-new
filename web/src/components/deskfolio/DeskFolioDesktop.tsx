@@ -13,7 +13,16 @@ import React, {
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { DeskFolio } from './DeskFolio'
 import { DialSlider } from './DialSlider'
-import { GEC_BOOKS, GEC_MAT_THEMES, MatCompanionBooks } from './gecBooksData'
+import {
+  GEC_BOOKS,
+  GEC_MAT_THEMES,
+  BookCoverArtwork,
+  DESK_BOOK_COORDINATES,
+  MINI_BOOK_SIZE,
+  CENTER_BOOK_COORDINATES,
+} from './gecBooksData'
+import { MatPrintedLogo } from './MatPrintedLogo'
+import { haptic } from './haptics'
 import './deskfolio.css'
 import './deskfolio-page.css'
 
@@ -57,6 +66,7 @@ export interface StickerTheme {
 export interface StickerItem {
   src: string
   width: string
+  height?: string
   rotate: number
   pos: { top?: string; bottom?: string; left?: string; right?: string }
   lamp?: boolean
@@ -107,21 +117,22 @@ const STICKER_SETS: StickerSet[] = [
     name: 'Workspace',
     thumb: '/stickers/sticker-desk.svg',
     items: [
-      { src: ITM + 'sticker-desk-9.svg', width: 'clamp(72px, 17.2vw, 246px)', rotate: -8, pos: { top: '7%', right: '4.3%' }, lamp: true },
-      { src: KEYBOARD_BASE_SRC, width: 'clamp(139px, 33vw, 560px)', rotate: 27, pos: { top: '-4.5vw', left: '-7vw' }, themes: KEYBOARD_THEMES },
-      { src: ITM + 'sticker-stationery-3.svg', width: 'clamp(48px, 10.4vw, 155px)', rotate: -6, pos: { top: '40.5%', left: '16%' } },
-      { src: ITM + 'sticker-desk-0.svg', width: 'clamp(47px, 11.2vw, 158px)', rotate: 36, pos: { top: '54%', left: '7%' } },
-      { src: ITM + 'sticker-cutie-bear.svg', width: 'clamp(62px, 9.6vw, 166px)', rotate: -4, pos: { top: '62%', right: '18.3%' }, stuck: true },
-      { src: ITM + 'sticker-journal-3.svg', width: 'clamp(76px, 11.8vw, 215px)', rotate: -8, pos: { bottom: '16%', left: '21.5%' } },
-      { src: ITM + 'sticker-plant-succulent.svg', width: 'clamp(64px, 12vw, 185px)', rotate: 3, pos: { bottom: '5.2%', right: '6.8%' } },
+      { src: ITM + 'sticker-desk-9.svg', width: '216px', height: '216px', rotate: -8, pos: { left: '1128px', top: '50px' }, lamp: true },
+      { src: KEYBOARD_BASE_SRC, width: '330px', height: '112px', rotate: 24, pos: { left: '-35px', top: '-50px' }, themes: KEYBOARD_THEMES },
+      { src: ITM + 'sticker-stationery-3.svg', width: '120px', height: '126px', rotate: -6, pos: { left: '239px', top: '270px' } },
+      { src: ITM + 'sticker-desk-0.svg', width: '148px', height: '60px', rotate: 58, pos: { left: '98px', top: '367px' } },
+      { src: ITM + 'sticker-cutie-gameboy.svg', width: '196px', height: '150px', rotate: -10, pos: { left: '37px', top: '507px' } },
+      { src: ITM + 'sticker-desk-7.svg', width: '70px', height: '120px', rotate: -8, pos: { left: '1246px', top: '302px' } },
+      { src: ITM + 'sticker-cutie-bear.svg', width: '116px', height: '116px', rotate: -4, pos: { left: '1060px', top: '453px' }, stuck: true },
+      { src: ITM + 'sticker-journal-3.svg', width: '168px', height: '76px', rotate: -8, pos: { left: '335px', top: '441px' } },
+      { src: ITM + 'sticker-plant-succulent.svg', width: '150px', height: '150px', rotate: 3, pos: { left: '1166px', top: '541px' } },
     ],
   },
 ]
 
 const LAMP_ITEM = STICKER_SETS[0].items.find((it) => it.lamp)
-const LAMP_DEFAULT_SCALE = 1.15
+const LAMP_DEFAULT_SCALE = 1
 const LAMP_DEFAULT_ROTATE = 10
-const STAGE_SPRING = { type: 'spring', bounce: 0.22, duration: 0.55 } as const
 const LONG_PRESS_MS = 420
 const LONG_PRESS_SLOP = 8
 
@@ -134,6 +145,8 @@ function clamp(n: number, min: number, max: number) {
 }
 
 function scaleCssClamp(value: string, scale: number) {
+  const pixelValue = value.match(/^([\d.]+)px$/)
+  if (pixelValue) return `${(parseFloat(pixelValue[1]) * scale).toFixed(1)}px`
   const match = value.match(/^clamp\(([\d.]+)px,\s*([\d.]+)vw,\s*([\d.]+)px\)$/)
   if (!match) return value
   const min = (parseFloat(match[1]) * scale).toFixed(1)
@@ -778,7 +791,9 @@ function DraggableMatSticker({
         style={
           {
             ...item.pos,
-            '--df-ipod-scale': 0.58 * scale,
+            width: item.width,
+            height: item.height,
+            '--df-ipod-scale': 0.49 * scale,
             '--df-ipod-rotate': `${-14 + rot}deg`,
           } as React.CSSProperties
         }
@@ -824,7 +839,7 @@ function DraggableMatSticker({
       editable
       kind="sticker"
       className={stuck ? 'df-sticker-dragger df-sticker-dragger--stuck' : 'df-sticker-dragger'}
-      style={{ width: isDevSticker(src) ? DEV_STICKER_WIDTH : item.width, ...item.pos }}
+      style={{ width: isDevSticker(src) ? DEV_STICKER_WIDTH : item.width, height: item.height, ...item.pos }}
       themes={item.src === KEYBOARD_BASE_SRC ? KEYBOARD_THEMES : undefined}
       onDraggingChange={onDraggingChange}
     >
@@ -862,7 +877,7 @@ function DeskLamp({
     <motion.button
       type="button"
       className={on ? (warmup ? 'df-lamp is-on df-lamp--warmup' : 'df-lamp is-on') : 'df-lamp'}
-      style={placed ? { width: '100%' } : { width: item.width, ...item.pos }}
+      style={placed ? { width: '100%', height: '100%' } : { width: item.width, height: item.height, ...item.pos }}
       role="switch"
       aria-checked={on}
       aria-label="Desk lamp light"
@@ -1024,13 +1039,13 @@ export function DeskFolioDesktop() {
     return () => timers.forEach((t) => window.clearTimeout(t))
   }, [reduce])
 
-  const STAGE_BASE_W = 1260
-  const STAGE_BASE_H = 780
-  const PAGE_W = 380
-  const PAGE_H = 509
+  const STAGE_BASE_W = 1400
+  const STAGE_BASE_H = 720
+  const PAGE_W = 350
+  const PAGE_H = 483
 
   const stageScale = useMemo(() => {
-    const pad = viewport.w < 768 ? 16 : 36
+    const pad = viewport.w < 768 ? 0 : 16
     const availableW = viewport.w - pad
     return Math.min(1, Math.max(0.24, Math.round((availableW / STAGE_BASE_W) * 1000) / 1000))
   }, [viewport.w])
@@ -1046,8 +1061,47 @@ export function DeskFolioDesktop() {
     }
   }, [])
 
-  const [activeBookId, setActiveBookId] = useState('incubation')
-  const activeBook = GEC_BOOKS.find((b) => b.id === activeBookId) ?? GEC_BOOKS[0]
+  const [activeBookId, setActiveBookId] = useState<string | null>(null)
+  const [readingState, setReadingState] = useState<'idle' | 'flying-in' | 'open' | 'flying-out'>('idle')
+  const originButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+  const activeBook = useMemo(
+    () => (activeBookId ? GEC_BOOKS.find((b) => b.id === activeBookId) ?? null : null),
+    [activeBookId],
+  )
+
+  const handleSelectBook = (bookId: string) => {
+    if (readingState !== 'idle') return
+    haptic('selection')
+    setActiveBookId(bookId)
+    if (reduce) {
+      setReadingState('open')
+    } else {
+      setReadingState('flying-in')
+    }
+  }
+
+  const handleCloseBook = () => {
+    if (reduce) {
+      const returnId = activeBookId
+      setReadingState('idle')
+      setActiveBookId(null)
+      if (returnId) {
+        originButtonRefs.current[returnId]?.focus()
+      }
+    } else {
+      setReadingState('flying-out')
+    }
+  }
+
+  const handleFlightOutComplete = () => {
+    const returnId = activeBookId
+    setReadingState('idle')
+    setActiveBookId(null)
+    if (returnId) {
+      originButtonRefs.current[returnId]?.focus()
+    }
+  }
+
   const [lampOn, setLampOn] = useState(false)
   const [matOverrides, setMatOverrides] = useState<Record<string, MatOverride>>({
     'desk-lamp': { scale: LAMP_DEFAULT_SCALE, rotate: LAMP_DEFAULT_ROTATE },
@@ -1083,9 +1137,6 @@ export function DeskFolioDesktop() {
   }, [activeMatKey])
 
   const lampOverride = matOverrides['desk-lamp']
-  const cover = activeBook.cover
-  const backCover = activeBook.backCover
-  const pages = activeBook.pages
 
   return (
     <>
@@ -1093,14 +1144,15 @@ export function DeskFolioDesktop() {
         <div
           className="df-stage-scale-wrapper"
           style={{
-            width: '100%',
+            width: '100vw',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'flex-start',
             overflow: 'hidden',
             minHeight: `${Math.round(STAGE_BASE_H * stageScale)}px`,
             height: `${Math.round(STAGE_BASE_H * stageScale)}px`,
-            margin: '0 auto',
+            margin: '0 0 0 50%',
+            transform: 'translateX(-50%)',
             position: 'relative',
           }}
         >
@@ -1136,34 +1188,114 @@ export function DeskFolioDesktop() {
                   />
                 )}
                 {!matDown && <MatRollIntro />}
+                {intro >= 2 && <MatPrintedLogo />}
                 {intro >= 2 && <MatStickers setId="workspace" />}
 
-                {/* Resting GEC companion books */}
-                {intro >= 2 && (
-                  <MatCompanionBooks activeBookId={activeBookId} onSelect={setActiveBookId} />
+                {intro >= 2 &&
+                  GEC_BOOKS.map((book) => {
+                    const coord = DESK_BOOK_COORDINATES[book.id]
+                    if (!coord) return null
+                    const isCurrentTraveling = activeBookId === book.id && readingState !== 'idle'
+                    return (
+                      <button
+                        key={book.id}
+                        ref={(el) => {
+                          originButtonRefs.current[book.id] = el
+                        }}
+                        type="button"
+                        className={`df-mini-desk-book df-mini-desk-book--${book.id} ${isCurrentTraveling ? 'is-hidden' : ''}`}
+                        style={{
+                          left: `${coord.x}px`,
+                          top: `${coord.y}px`,
+                          transform: `rotate(${coord.rotate}deg)`,
+                        }}
+                        title={`Open ${book.title}`}
+                        aria-label={`Open ${book.title}`}
+                        aria-disabled={readingState !== 'idle'}
+                        disabled={readingState !== 'idle'}
+                        onClick={() => handleSelectBook(book.id)}
+                      >
+                        <BookCoverArtwork id={book.id} size="mini" />
+                      </button>
+                    )
+                  })}
+
+                {activeBookId && (readingState === 'flying-in' || readingState === 'flying-out') && (
+                  <motion.div
+                    key={`flight-${activeBookId}-${readingState}`}
+                    className="df-book-flight"
+                    initial={
+                      readingState === 'flying-in'
+                        ? {
+                            left: DESK_BOOK_COORDINATES[activeBookId].x,
+                            top: DESK_BOOK_COORDINATES[activeBookId].y,
+                            width: MINI_BOOK_SIZE.width,
+                            height: MINI_BOOK_SIZE.height,
+                            rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
+                          }
+                        : {
+                            left: CENTER_BOOK_COORDINATES.x,
+                            top: CENTER_BOOK_COORDINATES.y,
+                            width: CENTER_BOOK_COORDINATES.width,
+                            height: CENTER_BOOK_COORDINATES.height,
+                            rotate: 0,
+                          }
+                    }
+                    animate={
+                      readingState === 'flying-in'
+                        ? {
+                            left: CENTER_BOOK_COORDINATES.x,
+                            top: CENTER_BOOK_COORDINATES.y,
+                            width: CENTER_BOOK_COORDINATES.width,
+                            height: CENTER_BOOK_COORDINATES.height,
+                            rotate: 0,
+                          }
+                        : {
+                            left: DESK_BOOK_COORDINATES[activeBookId].x,
+                            top: DESK_BOOK_COORDINATES[activeBookId].y,
+                            width: MINI_BOOK_SIZE.width,
+                            height: MINI_BOOK_SIZE.height,
+                            rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
+                          }
+                    }
+                    transition={
+                      reduce
+                        ? { duration: 0 }
+                        : {
+                            type: 'spring',
+                            bounce: 0.18,
+                            duration: readingState === 'flying-in' ? 0.52 : 0.48,
+                          }
+                    }
+                    onAnimationComplete={() => {
+                      if (readingState === 'flying-in') {
+                        setReadingState('open')
+                      } else if (readingState === 'flying-out') {
+                        handleFlightOutComplete()
+                      }
+                    }}
+                  >
+                    <BookCoverArtwork id={activeBookId} size="full" />
+                  </motion.div>
                 )}
 
-                <motion.div
-                  className="df-book-bloom"
-                  initial={false}
-                  animate={
-                    reduce
-                      ? { opacity: 1, y: 0, scale: 1 }
-                      : { opacity: intro >= 1 ? 1 : 0, y: intro >= 1 ? 0 : 12, scale: intro >= 1 ? 1 : 0.94 }
-                  }
-                  transition={reduce ? { duration: 0 } : STAGE_SPRING}
-                >
-                  <DeskFolio
-                    cover={cover}
-                    pages={pages}
-                    backCover={backCover}
-                    closeOnEnd={true}
-                    pageWidth={PAGE_W}
-                    pageHeight={PAGE_H}
-                    style={coverVars(activeBook.coverTheme)}
-                    virtualizePages={true}
-                  />
-                </motion.div>
+                {readingState === 'open' && activeBook && (
+                  <div className="df-book-bloom">
+                    <DeskFolio
+                      key={activeBook.id}
+                      cover={activeBook.cover}
+                      pages={activeBook.pages}
+                      backCover={activeBook.backCover}
+                      closeOnEnd={true}
+                      autoOpen={true}
+                      onClose={handleCloseBook}
+                      pageWidth={PAGE_W}
+                      pageHeight={PAGE_H}
+                      style={coverVars(activeBook.coverTheme)}
+                      virtualizePages={true}
+                    />
+                  </div>
+                )}
 
                 <AnimatePresence>
                   {LAMP_ITEM && !lampOverride?.deleted && (
@@ -1174,7 +1306,11 @@ export function DeskFolioDesktop() {
                       kind="object"
                       className="df-sticker-dragger df-lamp-dragger"
                       title="Hold to edit lamp"
-                      style={{ width: scaleCssClamp(LAMP_ITEM.width, lampOverride?.scale ?? 1), ...LAMP_ITEM.pos }}
+                      style={{
+                        width: scaleCssClamp(LAMP_ITEM.width, lampOverride?.scale ?? 1),
+                        height: LAMP_ITEM.height ? scaleCssClamp(LAMP_ITEM.height, lampOverride?.scale ?? 1) : undefined,
+                        ...LAMP_ITEM.pos,
+                      }}
                     >
                       <DeskLamp
                         item={{ ...LAMP_ITEM, rotate: LAMP_ITEM.rotate + (lampOverride?.rotate ?? 0) }}

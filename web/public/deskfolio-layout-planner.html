@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deskfolio layout planner</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f4f1;
+      color: #1d1d1f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100dvh;
+      margin: 0;
+      background: #f5f4f1;
+    }
+
+    button,
+    input,
+    textarea { font: inherit; }
+
+    button { cursor: pointer; }
+
+    .app {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      min-height: 100dvh;
+    }
+
+    .workspace {
+      min-width: 0;
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      line-height: 1;
+      text-wrap: balance;
+    }
+
+    .lede {
+      max-width: 62ch;
+      margin: 8px 0 0;
+      color: #625e59;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    .badge {
+      flex: none;
+      padding: 6px 9px;
+      border: 1px solid #cbc7c1;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #625e59;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stage-shell {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid #660108;
+      background: #8b020b;
+      box-shadow: 0 16px 32px rgba(22, 18, 15, 0.16);
+    }
+
+    .stage {
+      position: relative;
+      width: 1400px;
+      height: 720px;
+      overflow: hidden;
+      transform-origin: top left;
+      background-color: #8b020b;
+    }
+
+    .stage::before,
+    .stage::after {
+      position: absolute;
+      z-index: 0;
+      content: "";
+      pointer-events: none;
+    }
+
+    .stage::before {
+      inset: 16px;
+      border: 1px solid rgba(251, 202, 5, 0.45);
+    }
+
+    .stage::after {
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      border-top: 1px solid rgba(251, 202, 5, 0.55);
+      border-left: 1px solid rgba(251, 202, 5, 0.55);
+      transform: translate(-50%, -50%);
+    }
+
+    .piece {
+      position: absolute;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      background: transparent;
+      color: #ffffff;
+      touch-action: none;
+      user-select: none;
+      transform-origin: center;
+    }
+
+    .piece:focus-visible,
+    .piece.is-selected {
+      border-color: #ffffff;
+      outline: 3px solid #fbca05;
+      outline-offset: 3px;
+    }
+
+    .piece.is-colliding {
+      border-color: #ffb4ab;
+      outline: 3px solid #b42318;
+      outline-offset: 2px;
+    }
+
+    .piece img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .piece-label {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 50%;
+      z-index: 4;
+      min-width: max-content;
+      padding: 3px 6px;
+      border-radius: 3px;
+      background: #1d1d1f;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .resize-handle {
+      position: absolute;
+      right: -7px;
+      bottom: -7px;
+      z-index: 5;
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      background: #fbca05;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+      cursor: nwse-resize;
+    }
+
+    .piece.is-selected .resize-handle { display: block; }
+
+    .book-slot {
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 4px 9px 9px 4px;
+      background: var(--book-color, #1d1d1f);
+      box-shadow: 0 8px 18px rgba(30, 0, 3, 0.28);
+    }
+
+    .book-slot::before {
+      flex: none;
+      width: 14px;
+      background: rgba(0, 0, 0, 0.28);
+      content: "";
+    }
+
+    .book-slot-copy {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+      padding: 12px 10px;
+      text-align: left;
+    }
+
+    .book-slot-copy small {
+      color: #fbca05;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 8px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .book-slot-copy strong {
+      color: #ffffff;
+      font-size: 13px;
+      line-height: 1.08;
+      text-wrap: balance;
+    }
+
+    .main-book {
+      position: absolute;
+      z-index: 3;
+      left: 525px;
+      top: 119px;
+      display: flex;
+      width: 350px;
+      height: 483px;
+      overflow: hidden;
+      border: 1px solid rgba(34, 34, 34, 0.25);
+      border-radius: 8px 16px 16px 8px;
+      background: #8b020b;
+      color: #fffaf0;
+      box-shadow: 0 30px 42px rgba(30, 0, 3, 0.36);
+      pointer-events: none;
+    }
+
+    .main-book::before {
+      position: absolute;
+      z-index: 4;
+      top: 0;
+      bottom: 0;
+      right: 34px;
+      width: 22px;
+      background: rgba(34, 0, 4, 0.28);
+      content: "";
+    }
+
+    .cover-preview {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      text-align: left;
+    }
+
+    .cover-preview h2 {
+      max-width: 10ch;
+      margin: auto 0 10px;
+      font-size: 34px;
+      line-height: 0.98;
+      text-wrap: balance;
+    }
+
+    .cover-preview p {
+      max-width: 30ch;
+      margin: 0 auto auto 0;
+      color: rgba(255, 250, 240, 0.72);
+      font-size: 11px;
+      line-height: 1.45;
+      text-wrap: pretty;
+    }
+
+    .page-preview {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      border-left: 3px solid #a3040f;
+    }
+
+    .page-preview:first-child { border-left: 0; }
+
+    .page-running,
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(34, 34, 34, 0.16);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      font-variant-numeric: tabular-nums;
+      text-transform: uppercase;
+    }
+
+    .page-footer {
+      padding-top: 8px;
+      padding-bottom: 0;
+      border-top: 1px solid rgba(34, 34, 34, 0.16);
+      border-bottom: 0;
+      color: #6b645e;
+    }
+
+    .page-copy span {
+      color: #a3040f;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .page-copy h2 {
+      max-width: 12ch;
+      margin: 8px 0;
+      font-size: 30px;
+      line-height: 1.02;
+      text-wrap: balance;
+    }
+
+    .page-copy p {
+      max-width: 36ch;
+      margin: 0;
+      color: #5c5650;
+      font-size: 12px;
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    .centre-lock {
+      position: absolute;
+      z-index: 6;
+      top: -31px;
+      left: 50%;
+      padding: 5px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 3px;
+      background: #1d1d1f;
+      color: #ffffff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+      transform: translateX(-50%);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      height: 100dvh;
+      overflow: auto;
+      padding: 24px;
+      border-left: 1px solid #d8d5d0;
+      background: #ffffff;
+    }
+
+    .sidebar h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.2;
+      text-wrap: balance;
+    }
+
+    .sidebar-copy {
+      margin: 7px 0 18px;
+      color: #69635e;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      text-wrap: pretty;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      display: grid;
+      gap: 5px;
+      color: #4d4945;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid #cbc7c1;
+      border-radius: 5px;
+      background: #ffffff;
+      color: #1d1d1f;
+    }
+
+    input {
+      height: 36px;
+      padding: 0 9px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    textarea {
+      min-height: 164px;
+      padding: 10px;
+      resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      line-height: 1.45;
+      tab-size: 2;
+    }
+
+    input:focus-visible,
+    textarea:focus-visible,
+    button:focus-visible {
+      outline: 3px solid rgba(163, 4, 15, 0.24);
+      outline-offset: 2px;
+    }
+
+    .actions {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .button {
+      min-height: 40px;
+      padding: 9px 12px;
+      border: 1px solid #cbc7c1;
+      border-radius: 5px;
+      background: #ffffff;
+      color: #1d1d1f;
+      font-weight: 750;
+      text-align: center;
+    }
+
+    .button-primary {
+      border-color: #a3040f;
+      background: #a3040f;
+      color: #ffffff;
+    }
+
+    .button:hover { background: #f3f1ed; }
+    .button-primary:hover { background: #85020a; }
+
+    .status {
+      min-height: 38px;
+      margin: 14px 0 0;
+      padding: 9px 10px;
+      border-left: 3px solid #a3040f;
+      background: #f7eeee;
+      color: #5b2529;
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .status.is-clear {
+      border-left-color: #39724e;
+      background: #eef5f0;
+      color: #28543a;
+    }
+
+    .hint {
+      margin: 12px 0 0;
+      color: #77716b;
+      font-size: 0.75rem;
+      line-height: 1.45;
+      text-wrap: pretty;
+    }
+
+    @media (max-width: 980px) {
+      .app { grid-template-columns: 1fr; }
+      .workspace { padding: 16px; }
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-top: 1px solid #d8d5d0;
+        border-left: 0;
+      }
+      .header { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="workspace" aria-labelledby="planner-title">
+      <header class="header">
+        <div>
+          <h1 id="planner-title">Deskfolio layout planner</h1>
+          <p class="lede">Drag the desk objects into place. Resize with the yellow corner handle or the inspector. The main flip-book is locked at the exact centre.</p>
+        </div>
+        <span class="badge">1400 × 720 BASE</span>
+      </header>
+
+      <div class="stage-shell" id="stage-shell">
+        <div class="stage" id="stage" aria-label="Deskfolio 1400 by 720 arrangement canvas">
+          <div class="main-book" id="main-book" aria-label="Main flip-book locked at the centre">
+            <span class="centre-lock">CENTRED &middot; CLOSED &middot; 350 &times; 483</span>
+            <article class="cover-preview">
+              <div class="page-running"><span>GEC ARCHIVES</span><span>2026</span></div>
+              <h2>Venture Incubation Dossier</h2>
+              <p>The closed book is centred like the supplied reference. Collision checks still protect the full open spread.</p>
+              <div class="page-footer"><span>GEC / 01</span><span>OPEN &rarr;</span></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="sidebar" aria-labelledby="inspector-title">
+      <h2 id="inspector-title">Selected item</h2>
+      <p class="sidebar-copy" id="selection-copy">Select any movable object on the canvas.</p>
+
+      <div class="field-grid">
+        <label>X position <input id="field-x" type="number" min="0" max="1400" step="1" disabled /></label>
+        <label>Y position <input id="field-y" type="number" min="0" max="720" step="1" disabled /></label>
+        <label>Width <input id="field-w" type="number" min="32" max="600" step="1" disabled /></label>
+        <label>Height <input id="field-h" type="number" min="32" max="600" step="1" disabled /></label>
+        <label>Rotation <input id="field-r" type="number" min="-180" max="180" step="1" disabled /></label>
+      </div>
+
+      <div class="actions">
+        <button class="button button-primary" id="copy-layout" type="button">Copy layout for Codex</button>
+        <button class="button" id="download-layout" type="button">Download layout JSON</button>
+        <button class="button" id="save-layout" type="button">Save in this browser</button>
+        <button class="button" id="reset-layout" type="button">Reset default arrangement</button>
+      </div>
+
+      <p class="status" id="status" role="status" aria-live="polite">Checking arrangement…</p>
+
+      <label style="margin-top: 16px;">Handoff data
+        <textarea id="handoff" readonly spellcheck="false"></textarea>
+      </label>
+
+      <p class="hint">The four companion volumes stay behind the bottom-right plus selector in the live component, matching the clean closed-book reference.</p>
+      <p class="hint">Keyboard: Tab to an item, use arrow keys to move it by 2px, or Shift + arrow for 10px.</p>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const STAGE_WIDTH = 1400;
+      const STAGE_HEIGHT = 720;
+      const STORAGE_KEY = 'deskfolio-layout-planner-v1';
+      const stage = document.getElementById('stage');
+      const shell = document.getElementById('stage-shell');
+      const status = document.getElementById('status');
+      const handoff = document.getElementById('handoff');
+      const selectionCopy = document.getElementById('selection-copy');
+      const fields = {
+        x: document.getElementById('field-x'),
+        y: document.getElementById('field-y'),
+        w: document.getElementById('field-w'),
+        h: document.getElementById('field-h'),
+        r: document.getElementById('field-r'),
+      };
+
+      const defaults = [
+        { id: 'desk-lamp', label: 'Desk lamp', kind: 'image', src: './stickers/items/sticker-desk-9.svg', x: 1128, y: 50, w: 216, h: 216, r: 2 },
+        { id: 'keyboard', label: 'Keyboard', kind: 'image', src: './stickers/items/sticker-keyboard.svg', x: -35, y: -50, w: 330, h: 112, r: 24 },
+        { id: 'stationery', label: 'Coffee cup', kind: 'image', src: './stickers/items/sticker-stationery-3.svg', x: 239, y: 270, w: 120, h: 126, r: -6 },
+        { id: 'desk-object', label: 'Pencil', kind: 'image', src: './stickers/items/sticker-desk-0.svg', x: 98, y: 367, w: 148, h: 60, r: 58 },
+        { id: 'handheld', label: 'Handheld', kind: 'image', src: './stickers/items/sticker-cutie-gameboy.svg', x: 37, y: 507, w: 196, h: 150, r: -10 },
+        { id: 'music-player', label: 'Music player', kind: 'image', src: './stickers/items/sticker-desk-7.svg', x: 1246, y: 302, w: 70, h: 120, r: -8 },
+        { id: 'bear', label: 'Bear sticker', kind: 'image', src: './stickers/items/sticker-cutie-bear.svg', x: 1060, y: 453, w: 116, h: 116, r: -4 },
+        { id: 'journal', label: 'Glasses', kind: 'image', src: './stickers/items/sticker-journal-3.svg', x: 335, y: 441, w: 168, h: 76, r: -8 },
+        { id: 'plant', label: 'Plant', kind: 'image', src: './stickers/items/sticker-plant-succulent.svg', x: 1166, y: 541, w: 150, h: 150, r: 3 },
+      ];
+
+      let items = defaults.map((item) => ({ ...item }));
+      let selectedId = null;
+      let scale = 1;
+      let gesture = null;
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function itemById(id) {
+        return items.find((item) => item.id === id);
+      }
+
+      function updateScale() {
+        scale = Math.min(1, shell.clientWidth / STAGE_WIDTH);
+        stage.style.transform = `scale(${scale})`;
+        shell.style.height = `${Math.round(STAGE_HEIGHT * scale)}px`;
+      }
+
+      function createPiece(item) {
+        const element = document.createElement('button');
+        element.type = 'button';
+        element.className = `piece ${item.kind === 'book' ? 'book-slot' : ''}`;
+        element.dataset.id = item.id;
+        element.setAttribute('aria-label', `${item.label}; drag to arrange, use arrow keys for precise movement`);
+
+        if (item.kind === 'book') {
+          element.style.setProperty('--book-color', item.color);
+          const copy = document.createElement('span');
+          copy.className = 'book-slot-copy';
+          const meta = document.createElement('small');
+          meta.textContent = item.meta;
+          const title = document.createElement('strong');
+          title.textContent = item.label.replace(' book', '');
+          if (item.dark) {
+            title.style.color = '#222222';
+            meta.style.color = '#8b020b';
+          }
+          copy.append(meta, title);
+          element.append(copy);
+        } else {
+          const image = document.createElement('img');
+          image.src = item.src;
+          image.alt = '';
+          image.draggable = false;
+          element.append(image);
+        }
+
+        const label = document.createElement('span');
+        label.className = 'piece-label';
+        label.textContent = item.label;
+        const handle = document.createElement('span');
+        handle.className = 'resize-handle';
+        handle.setAttribute('aria-hidden', 'true');
+        element.append(label, handle);
+
+        element.addEventListener('pointerdown', startGesture);
+        element.addEventListener('click', () => select(item.id));
+        element.addEventListener('keydown', onPieceKeydown);
+        stage.append(element);
+      }
+
+      function render() {
+        stage.querySelectorAll('.piece').forEach((element) => element.remove());
+        items.forEach(createPiece);
+        updatePieces();
+      }
+
+      function updatePieces() {
+        items.forEach((item) => {
+          const element = stage.querySelector(`[data-id="${item.id}"]`);
+          if (!element) return;
+          element.style.left = `${item.x}px`;
+          element.style.top = `${item.y}px`;
+          element.style.width = `${item.w}px`;
+          element.style.height = `${item.h}px`;
+          element.style.transform = `rotate(${item.r}deg)`;
+          element.classList.toggle('is-selected', item.id === selectedId);
+        });
+        updateInspector();
+        updateHandoff();
+        detectCollisions();
+      }
+
+      function select(id) {
+        selectedId = id;
+        updatePieces();
+      }
+
+      function updateInspector() {
+        const item = itemById(selectedId);
+        const disabled = !item;
+        Object.values(fields).forEach((field) => { field.disabled = disabled; });
+        selectionCopy.textContent = item ? `${item.label} · ${item.id}` : 'Select any movable object on the canvas.';
+        if (!item) return;
+        fields.x.value = Math.round(item.x);
+        fields.y.value = Math.round(item.y);
+        fields.w.value = Math.round(item.w);
+        fields.h.value = Math.round(item.h);
+        fields.r.value = Math.round(item.r);
+      }
+
+      function startGesture(event) {
+        const element = event.currentTarget;
+        const item = itemById(element.dataset.id);
+        if (!item) return;
+        event.preventDefault();
+        select(item.id);
+        const resizing = event.target.classList.contains('resize-handle');
+        gesture = {
+          id: item.id,
+          pointerId: event.pointerId,
+          mode: resizing ? 'resize' : 'move',
+          startClientX: event.clientX,
+          startClientY: event.clientY,
+          startX: item.x,
+          startY: item.y,
+          startW: item.w,
+          startH: item.h,
+        };
+        element.setPointerCapture(event.pointerId);
+        element.addEventListener('pointermove', moveGesture);
+        element.addEventListener('pointerup', endGesture, { once: true });
+        element.addEventListener('pointercancel', endGesture, { once: true });
+      }
+
+      function moveGesture(event) {
+        if (!gesture || event.pointerId !== gesture.pointerId) return;
+        const item = itemById(gesture.id);
+        if (!item) return;
+        const dx = (event.clientX - gesture.startClientX) / scale;
+        const dy = (event.clientY - gesture.startClientY) / scale;
+        if (gesture.mode === 'move') {
+          item.x = clamp(Math.round(gesture.startX + dx), 0, STAGE_WIDTH - item.w);
+          item.y = clamp(Math.round(gesture.startY + dy), 0, STAGE_HEIGHT - item.h);
+        } else {
+          item.w = clamp(Math.round(gesture.startW + dx), 32, STAGE_WIDTH - item.x);
+          item.h = clamp(Math.round(gesture.startH + dy), 32, STAGE_HEIGHT - item.y);
+        }
+        updatePieces();
+      }
+
+      function endGesture(event) {
+        const element = event.currentTarget;
+        element.removeEventListener('pointermove', moveGesture);
+        gesture = null;
+      }
+
+      function onPieceKeydown(event) {
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+        event.preventDefault();
+        const item = itemById(event.currentTarget.dataset.id);
+        if (!item) return;
+        const step = event.shiftKey ? 10 : 2;
+        if (event.key === 'ArrowLeft') item.x = clamp(item.x - step, 0, STAGE_WIDTH - item.w);
+        if (event.key === 'ArrowRight') item.x = clamp(item.x + step, 0, STAGE_WIDTH - item.w);
+        if (event.key === 'ArrowUp') item.y = clamp(item.y - step, 0, STAGE_HEIGHT - item.h);
+        if (event.key === 'ArrowDown') item.y = clamp(item.y + step, 0, STAGE_HEIGHT - item.h);
+        select(item.id);
+      }
+
+      function bindField(key) {
+        fields[key].addEventListener('input', () => {
+          const item = itemById(selectedId);
+          if (!item) return;
+          const value = Number(fields[key].value);
+          if (!Number.isFinite(value)) return;
+          if (key === 'x') item.x = clamp(value, 0, STAGE_WIDTH - item.w);
+          if (key === 'y') item.y = clamp(value, 0, STAGE_HEIGHT - item.h);
+          if (key === 'w') item.w = clamp(value, 32, STAGE_WIDTH - item.x);
+          if (key === 'h') item.h = clamp(value, 32, STAGE_HEIGHT - item.y);
+          if (key === 'r') item.r = clamp(value, -180, 180);
+          updatePieces();
+        });
+      }
+
+      function overlaps(a, b, padding = 6) {
+        return a.x + padding < b.x + b.w &&
+          a.x + a.w - padding > b.x &&
+          a.y + padding < b.y + b.h &&
+          a.y + a.h - padding > b.y;
+      }
+
+      function detectCollisions() {
+        const mainBook = { id: 'main-flip-book', label: 'Main flip-book', x: 350, y: 119, w: 700, h: 483 };
+        const collisions = new Set();
+        const pairs = [];
+        items.forEach((item, index) => {
+          if (overlaps(item, mainBook, 8)) {
+            collisions.add(item.id);
+            pairs.push(`${item.label} ↔ main flip-book`);
+          }
+          items.slice(index + 1).forEach((other) => {
+            if (!overlaps(item, other, 8)) return;
+            collisions.add(item.id);
+            collisions.add(other.id);
+            pairs.push(`${item.label} ↔ ${other.label}`);
+          });
+        });
+
+        stage.querySelectorAll('.piece').forEach((element) => {
+          element.classList.toggle('is-colliding', collisions.has(element.dataset.id));
+        });
+
+        if (pairs.length) {
+          status.className = 'status';
+          status.textContent = `${pairs.length} overlap${pairs.length === 1 ? '' : 's'}: ${pairs.slice(0, 3).join('; ')}${pairs.length > 3 ? '…' : ''}`;
+        } else {
+          status.className = 'status is-clear';
+          status.textContent = 'Clear arrangement: no default items overlap.';
+        }
+      }
+
+      function exportData() {
+        return {
+          canvas: { width: STAGE_WIDTH, height: STAGE_HEIGHT },
+          mainBook: {
+            closed: { x: 525, y: 119, width: 350, height: 483 },
+            open: { x: 350, y: 119, width: 700, height: 483 },
+            locked: true,
+            centre: { x: 700, y: 360 },
+          },
+          items: items.map(({ id, label, x, y, w, h, r }) => ({
+            id,
+            label,
+            x: Math.round(x),
+            y: Math.round(y),
+            width: Math.round(w),
+            height: Math.round(h),
+            rotation: Math.round(r),
+          })),
+          note: 'Apply these values to the 1400×720 Deskfolio desktop base canvas. Keep main flip-book centred and preserve all existing book animations.',
+        };
+      }
+
+      function updateHandoff() {
+        handoff.value = JSON.stringify(exportData(), null, 2);
+      }
+
+      async function copyLayout() {
+        const text = handoff.value;
+        try {
+          await navigator.clipboard.writeText(text);
+          status.className = 'status is-clear';
+          status.textContent = 'Layout copied. Paste this JSON into your next Codex message.';
+        } catch {
+          handoff.focus();
+          handoff.select();
+          status.className = 'status';
+          status.textContent = 'Automatic copy was unavailable. The handoff data is selected—copy it manually.';
+        }
+      }
+
+      function downloadLayout() {
+        const blob = new Blob([handoff.value], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'deskfolio-layout.json';
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function saveLayout() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        status.className = 'status is-clear';
+        status.textContent = 'Arrangement saved in this browser.';
+      }
+
+      function resetLayout() {
+        if (!window.confirm('Reset every movable item to the supplied default arrangement?')) return;
+        items = defaults.map((item) => ({ ...item }));
+        selectedId = null;
+        localStorage.removeItem(STORAGE_KEY);
+        render();
+      }
+
+      function loadSavedLayout() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (!Array.isArray(saved)) return;
+          const savedById = new Map(saved.map((item) => [item.id, item]));
+          items = defaults.map((item) => ({ ...item, ...(savedById.get(item.id) || {}) }));
+        } catch {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
+
+      Object.keys(fields).forEach(bindField);
+      document.getElementById('copy-layout').addEventListener('click', copyLayout);
+      document.getElementById('download-layout').addEventListener('click', downloadLayout);
+      document.getElementById('save-layout').addEventListener('click', saveLayout);
+      document.getElementById('reset-layout').addEventListener('click', resetLayout);
+      new ResizeObserver(updateScale).observe(shell);
+      loadSavedLayout();
+      render();
+      updateScale();
+    })();
+  </script>
+</body>
+</html>

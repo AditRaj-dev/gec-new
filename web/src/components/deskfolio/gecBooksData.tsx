@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { haptic } from './haptics'
 
 export interface GecBook {
   id: string
@@ -10,7 +9,7 @@ export interface GecBook {
   subtitle: string
   themeColor: string
   badge: string
-  coverTheme: { base: string; accent: string; ink: 'light' | 'dark' }
+  coverTheme: { base: string; accent: string; foil: string; ink: 'light' | 'dark' }
   spineColor: string
   cover: React.ReactNode
   backCover?: React.ReactNode
@@ -73,7 +72,222 @@ export const GEC_MAT_THEMES = Object.assign(matList, {
 
 export const GEC_MAT_THEME_LIST = matList
 
-type Tone = 'incubation' | 'summit' | 'handbook' | 'founders'
+export type Tone = 'incubation' | 'summit' | 'handbook' | 'founders'
+
+export const DESK_BOOK_COORDINATES: Record<string, { x: number; y: number; rotate: number }> = {
+  incubation: { x: 82, y: 145, rotate: -5 },
+  summit: { x: 1085, y: 290, rotate: 4 },
+  handbook: { x: 242, y: 558, rotate: 3 },
+  founders: { x: 1060, y: 588, rotate: -4 },
+}
+
+export const MINI_BOOK_SIZE = { width: 92, height: 122 }
+export const CENTER_BOOK_COORDINATES = { x: 525, y: 118.5, width: 350, height: 483, rotate: 0 }
+
+export interface BookSpec {
+  id: string
+  tone: Tone
+  title: string
+  shortTitle: string
+  subtitle: string
+  series: string
+  edition: string
+  mark: string
+  badge: string
+  coverTheme: { base: string; accent: string; foil: string; ink: 'light' | 'dark' }
+  spineColor: string
+}
+
+export const BOOK_SPECS: Record<string, BookSpec> = {
+  incubation: {
+    id: 'incubation',
+    tone: 'incubation',
+    title: 'Venture Incubation Dossier',
+    shortTitle: 'Incubation',
+    subtitle: 'From dorm-room spark to institutional scale.',
+    series: 'GEC ARCHIVES // VENTURE SCALING',
+    edition: 'DOC NO. 2026-INC',
+    mark: 'GEC / 01 // COHORT 2026',
+    badge: 'COHORT 2026',
+    coverTheme: { base: '#80030B', accent: '#FBCA05', foil: '#FBCA05', ink: 'light' },
+    spineColor: '#6A0209',
+  },
+  summit: {
+    id: 'summit',
+    tone: 'summit',
+    title: "E-Summit '26 Conclave Blueprint",
+    shortTitle: 'E-Summit',
+    subtitle: 'People, arenas, and capital in productive collision.',
+    series: 'CONCLAVE MONOGRAPH // FLAGSHIP ARENA',
+    edition: 'EDITION 2026',
+    mark: 'GEC / 02 // ARENA BLUEPRINT',
+    badge: 'FLAGSHIP CONCLAVE',
+    coverTheme: { base: '#0F75BC', accent: '#FFFFFF', foil: 'rgba(255, 255, 255, 0.72)', ink: 'light' },
+    spineColor: '#0B5C94',
+  },
+  handbook: {
+    id: 'handbook',
+    tone: 'handbook',
+    title: "Innovator's Field Handbook",
+    shortTitle: 'Handbook',
+    subtitle: 'Validation loops & operating notes for zero-to-one builders.',
+    series: 'ZERO-TO-ONE FIELD MANUAL',
+    edition: 'VOL. IV — 2026',
+    mark: 'GEC / 03 // FIELD NOTES',
+    badge: 'FOUNDER PLAYBOOK',
+    coverTheme: { base: '#FCF8ED', accent: '#8B020B', foil: 'rgba(139, 2, 11, 0.42)', ink: 'dark' },
+    spineColor: '#8B020B',
+  },
+  founders: {
+    id: 'founders',
+    tone: 'founders',
+    title: 'Wall of Founders',
+    shortTitle: 'Founders',
+    subtitle: 'Alumni ventures, syndicates, and portfolio records.',
+    series: 'VENTURE ALUMNI ROLL // 2018–2026',
+    edition: 'LIBER FUNDATORUM',
+    mark: 'GEC / 04 // ALUMNI LEDGER',
+    badge: 'ALUMNI ROLL',
+    coverTheme: { base: '#18181B', accent: '#FBCA05', foil: 'rgba(251, 202, 5, 0.65)', ink: 'light' },
+    spineColor: '#101012',
+  },
+}
+
+function GecMark({ size = 54 }: { size?: number }) {
+  return (
+    <svg
+      className="gec-book-cover__mark"
+      viewBox="0 0 72 72"
+      width={size}
+      height={size}
+      aria-hidden="true"
+    >
+      <circle cx="36" cy="36" r="32" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="36" cy="36" r="25" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 3" />
+      <path d="M36 19 47 26v12c0 8-4.4 13.5-11 16-6.6-2.5-11-8-11-16V26l11-7Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="m36 27 2.2 5.7 5.8 2.2-5.8 2.1-2.2 5.8-2.2-5.8-5.8-2.1 5.8-2.2L36 27Z" fill="currentColor" />
+    </svg>
+  )
+}
+
+/**
+ * Unified Cover Artwork System shared across:
+ * - Miniature desk books (92×122px)
+ * - Flight traveling transition element
+ * - Full-size 3D book cover (350×483px)
+ */
+export function BookCoverArtwork({
+  id,
+  size = 'full',
+  className = '',
+}: {
+  id: string
+  size?: 'mini' | 'full'
+  className?: string
+}) {
+  const spec = BOOK_SPECS[id] ?? BOOK_SPECS.incubation
+  const isMini = size === 'mini'
+
+  if (isMini) {
+    return (
+      <article
+        className={`gec-book-cover gec-book-cover--mini gec-book-cover--${spec.tone} ${className}`.trim()}
+        style={
+          {
+            backgroundColor: spec.coverTheme.base,
+            color: spec.coverTheme.ink === 'light' ? '#FCF8ED' : '#222222',
+            '--cover-foil': spec.coverTheme.foil,
+          } as React.CSSProperties
+        }
+      >
+        <div className="df-cover-foil-border df-cover-foil-border--mini" aria-hidden="true" />
+        <header className="gec-book-cover__mini-header">
+          <span className="gec-book-cover__mini-mark">{spec.badge}</span>
+        </header>
+
+        <div className="gec-book-cover__mini-center">
+          <GecMark size={24} />
+          <h4 className="gec-book-cover__mini-title">{spec.shortTitle}</h4>
+        </div>
+
+        <footer className="gec-book-cover__mini-footer">
+          <span>GEC / 26</span>
+          <span className="gec-book-cover__mini-arrow">→</span>
+        </footer>
+      </article>
+    )
+  }
+
+  return (
+    <article
+      className={`gec-book-cover gec-book-cover--full gec-book-cover--${spec.tone} ${className}`.trim()}
+      style={
+        {
+          backgroundColor: spec.coverTheme.base,
+          color: spec.coverTheme.ink === 'light' ? '#FCF8ED' : '#222222',
+          '--cover-foil': spec.coverTheme.foil,
+        } as React.CSSProperties
+      }
+    >
+      <div className="df-cover-foil-border" aria-hidden="true" />
+      <header className="gec-book-cover__running">
+        <span>{spec.series}</span>
+        <span>{spec.edition}</span>
+      </header>
+
+      <div className="gec-book-cover__title-block">
+        <GecMark size={54} />
+        <span className="gec-book-cover__mark-label">{spec.mark}</span>
+        <h2>{spec.title}</h2>
+        <p>{spec.subtitle}</p>
+      </div>
+
+      <footer className="gec-book-cover__footer">
+        <span>Galgotias Entrepreneurship Cell</span>
+        <span>Open Volume →</span>
+      </footer>
+    </article>
+  )
+}
+
+export function BookBackCoverArtwork({
+  id,
+  epigraph,
+  line,
+}: {
+  id: string
+  epigraph: string
+  line: string
+}) {
+  const spec = BOOK_SPECS[id] ?? BOOK_SPECS.incubation
+  return (
+    <article
+      className={`gec-book-cover gec-book-cover--full gec-book-cover--${spec.tone} gec-book-cover--back`}
+      style={
+        {
+          backgroundColor: spec.coverTheme.base,
+          color: spec.coverTheme.ink === 'light' ? '#FCF8ED' : '#222222',
+          '--cover-foil': spec.coverTheme.foil,
+        } as React.CSSProperties
+      }
+    >
+      <div className="df-cover-foil-border" aria-hidden="true" />
+      <header className="gec-book-cover__running">
+        <span>GEC ARCHIVES</span>
+        <span>2026 REVISED</span>
+      </header>
+      <div className="gec-book-cover__title-block">
+        <GecMark size={54} />
+        <h2>{epigraph}</h2>
+        <p>{line}</p>
+      </div>
+      <footer className="gec-book-cover__footer">
+        <span>Galgotias University // Greater Noida</span>
+        <span>GEC / 26</span>
+      </footer>
+    </article>
+  )
+}
 
 type PageItem = {
   label?: string
@@ -104,153 +318,10 @@ type PageData = {
   action?: { label: string; value: string; tag?: string }
 }
 
-type CoverSpec = {
-  tone: Tone
-  series: string
-  edition: string
-  title: string
-  subtitle: string
-  mark: string
-}
-
-function GecMark() {
-  return (
-    <svg className="gec-book-cover__mark" viewBox="0 0 72 72" aria-hidden="true">
-      <circle cx="36" cy="36" r="32" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="36" cy="36" r="25" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 3" />
-      <path d="M36 19 47 26v12c0 8-4.4 13.5-11 16-6.6-2.5-11-8-11-16V26l11-7Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="m36 27 2.2 5.7 5.8 2.2-5.8 2.1-2.2 5.8-2.2-5.8-5.8-2.1 5.8-2.2L36 27Z" fill="currentColor" />
-    </svg>
-  )
-}
-
-function IncubationCover() {
-  return (
-    <article className="gec-book-cover gec-book-cover--incubation">
-      <div className="df-cover-foil-border" aria-hidden="true" />
-      <header className="gec-book-cover__running">
-        <span>GEC ARCHIVES // VENTURE SCALING</span>
-        <span>DOC NO. 2026-INC</span>
-      </header>
-      <div className="gec-book-cover__title-block">
-        <GecMark />
-        <span className="gec-book-cover__mark-label">GEC / 01 // COHORT 2026</span>
-        <h2>Venture Incubation Dossier</h2>
-        <p>From dorm-room spark to institutional scale. A working ledger for student founders.</p>
-      </div>
-      <footer className="gec-book-cover__footer">
-        <span>Galgotias Entrepreneurship Cell</span>
-        <span>Open Volume →</span>
-      </footer>
-    </article>
-  )
-}
-
-function SummitCover() {
-  return (
-    <article className="gec-book-cover gec-book-cover--summit">
-      <div className="df-cover-foil-border df-foil-silver" aria-hidden="true" />
-      <header className="gec-book-cover__running">
-        <span>CONCLAVE MONOGRAPH // NORTH INDIA FLAGSHIP</span>
-        <span>EDITION 2026</span>
-      </header>
-      <div className="gec-book-cover__title-block">
-        <GecMark />
-        <span className="gec-book-cover__mark-label">GEC / 02 // ARENA BLUEPRINT</span>
-        <h2>E-Summit &apos;26 Conclave Blueprint</h2>
-        <p>People, arenas, and capital in productive collision. 15,000+ delegates &amp; ₹12L pitch arena.</p>
-      </div>
-      <footer className="gec-book-cover__footer">
-        <span>E-Summit Conclave Directorate</span>
-        <span>Explore Blueprint →</span>
-      </footer>
-    </article>
-  )
-}
-
-function HandbookCover() {
-  return (
-    <article className="gec-book-cover gec-book-cover--handbook">
-      <div className="df-cover-foil-border" style={{ borderColor: 'rgba(163,4,15,0.45)' }} aria-hidden="true" />
-      <header className="gec-book-cover__running">
-        <span>ZERO-TO-ONE FIELD MANUAL</span>
-        <span>VOL. IV — 2026 REVISED</span>
-      </header>
-      <div className="gec-book-cover__title-block">
-        <GecMark />
-        <span className="gec-book-cover__mark-label">GEC / 03 // FIELD NOTES</span>
-        <h2>Innovator&apos;s Field Handbook</h2>
-        <p>Validation loops, governance checklists &amp; tactical clinic notes for zero-to-one builders.</p>
-      </div>
-      <footer className="gec-book-cover__footer">
-        <span>Founder Field Protocols</span>
-        <span>Open Manual →</span>
-      </footer>
-    </article>
-  )
-}
-
-function FoundersCover() {
-  return (
-    <article className="gec-book-cover gec-book-cover--founders">
-      <div className="df-cover-foil-border" aria-hidden="true" />
-      <header className="gec-book-cover__running">
-        <span>VENTURE ALUMNI ROLL // 2018–2026</span>
-        <span>LIBER FUNDATORUM</span>
-      </header>
-      <div className="gec-book-cover__title-block">
-        <GecMark />
-        <span className="gec-book-cover__mark-label">GEC / 04 // ALUMNI LEDGER</span>
-        <h2>Wall of Founders</h2>
-        <p>The builders, ventures, and institutional syndicates behind ₹180Cr+ in portfolio record.</p>
-      </div>
-      <footer className="gec-book-cover__footer">
-        <span>Galgotias Venture Alumni</span>
-        <span>View Ledger →</span>
-      </footer>
-    </article>
-  )
-}
-
-function BookCover({ spec }: { spec: CoverSpec }) {
-  if (spec.tone === 'incubation') return <IncubationCover />
-  if (spec.tone === 'summit') return <SummitCover />
-  if (spec.tone === 'handbook') return <HandbookCover />
-  if (spec.tone === 'founders') return <FoundersCover />
-  return (
-    <article className={`gec-book-cover gec-book-cover--${spec.tone}`}>
-      <header className="gec-book-cover__running"><span>{spec.series}</span><span>{spec.edition}</span></header>
-      <div className="gec-book-cover__title-block">
-        <GecMark />
-        <span className="gec-book-cover__mark-label">{spec.mark}</span>
-        <h2>{spec.title}</h2>
-        <p>{spec.subtitle}</p>
-      </div>
-      <footer className="gec-book-cover__footer"><span>Galgotias Entrepreneurship Cell</span><span>Open →</span></footer>
-    </article>
-  )
-}
-
-function BackCover({ tone, title, line }: { tone: Tone; title: string; line: string }) {
-  return (
-    <article className={`gec-book-cover gec-book-cover--${tone} gec-book-cover--back`}>
-      <header className="gec-book-cover__running"><span>GEC ARCHIVES</span><span>2026</span></header>
-      <div className="gec-book-cover__title-block"><GecMark /><h2>{title}</h2><p>{line}</p></div>
-      <footer className="gec-book-cover__footer"><span>Greater Noida</span><span>GEC / 26</span></footer>
-    </article>
-  )
-}
-
 function EditorialPage({ tone, folio, page }: { tone: Tone; folio: number; page: PageData }) {
   const id = `${tone.slice(0, 3).toUpperCase()}—${String(folio).padStart(2, '0')}`
   return (
     <article className={`gec-editorial-page gec-editorial-page--${tone}`}>
-      {/* Decorative texture & watermark overlay */}
-      <div className="gec-editorial-page__texture" aria-hidden="true" />
-      <div className="gec-editorial-page__watermark" aria-hidden="true">
-        <GecMark />
-      </div>
-
       <header className="gec-editorial-page__running">
         <div className="gec-editorial-page__running-left">
           <span className="gec-editorial-page__running-pill">{page.running}</span>
@@ -345,21 +416,22 @@ function EditorialPage({ tone, folio, page }: { tone: Tone; folio: number; page:
   )
 }
 
-const pages = (tone: Tone, data: PageData[]) => data.map((page, index) => <EditorialPage key={`${tone}-${index + 1}`} tone={tone} folio={index + 1} page={page} />)
+const buildPages = (tone: Tone, data: PageData[]) =>
+  data.map((page, index) => (
+    <EditorialPage key={`${tone}-${index + 1}`} tone={tone} folio={index + 1} page={page} />
+  ))
 
-const INCUBATION_PAGES = pages('incubation', [
+/* -------------------------------------------------------------------------- */
+/* VOLUME 01: INCUBATION DOSSIER (8 Pages)                                    */
+/* -------------------------------------------------------------------------- */
+const INCUBATION_PAGES = buildPages('incubation', [
   {
     running: 'Opening Mandate',
     kicker: 'MANDATE // COHORT 2026',
     category: 'INCUBATION CHARTER',
     title: 'Ideas deserve a room before they need a company.',
-    deck: 'The incubation programme is a protected sanctuary to test an acute human friction, build the smallest useful prototype, and learn from verifiable evidence—not applause.',
+    deck: 'The incubation programme is a protected sanctuary to test acute friction, build the smallest useful prototype, and learn from verifiable evidence.',
     highlight: 'Premature scaling kills more student ventures than lack of funding. We protect your right to iterate quietly away from pitch theater.',
-    items: [
-      { label: '01', title: 'Problem Discovery Over Speculation', tag: 'DISCOVERY', body: '20+ structured customer interviews before opening a code editor or ordering components.' },
-      { label: '02', title: '16-Week Zero-to-One Sprint', tag: 'EXECUTION', body: 'Phased milestones designed to test feasibility, validate demand, and achieve repeatable usage.' },
-    ],
-    action: { label: 'Working question', value: 'Who is already trying to solve this pain?', tag: 'CORE TEST' },
     note: 'Begin with the problem · Doc 2026-INC-01',
   },
   {
@@ -367,105 +439,94 @@ const INCUBATION_PAGES = pages('incubation', [
     kicker: 'FOUNDER RIGHTS',
     category: 'THREE PROMISES',
     title: 'Three institutional promises to student builders',
-    deck: 'Standard university incubators often extract equity too early. GEC does the exact opposite.',
+    deck: 'Standard university incubators extract equity too early. GEC does the exact opposite.',
     items: [
-      { label: '01', title: 'Founders retain 100% control', tag: 'ZERO EQUITY', body: 'Zero institutional equity clawback or ownership claims during prototype exploration. Your intellectual property stays entirely yours.' },
-      { label: '02', title: 'Evidence before scale', tag: 'DATA FIRST', body: 'Observed user transactions and retention telemetry matter infinitely more than polished pitch decks and vanity follower metrics.' },
-      { label: '03', title: 'Surgical operator network', tag: 'ACTIVE MENTORS', body: 'Seasoned alumni operators and venture partners arrive on-demand at the precise moment a technical or regulatory roadblock occurs.' },
+      { label: '01', title: 'Founders retain 100% equity', tag: 'ZERO DILUTION', body: 'Zero institutional equity clawback during prototype exploration. Your intellectual property stays entirely yours.' },
+      { label: '02', title: 'Evidence before scale', tag: 'DATA FIRST', body: 'Observed user transactions and retention telemetry matter infinitely more than vanity follower metrics.' },
+      { label: '03', title: 'Surgical operator network', tag: 'ACTIVE MENTORS', body: 'Seasoned alumni operators and venture partners arrive on-demand at the precise moment a technical roadblock occurs.' },
     ],
     note: 'Incubation Governance Charter',
   },
   {
     running: 'Cohort Architecture',
-    kicker: 'CAPACITY & TIMELINE',
+    kicker: 'CAPACITY & RATIOS',
     category: 'SPRINT METRICS',
     title: 'A high-conviction programme with room to work',
+    deck: 'Structured across 16 guided sprint weeks with high selectivity and active operator advisory.',
     stats: [
-      { value: '16', label: 'Guided Sprint Weeks', sub: '3 phased gates' },
-      { value: '24', label: 'Teams Per Cohort', sub: 'High selectivity' },
-      { value: '1:6', label: 'Mentor-to-Team Ratio', sub: 'Active advisory' },
-    ],
-    stepper: ['Phase I: Problem Validation (W1-4)', 'Phase II: MVP Build & Field Trial (W5-12)', 'Phase III: Syndicate Demo Day (W13-16)'],
-    items: [
-      { label: 'W1–4', title: 'Phase I: Problem Validation', body: 'Friction audits, competitor teardowns, and verified customer interview logs.' },
-      { label: 'W5–12', title: 'Phase II: Build & Field Trial', body: 'Functional MVP deployment, telemetry instrumentation, and first financial transaction.' },
-      { label: 'W13–16', title: 'Phase III: Institutional Syndication', body: 'Cap-table hygiene, data room assembly, and curated meetings with partner angel syndicates.' },
+      { value: '16', label: 'Guided Sprint Weeks', sub: '3 phased milestone gates' },
+      { value: '24', label: 'Teams Per Cohort', sub: 'High selectivity baseline' },
+      { value: '1:6', label: 'Mentor-to-Team Ratio', sub: 'Active weekly advisory' },
     ],
     note: 'Cohort 2026 Programme Structure',
+  },
+  {
+    running: 'Sprint Milestones',
+    kicker: 'PHASED GATES',
+    category: 'SPRINT PHASES',
+    title: 'Three phased milestones from spark to syndicate',
+    deck: 'Each phase requires verified customer telemetry before unlocking the next operational tier.',
+    stepper: [
+      'Phase I: Problem Validation & Friction Audit (Weeks 1–4)',
+      'Phase II: Functional MVP Build & Field Trial (Weeks 5–12)',
+      'Phase III: Institutional Syndication & Demo Day (Weeks 13–16)',
+    ],
+    note: 'Milestone Gates & Review Protocol',
   },
   {
     running: 'Capital Allocation',
     kicker: 'PROTOTYPE GRANTS',
     category: 'NON-DILUTIVE SEED',
     title: 'Seed support without losing the plot',
-    deck: 'Prototype grants are designed to purchase learning velocity: a field trial, a manufacturing batch, or the experiment that resolves the riskiest bottleneck.',
-    stats: [
-      { value: '₹5L', label: 'Prototype Grant Pool', sub: 'Zero equity taken' },
-      { value: '₹25L', label: 'Syndicate Match Pool', sub: 'Partner angels' },
-    ],
+    deck: 'Prototype grants purchase learning velocity: a manufacturing batch, field trial, or critical experiment.',
     items: [
-      { label: '₹1L', title: 'Tranche I: Proof of Need', tag: 'MILESTONE 1', body: 'Awarded upon verification of 15 customer discovery interviews and competitive audit.' },
+      { label: '₹1L', title: 'Tranche I: Proof of Need', tag: 'MILESTONE 1', body: 'Awarded upon verification of 15 customer discovery interviews and competitor teardown.' },
       { label: '₹2L', title: 'Tranche II: Working Prototype', tag: 'MILESTONE 2', body: 'Disbursed to manufacture hardware prototypes or host production cloud beta software.' },
       { label: '₹2L', title: 'Tranche III: Pilot Trial', tag: 'MILESTONE 3', body: 'Allocated for on-ground village or campus pilot deployments with active telemetry.' },
     ],
-    action: { label: 'Grant Office', value: 'grants@gecgalgotias.org', tag: 'DISBURSEMENT' },
-    note: 'Terms subject to evaluation committee review',
+    note: 'Zero equity dilution · Disbursed on milestone verification',
   },
   {
-    running: 'Physical & Digital Labs',
+    running: 'Lab Infrastructure',
     kicker: 'LAB ACCESS',
     category: 'FABRICATION & CLOUD',
     title: 'Make the first version tangible',
     deck: 'From precision SMD electronics to scalable model inference, build without infrastructure friction.',
     items: [
-      { label: 'FAB', title: 'Rapid Hardware Fabrication Bench', tag: 'HARDWARE', body: 'Dual-extruder 3D printers, precision laser cutters, SMD soldering, and oscilloscope diagnostic rigs with full technician support.' },
-      { label: 'GPU', title: '₹12L+ Cloud Runway Credits', tag: 'AI & CLOUD', body: 'AWS Activate, Google for Startups, and Azure OpenAI compute credits for continuous live training, fine-tuning, and hosting.' },
-      { label: 'SAAS', title: 'Production Dev Tooling Suite', tag: 'TOOLING', body: 'Full team seats on GitHub Enterprise, Figma Organization, Postman, and Mixpanel analytics stacks included.' },
+      { label: 'FAB', title: 'Rapid Hardware Fabrication Bench', tag: 'HARDWARE', body: 'Dual-extruder 3D printers, laser cutters, SMD soldering, and oscilloscope diagnostic rigs.' },
+      { label: 'GPU', title: '₹12L+ Cloud Runway Credits', tag: 'AI & CLOUD', body: 'AWS Activate, Google for Startups, and Azure compute credits for live fine-tuning and hosting.' },
+      { label: 'SAAS', title: 'Production Dev Tooling Suite', tag: 'TOOLING', body: 'Full team seats on GitHub Enterprise, Figma Organization, Postman, and Mixpanel analytics stacks.' },
     ],
-    note: 'Reserve benches via the GEC Maker Desk',
+    note: 'Reserve benches via GEC Maker Desk',
   },
   {
-    running: 'Governance & Diligence',
+    running: 'Governance & Legal',
     kicker: 'FOUNDER PROTECTION',
     category: 'LEGAL PROTOCOLS',
     title: 'Get the fundamentals right early',
-    deck: 'Clean legal foundations protect friendships, eliminate cap-table disputes, and accelerate institutional due diligence.',
+    deck: 'Clean legal foundations protect friendships, eliminate cap-table disputes, and accelerate diligence.',
     items: [
       { label: 'IP', title: 'Unambiguous IP Assignment', tag: 'PATENTS', body: 'Ensure all software source code, circuit schematics, and design assets belong legally to the corporate entity.' },
-      { label: 'ESOP', title: 'Universal 4-Year Vesting with 1-Year Cliff', tag: 'VESTING', body: 'Every founder vests shares over 4 years to guarantee long-term alignment and protect the venture if someone departs early.' },
-      { label: 'TAX', title: 'DPIIT & Section 80-IAC Tax Exemption', tag: 'COMPLIANCE', body: '1-on-1 sessions with chartered accountants covering Pvt Ltd incorporation, GST, and 3-year tax exemptions.' },
+      { label: 'ESOP', title: 'Universal 4-Year Vesting with 1-Year Cliff', tag: 'VESTING', body: 'Every founder vests shares over 4 years to guarantee long-term alignment and protect the venture.' },
+      { label: 'TAX', title: 'DPIIT & Section 80-IAC Exemption', tag: 'COMPLIANCE', body: '1-on-1 sessions covering Pvt Ltd incorporation, GST setup, and 3-year income tax exemptions.' },
     ],
     note: 'Clarity is a form of velocity',
   },
   {
     running: 'Admissions Desk',
-    kicker: 'APPLICATION STEP 01',
+    kicker: 'APPLICATION PROTOCOL',
     category: 'PROOF OVER PROMISES',
     title: 'Show the problem, then the proof',
     deck: 'We prioritize evidence of execution over presentation polish. Tell us what you learned from speaking directly with users.',
-    items: [
-      { label: '01', title: 'The 1-Page Problem Dossier', tag: 'STEP 1', body: 'Define the specific user persona, observed friction, and quantify the economic cost of inaction.' },
-      { label: '02', title: 'Attach One Verifiable Artifact', tag: 'STEP 2', body: 'A functional wireframe, raw customer interview recording, waitlist log, or pilot pre-order proof.' },
-    ],
-    action: { label: 'Round 1 Deadline', value: 'Rolling Cohort Admissions // 2026', tag: 'APPLY NOW' },
-    note: 'No ornamental pitch decks required',
-  },
-  {
-    running: 'Cohort Selection',
-    kicker: 'APPLICATION STEP 02',
-    category: 'WORKING SESSIONS',
-    title: 'Build in public with the cohort',
-    deck: 'Final selection takes the form of an interactive work session, dissecting technical unknowns together.',
-    items: [
-      { label: '03', title: 'Technical Teardown Session', tag: 'STEP 3', body: '30-minute working dialogue with incubation leads on unit economics, tech roadmap, and team balance.' },
-      { label: '04', title: 'Floor Key & Grant Allocation', tag: 'STEP 4', body: 'Accepted teams receive 24/7 incubator access, dedicated mentor alignment, and Milestone 1 grant disbursement.' },
-    ],
-    action: { label: 'Direct Admissions Desk', value: 'incubation@gecgalgotias.org', tag: 'SUBMIT BRIEF' },
+    action: { label: 'Admissions Office', value: 'incubation@gecgalgotias.org', tag: 'SUBMIT BRIEF' },
     note: 'Official Incubation Office · Innovation Tower 3F',
   },
 ])
 
-const SUMMIT_PAGES = pages('summit', [
+/* -------------------------------------------------------------------------- */
+/* VOLUME 02: E-SUMMIT CONCLAVE BLUEPRINT (8 Pages)                           */
+/* -------------------------------------------------------------------------- */
+const SUMMIT_PAGES = buildPages('summit', [
   {
     running: 'Conclave Monograph',
     kicker: 'FLAGSHIP SUMMIT // 2026',
@@ -483,7 +544,7 @@ const SUMMIT_PAGES = pages('summit', [
     running: 'Stage Blueprints',
     kicker: 'ARENA SPECIFICATION',
     category: 'STAGE TIMETABLE',
-    title: 'Four active stages engineered for focus',
+    title: 'Three active stages engineered for focus',
     deck: 'Curated environments structured for real exchange—from raw founder failure stories to closed-door term sheet debates.',
     items: [
       { label: 'STAGE A', title: 'The Main Auditorium (Conclave Hall)', tag: 'KEYNOTE', body: 'Unfiltered fireside discussions with unicorn founders on scaling through market downturns.' },
@@ -498,12 +559,7 @@ const SUMMIT_PAGES = pages('summit', [
     category: '₹12L GRANT ARENA',
     title: 'The pitch is a doorway, not the performance',
     deck: 'Shortlisted teams get an attentive room of active check-writers, a disciplined timer, and open lounge access afterwards.',
-    stats: [
-      { value: '50', label: 'Shortlisted Startups', sub: 'From 800+ entries' },
-      { value: '25', label: 'Institutional VCs', sub: 'Seed to Series A' },
-      { value: '₹12L', label: 'Non-Dilutive Pool', sub: 'Direct equity-free grants' },
-    ],
-    highlight: 'Winners receive direct induction into GEC Incubator with complimentary cloud compute and legal packaging.',
+    highlight: 'Fifty shortlisted teams defend unit economics directly before a jury of institutional venture partners. Winners receive direct induction into GEC Incubator.',
     note: 'Pitch Arena Handbook · Edition 2026',
   },
   {
@@ -515,7 +571,7 @@ const SUMMIT_PAGES = pages('summit', [
     items: [
       { label: '06m', title: 'Six-Minute Pitch Narrative', tag: 'PRESENTATION', body: 'Problem, observed customer insight, traction telemetry, business model, and specific capital ask.' },
       { label: '04m', title: 'Four-Minute Jury Examination', tag: 'DEFENSE', body: 'Direct interrogation on unit economics, retention curves, customer acquisition cost, and moat.' },
-      { label: 'LOUNGE', title: 'The Founder & Syndicate Salon', tag: 'DEAL FLOW', body: 'Continuous coffee salon where partners examine product demos and sign preliminary diligence sheets.' },
+      { label: 'SALON', title: 'Founder & Syndicate Lounge', tag: 'DEAL FLOW', body: 'Continuous lounge where partners examine live product demos and sign preliminary diligence sheets.' },
     ],
     note: 'Enforced by digital countdown displays on stage',
   },
@@ -525,9 +581,13 @@ const SUMMIT_PAGES = pages('summit', [
     category: '24-HOUR SPRINT',
     title: 'A sleepless night for turning code into arguments',
     deck: 'Multidisciplinary teams tackle complex civic, financial, and climate problems, delivering testable prototypes before sunrise.',
-    stepper: ['T-00: Problem Drop & Team Lock', 'T-06: Architecture Checkpoint', 'T-14: API & Hardware Demo Test', 'T-24: Stage Demo & Jury Score'],
-    action: { label: 'Sprint Format', value: '24 Hours / Live Mentors / ₹3L Grand Prize', tag: 'BUILDSPRINT' },
-    note: 'Continuous energy fuel, hardware rigs & mentors provided',
+    stepper: [
+      'T-00: Problem Drop & Team Registration Lock',
+      'T-06: Technical Architecture & API Checkpoint',
+      'T-14: Functional Prototype & Hardware Bench Test',
+      'T-24: Stage Demonstration & Jury Evaluation',
+    ],
+    note: 'Continuous fuel, hardware benches & mentors provided',
   },
   {
     running: 'Hackathon Tracks',
@@ -536,15 +596,15 @@ const SUMMIT_PAGES = pages('summit', [
     title: 'Four systemic friction domains',
     deck: 'Choose a track with high local consequence and build software or embedded systems that solve the core bottleneck.',
     items: [
-      { label: 'TRACK 1', title: 'Climate Tech & Circular Materials', tag: 'GREEN', body: 'Decentralized energy microgrids, battery recycling logistics, and bio-degradable packaging.' },
-      { label: 'TRACK 2', title: 'Edge AI & Healthcare Diagnostics', tag: 'HEALTH', body: 'Low-latency screening models for tier-3 clinics, telemedicine triaging, and rural health records.' },
+      { label: 'TRACK 1', title: 'Climate Tech & Circular Materials', tag: 'GREEN', body: 'Decentralized energy microgrids, battery recycling logistics, and biodegradable packaging.' },
+      { label: 'TRACK 2', title: 'Edge AI & Healthcare Diagnostics', tag: 'HEALTH', body: 'Low-latency screening models for tier-3 clinics, telemedicine triaging, and rural records.' },
       { label: 'TRACK 3', title: 'Future of Work & Freelance Rails', tag: 'FINTECH', body: 'Instant cross-border settlement, worker safety infrastructure, and micro-business credit.' },
       { label: 'TRACK 4', title: 'Open Digital Public Infrastructure', tag: 'DPI', body: 'Interoperable protocols built on ONDC, UPI, and Account Aggregator rails.' },
     ],
     note: 'Jury includes track-sponsor engineering leaders',
   },
   {
-    running: 'Institutional Partners',
+    running: 'Capital Partners',
     kicker: 'CAPITAL ROSTER',
     category: 'ACTIVE SYNDICATES',
     title: 'Meet the institutions backing campus innovation',
@@ -562,17 +622,15 @@ const SUMMIT_PAGES = pages('summit', [
     category: 'DELEGATE TIERS',
     title: 'Choose the pass that matches the work',
     deck: 'Accreditation grants access to stages, networking lounges, and the BuildSprint arena floor.',
-    items: [
-      { label: 'STU', title: 'Student Builder Delegate', tag: '₹299', body: 'Access to all main stages, workshops, expo floor, and BuildSprint participation eligibility.' },
-      { label: 'FND', title: 'Startup Founder Pass', tag: '₹799', body: 'Includes Pitch Arena evaluation slot, Founder Lounge access, and curated investor office hours.' },
-      { label: 'VIP', title: 'Ecosystem Partner & VC Badge', tag: 'INVITE ONLY', body: 'Full VIP salon access, private meeting rooms, speaker banquet, and demo day deal book.' },
-    ],
-    action: { label: 'Conclave Portal', value: 'summit@gecgalgotias.org', tag: 'REGISTER' },
+    action: { label: 'Conclave Registry', value: 'summit@gecgalgotias.org', tag: 'REGISTER NOW' },
     note: 'E-Summit 2026 Directorate · Greater Noida',
   },
 ])
 
-const HANDBOOK_PAGES = pages('handbook', [
+/* -------------------------------------------------------------------------- */
+/* VOLUME 03: INNOVATOR'S FIELD HANDBOOK (8 Pages)                            */
+/* -------------------------------------------------------------------------- */
+const HANDBOOK_PAGES = buildPages('handbook', [
   {
     running: 'Validation Playbook',
     kicker: 'RULE 01 // DISCOVERY',
@@ -580,11 +638,6 @@ const HANDBOOK_PAGES = pages('handbook', [
     title: 'Do not ask whether they like it.',
     deck: 'Compliments are conversational currency that costs the user nothing. Only past behaviour and monetary commitments count.',
     highlight: 'Never ask "Would you use this?" Instead ask: "When was the last time this problem occurred, and how much did you pay to patch it?"',
-    items: [
-      { label: '01', title: 'Audit the Real Pain', tag: 'INTERVIEWS', body: 'Conduct 20 user interviews. If they haven’t tried to fix it in the last 6 months, it’s not an acute problem.' },
-      { label: '02', title: 'The Fake-Door Demand Test', tag: 'SMOKE TEST', body: 'Launch a simple landing page or flyer. Measure deposit conversions before building backend plumbing.' },
-    ],
-    action: { label: 'Field Rule', value: 'Observed behaviour beats speculative optimism every time.', tag: 'RULE' },
     note: 'Founder Field Handbook · Page 01',
   },
   {
@@ -594,15 +647,11 @@ const HANDBOOK_PAGES = pages('handbook', [
     title: 'Pressure-test the economic exchange',
     deck: 'A product that cannot charge on day one rarely finds magic pricing power on day three hundred.',
     stats: [
-      { value: '10', label: 'Obsessed Early Users', sub: 'Who refuse to leave' },
-      { value: '3x', label: 'LTV to CAC Target', sub: 'Baseline sustainability' },
+      { value: '10', label: 'Obsessed Early Users', sub: 'Who refuse to leave without it' },
+      { value: '3x', label: 'LTV to CAC Target', sub: 'Baseline venture sustainability' },
+      { value: '₹500', label: 'Minimum Beta Charge', sub: 'Filter polite friends from users' },
     ],
-    items: [
-      { label: '03', title: 'Charge for the Beta', tag: 'PRICING', body: 'Charging even ₹500 weeds out polite friends from genuine customers who feel the burn of the problem.' },
-      { label: '04', title: 'Map the True Unit Cost', tag: 'MARGINS', body: 'Calculate server inference, customer support hours, payment gateway fees, and packaging.' },
-    ],
-    action: { label: 'Margin Note', value: 'A metric without a decision is mere decoration.', tag: 'TACTICAL' },
-    note: 'Audit baseline monthly',
+    note: 'Audit baseline unit economics monthly',
   },
   {
     running: 'Hardware Protocol',
@@ -611,7 +660,7 @@ const HANDBOOK_PAGES = pages('handbook', [
     title: 'Prototype the riskiest component first',
     deck: 'Do not spend two weeks polishing an enclosure when you haven\'t verified if the sensor communicates over I2C.',
     items: [
-      { label: 'HW-1', title: 'Breadboard Before Custom PCB', tag: 'PROTOTYPING', body: 'Prove component compatibility using off-the-shelf development boards (ESP32/RP2040) before Gerber layout.' },
+      { label: 'HW-1', title: 'Breadboard Before Custom PCB', tag: 'PROTOTYPING', body: 'Prove component compatibility using off-the-shelf boards (ESP32/RP2040) before Gerber layout.' },
       { label: 'HW-2', title: '3D Enclosure Drafts', tag: 'DRAFTING', body: 'Print rough low-resolution shells to test ergonomics, port clearance, and thermal dissipation early.' },
       { label: 'HW-3', title: 'Risk-First Test Protocol', tag: 'RIG TESTING', body: 'Build custom stress test jigs for battery draw, vibration, and wireless drop-out before field trials.' },
     ],
@@ -639,7 +688,7 @@ const HANDBOOK_PAGES = pages('handbook', [
     items: [
       { label: 'GOV-1', title: 'Incorporate as Private Limited', tag: 'ENTITY', body: 'Mandatory for raising angel/VC capital in India and qualifying for DPIIT Startup India seed grants.' },
       { label: 'GOV-2', title: 'Universal 4-Year Vesting', tag: 'VESTING', body: 'Every founder—including the initial creator—vests shares over 4 years with a strict 1-year cliff.' },
-      { label: 'GOV-3', title: 'Founder Departure Clause', tag: 'EXIT CLAUSE', body: 'Pre-agree on unvested share buyback mechanisms at nominal par value if a founder departs for campus placements.' },
+      { label: 'GOV-3', title: 'Founder Departure Clause', tag: 'EXIT CLAUSE', body: 'Pre-agree on unvested share buyback mechanisms at nominal par value if a founder departs for placements.' },
     ],
     note: 'Review boilerplate contracts with the legal clinic',
   },
@@ -661,7 +710,7 @@ const HANDBOOK_PAGES = pages('handbook', [
     kicker: 'RULE 07 // CLINICS',
     category: 'TACTICAL ADVISORY',
     title: 'Bring an acute decision, not an update',
-    deck: 'Office hours are high-intensity surgical sessions. Arrive with the specific blocker halting progress this week.',
+    deck: 'Office hours are surgical sessions. Arrive with the specific blocker halting progress this week.',
     items: [
       { label: 'EIR', title: 'Weekly EIR Sprint Reviews', tag: 'SPRINT', body: '45-minute sprint planning focusing on the single bottleneck that unlocks customer growth this cycle.' },
       { label: 'DECK', title: 'Deck Teardown & Narrative Audit', tag: 'STORY', body: 'Aggressive slide-by-slide teardown examining logical jumps, market sizing fallacies, and defense.' },
@@ -670,22 +719,24 @@ const HANDBOOK_PAGES = pages('handbook', [
     note: 'One clinic / one clear decision',
   },
   {
-    running: 'Field Desk Access',
-    kicker: 'RULE 08 // FIELD OFFICE',
+    running: 'Field Desk Hours',
+    kicker: 'RULE 08 // CLINIC TIMETABLE',
     category: 'BOOKING RULES',
     title: 'Write the question before booking the room',
     deck: 'Clinic slots open every Monday morning on the founder portal. Bring raw data, not vague theories.',
-    action: { label: 'Required Artifacts', value: '1 Decision / 1 Metric / 1 Honest Unknown', tag: 'ENTRY CRITERIA' },
     items: [
-      { label: '01', title: 'Legal & Compliance Clinic', body: 'Tuesdays 15:00–18:00 · Innovation Tower Room 304' },
-      { label: '02', title: 'Hardware & Circuit Bench Hours', body: 'Wednesdays 14:00–19:00 · Advanced Fabrication Lab' },
-      { label: '03', title: 'Investor Pitch & Narrative Salons', body: 'Thursdays 16:00–19:00 · GEC Boardroom' },
+      { label: 'TUE', title: 'Legal & Compliance Clinic', tag: '15:00–18:00', body: 'Contracts, IP assignment, cap table structuring, and DPIIT tax filings · Innovation Tower 304.' },
+      { label: 'WED', title: 'Hardware & Circuit Bench Hours', tag: '14:00–19:00', body: 'Oscilloscope diagnostic testing, SMD soldering, and laser cutter certification · Fabrication Lab.' },
+      { label: 'THU', title: 'Pitch & Narrative Salons', tag: '16:00–19:00', body: 'Mock investor interrogation and term sheet mechanics with visiting venture partners · Boardroom.' },
     ],
-    note: 'End of Field Manual · Rev 2026',
+    note: 'Official GEC Founder Field Manual · Rev 2026',
   },
 ])
 
-const FOUNDERS_PAGES = pages('founders', [
+/* -------------------------------------------------------------------------- */
+/* VOLUME 04: WALL OF FOUNDERS (8 Pages)                                      */
+/* -------------------------------------------------------------------------- */
+const FOUNDERS_PAGES = buildPages('founders', [
   {
     running: 'Venture Alumni Roll',
     kicker: 'LIBER FUNDATORUM // 2018–2026',
@@ -694,8 +745,8 @@ const FOUNDERS_PAGES = pages('founders', [
     deck: 'A living ledger of Galgotias student founders who turned dorm-room prototypes into institutional-grade enterprises.',
     stats: [
       { value: '120+', label: 'Founded Ventures', sub: 'Active enterprises' },
-      { value: '₹180Cr+', label: 'Combined Valuation', sub: 'Audited portfolio' },
-      { value: '18', label: 'Institutional Alliances', sub: 'VCs & syndicates' },
+      { value: '₹180Cr+', label: 'Combined Valuation', sub: 'Audited portfolio total' },
+      { value: '18', label: 'Institutional Alliances', sub: 'VCs & angel syndicates' },
     ],
     note: 'Official Alumni Record · Registry No. 2026-VAL',
   },
@@ -705,13 +756,9 @@ const FOUNDERS_PAGES = pages('founders', [
     category: 'AGRITECH & ROBOTICS',
     title: 'DroneX Mobility: Precision from Above',
     deck: 'Founded in 2021 by mechanical engineering students, DroneX built autonomous micro-spraying drones for North Indian farmland.',
-    stats: [
-      { value: '₹42Cr', label: 'Current Valuation', sub: 'Series Pre-A' },
-      { value: '140+', label: 'Villages Served', sub: 'UP & Punjab belt' },
-    ],
     items: [
-      { label: 'FOUNDERS', title: 'Arjun Sharma & Priyanshu Tyagi', body: 'B.Tech Batch of 2022 · Built prototype in GEC Maker Lab using 3D-printed carbon composites.' },
-      { label: 'MILESTONE', title: 'Commercial DGCA Type Certification', body: 'Secured full DGCA airworthiness approval and signed commercial distributor pact with IFFCO.' },
+      { label: 'FOUNDERS', title: 'Arjun Sharma & Priyanshu Tyagi', tag: 'BATCH 2022', body: 'Built first prototype in GEC Maker Lab using 3D-printed carbon composites. Valued at ₹42Cr (Series Pre-A).' },
+      { label: 'MILESTONE', title: 'Commercial DGCA Type Certification', tag: 'AEROSPACE', body: 'Secured full DGCA airworthiness approval and signed commercial distributor pact serving 140+ villages.' },
     ],
     note: 'DroneX Mobility Pvt Ltd · Alumnus 2022',
   },
@@ -721,22 +768,18 @@ const FOUNDERS_PAGES = pages('founders', [
     category: 'CROSS-BORDER FINTECH',
     title: 'ZyroPay: Cross-Border Liquidity Rails',
     deck: 'Automated instant payout rails designed for student freelancers and digital exports across South Asia.',
-    stats: [
-      { value: '$8.5M', label: 'Annualized TPV', sub: 'Transaction volume' },
-      { value: '65K+', label: 'Active Freelancers', sub: 'Instant settlements' },
-    ],
     items: [
-      { label: 'FOUNDER', title: 'Rohan Nair', body: 'B.Tech CSE 2023 · Started as a campus peer-to-peer split payment app during sophomore year.' },
-      { label: 'BACKERS', title: 'Backed by Y-Combinator Alum Angels', body: 'Raised $650K seed round led by Singapore-based fintech syndicates and Indian Angel Network.' },
+      { label: 'FOUNDER', title: 'Rohan Nair (B.Tech CSE 2023)', tag: 'FINTECH', body: 'Started as campus peer-to-peer split payment app. Processed over $8.5M annualized TPV for 65K+ freelancers.' },
+      { label: 'BACKERS', title: 'Backed by Y-Combinator Alum Angels', tag: 'SEED ROUND', body: 'Raised $650K seed round led by Singapore-based fintech syndicates and Indian Angel Network.' },
     ],
     note: 'ZyroPay Technologies Inc · Alumnus 2023',
   },
   {
-    running: 'Venture Monograph 03',
+    running: 'Frontier Technologies',
     kicker: 'PORTFOLIO HIGHLIGHTS',
     category: 'HEALTH & MATERIALS',
-    title: 'Pioneering edge AI and biomaterials',
-    deck: 'Galgotias founders creating breakthrough hardware and biotech innovations solving foundational human challenges.',
+    title: 'Pioneering edge AI and circular materials',
+    deck: 'Galgotias founders creating breakthrough hardware and biotech solving foundational human challenges.',
     items: [
       { label: 'HEALTH', title: 'NeuraHealth Diagnostics', tag: 'EDGE AI', body: 'Portable non-invasive retinal scanning AI detecting diabetic retinopathy in under 90 seconds. Deployed in 40 district hospitals.' },
       { label: 'BIO', title: 'EcoKraft BioMaterials', tag: 'CIRCULAR', body: 'Agricultural waste transformed via mycelium growth into 100% compostable structural packaging, replacing styrofoam.' },
@@ -744,7 +787,7 @@ const FOUNDERS_PAGES = pages('founders', [
     note: 'Recognized under National Bio-Entrepreneurship Awards',
   },
   {
-    running: 'Venture Capital Alliances',
+    running: 'Capital Alliances',
     kicker: 'CAPITAL PARTNERS',
     category: 'CHECK WRITERS',
     title: 'Syndicates anchored close to the campus',
@@ -763,12 +806,8 @@ const FOUNDERS_PAGES = pages('founders', [
     title: 'State and central capital extensions',
     deck: 'Maximizing non-dilutive government schemes to stretch founder runway prior to private equity syndication.',
     stats: [
-      { value: '₹2.4Cr', label: 'Grants Disbursed', sub: 'To campus startups' },
-      { value: '100%', label: 'Compliance Record', sub: 'Audit pass rate' },
-    ],
-    items: [
-      { label: 'DPIIT', title: 'Startup India Seed Fund Scheme (SISFS)', body: 'Proof-of-concept grants up to ₹20L and convertible debentures up to ₹50L.' },
-      { label: 'UP-IT', title: 'Uttar Pradesh Start-Up Policy Fund', body: 'Monthly sustenance allowances for student founders and prototype development subsidies.' },
+      { value: '₹2.4Cr', label: 'Grants Disbursed', sub: 'To campus startups since 2020' },
+      { value: '100%', label: 'Compliance Record', sub: 'CAG & DPIIT audit pass rate' },
     ],
     note: 'Government Liaison Desk · Innovation Tower 4F',
   },
@@ -777,117 +816,101 @@ const FOUNDERS_PAGES = pages('founders', [
     kicker: 'FOUNDER REFLECTIONS',
     category: 'REFLECTIONS FROM THE ARENA',
     title: 'What founders remember when the dust settles',
-    deck: 'Unfiltered quotes from founders looking back on the inflection points that saved their companies.',
+    deck: 'Unfiltered reflections from founders looking back on the inflection points that saved their companies.',
     quote: 'The GEC prototype grant was the only check that mattered in 2021. It paid for the motor testbench that every external investor told us to postpone.',
     attribution: 'Arjun Sharma · Co-Founder, DroneX Mobility (Series Pre-A)',
-    items: [
-      { label: 'ROHAN', title: 'Rohan Nair (ZyroPay)', body: '“Having 24/7 lab access and legal paperwork already done meant when the US partners called, we were ready to sign in 48 hours.”' },
-    ],
     note: 'Recorded at GEC Alumni Conclave 2025',
   },
   {
-    running: 'Alumni Syndicate Registration',
+    running: 'Alumni Registry',
     kicker: 'LEDGER APPLICATION',
     category: 'ROLL OF HONOR',
     title: 'Write your company into the record',
     deck: 'The Wall of Founders welcomes student and alumni ventures on rolling evaluation. Join the investment syndicate network.',
-    items: [
-      { label: 'FLOOR', title: 'Alumni & Venture Desk', body: 'Innovation Tower, 4th Floor · Evaluation clinics every Tuesday & Thursday.' },
-      { label: 'SYNDICATE', title: 'GEC Angel Syndicate Inquiries', body: 'Accredited alumni investors wishing to back student cohorts.' },
-    ],
-    action: { label: 'Official Founders Roll Desk', value: 'founders@gecgalgotias.org', tag: 'REGISTER VENTURE' },
+    action: { label: 'Founders Roll Desk', value: 'founders@gecgalgotias.org', tag: 'REGISTER VENTURE' },
     note: 'Official Wall of Founders · Liber Fundatorum 2026',
   },
 ])
 
-const cover = (spec: CoverSpec) => <BookCover spec={spec} />
-
 export const GEC_BOOKS: GecBook[] = [
-  { id: 'incubation', title: 'Venture Incubation Dossier', shortTitle: 'Incubation', subtitle: 'From dorm-room spark to institutional scale', themeColor: '#A3040F', badge: 'COHORT 2026', coverTheme: { base: '#A3040F', accent: '#FBCA05', ink: 'light' }, spineColor: '#7B020B', cover: cover({ tone: 'incubation', series: 'Venture Dossier', edition: 'Cohort 2026', title: 'Incubation', subtitle: 'From first evidence to a venture with a spine.', mark: 'GEC / 01' }), backCover: <BackCover tone="incubation" title="Build what the evidence can carry." line="A working dossier for student founders." />, pages: INCUBATION_PAGES },
-  { id: 'summit', title: "E-Summit '26 Conclave Blueprint", shortTitle: 'E-Summit', subtitle: "North India's flagship entrepreneurship conclave", themeColor: '#0F75BC', badge: 'FLAGSHIP CONCLAVE', coverTheme: { base: '#0F75BC', accent: '#FBCA05', ink: 'light' }, spineColor: '#0C5B94', cover: cover({ tone: 'summit', series: 'Conclave Programme', edition: '2026', title: 'E-Summit', subtitle: 'People, rooms, and ideas in productive collision.', mark: 'GEC / 02' }), backCover: <BackCover tone="summit" title="Leave with a next move." line="The official E-Summit programme book." />, pages: SUMMIT_PAGES },
-  { id: 'handbook', title: "Innovator's Field Handbook", shortTitle: 'Handbook', subtitle: 'A practical playbook for zero-to-one builders', themeColor: '#FCF8ED', badge: 'FOUNDER PLAYBOOK', coverTheme: { base: '#FCF8ED', accent: '#A3040F', ink: 'dark' }, spineColor: '#8B020B', cover: cover({ tone: 'handbook', series: 'Field Notes', edition: 'Vol. IV', title: "Innovator's Handbook", subtitle: 'Experiments, operating notes, and useful questions.', mark: 'GEC / 03' }), backCover: <BackCover tone="handbook" title="Validate fast. Write it down." line="A field manual for the work before scale." />, pages: HANDBOOK_PAGES },
-  { id: 'founders', title: 'Wall of Founders', shortTitle: 'Founders', subtitle: 'Alumni ventures, portfolios, and backers', themeColor: '#18181B', badge: 'ALUMNI ROLL', coverTheme: { base: '#18181B', accent: '#FBCA05', ink: 'light' }, spineColor: '#121214', cover: cover({ tone: 'founders', series: 'Alumni Ledger', edition: '2018–2026', title: 'Wall of Founders', subtitle: 'The builders, ventures, and people behind the record.', mark: 'GEC / 04' }), backCover: <BackCover tone="founders" title="The record is still being written." line="Galgotias Venture Alumni." />, pages: FOUNDERS_PAGES },
+  {
+    id: 'incubation',
+    title: BOOK_SPECS.incubation.title,
+    shortTitle: BOOK_SPECS.incubation.shortTitle,
+    subtitle: BOOK_SPECS.incubation.subtitle,
+    themeColor: BOOK_SPECS.incubation.coverTheme.base,
+    badge: BOOK_SPECS.incubation.badge,
+    coverTheme: BOOK_SPECS.incubation.coverTheme,
+    spineColor: BOOK_SPECS.incubation.spineColor,
+    cover: <BookCoverArtwork id="incubation" size="full" />,
+    backCover: (
+      <BookBackCoverArtwork
+        id="incubation"
+        epigraph="Build what the evidence can carry."
+        line="A working dossier for student founders."
+      />
+    ),
+    pages: INCUBATION_PAGES,
+  },
+  {
+    id: 'summit',
+    title: BOOK_SPECS.summit.title,
+    shortTitle: BOOK_SPECS.summit.shortTitle,
+    subtitle: BOOK_SPECS.summit.subtitle,
+    themeColor: BOOK_SPECS.summit.coverTheme.base,
+    badge: BOOK_SPECS.summit.badge,
+    coverTheme: BOOK_SPECS.summit.coverTheme,
+    spineColor: BOOK_SPECS.summit.spineColor,
+    cover: <BookCoverArtwork id="summit" size="full" />,
+    backCover: (
+      <BookBackCoverArtwork
+        id="summit"
+        epigraph="Leave with a next move."
+        line="The official E-Summit programme book."
+      />
+    ),
+    pages: SUMMIT_PAGES,
+  },
+  {
+    id: 'handbook',
+    title: BOOK_SPECS.handbook.title,
+    shortTitle: BOOK_SPECS.handbook.shortTitle,
+    subtitle: BOOK_SPECS.handbook.subtitle,
+    themeColor: BOOK_SPECS.handbook.coverTheme.base,
+    badge: BOOK_SPECS.handbook.badge,
+    coverTheme: BOOK_SPECS.handbook.coverTheme,
+    spineColor: BOOK_SPECS.handbook.spineColor,
+    cover: <BookCoverArtwork id="handbook" size="full" />,
+    backCover: (
+      <BookBackCoverArtwork
+        id="handbook"
+        epigraph="Validate fast. Write it down."
+        line="A field manual for the work before scale."
+      />
+    ),
+    pages: HANDBOOK_PAGES,
+  },
+  {
+    id: 'founders',
+    title: BOOK_SPECS.founders.title,
+    shortTitle: BOOK_SPECS.founders.shortTitle,
+    subtitle: BOOK_SPECS.founders.subtitle,
+    themeColor: BOOK_SPECS.founders.coverTheme.base,
+    badge: BOOK_SPECS.founders.badge,
+    coverTheme: BOOK_SPECS.founders.coverTheme,
+    spineColor: BOOK_SPECS.founders.spineColor,
+    cover: <BookCoverArtwork id="founders" size="full" />,
+    backCover: (
+      <BookBackCoverArtwork
+        id="founders"
+        epigraph="The record is still being written."
+        line="Galgotias Venture Alumni."
+      />
+    ),
+    pages: FOUNDERS_PAGES,
+  },
 ]
 
-export const GEC_BOOKS_BY_ID: Record<string, GecBook> = Object.fromEntries(GEC_BOOKS.map((book) => [book.id, book]))
-
-interface CompanionBooksProps { activeBookId: string; onSelect: (id: string) => void }
-type CompanionBookPlacement = React.CSSProperties & {
-  '--book-x': string
-  '--book-y': string
-  '--book-rotate': string
-  '--book-scale': number
-}
-
-const COMPANION_BOOK_PLACEMENTS: Record<string, CompanionBookPlacement> = {
-  incubation: { '--book-x': '4%', '--book-y': '12%', '--book-rotate': '-6deg', '--book-scale': 0.92 },
-  summit: { '--book-x': '74%', '--book-y': '10%', '--book-rotate': '7deg', '--book-scale': 0.9 },
-  handbook: { '--book-x': '5%', '--book-y': '66%', '--book-rotate': '5deg', '--book-scale': 0.88 },
-  founders: { '--book-x': '80%', '--book-y': '64%', '--book-rotate': '-7deg', '--book-scale': 0.9 },
-}
-
-export function MatCompanionBooks({ activeBookId, onSelect }: CompanionBooksProps) {
-  return (
-    <div className="df-mat-companion-shelf" aria-label="Switch GEC book">
-      {GEC_BOOKS.filter((book) => book.id !== activeBookId).map((book) => {
-        const placement = COMPANION_BOOK_PLACEMENTS[book.id]
-        return (
-          <button
-            key={book.id}
-            type="button"
-            className={`df-resting-book df-resting-book--${book.id}`}
-            style={
-              {
-                ...placement,
-                '--book-spine-bg': book.spineColor,
-                '--book-cover-bg': book.coverTheme.base,
-                '--book-accent': book.coverTheme.accent,
-              } as React.CSSProperties
-            }
-            title={`Open ${book.title}`}
-            aria-label={`Open ${book.title}`}
-            onClick={() => {
-              haptic('selection')
-              onSelect(book.id)
-            }}
-          >
-            {/* Grounded contact and ambient drop shadow directly on cutting mat */}
-            <div className="df-resting-book-shadow" aria-hidden="true" />
-
-            {/* Physical Hardcover Book resting still on desk */}
-            <div className="df-resting-book-3d" aria-hidden="true">
-              {/* Hardcover Spine */}
-              <div className="df-resting-book-spine">
-                <span className="df-spine-rib" />
-                <span className="df-spine-text">{book.shortTitle}</span>
-                <span className="df-spine-logo">GEC</span>
-                <span className="df-spine-rib" />
-              </div>
-
-              {/* Hardcover Face */}
-              <div className={`df-resting-book-cover df-resting-book-cover--${book.id}`}>
-                <div className="df-resting-book-texture" />
-                <div className="df-resting-book-foil-trim" />
-
-                <div className="df-resting-book-header">
-                  <span className="df-resting-book-badge">{book.badge}</span>
-                  <span className="df-resting-book-pin">✦</span>
-                </div>
-
-                <div className="df-resting-book-body">
-                  <h4 className="df-resting-book-title">{book.shortTitle}</h4>
-                  <p className="df-resting-book-sub">{book.subtitle}</p>
-                </div>
-
-                <div className="df-resting-book-cta">
-                  <span>Open Volume</span>
-                  <span className="df-resting-book-arrow">→</span>
-                </div>
-              </div>
-            </div>
-          </button>
-        )
-      })}
-    </div>
-  )
-}
+export const GEC_BOOKS_BY_ID: Record<string, GecBook> = Object.fromEntries(
+  GEC_BOOKS.map((book) => [book.id, book]),
+)
