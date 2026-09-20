@@ -498,7 +498,6 @@ const STICKER_SETS: StickerSet[] = [
       { src: ITM + 'sticker-keyboard.svg', width: 'clamp(139px, 33vw, 560px)', rotate: 27, pos: { top: '-4.5vw', left: '-7vw' } }, // keyboard, peeking from top-left
       { src: ITM + 'sticker-stationery-3.svg', width: 'clamp(48px, 10.4vw, 155px)', rotate: -6, pos: { top: '40.5%', left: '16%' } }, // coffee
       { src: ITM + 'sticker-desk-0.svg', width: 'clamp(47px, 11.2vw, 158px)', rotate: 36, pos: { top: '54%', left: '7%' } }, // pencil
-      { src: IPOD_SRC, width: 'clamp(82px, 8.1vw, 154px)', rotate: -14, pos: { top: '43%', right: '6.7%' } }, // iPod
       { src: ITM + 'sticker-cutie-bear.svg', width: 'clamp(62px, 9.6vw, 166px)', rotate: -4, pos: { top: '62%', right: '18.3%' }, stuck: true }, // bear sticker
       { src: ITM + 'sticker-journal-3.svg', width: 'clamp(76px, 11.8vw, 215px)', rotate: -8, pos: { bottom: '16%', left: '21.5%' } }, // glasses
       { src: ITM + 'sticker-plant-succulent.svg', width: 'clamp(64px, 12vw, 185px)', rotate: 3, pos: { bottom: '5.2%', right: '6.8%' } }, // succulent
@@ -2420,10 +2419,8 @@ export function DeskFolioPage() {
   // user-added stickers, persist across set switches
   const [added, setAdded] = useState<Array<{ key: string; src: string }>>([])
   const addSeqRef = useRef(0)
-  const [addOpen, setAddOpen] = useState(false)
   const addSticker = useCallback((src: string) => {
     setAdded((prev) => [...prev, { key: `added-${addSeqRef.current++}`, src }])
-    setAddOpen(false)
     setActiveMatKey(null)
   }, [])
   const [storedDevActivityLink] = useState(() => {
@@ -2458,7 +2455,6 @@ export function DeskFolioPage() {
       // opening an edit menu closes the Add panel
       setActiveKey: (key) => {
         setActiveMatKey(key)
-        if (key) setAddOpen(false)
       },
       overrides: matOverrides,
       patch: (key, partial) => setMatOverrides((prev) => ({ ...prev, [key]: { ...prev[key], ...partial } })),
@@ -2506,12 +2502,12 @@ export function DeskFolioPage() {
           }
         >
           <MatEditContext.Provider value={matEdit}>
-          {/* tap-to-close backdrop behind menu/Add panel */}
-          {(activeMatKey || addOpen) && (
+          {/* tap-to-close backdrop behind menu */}
+          {activeMatKey && (
             <div
               className="df-matmenu-backdrop"
               aria-hidden="true"
-              onPointerDown={() => { setActiveMatKey(null); setAddOpen(false) }}
+              onPointerDown={() => setActiveMatKey(null)}
             />
           )}
           {!matDown && <MatRollIntro />}
@@ -2523,26 +2519,12 @@ export function DeskFolioPage() {
           {intro >= 2 && !compact && (
             <MatCompanionBooks activeBookId={activeBookId} onSelect={setActiveBookId} />
           )}
-          {/* the + FAB + library panel, desktop only */}
-          {intro >= 3 && !compact && (
-            <AddStickerControl
-              open={addOpen}
-              onToggle={(v) => { haptic('selection'); setAddOpen(v); if (v) setActiveMatKey(null) }}
-              onAdd={(src) => { haptic('nudge'); addSticker(src) }}
-            />
-          )}
           {/* phones: a few decorative peel-stickers */}
           {intro >= 2 && compact && (
-            <>
-              <div className="df-mstickers" aria-hidden="true">
-                <img className="m3" src={ITM + mStickers[0]} alt="" decoding="async" />
-                <img className="m4" src={ITM + mStickers[1]} alt="" decoding="async" />
-              </div>
-              {/* iPod peeking from the corner */}
-              <div className="df-mipod" aria-hidden="true">
-                <MiniPod />
-              </div>
-            </>
+            <div className="df-mstickers" aria-hidden="true">
+              <img className="m3" src={ITM + mStickers[0]} alt="" decoding="async" />
+              <img className="m4" src={ITM + mStickers[1]} alt="" decoding="async" />
+            </div>
           )}
           {/* dev-activity monitor, draggable; tap opens GitHub */}
           {!compact && intro >= 2 && !devActivityOverride?.deleted && (
@@ -2651,21 +2633,7 @@ export function DeskFolioPage() {
               )}
             </AnimatePresence>
           )}
-          {/* highlighter is desktop-only */}
-          {!compact && (
-            <motion.div
-              className="df-tray-bloom"
-              initial={false}
-              animate={
-                reduce
-                  ? { opacity: 1, y: 0, scale: 1 }
-                  : { opacity: intro >= 3 ? 1 : 0, y: intro >= 3 ? 0 : 18, scale: intro >= 3 ? 1 : 0.9 }
-              }
-              transition={reduce ? { duration: 0 } : { ...STAGE_SPRING, delay: intro >= 3 ? 0.12 : 0 }}
-            >
-              <HighlighterTray panelWidth={Math.min(360, pageW)} />
-            </motion.div>
-          )}
+
           </MatEditContext.Provider>
         </div>
       </section>
