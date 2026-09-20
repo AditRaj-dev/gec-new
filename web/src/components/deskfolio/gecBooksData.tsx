@@ -865,10 +865,6 @@ export function MatCompanionBooks({ activeBookId, onSelect }: CompanionBooksProp
                 <span className="df-spine-rib" />
               </div>
 
-              {/* Stacked Page Edges (Right and Bottom) */}
-              <div className="df-resting-book-pages-right" />
-              <div className="df-resting-book-pages-bottom" />
-
               {/* Hardcover Face */}
               <div className={`df-resting-book-cover df-resting-book-cover--${book.id}`}>
                 <div className="df-resting-book-texture" />
