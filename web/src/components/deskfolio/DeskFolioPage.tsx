@@ -2423,23 +2423,7 @@ export function DeskFolioPage() {
     setAdded((prev) => [...prev, { key: `added-${addSeqRef.current++}`, src }])
     setActiveMatKey(null)
   }, [])
-  const [storedDevActivityLink] = useState(() => {
-    try {
-      return window.localStorage.getItem(DEV_ACTIVITY_LINK_STORAGE_KEY) || DEFAULT_DEV_ACTIVITY_LINK
-    } catch {
-      return DEFAULT_DEV_ACTIVITY_LINK
-    }
-  })
-  const devActivityLink = matOverrides['dev-activity']?.href ?? storedDevActivityLink
-  useEffect(() => {
-    const nextLink = matOverrides['dev-activity']?.href
-    if (!nextLink) return
-    try {
-      window.localStorage.setItem(DEV_ACTIVITY_LINK_STORAGE_KEY, nextLink)
-    } catch {
-      /* localStorage unavailable; in-memory edit still works */
-    }
-  }, [matOverrides])
+
   const matEdit = useMemo<MatEditApi>(() => {
     // srcs on this set's desk, excluded from Replace
     const set = STICKER_SETS.find((s) => s.id === 'workspace')
@@ -2470,7 +2454,6 @@ export function DeskFolioPage() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [activeMatKey])
-  const devActivityOverride = matOverrides['dev-activity']
   const lampOverride = matOverrides['desk-lamp']
 
   // book content: active GEC book (portfolio pack) — journal pack preserved behind SHOW_JOURNAL
@@ -2526,33 +2509,7 @@ export function DeskFolioPage() {
               <img className="m4" src={ITM + mStickers[1]} alt="" decoding="async" />
             </div>
           )}
-          {/* dev-activity monitor, draggable; tap opens GitHub */}
-          {!compact && intro >= 2 && !devActivityOverride?.deleted && (
-            <DraggableMatObject
-              objectKey="dev-activity"
-              editable
-              kind="device"
-              className="df-sticker-dragger df-monitor-dragger"
-              title="Open GitHub · hold to move"
-              style={
-                {
-                  left: '2%',
-                  top: '73%',
-                  '--df-monitor-scale': devActivityOverride?.scale ?? 0.95,
-                  '--df-monitor-rotate': `${-13 + (devActivityOverride?.rotate ?? 0)}deg`,
-                } as React.CSSProperties
-              }
-            >
-              <motion.div
-                className="df-monitor-mat"
-                initial={reduce ? false : { opacity: 0, y: -22 }}
-                animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                transition={reduce ? { duration: 0 } : { type: 'spring', bounce: 0.4, duration: 0.6, delay: 0.2 }}
-              >
-                <DevMonitor href={devActivityLink} />
-              </motion.div>
-            </DraggableMatObject>
-          )}
+
           <motion.div
             className={compact ? 'df-book-bloom df-book-bloom--mobile' : 'df-book-bloom'}
             initial={false}
