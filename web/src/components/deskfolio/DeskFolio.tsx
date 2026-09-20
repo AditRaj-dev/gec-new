@@ -36,6 +36,8 @@ export type DeskFolioProps = {
   interactive?: boolean
   /* accessible name for the interactive book */
   label?: string
+  /* virtualize distant sheets to reduce DOM footprint and React work */
+  virtualizePages?: boolean
 }
 
 // springs
@@ -88,6 +90,7 @@ export function DeskFolio({
   closedShift = '-25%',
   interactive = true,
   label = 'A little book — drag a corner, tap a side, or use the arrow keys to turn the pages',
+  virtualizePages = false,
 }: DeskFolioProps) {
   const reduce = useReducedMotion()
   const sheets = useMemo(() => buildSheets(cover, pages, backCover), [cover, pages, backCover])
@@ -107,12 +110,10 @@ export function DeskFolio({
   const open = turned > 0
   const locked = turning !== null || draggingIndex !== null
 
-  // one rotation value per sheet
-  const rotsRef = useRef<MotionValue<number>[]>([])
-  if (rotsRef.current.length !== max) {
-    rotsRef.current = sheets.map((_, i) => motionValue(i < turned ? -180 : 0))
-  }
-  const rots = rotsRef.current
+  // one rotation MotionValue per sheet created safely via useMemo without ref access in render
+  const rots = useMemo(() => {
+    return Array.from({ length: max }, (_, i) => motionValue(i < initialSpread ? -180 : 0))
+  }, [max, initialSpread])
 
   const rootRef = useRef<HTMLDivElement>(null)
   const drag = useRef<{ active: number; dir: 'fwd' | 'back'; startX: number; pageW: number; follow: boolean; moved: boolean; turnZone: boolean; close: boolean } | null>(null)
@@ -199,6 +200,8 @@ export function DeskFolio({
     const turnZone = close || onCorner || (dir === 'fwd' ? fx > 0.86 : fx < 0.14)
     drag.current = { active, dir, startX: e.clientX, pageW: rect.width / 2, follow: !close && active >= 1, moved: false, turnZone, close }
     setDraggingIndex(active)
+    // cancel superseded animation when direct pointer manipulation begins
+    rots[active]?.stop()
     try {
       rootRef.current?.setPointerCapture(e.pointerId)
     } catch {
@@ -226,6 +229,10 @@ export function DeskFolio({
       /* ignore */
     }
     setDraggingIndex(null)
+    if (cancelled) {
+      rots[d.active]?.stop()
+      return
+    }
     const turn = (dir: 'fwd' | 'back') => {
       if (coolingDown()) return
       if (dir === 'fwd' && d.close) {
@@ -242,13 +249,11 @@ export function DeskFolio({
 
     // moved inner page: commit past halfway, else spring back
     if (d.follow && d.moved) {
-      if (cancelled) return
       const cur = rots[d.active].get()
       if (d.dir === 'fwd' ? cur <= -90 : cur >= -90) turn(d.dir)
       else setTurning(d.active) // lock while springing home
       return
     }
-    if (cancelled) return
     // closed book: tap or swipe opens
     if (!open) return turn('fwd')
     // swipe or tap turns in active direction: left page turns back, right page turns fwd
@@ -270,6 +275,19 @@ export function DeskFolio({
       commitPrev()
     }
   }
+
+  // When virtualizePages is enabled: keeps the active sheet plus one adjacent sheet on either side fully mounted.
+  // Sheets outside this window render as lightweight empty shells.
+  const isSheetMounted = useCallback(
+    (i: number) => {
+      if (!virtualizePages) return true
+      if (i >= turned - 2 && i <= turned + 1) return true
+      if (turning !== null && Math.abs(i - turning) <= 1) return true
+      if (draggingIndex !== null && Math.abs(i - draggingIndex) <= 1) return true
+      return false
+    },
+    [virtualizePages, turned, turning, draggingIndex]
+  )
 
   const spreadWidth = pageWidth * 2
 
@@ -323,6 +341,7 @@ export function DeskFolio({
                 reduce={!!reduce}
                 sheet={sheet}
                 rot={rots[i]}
+                isMounted={isSheetMounted(i)}
                 onRest={handleRest}
                 onPeek={handlePeek}
               />
@@ -350,6 +369,7 @@ const BookSheet = memo(function BookSheet({
   reduce,
   sheet,
   rot,
+  isMounted = true,
   onRest,
   onPeek,
 }: {
@@ -363,25 +383,32 @@ const BookSheet = memo(function BookSheet({
   reduce: boolean
   sheet: Sheet
   rot: MotionValue<number>
+  isMounted?: boolean
   onRest: (index: number) => void
   onPeek: (index: number, on: boolean) => void
 }) {
   const prevFlipped = useRef(flipped)
+  const animControlsRef = useRef<{ stop: () => void } | null>(null)
 
   useEffect(() => {
     if (dragging) {
-      // parent drives rot; don't fight it
+      // parent drives rot; cancel superseded animation
+      animControlsRef.current?.stop()
+      animControlsRef.current = null
       prevFlipped.current = flipped
       return
     }
     prevFlipped.current = flipped
     const target = flipped ? -180 : peek && !reduce ? PEEK_ANGLE : 0
     if (reduce) {
+      animControlsRef.current?.stop()
+      animControlsRef.current = null
       rot.set(target)
       onRest(index)
       return
     }
-    // big travel: paper spring; peek: snappy
+    // cancel existing animation before starting new one
+    animControlsRef.current?.stop()
     const current = rot.get()
     const dist = Math.abs(target - current)
     const v0 = rot.getVelocity()
@@ -391,9 +418,19 @@ const BookSheet = memo(function BookSheet({
         ? { ...FLIP_SPRING, velocity: Math.abs(v0) < 60 ? Math.sign(target - current) * 540 : v0 }
         : PEEK_SPRING
     const controls = animate(rot, target, opts)
-    controls.then(() => onRest(index)).catch(() => {})
-    return () => controls.stop()
-    // peek + dragging are deps: re-run to settle on release
+    animControlsRef.current = controls
+    controls.then(() => {
+      if (animControlsRef.current === controls) {
+        animControlsRef.current = null
+      }
+      onRest(index)
+    }).catch(() => {})
+    return () => {
+      controls.stop()
+      if (animControlsRef.current === controls) {
+        animControlsRef.current = null
+      }
+    }
   }, [flipped, peek, dragging, reduce, rot, index, onRest])
 
   // shadows peak edge-on at 90 deg
@@ -406,10 +443,10 @@ const BookSheet = memo(function BookSheet({
   return (
     <motion.div className="deskfolio-sheet" style={{ rotateY: rot, zIndex: z, willChange: active ? 'transform' : 'auto' }}>
       <motion.div className={faceClass('front', sheet.frontHard)} style={{ opacity: frontVisible }}>
-        <div className="deskfolio-page-content">{sheet.front}</div>
+        <div className="deskfolio-page-content">{isMounted ? sheet.front : null}</div>
         <motion.div className="deskfolio-fold" style={{ opacity: frontShade }} aria-hidden="true" />
         <div className="deskfolio-spine-shade" aria-hidden="true" />
-        {showCorner && (
+        {showCorner && isMounted && (
           <div
             className="deskfolio-corner"
             aria-hidden="true"
@@ -419,7 +456,7 @@ const BookSheet = memo(function BookSheet({
         )}
       </motion.div>
       <motion.div className={faceClass('back', sheet.backHard)} style={{ opacity: backVisible }}>
-        <div className="deskfolio-page-content">{sheet.back}</div>
+        <div className="deskfolio-page-content">{isMounted ? sheet.back : null}</div>
         <motion.div className="deskfolio-fold" style={{ opacity: backShade }} aria-hidden="true" />
         <div className="deskfolio-spine-shade deskfolio-spine-shade--right" aria-hidden="true" />
       </motion.div>
