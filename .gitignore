@@ -1,8 +1,11 @@
 # Dependencies
 node_modules/
+web/node_modules/
 
 # Production build artifacts
 build/
+web/.next/
+web/out/
 
 # Output renders, video exports, and temp browser capture profiles
 out/
