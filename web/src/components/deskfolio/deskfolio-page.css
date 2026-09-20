@@ -1,4 +1,4 @@
-﻿@import './gec-editorial.css';
+@import './gec-editorial.css';
 
 .page {
   display: flex;
@@ -456,36 +456,8 @@
 }
 
 @media (max-width: 760px) {
-  /* phones + small tablets: the desk canvas goes full-bleed and fills the screen (no dead space), laid
-     out as a column â€” controls on top, the one-page book filling the rest. (Breakpoint raised from 560
-     to 760 so narrow/tablet windows get the clean one-page reader instead of a cramped desktop desk.) */
   .page.page-deskfolio {
     padding: 0;
-  }
-  .deskfolio-demo-stage {
-    width: 100%; /* full-bleed via the (max-width:none) page, but NOT 100vw â€” that ignores a scrollbar
-                    and would push the centred book off to one side */
-    min-height: 100svh;
-    margin-left: 0;
-    transform: none; /* one-page book sizes itself via CSS; no stage scaling on mobile */
-    border-radius: 0;
-    padding: 12px 12px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  /* the book wrapper fills the space below the controls and centres the book in it â€” but with a bottom
-     band reserved (~20vh) for the desk items (iPod + stickers) that sit along the bottom. So the book
-     optically centres in the OPEN space between the controls and the desk clutter, not the raw canvas,
-     and because the reserve is in vh it holds the same on every device. */
-  .df-book-bloom--mobile {
-    flex: 1 1 auto;
-    align-self: stretch;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 26vh;
-    min-height: 0;
   }
 }
 

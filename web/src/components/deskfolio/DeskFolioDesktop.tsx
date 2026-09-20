@@ -13,7 +13,7 @@ import React, {
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { DeskFolio } from './DeskFolio'
 import { DialSlider } from './DialSlider'
-import { GEC_BOOKS, GEC_MAT_THEMES } from './gecBooksData'
+import { GEC_BOOKS, GEC_MAT_THEMES, MatCompanionBooks } from './gecBooksData'
 import './deskfolio.css'
 import './deskfolio-page.css'
 
@@ -1024,10 +1024,16 @@ export function DeskFolioDesktop() {
     return () => timers.forEach((t) => window.clearTimeout(t))
   }, [reduce])
 
-  const spread = Math.min(800, Math.round(viewport.w * 0.82))
-  const pageW = Math.max(150, Math.round(spread / 2))
-  const pageH = Math.round(pageW * 1.34)
-  const stageScale = Math.min(1, viewport.h / (pageH + 376))
+  const STAGE_BASE_W = 1260
+  const STAGE_BASE_H = 780
+  const PAGE_W = 380
+  const PAGE_H = 509
+
+  const stageScale = useMemo(() => {
+    const pad = viewport.w < 768 ? 16 : 36
+    const availableW = viewport.w - pad
+    return Math.min(1, Math.max(0.24, Math.round((availableW / STAGE_BASE_W) * 1000) / 1000))
+  }, [viewport.w])
 
   const bgTheme = GEC_MAT_THEMES.find((theme) => theme.id === 'gec-crimson') ?? GEC_MAT_THEMES[0]
 
@@ -1040,7 +1046,8 @@ export function DeskFolioDesktop() {
     }
   }, [])
 
-  const activeBook = GEC_BOOKS.find((b) => b.id === 'incubation') ?? GEC_BOOKS[0]
+  const [activeBookId, setActiveBookId] = useState('incubation')
+  const activeBook = GEC_BOOKS.find((b) => b.id === activeBookId) ?? GEC_BOOKS[0]
   const [lampOn, setLampOn] = useState(false)
   const [matOverrides, setMatOverrides] = useState<Record<string, MatOverride>>({
     'desk-lamp': { scale: LAMP_DEFAULT_SCALE, rotate: LAMP_DEFAULT_ROTATE },
@@ -1084,93 +1091,127 @@ export function DeskFolioDesktop() {
     <>
       <section className="deskfolio-live">
         <div
-          className="demo-stage deskfolio-demo-stage"
-          style={
-            {
-              '--df-picker-w': `${pageW}px`,
-              '--df-stage-scale': stageScale,
-              ...bgTheme.style,
-            } as React.CSSProperties
-          }
+          className="df-stage-scale-wrapper"
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            overflow: 'hidden',
+            minHeight: `${Math.round(STAGE_BASE_H * stageScale)}px`,
+            height: `${Math.round(STAGE_BASE_H * stageScale)}px`,
+            margin: '0 auto',
+            position: 'relative',
+          }}
         >
-          <MatEditContext.Provider value={matEdit}>
-            {activeMatKey && (
-              <div
-                className="df-matmenu-backdrop"
-                aria-hidden="true"
-                onPointerDown={() => setActiveMatKey(null)}
-              />
-            )}
-            {!matDown && <MatRollIntro />}
-            {intro >= 2 && <MatStickers setId="workspace" />}
-
-            <motion.div
-              className="df-book-bloom"
-              initial={false}
-              animate={
-                reduce
-                  ? { opacity: 1, y: 0, scale: 1 }
-                  : { opacity: intro >= 1 ? 1 : 0, y: intro >= 1 ? 0 : 12, scale: intro >= 1 ? 1 : 0.94 }
+          <div
+            className="df-stage-scale-inner"
+            style={{
+              width: `${STAGE_BASE_W}px`,
+              height: `${STAGE_BASE_H}px`,
+              transform: `scale(${stageScale})`,
+              transformOrigin: 'top center',
+              flexShrink: 0,
+            }}
+          >
+            <div
+              className="demo-stage deskfolio-demo-stage"
+              style={
+                {
+                  width: `${STAGE_BASE_W}px`,
+                  minHeight: `${STAGE_BASE_H}px`,
+                  margin: '0 auto',
+                  transform: 'none',
+                  '--df-picker-w': `${PAGE_W}px`,
+                  ...bgTheme.style,
+                } as React.CSSProperties
               }
-              transition={reduce ? { duration: 0 } : STAGE_SPRING}
             >
-              <DeskFolio
-                cover={cover}
-                pages={pages}
-                backCover={backCover}
-                closeOnEnd={true}
-                pageWidth={pageW}
-                pageHeight={pageH}
-                style={coverVars(activeBook.coverTheme)}
-                virtualizePages={true}
-              />
-            </motion.div>
-
-            <AnimatePresence>
-              {LAMP_ITEM && !lampOverride?.deleted && (
-                <DraggableMatObject
-                  key="desk-lamp"
-                  objectKey="desk-lamp"
-                  editable
-                  kind="object"
-                  className="df-sticker-dragger df-lamp-dragger"
-                  title="Hold to edit lamp"
-                  style={{ width: scaleCssClamp(LAMP_ITEM.width, lampOverride?.scale ?? 1), ...LAMP_ITEM.pos }}
-                >
-                  <DeskLamp
-                    item={{ ...LAMP_ITEM, rotate: LAMP_ITEM.rotate + (lampOverride?.rotate ?? 0) }}
-                    index={0}
-                    on={lampOn}
-                    onToggle={() => setLampOn((v) => !v)}
-                    placed
+              <MatEditContext.Provider value={matEdit}>
+                {activeMatKey && (
+                  <div
+                    className="df-matmenu-backdrop"
+                    aria-hidden="true"
+                    onPointerDown={() => setActiveMatKey(null)}
                   />
-                </DraggableMatObject>
-              )}
-            </AnimatePresence>
+                )}
+                {!matDown && <MatRollIntro />}
+                {intro >= 2 && <MatStickers setId="workspace" />}
 
-            <AnimatePresence>
-              {LAMP_ITEM && !lampOverride?.deleted && !lampOn && intro >= 2 && (
+                {/* Resting GEC companion books */}
+                {intro >= 2 && (
+                  <MatCompanionBooks activeBookId={activeBookId} onSelect={setActiveBookId} />
+                )}
+
                 <motion.div
-                  className="df-lamp-hint"
-                  aria-hidden="true"
-                  initial={reduce ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, transition: { duration: 0.22, ease: 'easeIn' } }}
-                  transition={reduce ? { duration: 0 } : { duration: 0.55, delay: 0.5 }}
+                  className="df-book-bloom"
+                  initial={false}
+                  animate={
+                    reduce
+                      ? { opacity: 1, y: 0, scale: 1 }
+                      : { opacity: intro >= 1 ? 1 : 0, y: intro >= 1 ? 0 : 12, scale: intro >= 1 ? 1 : 0.94 }
+                  }
+                  transition={reduce ? { duration: 0 } : STAGE_SPRING}
                 >
-                  <span className="df-lamp-hint-text">
-                    tap to
-                    <br />
-                    light it!
-                  </span>
-                  <svg className="df-lamp-hint-arrow" viewBox="0 0 96 56" aria-hidden="true">
-                    <path d="M7 8C22 29 47 39 78 34" />
-                    <path d="M69 24L80 34L66 42" />
-                  </svg>
+                  <DeskFolio
+                    cover={cover}
+                    pages={pages}
+                    backCover={backCover}
+                    closeOnEnd={true}
+                    pageWidth={PAGE_W}
+                    pageHeight={PAGE_H}
+                    style={coverVars(activeBook.coverTheme)}
+                    virtualizePages={true}
+                  />
                 </motion.div>
-              )}
-            </AnimatePresence>
-          </MatEditContext.Provider>
+
+                <AnimatePresence>
+                  {LAMP_ITEM && !lampOverride?.deleted && (
+                    <DraggableMatObject
+                      key="desk-lamp"
+                      objectKey="desk-lamp"
+                      editable
+                      kind="object"
+                      className="df-sticker-dragger df-lamp-dragger"
+                      title="Hold to edit lamp"
+                      style={{ width: scaleCssClamp(LAMP_ITEM.width, lampOverride?.scale ?? 1), ...LAMP_ITEM.pos }}
+                    >
+                      <DeskLamp
+                        item={{ ...LAMP_ITEM, rotate: LAMP_ITEM.rotate + (lampOverride?.rotate ?? 0) }}
+                        index={0}
+                        on={lampOn}
+                        onToggle={() => setLampOn((v) => !v)}
+                        placed
+                      />
+                    </DraggableMatObject>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                  {LAMP_ITEM && !lampOverride?.deleted && !lampOn && intro >= 2 && (
+                    <motion.div
+                      className="df-lamp-hint"
+                      aria-hidden="true"
+                      initial={reduce ? false : { opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={reduce ? { opacity: 0 } : { opacity: 0, transition: { duration: 0.22, ease: 'easeIn' } }}
+                      transition={reduce ? { duration: 0 } : { duration: 0.55, delay: 0.5 }}
+                    >
+                      <span className="df-lamp-hint-text">
+                        tap to
+                        <br />
+                        light it!
+                      </span>
+                      <svg className="df-lamp-hint-arrow" viewBox="0 0 96 56" aria-hidden="true">
+                        <path d="M7 8C22 29 47 39 78 34" />
+                        <path d="M69 24L80 34L66 42" />
+                      </svg>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </MatEditContext.Provider>
+            </div>
+          </div>
         </div>
       </section>
 
