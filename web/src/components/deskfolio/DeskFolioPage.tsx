@@ -2501,13 +2501,19 @@ export function DeskFolioPage() {
         const loop = () => {
           const dx = targetNorm.current.x - currentNorm.current.x
           const dy = targetNorm.current.y - currentNorm.current.y
-          currentNorm.current.x += dx * 0.12
-          currentNorm.current.y += dy * 0.12
-          setStageNorm({
-            x: Math.round(currentNorm.current.x * 1000) / 1000,
-            y: Math.round(currentNorm.current.y * 1000) / 1000,
-          })
-          if (Math.abs(dx) > 0.002 || Math.abs(dy) > 0.002) {
+          currentNorm.current.x += dx * 0.22
+          currentNorm.current.y += dy * 0.22
+          const roundedX = Math.round(currentNorm.current.x * 1000) / 1000
+          const roundedY = Math.round(currentNorm.current.y * 1000) / 1000
+
+          const stage = stageRef.current
+          if (stage) {
+            stage.style.setProperty('--mouse-x', String(roundedX))
+            stage.style.setProperty('--mouse-y', String(roundedY))
+          }
+
+          setStageNorm({ x: roundedX, y: roundedY })
+          if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
             rafRef.current = requestAnimationFrame(loop)
           } else {
             rafRef.current = null
@@ -2523,13 +2529,19 @@ export function DeskFolioPage() {
         const loop = () => {
           const dx = targetNorm.current.x - currentNorm.current.x
           const dy = targetNorm.current.y - currentNorm.current.y
-          currentNorm.current.x += dx * 0.1
-          currentNorm.current.y += dy * 0.1
-          setStageNorm({
-            x: Math.round(currentNorm.current.x * 1000) / 1000,
-            y: Math.round(currentNorm.current.y * 1000) / 1000,
-          })
-          if (Math.abs(dx) > 0.002 || Math.abs(dy) > 0.002) {
+          currentNorm.current.x += dx * 0.16
+          currentNorm.current.y += dy * 0.16
+          const roundedX = Math.round(currentNorm.current.x * 1000) / 1000
+          const roundedY = Math.round(currentNorm.current.y * 1000) / 1000
+
+          const stage = stageRef.current
+          if (stage) {
+            stage.style.setProperty('--mouse-x', String(roundedX))
+            stage.style.setProperty('--mouse-y', String(roundedY))
+          }
+
+          setStageNorm({ x: roundedX, y: roundedY })
+          if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
             rafRef.current = requestAnimationFrame(loop)
           } else {
             rafRef.current = null

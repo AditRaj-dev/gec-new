@@ -202,6 +202,11 @@
   container-type: inline-size; /* type scales via cqw */
 }
 
+.deskfolio-page-content:has(.gec-editorial-page),
+.deskfolio-page-content:has(.gec-book-cover) {
+  padding: 0;
+}
+
 /* fold shade, driven by flip angle */
 .deskfolio-fold {
   position: absolute;
