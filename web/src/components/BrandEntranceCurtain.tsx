@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { interpolate as interpolateSvgPath } from 'flubber';
 import {
   LOGO_VIEWBOX,
   LOGO_HEIGHT,
@@ -31,12 +32,7 @@ export interface BrandEntranceCurtainProps {
 }
 
 type Point = { x: number; y: number };
-type GPart = 'red' | 'yellow' | 'blue' | 'emblem';
-
-type PartMotion = Point & {
-  angle: number;
-  progress: number;
-};
+type BubblePart = 'red' | 'yellow' | 'blue';
 
 // --- Math & Spring Helpers ---
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
@@ -131,60 +127,77 @@ const computeSpring = (
   return 1 - Math.exp(-omega0 * t) * (1 + omega0 * t);
 };
 
-// Quadratic Bezier curves for assembly
-const quadraticPoint = (start: Point, control: Point, progress: number): Point => {
-  const inverse = 1 - progress;
-  return {
-    x: inverse * inverse * start.x + 2 * inverse * progress * control.x,
-    y: inverse * inverse * start.y + 2 * inverse * progress * control.y,
-  };
+const cubicInOut = (value: number) => {
+  const clamped = clamp01(value);
+  return clamped < 0.5
+    ? 4 * clamped * clamped * clamped
+    : 1 - Math.pow(-2 * clamped + 2, 3) / 2;
 };
 
-const quadraticDerivative = (
-  start: Point,
-  control: Point,
-  progress: number
-): Point => ({
-  x: 2 * (1 - progress) * (control.x - start.x) - 2 * progress * control.x,
-  y: 2 * (1 - progress) * (control.y - start.y) - 2 * progress * control.y,
+const circlePath = (center: Point, radius: number) =>
+  `M ${center.x - radius},${center.y} ` +
+  `a ${radius},${radius} 0 1,0 ${radius * 2},0 ` +
+  `a ${radius},${radius} 0 1,0 ${-radius * 2},0 Z`;
+
+const rotatePoint = (point: Point, angle: number): Point => ({
+  x: point.x * Math.cos(angle) - point.y * Math.sin(angle),
+  y: point.x * Math.sin(angle) + point.y * Math.cos(angle),
 });
 
-const CHROME_SNAP_CONFIG = {
-  delays: { red: 0, yellow: 8, blue: 16, emblem: 24 },
-  controls: {
-    red: { x: -420, y: 30 },
-    yellow: { x: 40, y: -260 },
-    blue: { x: 380, y: 70 },
-    emblem: { x: 20, y: 220 },
-  },
-  spring: { damping: 18, stiffness: 110, mass: 0.9 },
-  spins: { red: -45, yellow: 45, blue: 30, emblem: 360 },
-  trail: { maxLength: 360, width: 7, blur: 3.5, opacity: 0.55 },
+const BUBBLE_PARTS: BubblePart[] = ['red', 'yellow', 'blue'];
+
+const BUBBLE_FLAT_CONFIG = {
+  delays: { red: 0, yellow: 6, blue: 12 },
+  locks: { red: 144, yellow: 152, blue: 160 },
+  morphStarts: { red: 82, yellow: 90, blue: 98 },
+  turns: 1.5,
+  radialPower: 0.7,
 };
 
-const G_STARTS: Record<GPart, Point> = {
-  red: { x: -1100, y: -160 },
-  yellow: { x: 90, y: -880 },
-  blue: { x: 1050, y: 320 },
-  emblem: { x: -280, y: 840 },
+const BUBBLE_STARTS: Record<BubblePart, Point> = {
+  red: { x: -780, y: 78 },
+  yellow: { x: 0, y: -330 },
+  blue: { x: 720, y: 68 },
 };
 
-const getPartMotion = (part: GPart, progress: number): PartMotion => {
-  const p = clamp01(progress);
-  const point = quadraticPoint(G_STARTS[part], CHROME_SNAP_CONFIG.controls[part], p);
-  const derivative = quadraticDerivative(G_STARTS[part], CHROME_SNAP_CONFIG.controls[part], p);
-  return {
-    ...point,
-    angle: (Math.atan2(derivative.y, derivative.x) * 180) / Math.PI,
-    progress: p,
-  };
+const BUBBLE_RADII: Record<BubblePart, number> = {
+  red: 112,
+  yellow: 88,
+  blue: 66,
 };
+
+const BUBBLE_CENTERS: Record<BubblePart, Point> = {
+  red: LOGO_CENTERS.gRed,
+  yellow: LOGO_CENTERS.gYellow,
+  blue: LOGO_CENTERS.gBlue,
+};
+
+const BUBBLE_TARGETS: Record<BubblePart, string> = {
+  red: PATH_G_RED,
+  yellow: PATH_G_YELLOW,
+  blue: PATH_G_BLUE,
+};
+
+const BUBBLE_COLORS: Record<BubblePart, string> = {
+  red: LOGO_COLORS.red,
+  yellow: LOGO_COLORS.yellow,
+  blue: LOGO_COLORS.blue,
+};
+
+const DOCK_FLIGHT_DURATION_MS = 1100;
+const DOCK_SETTLE_HOLD_MS = 60;
+const DOCK_CROSSFADE_DURATION_MS = 220;
+const DOCK_CROSSFADE_START_MS =
+  DOCK_FLIGHT_DURATION_MS + DOCK_SETTLE_HOLD_MS;
+const DOCK_HANDOFF_DELAY_MS =
+  DOCK_CROSSFADE_START_MS + DOCK_CROSSFADE_DURATION_MS + 40;
+const DOCK_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
 /**
  * BrandEntranceCurtain
  *
- * Fullscreen brand entrance curtain with 72-frame smooth bulb glow ignition,
- * continuous color interpolation, theatrical split-curtain reveal, and
+ * Fullscreen Bubble Flat brand entrance with circle-to-path spiral morphing,
+ * a 72-frame bulb ignition, theatrical split-curtain reveal, and
  * hardware-accelerated FLIP docking into `#navbar-brand-logo`.
  */
 export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
@@ -205,6 +218,27 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
   const hasTriggeredDockRef = useRef(false);
   const rafRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
+
+  const bubbleMorphers = useMemo(
+    () => ({
+      red: interpolateSvgPath(
+        circlePath(BUBBLE_CENTERS.red, BUBBLE_RADII.red),
+        BUBBLE_TARGETS.red,
+        { maxSegmentLength: 4 }
+      ),
+      yellow: interpolateSvgPath(
+        circlePath(BUBBLE_CENTERS.yellow, BUBBLE_RADII.yellow),
+        BUBBLE_TARGETS.yellow,
+        { maxSegmentLength: 4 }
+      ),
+      blue: interpolateSvgPath(
+        circlePath(BUBBLE_CENTERS.blue, BUBBLE_RADII.blue),
+        BUBBLE_TARGETS.blue,
+        { maxSegmentLength: 4 }
+      ),
+    }),
+    []
+  );
 
   // 1. Session and Accessibility Guard
   const initCheck = useCallback(() => {
@@ -281,9 +315,22 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
       setFlightStyle({
         transform: `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scale})`,
         transformOrigin: 'top left',
-        transition: 'transform 650ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease 450ms',
+        opacity: 0,
+        transition: [
+          `transform ${DOCK_FLIGHT_DURATION_MS}ms ${DOCK_EASING}`,
+          `opacity ${DOCK_CROSSFADE_DURATION_MS}ms ease-out ${DOCK_CROSSFADE_START_MS}ms`,
+        ].join(', '),
         willChange: 'transform, opacity',
       });
+
+      targetLogo.style.transition =
+        `opacity ${DOCK_CROSSFADE_DURATION_MS}ms ease-out`;
+
+      // Crossfade only when the moving logo is already visually aligned with
+      // the navbar slot, avoiding a flash or a doubled logo during handoff.
+      setTimeout(() => {
+        targetLogo.style.opacity = '1';
+      }, DOCK_CROSSFADE_START_MS);
     }
 
     // Handshake: reveal navbar logo and clean unmount
@@ -291,12 +338,11 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
       const targetLogo = document.getElementById(targetSlotId);
       if (targetLogo) {
         targetLogo.style.opacity = '1';
-        targetLogo.style.transition = 'opacity 200ms ease-out';
       }
       setIsUnmounted(true);
       window.dispatchEvent(new CustomEvent('gec-intro-completed'));
       if (onComplete) onComplete();
-    }, 680);
+    }, DOCK_HANDOFF_DELAY_MS);
   }, [onComplete, targetSlotId]);
 
   // 3. 60FPS RAF Simulation
@@ -335,60 +381,88 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
     extrapolateRight: 'clamp',
   });
 
-  // 1. Assembled G Glide (Center X 655.1 -> 234.6, Offset 420.5px)
+  // 1. Bubble Flat G assembly and final lockup glide.
   const G_CENTER_OFFSET_X = LOGO_CENTERS.overall.x - LOGO_CENTERS.gGroup.x;
-  const gSlideRawProgress = computeSpring(frame - 76, { damping: 16, stiffness: 95, mass: 1.0 });
-  const gGroupOffsetX = interpolate(gSlideRawProgress, [0, 1], [G_CENTER_OFFSET_X, 0]);
+  const gSlideRawProgress = computeSpring(frame - 190, {
+    damping: 16,
+    stiffness: 95,
+    mass: 1.0,
+  });
+  const gSlideProgress = frame >= 225 ? 1 : gSlideRawProgress;
+  const gGroupOffsetX = interpolate(gSlideProgress, [0, 1], [G_CENTER_OFFSET_X, 0]);
 
-  // Parts progress
-  const gRedProgress = computeSpring(frame - CHROME_SNAP_CONFIG.delays.red, CHROME_SNAP_CONFIG.spring);
-  const gYellowProgress = computeSpring(frame - CHROME_SNAP_CONFIG.delays.yellow, CHROME_SNAP_CONFIG.spring);
-  const gBlueProgress = computeSpring(frame - CHROME_SNAP_CONFIG.delays.blue, CHROME_SNAP_CONFIG.spring);
-  const gEmblemProgress = computeSpring(frame - CHROME_SNAP_CONFIG.delays.emblem, CHROME_SNAP_CONFIG.spring);
+  const bubbleStates = BUBBLE_PARTS.map((part) => {
+    const travelProgress = clamp01(
+      (frame - BUBBLE_FLAT_CONFIG.delays[part]) /
+        (BUBBLE_FLAT_CONFIG.locks[part] - BUBBLE_FLAT_CONFIG.delays[part])
+    );
+    const easedTravel = cubicInOut(travelProgress);
+    const orbitAngle = easedTravel * BUBBLE_FLAT_CONFIG.turns * Math.PI * 2;
+    const rotatedStart = rotatePoint(BUBBLE_STARTS[part], orbitAngle);
+    const radiusScale = Math.pow(
+      1 - easedTravel,
+      BUBBLE_FLAT_CONFIG.radialPower
+    );
+    const morphProgress = clamp01(
+      (frame - BUBBLE_FLAT_CONFIG.morphStarts[part]) /
+        (BUBBLE_FLAT_CONFIG.locks[part] -
+          BUBBLE_FLAT_CONFIG.morphStarts[part])
+    );
+    const pathD =
+      morphProgress >= 1
+        ? BUBBLE_TARGETS[part]
+        : bubbleMorphers[part](cubicInOut(morphProgress));
 
-  const gRedMotion = getPartMotion('red', gRedProgress);
-  const gYellowMotion = getPartMotion('yellow', gYellowProgress);
-  const gBlueMotion = getPartMotion('blue', gBlueProgress);
-  const gEmblemMotion = getPartMotion('emblem', gEmblemProgress);
+    return {
+      part,
+      pathD,
+      x: rotatedStart.x * radiusScale,
+      y: rotatedStart.y * radiusScale,
+      opacity: interpolate(
+        frame,
+        [BUBBLE_FLAT_CONFIG.delays[part], BUBBLE_FLAT_CONFIG.delays[part] + 10],
+        [0, 1],
+        { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+      ),
+    };
+  });
 
-  const partOpacity = (del: number) =>
-    interpolate(frame, [del, del + 10], [0, 1], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    });
+  const emblemRawProgress = computeSpring(frame - 160, {
+    damping: 18,
+    stiffness: 105,
+    mass: 0.9,
+  });
+  const emblemProgress = frame >= 190 ? 1 : emblemRawProgress;
+  const emblemScale = interpolate(emblemProgress, [0, 1], [0.72, 1]);
+  const emblemOpacity = interpolate(frame, [160, 178], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
-  const partRotation = (part: GPart, motion: PartMotion) =>
-    (1 - motion.progress) *
-    (CHROME_SNAP_CONFIG.spins[part] + motion.angle * (part === 'emblem' ? 0.08 : 0.32));
-
-  const gRedScale = interpolate(gRedMotion.progress, [0, 1], [1.18, 1]);
-  const gYellowScale = interpolate(gYellowMotion.progress, [0, 1], [1.14, 1]);
-  const gBlueScale = interpolate(gBlueMotion.progress, [0, 1], [1.14, 1]);
-  const gEmblemScale = interpolate(gEmblemMotion.progress, [0, 1], [0.2, 1]);
-
-  // Saraswati Emblem Pulse Ring
-  const emblemPulse = computeSpring(frame - 66, { damping: 11, stiffness: 130 });
+  const emblemPulse = computeSpring(frame - 174, { damping: 11, stiffness: 130 });
   const pulseRadius = interpolate(emblemPulse, [0, 1], [0, 95]);
   const pulseOpacity = interpolate(emblemPulse, [0, 0.2, 1], [0, 0.85, 0], {
     extrapolateRight: 'clamp',
   });
 
   // 2. Letters E & C Arrival
-  const eStartFrame = 76;
+  const eStartFrame = 200;
   const eRawProgress = computeSpring(frame - eStartFrame, { damping: 17, stiffness: 110, mass: 1.0 });
-  const eX = interpolate(eRawProgress, [0, 1], [450, 0]);
-  const eY = interpolate(eRawProgress, [0, 1], [40, 0]);
-  const eScale = interpolate(eRawProgress, [0, 1], [0.85, 1]);
+  const eProgress = frame >= 245 ? 1 : eRawProgress;
+  const eX = interpolate(eProgress, [0, 1], [450, 0]);
+  const eY = interpolate(eProgress, [0, 1], [40, 0]);
+  const eScale = interpolate(eProgress, [0, 1], [0.85, 1]);
   const eOpacity = interpolate(frame, [eStartFrame, eStartFrame + 14], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  const cStartFrame = 84;
+  const cStartFrame = 210;
   const cRawProgress = computeSpring(frame - cStartFrame, { damping: 16, stiffness: 105, mass: 1.0 });
-  const cX = interpolate(cRawProgress, [0, 1], [600, 0]);
-  const cY = interpolate(cRawProgress, [0, 1], [-30, 0]);
-  const cScale = interpolate(cRawProgress, [0, 1], [0.8, 1]);
+  const cProgress = frame >= 245 ? 1 : cRawProgress;
+  const cX = interpolate(cProgress, [0, 1], [600, 0]);
+  const cY = interpolate(cProgress, [0, 1], [-30, 0]);
+  const cScale = interpolate(cProgress, [0, 1], [0.8, 1]);
   const cOpacity = interpolate(frame, [cStartFrame, cStartFrame + 14], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -408,7 +482,8 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
   const filamentFlash =
     bulbSparkFrame < 0 ? 0 : bulbSparkFrame <= 72 ? bubbleAnimatedGlow : 0.3;
   const visibleFilamentFlash = filamentFlash * (1 - rawLogoProgress);
-  const cavityIllumination = visibleFilamentFlash;
+  const cavityIllumination =
+    (0.12 + filamentFlash * 0.88) * (1 - rawLogoProgress);
   const filamentStrokeWidth = 0.75 + visibleFilamentFlash * 1.1;
 
   const filamentStroke =
@@ -424,7 +499,8 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
   // 4. Subtitle Arrival
   const subtitleStartFrame = 245;
   const subtitleRawProgress = computeSpring(frame - subtitleStartFrame, { damping: 20, stiffness: 95 });
-  const subtitleY = interpolate(subtitleRawProgress, [0, 1], [25, 0]);
+  const subtitleProgress = frame >= 300 ? 1 : subtitleRawProgress;
+  const subtitleY = interpolate(subtitleProgress, [0, 1], [25, 0]);
   const subtitleOpacity = interpolate(frame, [subtitleStartFrame, subtitleStartFrame + 25], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -561,41 +637,16 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
                 transform: `translateX(${gGroupOffsetX}px)`,
               }}
             >
-              {/* Red Outer Crescent */}
-              <g
-                id="g-part-red"
-                style={{
-                  transformOrigin: `${LOGO_CENTERS.gRed.x}px ${LOGO_CENTERS.gRed.y}px`,
-                  transform: `translate(${gRedMotion.x}px, ${gRedMotion.y}px) rotate(${partRotation('red', gRedMotion)}deg) scale(${gRedScale})`,
-                  opacity: partOpacity(CHROME_SNAP_CONFIG.delays.red),
-                }}
-              >
-                <path d={PATH_G_RED} fill={LOGO_COLORS.red} />
-              </g>
-
-              {/* Yellow Inner Crescent */}
-              <g
-                id="g-part-yellow"
-                style={{
-                  transformOrigin: `${LOGO_CENTERS.gYellow.x}px ${LOGO_CENTERS.gYellow.y}px`,
-                  transform: `translate(${gYellowMotion.x}px, ${gYellowMotion.y}px) rotate(${partRotation('yellow', gYellowMotion)}deg) scale(${gYellowScale})`,
-                  opacity: partOpacity(CHROME_SNAP_CONFIG.delays.yellow),
-                }}
-              >
-                <path d={PATH_G_YELLOW} fill={LOGO_COLORS.yellow} />
-              </g>
-
-              {/* Blue Innermost Crescent */}
-              <g
-                id="g-part-blue"
-                style={{
-                  transformOrigin: `${LOGO_CENTERS.gBlue.x}px ${LOGO_CENTERS.gBlue.y}px`,
-                  transform: `translate(${gBlueMotion.x}px, ${gBlueMotion.y}px) rotate(${partRotation('blue', gBlueMotion)}deg) scale(${gBlueScale})`,
-                  opacity: partOpacity(CHROME_SNAP_CONFIG.delays.blue),
-                }}
-              >
-                <path d={PATH_G_BLUE} fill={LOGO_COLORS.blue} />
-              </g>
+              {bubbleStates.map(({ part, pathD, x, y, opacity }) => (
+                <g
+                  key={part}
+                  id={`g-bubble-${part}`}
+                  transform={`translate(${x} ${y})`}
+                  opacity={opacity}
+                >
+                  <path d={pathD} fill={BUBBLE_COLORS[part]} />
+                </g>
+              ))}
 
               {/* Saraswati Pulse Ring */}
               {pulseOpacity > 0 && (
@@ -615,8 +666,8 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
                 id="g-part-emblem"
                 style={{
                   transformOrigin: `${LOGO_CENTERS.gEmblem.x}px ${LOGO_CENTERS.gEmblem.y}px`,
-                  transform: `translate(${gEmblemMotion.x}px, ${gEmblemMotion.y}px) rotate(${partRotation('emblem', gEmblemMotion)}deg) scale(${gEmblemScale})`,
-                  opacity: partOpacity(CHROME_SNAP_CONFIG.delays.emblem),
+                  transform: `scale(${emblemScale})`,
+                  opacity: emblemOpacity,
                 }}
               >
                 {PATHS_G_EMBLEM.map((pathD, idx) => (
@@ -660,7 +711,6 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
                   cy="285"
                   r="132"
                   fill="url(#curtainBulbGlow)"
-                  opacity={visibleFilamentFlash}
                   style={{ mixBlendMode: 'screen' }}
                 />
               </g>

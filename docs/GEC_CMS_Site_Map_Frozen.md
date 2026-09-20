@@ -24,6 +24,7 @@ GEC CMS
 │
 ├── DASHBOARD
 │   ├── Overview
+│   ├── Hero Spotlight
 │   ├── Recent Activity
 │   ├── Pending Actions
 │   ├── Content Status
@@ -131,6 +132,21 @@ GEC CMS
 ---
 
 # 3. CMS Ownership Rules
+
+## Hero Spotlight (Dashboard)
+
+The **Hero Spotlight** functions as the live editorial billboard for the homepage hero, managed directly under Dashboard.
+
+Primary ownership: **Core Team Admin / Super Admin**.
+
+Key capabilities:
+- Configure live campaigns (P0–P2 priority gating)
+- Manage ground-execution lifecycle states (Announcement, Applications Open, Urgency, Live, Completed, Stories)
+- Upload/link Desktop (16:9) and Mobile (9:16) video poster assets and static fallbacks
+- Schedule start and end expiration timestamps with automatic fallback to the Evergreen GEC Brand state
+- Re-use initiative and event records without duplicating core content
+
+---
 
 ## Teams
 

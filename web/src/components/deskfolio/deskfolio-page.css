@@ -1,0 +1,1498 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: min(100vw, 640px);
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 2.5rem;
+  /* keep effects that spill past their box (hologram particles) from ever
+     adding a horizontal scrollbar; vertical spill still shows */
+  overflow-x: clip;
+}
+
+.page.page-bleed {
+  overflow-x: visible;
+}
+
+.page.page-deskfolio {
+  max-width: none;
+  /* 100% of the content box, NOT 100vw — 100vw includes the vertical scrollbar's width, which made the
+     full-bleed page ~10px wider than the visible area and forced a horizontal scrollbar */
+  width: 100%;
+  padding: 0 0 2.5rem;
+}
+
+.page-deskfolio > .tagline {
+  width: min(640px, calc(100vw - 3rem));
+  margin: 0 auto 1rem;
+}
+
+/* "how to use" demo — a self-contained LIGHT card sitting on the dark write-up. The premium-iOS feel
+   in the reference lives on a light surface with soft, diffuse shadows, so this whole block becomes
+   that surface (like the component's own pickers). The screenshot is an EMBEDDED media tile — it fills
+   its rounded well flush, held by a hairline + the faintest lift, not popped out on a harsh shadow.
+   Text is the reference's calm two-tone: near-black emphasis on a soft-grey body, generous and airy. */
+.df-howto {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2.25rem 0;
+  padding: 1.35rem;
+  border-radius: 26px;
+  background: #f5f4f1;
+  /* soft, diffuse depth (the iOS signal) + a hair of top sheen so it reads as a real lit surface */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 22px 44px -24px rgba(0, 0, 0, 0.55),
+    0 5px 14px -8px rgba(0, 0, 0, 0.28);
+}
+/* the rounded well the screenshot is set into — fills flush (no white border around the art), with a
+   hairline edge and the gentlest lift so it sits IN the card rather than floating on top of it */
+.df-howto-frame {
+  flex: none;
+  width: clamp(156px, 42%, 240px);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 8px 18px -12px rgba(0, 0, 0, 0.22);
+}
+.df-howto-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.df-howto-text {
+  flex: 1;
+  min-width: 0;
+}
+.df-howto-eyebrow {
+  display: block;
+  margin-bottom: 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a9aa0;
+}
+.df-howto-text p {
+  margin: 0 0 0.62rem;
+  color: #57565c; /* soft grey body, like the reference */
+  font-size: 0.95rem;
+  line-height: 1.62;
+  letter-spacing: -0.002em; /* a touch of optical tightening for the premium read */
+}
+.df-howto-text p:last-child {
+  margin: 0;
+}
+.df-howto-text strong {
+  font-weight: 600;
+  color: #1c1c1e; /* near-black emphasis — the eye lands on the actions */
+}
+@media (max-width: 620px) {
+  .df-howto {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.1rem;
+    padding: 1.1rem;
+  }
+  .df-howto-frame {
+    width: 100%;
+  }
+}
+
+.page-deskfolio > .tagline.deskfolio-writeup {
+  width: min(640px, calc(100vw - 3rem));
+  margin: clamp(1.35rem, 3vw, 2rem) auto 3rem;
+}
+
+.deskfolio-writeup {
+  /* the how-to desk surface — only a whisper above the page so it blends in rather than popping out
+     as a panel (minimal, like the reference); paired with no hard edge. One knob to retheme. */
+  --df-desk: #1b1814;
+  content-visibility: auto;
+  /* `auto` caches the real rendered height after first reveal, so the 760px estimate only applies once
+     (avoids a scroll-shift in the content below when this section first paints) */
+  contain-intrinsic-size: auto 760px;
+  color: #f5f5f7;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Inter',
+    'Segoe UI',
+    system-ui,
+    sans-serif;
+}
+
+.df-writeup-intro {
+  max-width: 640px;
+  margin: 0 0 1.2rem;
+}
+
+/* iOS branding capsule: a frosted-glass tag, not a flat grey chip. Crisp hairline ring + a hair of
+   top sheen, semibold caps tracked out, and a touch more bottom padding to optically centre the
+   uppercase letters (caps sit high in the line box). */
+/* DeskFolio is the product NAME — so it reads as the title, matching the house convention (home
+   cards: name as the prominent heading, description as the small copy beneath). Not a pill. */
+.df-writeup-name {
+  margin: 0 0 0.42rem;
+  color: #f5f5f7;
+  font-size: clamp(2.25rem, 5vw, 2.85rem);
+  font-weight: 780;
+  line-height: 0.96;
+  letter-spacing: -0.018em;
+}
+
+/* the descriptive headline, now the subtitle under the DeskFolio name */
+.df-writeup-tagline {
+  max-width: 640px;
+  margin: 0;
+  color: rgba(245, 245, 247, 0.86);
+  font-size: clamp(1.2rem, 2.8vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.008em;
+}
+
+.df-writeup-copy {
+  max-width: 640px;
+  margin: 0.92rem 0 0;
+  color: rgba(245, 245, 247, 0.68);
+  font-size: clamp(1rem, 2.2vw, 1.12rem);
+  line-height: 1.58;
+  letter-spacing: -0.004em;
+}
+
+/* a casual throwaway quip — reads one notch quieter and tucked under the line above */
+.df-writeup-aside {
+  margin-top: 0.45rem;
+  color: rgba(245, 245, 247, 0.5);
+}
+
+.df-writeup-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.58rem 0.72rem;
+  margin: 1.65rem 0 0;
+}
+
+/* minimal tinted pills: a faint wash of the hue + a hairline of it + a bright label, so they read as
+   quiet ghost chips on the dark page rather than loud pastel fills */
+.df-writeup-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.42rem 0.92rem 0.44rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.002em;
+}
+
+.df-writeup-pill--orange {
+  color: #e6a07c;
+  background: rgba(230, 160, 124, 0.09);
+  box-shadow: inset 0 0 0 1px rgba(230, 160, 124, 0.22);
+}
+
+.df-writeup-pill--green {
+  color: #84c890;
+  background: rgba(132, 200, 144, 0.09);
+  box-shadow: inset 0 0 0 1px rgba(132, 200, 144, 0.22);
+}
+
+.df-writeup-pill--blue {
+  color: #9db2f5;
+  background: rgba(157, 178, 245, 0.09);
+  box-shadow: inset 0 0 0 1px rgba(157, 178, 245, 0.22);
+}
+
+.deskfolio-writeup .df-howto {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.35rem, 4vw, 1.8rem);
+  margin: 1.85rem 0 1.05rem;
+  padding: 0;
+  border-radius: 0;
+  color: #f5f5f7;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Flush, concentric iOS media tile: the screenshot fills the rounded well edge-to-edge (the wood
+   bleeds to all four sides), the frame clips the corners, and one tight shadow lifts it off the dark
+   page. No cream tray, no inner radius, no aspect-ratio crop — the image itself defines the height,
+   so the composed shot (menu + bear + plant) is never cropped as the column width drifts. */
+/* iOS-style container: the screenshot sits INSIDE an elevated rounded card with an even inset all
+   around — concentric corners (inner radius = outer 30 − 14px padding = 16), a hairline edge, a hair
+   of top sheen, and one soft shadow lifting the card off the dark page. The shot keeps its own
+   matching radius and a gentle seat shadow, so it reads as a framed screenshot, evenly centred in
+   its surface — not a bled-out crop. */
+/* The how-to art is now vector, not a baked screenshot: the bear sticker (its own SVG) + a static
+   copy of the live edit menu — reusing the real LbResize/LbReplace/LbTrash icons — on a themeable
+   "desk". The desk is a single knob, var(--df-desk), so it follows the theme instead of a fixed wood
+   photo, and the whole scene scales crisply. */
+.deskfolio-writeup .df-howto-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 22px;
+  background: var(--df-desk, #1b1814);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.deskfolio-writeup .df-howto-text {
+  padding-top: 0.15rem;
+}
+
+.deskfolio-writeup .df-howto-bear {
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+  width: 55%;
+  height: auto;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.28));
+}
+
+/* a compact static copy of the iOS edit menu, sitting just ABOVE the sticker (not over its face) */
+.deskfolio-writeup .df-howto-menu {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  width: 47%;
+  padding: 5px;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.16),
+    0 14px 30px -12px rgba(0, 0, 0, 0.45);
+}
+
+.deskfolio-writeup .df-howto-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.42rem 0.55rem;
+  border-radius: 9px;
+  color: #1c1c1e;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.deskfolio-writeup .df-howto-menu-row--danger {
+  color: #e0533a;
+}
+
+.deskfolio-writeup .df-howto-menu-ico {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+/* the pointer that "long-pressed" the sticker to bloom the menu — white so it reads on the dark desk,
+   sitting just off the bear (white would vanish over the cream sticker) with its tip aimed up-left at
+   it; a soft shadow lifts it off the surface */
+.deskfolio-writeup .df-howto-cursor {
+  position: absolute;
+  right: 12%;
+  bottom: 14%;
+  width: 9%;
+  height: auto;
+  color: #fff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+  pointer-events: none;
+}
+
+.deskfolio-writeup .df-howto-eyebrow {
+  margin-bottom: 0.72rem;
+  color: rgba(245, 245, 247, 0.5);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.deskfolio-writeup .df-howto-text p {
+  max-width: 36rem;
+  margin: 0 0 1.08rem;
+  color: rgba(245, 245, 247, 0.72);
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.56;
+  letter-spacing: -0.003em;
+}
+
+.deskfolio-writeup .df-howto-text strong {
+  color: #f5f5f7;
+  font-weight: 720;
+}
+
+.df-reference-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+/* a quiet uppercase label, matching the "HOW TO USE" eyebrow — the pills sit below it */
+.df-reference-title {
+  color: rgba(245, 245, 247, 0.5);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.df-reference-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.df-reference-strip a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  color: rgba(245, 245, 247, 0.74);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.004em;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.df-reference-strip a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+@media (max-width: 620px) {
+  .page-deskfolio > .tagline.deskfolio-writeup {
+    width: min(100% - 2rem, 640px);
+    margin: 1.25rem auto 2.4rem;
+  }
+
+  .df-writeup-name {
+    font-size: 2.18rem;
+    line-height: 1;
+  }
+
+  .df-writeup-tagline {
+    font-size: 1.18rem;
+    line-height: 1.3;
+  }
+
+  .df-writeup-copy {
+    font-size: 1rem;
+    line-height: 1.56;
+  }
+
+  .deskfolio-writeup .df-howto {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 1.6rem;
+  }
+
+  .deskfolio-writeup .df-howto-text p {
+    font-size: 0.98rem;
+    line-height: 1.58;
+  }
+}
+
+.deskfolio-live {
+  margin-bottom: 0;
+}
+
+/* DeskFolio breaks out of the 640px column and sits on a self-healing cutting mat. The book sizes
+   itself in px; this widens + centres the stage and paints the green grid surface under it. */
+.deskfolio-demo-stage {
+  position: relative; /* anchor for stickers / extra components placed on the mat */
+  isolation: isolate;
+  box-sizing: border-box;
+  width: min(1800px, 98vw);
+  margin-left: 50%;
+  transform: translateX(-50%) scale(var(--df-stage-scale, 1));
+  transform-origin: top center;
+  padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 4rem);
+  border-radius: 20px;
+  /* the mat: a deep green base with a fine grid and bolder major lines, plus a printed edge band */
+  background-color: #2f6f5b;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.11) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.11) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 28px),
+    radial-gradient(130% 120% at 50% 0%, #347a64 0%, #285446 70%, #20473b 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 0 0 9px rgba(255, 255, 255, 0.05),
+    inset 0 2px 40px rgba(0, 0, 0, 0.28),
+    0 30px 60px -30px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.page-deskfolio .footer {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  /* phones + small tablets: the desk canvas goes full-bleed and fills the screen (no dead space), laid
+     out as a column — controls on top, the one-page book filling the rest. (Breakpoint raised from 560
+     to 760 so narrow/tablet windows get the clean one-page reader instead of a cramped desktop desk.) */
+  .page.page-deskfolio {
+    padding: 0;
+  }
+  .deskfolio-demo-stage {
+    width: 100%; /* full-bleed via the (max-width:none) page, but NOT 100vw — that ignores a scrollbar
+                    and would push the centred book off to one side */
+    min-height: 100svh;
+    margin-left: 0;
+    transform: none; /* one-page book sizes itself via CSS; no stage scaling on mobile */
+    border-radius: 0;
+    padding: 12px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* the book wrapper fills the space below the controls and centres the book in it — but with a bottom
+     band reserved (~20vh) for the desk items (iPod + stickers) that sit along the bottom. So the book
+     optically centres in the OPEN space between the controls and the desk clutter, not the raw canvas,
+     and because the reserve is in vh it holds the same on every device. */
+  .df-book-bloom--mobile {
+    flex: 1 1 auto;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 26vh;
+    min-height: 0;
+  }
+}
+
+/* ==========================================================================
+   GEC DeskFolio: Enhanced Mat Themes
+   ========================================================================== */
+
+/* 1. GEC Crimson Mat: gold technical grid lines + dual gold foil border trim */
+.deskfolio-demo-stage.df-mat-crimson,
+.deskfolio-demo-stage[data-theme='gec-crimson'] {
+  background-color: #8A0008;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(251, 202, 5, 0.16) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(90deg, rgba(251, 202, 5, 0.16) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(0deg, rgba(251, 202, 5, 0.07) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(251, 202, 5, 0.07) 0 1px, transparent 1px 28px),
+    radial-gradient(130% 120% at 50% 0%, #A3040F 0%, #780209 65%, #4A0105 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(251, 202, 5, 0.45),
+    inset 0 0 0 4px rgba(138, 0, 8, 0.92),
+    inset 0 0 0 6px rgba(251, 202, 5, 0.38),
+    inset 0 0 0 14px rgba(251, 202, 5, 0.08),
+    inset 0 2px 48px rgba(0, 0, 0, 0.55),
+    0 32px 64px -28px rgba(0, 0, 0, 0.65);
+}
+
+/* 2. GEC Obsidian Mat: amber drafting grid */
+.deskfolio-demo-stage.df-mat-obsidian,
+.deskfolio-demo-stage[data-theme='gec-obsidian'] {
+  background-color: #121215;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(245, 158, 11, 0.15) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(0deg, rgba(245, 158, 11, 0.06) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(245, 158, 11, 0.06) 0 1px, transparent 1px 28px),
+    radial-gradient(130% 120% at 50% 0%, #22222a 0%, #15151a 65%, #0b0b0e 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 158, 11, 0.4),
+    inset 0 0 0 4px rgba(20, 20, 24, 0.92),
+    inset 0 0 0 6px rgba(245, 158, 11, 0.22),
+    inset 0 2px 48px rgba(0, 0, 0, 0.7),
+    0 32px 64px -28px rgba(0, 0, 0, 0.75);
+}
+
+/* 3. GEC Blueprint Mat: precision grid */
+.deskfolio-demo-stage.df-mat-blueprint,
+.deskfolio-demo-stage[data-theme='gec-blueprint'] {
+  background-color: #0B2545;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(125, 211, 252, 0.18) 0 1px, transparent 1px 96px),
+    repeating-linear-gradient(90deg, rgba(125, 211, 252, 0.18) 0 1px, transparent 1px 96px),
+    repeating-linear-gradient(0deg, rgba(125, 211, 252, 0.07) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(125, 211, 252, 0.07) 0 1px, transparent 1px 24px),
+    radial-gradient(130% 120% at 50% 0%, #133D6E 0%, #0C274A 65%, #06162C 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(125, 211, 252, 0.45),
+    inset 0 0 0 4px rgba(11, 37, 69, 0.92),
+    inset 0 0 0 6px rgba(125, 211, 252, 0.25),
+    inset 0 2px 48px rgba(0, 0, 0, 0.6),
+    0 32px 64px -28px rgba(0, 0, 0, 0.65);
+}
+
+/* 4. GEC Parchment Mat: crimson rules */
+.deskfolio-demo-stage.df-mat-parchment,
+.deskfolio-demo-stage[data-theme='gec-parchment'] {
+  background-color: #F4EEDF;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(163, 4, 15, 0.12) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(90deg, rgba(163, 4, 15, 0.12) 0 1px, transparent 1px 112px),
+    repeating-linear-gradient(0deg, rgba(163, 4, 15, 0.05) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(163, 4, 15, 0.05) 0 1px, transparent 1px 28px),
+    radial-gradient(130% 120% at 50% 0%, #FAF5EB 0%, #EEE4D0 70%, #DECFA9 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(163, 4, 15, 0.35),
+    inset 0 0 0 4px rgba(244, 238, 223, 0.92),
+    inset 0 0 0 6px rgba(163, 4, 15, 0.2),
+    inset 0 2px 42px rgba(85, 60, 40, 0.22),
+    0 30px 60px -28px rgba(70, 48, 30, 0.4);
+}
+
+/* ========================================================================== 
+   Companion books scattered around the active volume
+   ========================================================================== */
+
+.df-mat-companion-shelf {
+  position: absolute;
+  inset: clamp(1.25rem, 3vw, 3.5rem);
+  z-index: 1;
+  perspective: 1400px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.df-companion-shelf-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 4px;
+}
+
+.df-shelf-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fbca05;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.df-shelf-crest {
+  font-size: 0.75rem;
+  color: #fbca05;
+  filter: drop-shadow(0 0 4px rgba(251, 202, 5, 0.6));
+}
+
+.df-shelf-caption {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.df-companion-books-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  perspective: 1400px;
+}
+
+/* 3D Resting Book: isometric orientation, physical spine, foil embossing */
+.df-resting-book {
+  position: absolute;
+  left: var(--book-x, 5%);
+  top: var(--book-y, 10%);
+  width: clamp(135px, 12vw, 165px);
+  height: clamp(170px, 15.5vw, 215px);
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  pointer-events: auto;
+  transform: rotate(var(--book-rotate, 0deg)) scale(var(--book-scale, 1));
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.df-resting-book:focus-visible {
+  outline: 3px solid #fbca05;
+  outline-offset: 7px;
+}
+
+/* Realistic drop shadow on the desk mat */
+.df-resting-book-shadow {
+  position: absolute;
+  inset: 4px;
+  border-radius: 8px;
+  background: radial-gradient(ellipse at 45% 55%, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 75%);
+  filter: blur(12px);
+  transform: rotateX(32deg) rotateY(-14deg) rotateZ(8deg) translateY(18px) translateZ(-16px);
+  transition: transform 0.45s ease, filter 0.45s ease, opacity 0.45s ease;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* 3D Isometric perspective carrier */
+.df-resting-book-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(32deg) rotateY(-14deg) rotateZ(8deg);
+  transition: transform 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+/* Hover lift & tilt effect */
+.df-resting-book:hover .df-resting-book-3d,
+.df-resting-book:focus-visible .df-resting-book-3d {
+  transform: rotateX(20deg) rotateY(-6deg) rotateZ(3deg) translateY(-20px) translateZ(32px) scale(1.06);
+}
+
+.df-resting-book:hover .df-resting-book-shadow,
+.df-resting-book:focus-visible .df-resting-book-shadow {
+  transform: rotateX(20deg) rotateY(-6deg) rotateZ(3deg) translateY(38px) translateZ(-30px) scale(1.2);
+  filter: blur(22px);
+  opacity: 0.95;
+}
+
+/* Spine thickness & physical details */
+.df-resting-book-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 18px;
+  transform-origin: left center;
+  transform: rotateY(-90deg);
+  background: var(--book-spine-bg, #5C0106);
+  box-shadow:
+    inset -2px 0 5px rgba(0, 0, 0, 0.6),
+    inset 1px 0 2px rgba(255, 255, 255, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  overflow: hidden;
+}
+
+.df-spine-rib {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.5), #fbca05 50%, rgba(0, 0, 0, 0.5));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.df-spine-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.58rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  color: #fbca05;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.df-spine-logo {
+  font-size: 0.55rem;
+  font-weight: 850;
+  color: #fbca05;
+  letter-spacing: 0.06em;
+}
+
+/* Stacked page edge thickness */
+.df-resting-book-pages-right {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  right: -8px;
+  width: 10px;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+  background: repeating-linear-gradient(
+    to bottom,
+    #fffdf8 0px,
+    #f2ebd9 1px,
+    #faf4e6 2px,
+    #e7dbbf 3px
+  );
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.df-resting-book-pages-bottom {
+  position: absolute;
+  bottom: -8px;
+  left: 2px;
+  right: 2px;
+  height: 10px;
+  transform-origin: top center;
+  transform: rotateX(-90deg);
+  background: repeating-linear-gradient(
+    to right,
+    #fffdf8 0px,
+    #f2ebd9 1px,
+    #faf4e6 2px,
+    #e7dbbf 3px
+  );
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Hardcover face with linen texture */
+.df-resting-book-cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px 9px 9px 3px;
+  background: var(--book-cover-bg, #80030B);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    inset 2px 0 6px rgba(0, 0, 0, 0.4);
+  transform: translateZ(9px);
+  overflow: hidden;
+  padding: clamp(9px, 1vw, 12px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Linen weave cover texture */
+.df-resting-book-texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 1.5px, transparent 1.5px 3.5px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 0 1.5px, transparent 1.5px 3.5px),
+    radial-gradient(130% 90% at 20% 15%, rgba(255, 255, 255, 0.22), transparent 55%);
+}
+
+/* Gold foil embossed border rules */
+.df-resting-book-foil-trim {
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(251, 202, 5, 0.7);
+  border-radius: 3px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(251, 202, 5, 0.35);
+}
+
+.df-resting-book-foil-trim::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 0.5px dashed rgba(251, 202, 5, 0.45);
+}
+
+.df-resting-book-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.df-resting-book-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.55rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1a1500;
+  background: linear-gradient(135deg, #FFF6D6 0%, #FBCA05 100%);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.df-resting-book-pin {
+  color: #fbca05;
+  font-size: 0.65rem;
+  filter: drop-shadow(0 0 2px rgba(251, 202, 5, 0.6));
+}
+
+.df-resting-book-body {
+  position: relative;
+  z-index: 1;
+  margin: auto 0;
+}
+
+.df-resting-book-title {
+  font-size: clamp(0.72rem, 0.95vw, 0.88rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffe082;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+  line-height: 1.25;
+  margin: 0 0 3px;
+}
+
+.df-resting-book-sub {
+  font-size: clamp(0.56rem, 0.72vw, 0.65rem);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.35;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.df-resting-book-cta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #fbca05;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  padding-top: 6px;
+  border-top: 1px solid rgba(251, 202, 5, 0.25);
+  margin-top: 4px;
+}
+
+.df-resting-book-arrow {
+  transition: transform 0.25s ease;
+}
+
+.df-resting-book:hover .df-resting-book-arrow {
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   GEC Cover & Internal FlipBook Page Styles
+   ========================================================================== */
+
+.df-gec-cover {
+  width: 100%;
+  height: 100%;
+  padding: 12% 10% 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.df-gec-cover--crimson {
+  background:
+    radial-gradient(120% 90% at 50% 20%, rgba(255, 255, 255, 0.14) 0%, transparent 60%),
+    linear-gradient(155deg, #A3040F 0%, #7F030B 55%, #520106 100%);
+  color: #FFF6D6;
+}
+
+.df-gec-cover--obsidian {
+  background:
+    radial-gradient(120% 90% at 50% 20%, rgba(255, 255, 255, 0.12) 0%, transparent 60%),
+    linear-gradient(155deg, #183B63 0%, #0E294B 55%, #07182E 100%);
+  color: #F0F9FF;
+}
+
+.df-gec-cover--amber {
+  background:
+    radial-gradient(120% 90% at 50% 20%, rgba(255, 255, 255, 0.14) 0%, transparent 60%),
+    linear-gradient(155deg, #B45309 0%, #8A3B08 55%, #542203 100%);
+  color: #FFFBEB;
+}
+
+.df-gec-cover--emerald {
+  background:
+    radial-gradient(120% 90% at 50% 20%, rgba(255, 255, 255, 0.12) 0%, transparent 60%),
+    linear-gradient(155deg, #1B5437 0%, #123A26 55%, #0A2015 100%);
+  color: #F0FDF4;
+}
+
+.df-cover-foil-border {
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid #fbca05;
+  border-radius: 4px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(251, 202, 5, 0.4);
+}
+
+.df-cover-foil-border.df-foil-silver {
+  border-color: #e2e8f0;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(226, 232, 240, 0.4);
+}
+
+.df-cover-crest-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.df-cover-crest-seal {
+  width: 38px;
+  height: 38px;
+  color: #fbca05;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.df-cover-crest-seal.df-crest-silver {
+  color: #e2e8f0;
+}
+
+.df-cover-crest-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.df-cover-institution {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  opacity: 0.9;
+}
+
+.df-cover-org {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+
+.df-cover-centerpiece {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: auto 0;
+}
+
+.df-cover-series-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(251, 202, 5, 0.4);
+  color: #fbca05;
+}
+
+.df-cover-headline {
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1.12;
+  margin: 0;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #FFFDF0 0%, #FBCA05 50%, #FFE082 75%, #D99B00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.df-cover-byline {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.df-cover-divider-flourish {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 70%;
+  margin-top: 4px;
+}
+
+.df-flourish-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #fbca05, transparent);
+}
+
+.df-flourish-diamond {
+  color: #fbca05;
+  font-size: 0.75rem;
+}
+
+.df-cover-foot-badge {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.df-alliance-label {
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+.df-alliance-partner {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fbca05;
+}
+
+.df-gec-backcover {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10%;
+  background: linear-gradient(155deg, #7F030B 0%, #520106 100%);
+  color: #FFF6D6;
+}
+
+.df-backcover-seal {
+  font-size: 1.5rem;
+  color: #fbca05;
+  margin-bottom: 8px;
+}
+
+.df-backcover-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.65rem;
+  opacity: 0.75;
+  margin-top: 14px;
+}
+
+/* GEC Inner FlipBook Pages */
+.df-gec-page {
+  padding: 8% 8% 7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.df-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(163, 4, 15, 0.15);
+  padding-bottom: 4px;
+}
+
+.df-page-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  color: #A3040F;
+}
+
+.df-page-badge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(163, 4, 15, 0.08);
+  color: #A3040F;
+}
+
+.df-page-title {
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 4px 0 2px;
+  color: #1a1a1c;
+}
+
+.df-page-subtitle {
+  font-size: clamp(0.72rem, 1vw, 0.8rem);
+  color: #6b6b72;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+
+.df-gec-stat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(163, 4, 15, 0.05);
+  border: 1px solid rgba(163, 4, 15, 0.15);
+  margin-bottom: 8px;
+}
+
+.df-stat-card--navy {
+  background: rgba(14, 41, 75, 0.06);
+  border-color: rgba(14, 41, 75, 0.18);
+}
+
+.df-stat-card--amber {
+  background: rgba(180, 83, 9, 0.06);
+  border-color: rgba(180, 83, 9, 0.18);
+}
+
+.df-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.df-stat-number {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #A3040F;
+  line-height: 1.1;
+}
+
+.df-stat-card--navy .df-stat-number {
+  color: #0E294B;
+}
+
+.df-stat-card--amber .df-stat-number {
+  color: #B45309;
+}
+
+.df-stat-label {
+  font-size: 0.62rem;
+  color: #55555c;
+  font-weight: 600;
+}
+
+.df-stat-div {
+  width: 1px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.df-gec-card {
+  padding: 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #38383e;
+}
+
+.df-card-text {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.48;
+}
+
+.df-page-footer-note {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #71717a;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  padding-top: 5px;
+}
+
+.df-bullet-mark {
+  color: #A3040F;
+  font-size: 0.7rem;
+}
+
+/* Timelines */
+.df-timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.df-timeline-step {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.df-step-num {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #A3040F;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(163, 4, 15, 0.08);
+  white-space: nowrap;
+}
+
+.df-step-content {
+  flex: 1;
+}
+
+.df-step-title {
+  display: block;
+  font-size: 0.72rem;
+  color: #18181b;
+  line-height: 1.25;
+}
+
+.df-step-desc {
+  font-size: 0.64rem;
+  color: #52525b;
+  margin: 2px 0 0;
+  line-height: 1.35;
+}
+
+/* Mentor Card */
+.df-gec-card--featured {
+  border-left: 3px solid #fbca05;
+}
+
+.df-mentor-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.df-mentor-badge {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #A16207;
+}
+
+.df-mentor-name {
+  font-size: 0.92rem;
+  color: #111114;
+}
+
+.df-mentor-role {
+  font-size: 0.68rem;
+  color: #71717a;
+  margin-bottom: 4px;
+}
+
+.df-mentor-quote {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: #3f3f46;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.df-mentor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 6px 0;
+}
+
+.df-mentor-tag {
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.04);
+  color: #52525b;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Perks Grid */
+.df-perks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.df-perk-box {
+  padding: 7px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.df-perk-ico {
+  font-size: 0.9rem;
+}
+
+.df-perk-title {
+  font-size: 0.68rem;
+  color: #18181b;
+}
+
+.df-perk-desc {
+  font-size: 0.6rem;
+  color: #52525b;
+  line-height: 1.3;
+}
+
+/* Criteria List */
+.df-criteria-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.df-criteria-item {
+  font-size: 0.72rem;
+  line-height: 1.38;
+  color: #3f3f46;
+}
+
+.df-criteria-item strong {
+  color: #111114;
+}
+
+.df-cta-box {
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(163, 4, 15, 0.06);
+  border: 1px solid rgba(163, 4, 15, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.df-cta-tag {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #A3040F;
+}
+
+.df-cta-email {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #18181b;
+}
+
+/* Finale Page */
+.df-page--finale {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.df-finale-crest {
+  font-size: 1.8rem;
+  color: #A3040F;
+}
+
+.df-finale-title {
+  font-size: 1.15rem;
+  font-weight: 850;
+  margin: 0;
+  color: #18181b;
+}
+
+.df-finale-quote {
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: #4b4b52;
+  margin: 0;
+  max-width: 85%;
+}
+
+.df-finale-seal {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  width: 80%;
+}
+
+.df-seal-text {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #A3040F;
+}
+
+.df-seal-year {
+  font-size: 0.58rem;
+  color: #71717a;
+}
+
+/* Keep the physical scatter readable in the narrow desktop/tablet band. */
+@media (max-width: 960px) {
+  .df-mat-companion-shelf {
+    inset: 1.25rem;
+  }
+
+  .df-resting-book {
+    width: 112px;
+    height: 146px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .df-resting-book,
+  .df-resting-book-3d,
+  .df-resting-book-shadow,
+  .df-resting-book-arrow {
+    transition: none;
+  }
+}
+

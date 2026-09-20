@@ -151,6 +151,19 @@ export const Navbar: React.FC = () => {
           >
             Team
           </Link>
+          <Link
+            href="#newsletter"
+            className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
+          >
+            Dispatch
+          </Link>
+          <Link
+            href="/deskfolio"
+            className="hover:text-[#A3040F] transition-colors py-1 relative text-[#A3040F] font-bold flex items-center gap-1.5"
+          >
+            <span>Deskfolio</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#A3040F]/10 border border-[#A3040F]/20 font-mono">NEW</span>
+          </Link>
         </nav>
 
         {/* Desktop Actions */}
@@ -266,6 +279,21 @@ export const Navbar: React.FC = () => {
             className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
           >
             Team
+          </Link>
+          <Link
+            href="#newsletter"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
+          >
+            Dispatch (Newsletter)
+          </Link>
+          <Link
+            href="/deskfolio"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between py-2 text-base font-bold text-[#A3040F]"
+          >
+            <span>Deskfolio</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#A3040F]/10 border border-[#A3040F]/20 font-mono">NEW</span>
           </Link>
           <div className="pt-2">
             <Link

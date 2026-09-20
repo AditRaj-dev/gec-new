@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { NewsletterSection } from '@/components/NewsletterSection';
 
 export default function Home() {
   const handleReplay = () => {
@@ -249,7 +250,12 @@ export default function Home() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. CTA & FOOTER                                                          */}
+      {/* 3. NEWSLETTER & DISPATCH ARCHIVES (3D WebGL Bookshelf)                   */}
+      {/* ========================================================================= */}
+      <NewsletterSection />
+
+      {/* ========================================================================= */}
+      {/* 4. CTA & FOOTER                                                          */}
       {/* ========================================================================= */}
       <section id="apply" className="py-20 bg-[#FCF8ED]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
@@ -286,6 +292,7 @@ export default function Home() {
           <div className="flex items-center gap-6">
             <Link href="#about" className="hover:text-[#A3040F]">About</Link>
             <Link href="#initiatives" className="hover:text-[#A3040F]">Initiatives</Link>
+            <Link href="#newsletter" className="hover:text-[#A3040F]">Dispatch</Link>
             <Link href="#team" className="hover:text-[#A3040F]">Team</Link>
             <Link href="#contact" className="hover:text-[#A3040F]">Contact</Link>
           </div>

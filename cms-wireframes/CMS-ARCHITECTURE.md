@@ -24,7 +24,7 @@ This matrix establishes the direct, real-time relationship between what is edite
 
 | Public Website Page & Section | Corresponding CMS Module & Route | Data Fields Controlled | Update Frequency | Ownership & Approval |
 |:---|:---|:---|:---|:---|
-| **P1 Home: 1.1 Hero Eyebrow & Banner** | `Settings > Announcements` | Eyebrow kicker, Announcement text, External Link, Active status | Weekly / As needed | Core Admin / Super Admin |
+| **P1 Home: 1.1 Dynamic Hero Spotlight** | `Dashboard > Hero Spotlight` | Campaign, Status, Priority (P0–P2), Headline, Supporting Text, Eyebrow/Badge, Desktop Video (16:9), Mobile Video (9:16), Desktop/Mobile Posters, Primary CTA, Secondary CTA, Start/End Timestamps, Fallback Mode | Campaign-driven / Real-time | Core Admin / Super Admin |
 | **P1 Home: 1.2 Bento Grid (4 Items)** | `Stories > Featured` & `Initiatives` | Item Type, Title, Tag, Media asset, Link, Order rank (1–4) | Bi-weekly | Content Editor (Requires Admin approval) |
 | **P1 Home: 1.3 Key Initiatives (3 Cards)** | `Initiatives > Featured Toggle` | Selected 3 initiatives, Status badge, One-sentence summary | Monthly | Core Admin |
 | **P1 Home: 1.4 Impact Counters** | `Settings > Impact Metrics` | 4 Counter digits (Startups, Events, Footfall, Funding) | Monthly / Per semester | Super Admin |
@@ -58,7 +58,7 @@ As specified in `docs/GEC_CMS_Site_Map_Frozen.md`, the CMS is organized into 11 
 
 ```text
 GEC CMS ARCHITECTURE
-├── 01. DASHBOARD            -> Live health, pending approvals, submission triage, quick actions
+├── 01. DASHBOARD            -> Live health, Hero Spotlight editorial command, pending approvals, submission triage, quick actions
 ├── 02. PEOPLE               -> Leadership (Tier 1), Mentors (Tier 2), Heads, Coordinators, Members, Alumni
 ├── 03. TEAMS                -> 7 Functional Teams (Overview, Heads, 6 Pillars, Gallery, Recruitment)
 ├── 04. INITIATIVES          -> SDP, Pitching, Workshops, E-Summit (Status, Stepper, FAQs, Forms)
@@ -77,9 +77,35 @@ GEC CMS ARCHITECTURE
 
 ### 4.1 Module 01: Dashboard
 - **System Health Monitor:** Displays Live Website Status (`HEALTHY · 99.98% UP`), CDN cache status, and Last Content Sync timestamp.
+- **Hero Spotlight Editorial Command Center:**
+  - **Live Campaign Billboard:** Controls Section 1.1 on the public homepage. Acts as a live editorial billboard connected directly to GEC ground execution.
+  - **Priority Gating Engine:** Enforces that only top-tier content can occupy the hero:
+    - `P0` — Critical / Institution-level announcement (e.g. Incubation grant, Vice-Chancellor address).
+    - `P1` — Flagship GEC initiative (e.g. Startup Development Program Cohort 04).
+    - `P2` — Major event / major application window (e.g. Ideathon 2026, E-Summit).
+    - *(Items marked P3–P5 automatically route into the Section 1.2 "What's Happening" dynamic feed).*
+  - **16-Field Data Schema:**
+    1. `Campaign Name`: Internal identifier and campaign tag.
+    2. `Status`: Ground lifecycle state (`Announcement` | `Applications Open` | `Registrations Growing` | `Event Upcoming` | `Event Live` | `Event Completed` | `Results / Highlights` | `Founder Story`).
+    3. `Priority`: P0, P1, or P2 gating level.
+    4. `Headline`: Display title (rendered in live DOM text, max 2 rows).
+    5. `Supporting Text`: Context copy (max 68ch, rendered in live DOM text).
+    6. `Eyebrow / Badge`: Urgency or status kicker (e.g. `[APPLICATIONS OPEN]`, `[48 HOURS LEFT]`).
+    7. `Desktop Video`: 16:9 seamless looping MP4/WebM video asset (6–15s, no audio).
+    8. `Mobile Video`: 9:16 seamless vertical looping video asset (6–15s, no audio).
+    9. `Desktop Poster`: High-res static fallback image (16:9).
+    10. `Mobile Poster`: High-res static fallback image (9:16).
+    11. `Primary CTA`: Button label + target route/modal.
+    12. `Secondary CTA`: Optional secondary action label + route.
+    13. `Start Date & Time`: Automatic publication trigger timestamp.
+    14. `End Date & Time`: Automated expiration timestamp.
+    15. `Publish Status`: `Draft` | `Scheduled` | `Live` | `Expired` | `Archived`.
+    16. `Fallback Behaviour`: Seamless automated fallback to the Evergreen GEC Brand Hero (*"Ideas Begin Here. Builders Grow Here."*) upon campaign expiration or when no top-tier campaign qualifies.
+  - **Decoupled Text/Media Rule:** Video assets are strictly visual background/stage elements. All headlines, copy, metrics, and CTAs reside in semantic HTML text for zero-latency indexing, responsiveness, and accessibility.
+  - **Secondary Spotlight Items:** Allows configuring up to 2 secondary items displayed as numbered manual selectors (`01`, `02`, `03`) with a 70/80 to 20/30 attention split. No auto-advancing carousel.
 - **Pending Approvals Queue:** Surfaces pending story drafts, proposed initiative changes, and team head edits requiring Core Admin sign-off.
 - **Submission Quick-Triage:** Displays unread counts for Initiative Applications, Join Team applications, and Founder Story submissions.
-- **Quick Action Bar:** One-click shortcuts for: *+ New Initiative*, *+ Publish Story*, *+ Add Startup to Portfolio*, *+ Add Team Member*, *+ Purge Website Cache*.
+- **Quick Action Bar:** One-click shortcuts for: *+ Hero Spotlight Campaign*, *+ New Initiative*, *+ Publish Story*, *+ Add Startup to Portfolio*, *+ Add Team Member*, *+ Purge Website Cache*.
 
 ### 4.2 Module 02: People & Roster
 - **Hierarchy Tiers:**

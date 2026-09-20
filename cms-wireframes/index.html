@@ -1387,6 +1387,176 @@
           </div>
         </div>
 
+        <!-- Hero Spotlight Editorial Command Console (§docs/GEC_Dynamic_Hero_Spotlight_Frozen.md) -->
+        <div class="cms-card" id="cms-hero-spotlight-card" style="border: 2px solid var(--gec-crimson); background: #FFFDF9;">
+          <div class="cms-card-header" style="border-bottom: 1.5px solid rgba(163,4,15,0.2); padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="pulse-indicator" style="background: var(--gec-crimson);"></span>
+              <div>
+                <div class="cms-card-title" style="font-size: 16px; color: var(--gec-crimson);">
+                  Hero Spotlight — Live Editorial Billboard Command
+                </div>
+                <div class="field-helper" style="font-size: 11px;">
+                  Controls Page 01 Section 1.1 Hero Spotlight · Live ground-execution campaign billboard with automated fallback
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <span class="status-pill published" id="cms-hero-live-pill">LIVE ON GROUND</span>
+              <span class="card-target-tag" style="background: rgba(163,4,15,0.1); color: var(--gec-crimson); font-weight: 800;">TARGET: PAGE 01 §1.1</span>
+              <button class="btn-cms-secondary" style="height: 30px; padding: 0 10px; font-size: 11px;" onclick="window.open('../wireframes-v2/index.html', '_blank')">
+                View Live Hero ↗
+              </button>
+            </div>
+          </div>
+
+          <!-- 16-Field Data Architecture Grid -->
+          <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: 16px;">
+            
+            <!-- Col 1-4: Campaign & Priority Gating -->
+            <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 12px;">
+              <div>
+                <label class="field-label">01. CAMPAIGN IDENTIFIER</label>
+                <input type="text" class="field-input" id="cms-field-campaign" value="Startup Development Program 2026 (SDP)" style="width: 100%;">
+                <div class="field-helper">Internal CMS tag linked to Initiatives module</div>
+              </div>
+
+              <div>
+                <label class="field-label">02. GROUND LIFECYCLE STATE</label>
+                <select class="field-input" id="cms-field-status" style="width: 100%;" onchange="updateCmsHeroPreview()">
+                  <option value="announcement">01. Announcement (Pre-Launch)</option>
+                  <option value="applications" selected>02. Applications Open (Active Window)</option>
+                  <option value="urgency">03. Registrations Growing / 48H Urgency</option>
+                  <option value="event_upcoming">04. Event Upcoming</option>
+                  <option value="event_live">05. Event Live (Ground Real-time)</option>
+                  <option value="event_completed">06. Event Completed</option>
+                  <option value="results">07. Results &amp; Highlights</option>
+                  <option value="story">08. Founder / Winner Story</option>
+                </select>
+                <div class="field-helper">Controls urgency wording &amp; status badges</div>
+              </div>
+
+              <div>
+                <label class="field-label">03. CONTENT PRIORITY (GATING ENGINE)</label>
+                <select class="field-input" id="cms-field-priority" style="width: 100%;">
+                  <option value="p0">P0 — Critical / Institution Announcement</option>
+                  <option value="p1" selected>P1 — Flagship GEC Initiative (Controls Hero)</option>
+                  <option value="p2">P2 — Major Event / Application Window</option>
+                  <option value="p3" disabled>P3 — Milestone / Speaker (Routes to Bento §1.2)</option>
+                  <option value="p4" disabled>P4 — General Announcement (Routes to §1.2)</option>
+                </select>
+                <div class="field-helper" style="color: #b45309;">Only P0–P2 allowed to occupy Section 1.1 Hero</div>
+              </div>
+
+              <div>
+                <label class="field-label">06. EYEBROW / STATUS BADGE</label>
+                <input type="text" class="field-input" id="cms-field-badge" value="APPLICATIONS OPEN · COHORT 04" style="width: 100%;">
+              </div>
+            </div>
+
+            <!-- Col 5-8: Decoupled Live DOM Content -->
+            <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 12px;">
+              <div>
+                <label class="field-label">04. DISPLAY HEADLINE (LIVE DOM TEXT · MAX 2 ROWS)</label>
+                <input type="text" class="field-input" id="cms-field-headline" value="STARTUP DEVELOPMENT PROGRAM 2026" style="width: 100%; font-weight: 700;">
+                <div class="field-helper">Must NOT be embedded only in video (Accessibility &amp; SEO)</div>
+              </div>
+
+              <div>
+                <label class="field-label">05. SUPPORTING CONTEXT (MAX 68CH)</label>
+                <textarea class="field-input" id="cms-field-context" rows="3" style="width: 100%; resize: vertical;">Have an idea? Let’s see how far you can take it. Hands-on venture incubation, faculty mentors, and pre-seed demo slots.</textarea>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                  <label class="field-label">11. PRIMARY CTA</label>
+                  <input type="text" class="field-input" id="cms-field-cta1" value="[ APPLY NOW ]" style="width: 100%;">
+                </div>
+                <div>
+                  <label class="field-label">12. SECONDARY CTA</label>
+                  <input type="text" class="field-input" id="cms-field-cta2" value="[ EXPLORE PROGRAM ]" style="width: 100%;">
+                </div>
+              </div>
+
+              <div>
+                <label class="field-label">16. FALLBACK BEHAVIOUR</label>
+                <div style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; background: #f8fafc; font-size: 11px;">
+                  <strong style="color: #047857;">✓ Evergreen GEC Brand Hero Armed:</strong>
+                  <div class="field-helper" style="margin-top: 2px;">
+                    When this campaign expires or no P0–P2 update is active, Hero reverts automatically to <em>"Ideas Begin Here. Builders Grow Here."</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Col 9-12: Media Assets & Scheduling -->
+            <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 12px;">
+              <div>
+                <label class="field-label">07 &amp; 09. DESKTOP ASSETS (16:9 RATIO)</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" class="field-input" id="cms-field-desk-vid" value="sdp-2026-desktop-16x9.webm" style="flex: 1; font-size: 10px;" title="Desktop 16:9 Video">
+                  <span class="card-target-tag" style="line-height: 24px;">VID (16:9)</span>
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                  <input type="text" class="field-input" id="cms-field-desk-img" value="sdp-2026-poster-desktop.webp" style="flex: 1; font-size: 10px;" title="Desktop Static Fallback">
+                  <span class="card-target-tag" style="line-height: 24px;">IMG FALLBACK</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="field-label">08 &amp; 10. MOBILE ASSETS (9:16 VERTICAL RATIO)</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="text" class="field-input" id="cms-field-mob-vid" value="sdp-2026-mobile-9x16.webm" style="flex: 1; font-size: 10px;" title="Mobile 9:16 Video">
+                  <span class="card-target-tag" style="line-height: 24px;">VID (9:16)</span>
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                  <input type="text" class="field-input" id="cms-field-mob-img" value="sdp-2026-poster-mobile.webp" style="flex: 1; font-size: 10px;" title="Mobile Static Fallback">
+                  <span class="card-target-tag" style="line-height: 24px;">IMG FALLBACK</span>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                  <label class="field-label">13. START TIMESTAMP</label>
+                  <input type="text" class="field-input" id="cms-field-start" value="2026-09-20T10:00" style="width: 100%; font-size: 10px;">
+                </div>
+                <div>
+                  <label class="field-label">14. EXPIRY TIMESTAMP</label>
+                  <input type="text" class="field-input" id="cms-field-end" value="2026-09-28T23:59" style="width: 100%; font-size: 10px; color: #dc2626; font-weight: 700;">
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 10px; border-top: 1px dashed rgba(34,34,34,0.15);">
+                <div>
+                  <span class="field-label" style="margin: 0;">15. STATUS:</span>
+                  <span class="status-pill published">SCHEDULED / LIVE</span>
+                </div>
+                <button class="btn-cms-primary" style="height: 34px; padding: 0 16px;" onclick="saveCmsHeroSpotlight()">
+                  Save &amp; Push to Live Hero ↗
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Secondary Spotlight Selectors Config (§8 Rotation Rules) -->
+          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed rgba(34,34,34,0.2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--gec-crimson);">
+                SECONDARY SPOTLIGHT SELECTORS (MANUAL 20–30% ATTENTION):
+              </span>
+              <span class="field-helper" style="margin: 0;">Up to 2 secondary items (No auto-advancing carousel)</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <span class="wf-chip" style="background: rgba(163,4,15,0.1); border-color: var(--gec-crimson); color: var(--gec-crimson); font-weight: 700;">
+                01. SDP 2026 [PRIMARY HERO · 75%]
+              </span>
+              <span class="wf-chip">02. Founders Meet 2026 [25%]</span>
+              <span class="wf-chip">03. E-Cell Recruitment [25%]</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Split Grid: Pending Approvals & Quick Launchpad -->
         <div class="grid-2col">
           <!-- Pending Approvals Queue -->
@@ -1436,6 +1606,13 @@
               <span class="field-helper">One-click live triggers</span>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div class="switch-slot" onclick="document.getElementById('cms-hero-spotlight-card').scrollIntoView({ behavior: 'smooth', block: 'start' }); showToast('Hero Spotlight', 'Scrolled to Hero Spotlight Billboard Command console.', 'info');">
+                <div>
+                  <strong style="color: var(--gec-crimson);">+ Configure Hero Spotlight Campaign</strong>
+                  <div class="field-helper">Controls Page 01 Section 1.1 live editorial billboard &amp; automated fallback</div>
+                </div>
+                <span class="card-target-tag role-crimson" style="color: var(--gec-crimson); font-weight: 800;">P01 §1.1</span>
+              </div>
               <div class="switch-slot" onclick="switchModule('initiatives')">
                 <div>
                   <strong>+ Create or Update Initiative Program</strong>
@@ -2467,11 +2644,11 @@
     // Module mapping dictionary explaining what updates on the live website
     const moduleMappings = {
       'dashboard': {
-        breadcrumb: '01. DASHBOARD & SYSTEM PULSE',
-        targetText: 'Page 01: Home §1.1 – §1.9 & System Health',
-        drawerTag: 'PAGE 01: HOME & SYSTEM TELEMETRY',
-        drawerTitle: 'Executive Command Center',
-        drawerDesc: 'Controls overall website availability, monitors pending story approvals, and aggregates recruitment and program intakes across all 5 public pages.'
+        breadcrumb: '01. DASHBOARD & HERO SPOTLIGHT COMMAND',
+        targetText: 'Page 01: Home §1.1 (Hero Spotlight) & System Health',
+        drawerTag: 'PAGE 01 §1.1 (HERO SPOTLIGHT) & TELEMETRY',
+        drawerTitle: 'Executive Command & Hero Spotlight',
+        drawerDesc: 'Controls Page 01 §1.1 Hero Spotlight live editorial billboard (P0–P2 campaign priority, ground execution states, decoupled video loops & evergreen fallback), monitors pending approvals, and aggregates intakes across all 5 public pages.'
       },
       'people': {
         breadcrumb: '02. PEOPLE & LEADERSHIP DIRECTORY',
@@ -2607,6 +2784,82 @@
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('cms-sidebar');
       sidebar.classList.toggle('mobile-open');
+    }
+
+    // Hero Spotlight CMS Controls (§docs/GEC_Dynamic_Hero_Spotlight_Frozen.md)
+    function updateCmsHeroPreview() {
+      const status = document.getElementById('cms-field-status').value;
+      const badgeInput = document.getElementById('cms-field-badge');
+      const headlineInput = document.getElementById('cms-field-headline');
+      const contextInput = document.getElementById('cms-field-context');
+      const livePill = document.getElementById('cms-hero-live-pill');
+
+      const presets = {
+        'announcement': {
+          badge: 'FLAGSHIP REVEAL · COMING SOON',
+          headline: 'SOMETHING IS COMING',
+          context: 'The next chapter of student innovation at Galgotias is preparing to launch. Stay tuned.',
+          pill: 'ANNOUNCEMENT'
+        },
+        'applications': {
+          badge: 'APPLICATIONS OPEN · COHORT 04',
+          headline: 'STARTUP DEVELOPMENT PROGRAM 2026',
+          context: 'Have an idea? Let’s see how far you can take it. Hands-on venture incubation, faculty mentors, and pre-seed demo slots.',
+          pill: 'LIVE ON GROUND'
+        },
+        'urgency': {
+          badge: '48 HOURS LEFT · FINAL APPLICATION WINDOW',
+          headline: '48 HOURS LEFT. APPLICATIONS CLOSE SOON.',
+          context: 'Final admissions call for prospective student founders. Submission portal locks automatically at deadline.',
+          pill: 'HIGH URGENCY'
+        },
+        'event_upcoming': {
+          badge: 'COHORT ORIENTATION · 05 OCT',
+          headline: 'ORIENTATION COMMENCES THIS WEEK',
+          context: 'Shortlisted founder teams will assemble at the Campus Innovation Hub for the inaugural cohort briefing.',
+          pill: 'UPCOMING'
+        },
+        'event_live': {
+          badge: 'EVENT IS LIVE · CAMPUS AUDITORIUM',
+          headline: 'STARTUP DEMO DAY IS LIVE',
+          context: 'Student founders are pitching live to angel investors and industry leaders right now.',
+          pill: 'EVENT LIVE'
+        },
+        'event_completed': {
+          badge: 'COHORT COMPLETED',
+          headline: '12 WEEKS. 14 FOUNDERS. ONE RUNWAY.',
+          context: 'Cohort 04 has completed its incubation curriculum. Final venture portfolio now public.',
+          pill: 'COMPLETED'
+        },
+        'results': {
+          badge: 'RESULTS & HIGHLIGHTS',
+          headline: '800 IDEAS · 40 FINALISTS · ₹1.2CR COMMITTED',
+          context: 'Official milestone results verified by incubation committee and student jury.',
+          pill: 'HIGHLIGHTS'
+        },
+        'story': {
+          badge: 'FOUNDER STORY SPOTLIGHT',
+          headline: 'FROM DORM ROOM TO PRE-SEED FUNDING',
+          context: 'How MediKit AI leveraged GEC pre-incubation to deploy clinical pilots across 4 hospitals.',
+          pill: 'STORY STAGE'
+        }
+      };
+
+      const preset = presets[status];
+      if (preset) {
+        if (badgeInput) badgeInput.value = preset.badge;
+        if (headlineInput) headlineInput.value = preset.headline;
+        if (contextInput) contextInput.value = preset.context;
+        if (livePill) livePill.textContent = preset.pill;
+      }
+    }
+
+    function saveCmsHeroSpotlight() {
+      const campaign = document.getElementById('cms-field-campaign')?.value || 'Campaign';
+      const headline = document.getElementById('cms-field-headline')?.value || 'Headline';
+      const priority = document.getElementById('cms-field-priority')?.value.toUpperCase() || 'P1';
+
+      showToast('Hero Spotlight Saved', `Campaign "${campaign}" (${priority}) synchronized to Page 01 §1.1 live billboard. CDN edge cache flushed.`, 'success');
     }
 
     // ========================================================================

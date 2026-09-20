@@ -734,9 +734,141 @@
     .hero-asymmetric-split {
       display: grid;
       grid-template-columns: 7fr 5fr;
-      gap: 48px;
+      gap: 40px;
+      align-items: stretch;
+      min-height: 480px;
+    }
+
+    /* Hero Spotlight System Styles (§docs/GEC_Dynamic_Hero_Spotlight_Frozen.md) */
+    .hero-spotlight-cockpit {
+      display: flex;
       align-items: center;
-      min-height: 560px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 10px 16px;
+      background: #141923;
+      border: 1px solid rgba(163,4,15,0.4);
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .hero-sim-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .hero-sim-btn {
+      padding: 6px 12px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #94a3b8;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+    }
+    .hero-sim-btn:hover {
+      border-color: var(--gec-gold);
+      color: #fff;
+    }
+    .hero-sim-btn.active {
+      background: var(--gec-crimson);
+      border-color: #f87171;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(163,4,15,0.4);
+    }
+    .hero-primary-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: space-between;
+    }
+    .hero-secondary-dock {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1.5px dashed rgba(34,34,34,0.2);
+    }
+    .hero-secondary-dock-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .hero-secondary-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .hero-secondary-card {
+      padding: 12px 16px;
+      border: 1.5px solid rgba(34,34,34,0.18);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.85);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hero-secondary-card:hover {
+      border-color: var(--gec-crimson);
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .hero-secondary-card.active-secondary {
+      border-color: var(--gec-crimson);
+      background: rgba(163,4,15,0.06);
+      box-shadow: 2px 2px 0px rgba(163,4,15,0.25);
+    }
+    .hero-media-slot-mobile {
+      display: none;
+    }
+    .hero-media-slot-desktop {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 480px;
+      box-sizing: border-box;
+    }
+    #hero-media-title {
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--gec-crimson);
+      font-family: var(--font-mono);
+      max-width: 100%;
+      word-break: break-word;
+      line-height: 1.4;
+      text-align: center;
+    }
+    #hero-media-subtitle {
+      font-size: 10px;
+      max-width: 320px;
+      line-height: 1.4;
+      color: #64748b;
+      text-align: center;
+    }
+    .hero-deadline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border: 1.5px solid #d97706;
+      border-radius: 99px;
+      background: rgba(245,158,11,0.1);
+      width: fit-content;
+      font-size: 11px;
+      font-weight: 700;
+      color: #b45309;
     }
 
     /* Dynamic Bento Matrix (What's Happening) */
@@ -1360,7 +1492,8 @@
       .hero-asymmetric-split .skel-title-h1 {
         height: 38px !important;
       }
-      .hero-asymmetric-split div[style*="display: flex; gap: 16px;"] {
+      .hero-asymmetric-split div[style*="display: flex; gap: 16px;"],
+      .hero-primary-content {
         flex-direction: column !important;
         width: 100% !important;
         gap: 10px !important;
@@ -1374,6 +1507,11 @@
       .hero-asymmetric-split .wf-media-container {
         min-height: 240px !important;
       }
+      .hero-media-slot-desktop { display: none !important; }
+      .hero-media-slot-mobile { display: flex !important; flex-direction: column; width: 100% !important; max-width: 300px; margin: 16px auto !important; aspect-ratio: 9 / 16 !important; min-height: 400px !important; }
+      .hero-secondary-dock { margin-top: 24px !important; padding-top: 16px !important; }
+      .hero-secondary-strip { grid-template-columns: 1fr !important; gap: 10px !important; }
+      .hero-spotlight-cockpit { flex-direction: column !important; align-items: flex-start !important; }
       /* 1.2 Bento Mobile */
       .bento-matrix-4items {
         grid-template-columns: 1fr !important;
@@ -1556,11 +1694,16 @@
     #gec-canvas-root.viewport-mobile .section-coord-stamp { right: 16px !important; top: 12px !important; font-size: 8px !important; max-width: 38% !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
     #gec-canvas-root.viewport-mobile .hero-asymmetric-split { grid-template-columns: 1fr !important; gap: 24px !important; min-height: auto !important; }
     #gec-canvas-root.viewport-mobile .hero-asymmetric-split .skel-title-h1 { height: 38px !important; }
-    #gec-canvas-root.viewport-mobile .hero-asymmetric-split div[style*="display: flex; gap: 16px;"] { flex-direction: column !important; width: 100% !important; gap: 10px !important; }
+    #gec-canvas-root.viewport-mobile .hero-asymmetric-split div[style*="display: flex; gap: 16px;"],
+    #gec-canvas-root.viewport-mobile .hero-primary-content { flex-direction: column !important; width: 100% !important; gap: 10px !important; }
     #gec-canvas-root.viewport-mobile .hero-asymmetric-split .wf-action-slot,
     #gec-canvas-root.viewport-mobile .hero-asymmetric-split .action-fill-crimson,
-    #gec-canvas-root.viewport-mobile .hero-asymmetric-split .action-outline-ink { width: 100% !important; min-height: 48px !important; }
     #gec-canvas-root.viewport-mobile .hero-asymmetric-split .wf-media-container { min-height: 240px !important; }
+    #gec-canvas-root.viewport-mobile .hero-media-slot-desktop { display: none !important; }
+    #gec-canvas-root.viewport-mobile .hero-media-slot-mobile { display: flex !important; flex-direction: column; width: 100% !important; max-width: 300px; margin: 16px auto !important; aspect-ratio: 9 / 16 !important; min-height: 400px !important; }
+    #gec-canvas-root.viewport-mobile .hero-secondary-dock { margin-top: 24px !important; padding-top: 16px !important; }
+    #gec-canvas-root.viewport-mobile .hero-secondary-strip { grid-template-columns: 1fr !important; gap: 10px !important; }
+    #gec-canvas-root.viewport-mobile .hero-spotlight-cockpit { flex-direction: column !important; align-items: flex-start !important; }
     #gec-canvas-root.viewport-mobile .bento-matrix-4items { grid-template-columns: 1fr !important; gap: 16px !important; margin-top: 20px !important; }
     #gec-canvas-root.viewport-mobile .bento-span-6,
     #gec-canvas-root.viewport-mobile .bento-span-3,
@@ -1750,61 +1893,168 @@
           </div>
         </div>
 
-        <!-- 1.1 Hero Section (7:5 Asymmetric Grid) -->
-        <section class="wf-section surface-cream">
-          <div class="section-id-stamp">1.1 HERO · 7:5 ASYMMETRIC GRID</div>
-          <div class="section-coord-stamp">COL 1–7 (60%) / COL 8–12 (40%) | MIN-H: 560px</div>
+        <!-- 1.1 Dynamic Hero Spotlight (§docs/GEC_Dynamic_Hero_Spotlight_Frozen.md) -->
+        <section class="wf-section surface-cream" id="hero-spotlight-section">
+          <div class="section-id-stamp">1.1 HERO SPOTLIGHT · LIVE EDITORIAL BILLBOARD &amp; CAMPAIGN STAGE (§FROZEN)</div>
+          <div class="section-coord-stamp">7:5 ASYMMETRIC GRID · 75% PRIMARY / 25% SECONDARY · DECOUPLED VIDEO STAGE</div>
+
+          <!-- Hero Lifecycle & State Simulator Cockpit Bar -->
+          <div class="hero-spotlight-cockpit">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="status-pulse-dot"></span>
+              <strong style="color: #fff; letter-spacing: 0.5px;">HERO SPOTLIGHT ENGINE:</strong>
+              <span class="dim-label" style="color: #94a3b8;">Simulate Live Campaign States</span>
+            </div>
+            <div class="hero-sim-pills">
+              <button class="hero-sim-btn active" id="sim-btn-sdp" onclick="switchHeroCampaign('sdp', this)">01. SDP 2026 (P1 OPEN)</button>
+              <button class="hero-sim-btn" id="sim-btn-ideathon" onclick="switchHeroCampaign('ideathon', this)">02. IDEATHON (P0 48H)</button>
+              <button class="hero-sim-btn" id="sim-btn-esummit" onclick="switchHeroCampaign('esummit', this)">03. E-SUMMIT (P2 LIVE)</button>
+              <button class="hero-sim-btn" id="sim-btn-evergreen" onclick="switchHeroCampaign('evergreen', this)">04. EVERGREEN FALLBACK</button>
+              <button class="hero-sim-btn" style="background: rgba(251,202,5,0.15); border-color: var(--gec-gold); color: #fbbf24;" onclick="openHeroCmsTelemetryModal()">
+                ⚙ CMS Telemetry (16 Fields) ↗
+              </button>
+            </div>
+          </div>
 
           <div class="hero-asymmetric-split">
             <!-- Left Typography Stack (Col 1-7) -->
-            <div style="display: flex; flex-direction: column; gap: 18px;">
-              <span class="element-role-tag role-crimson">[EYEBROW BADGE: 140×28px]</span>
+            <div class="hero-primary-content" style="display: flex; flex-direction: column; gap: 16px;">
               
-              <!-- H1 Title Container -->
-              <div style="padding: 16px; border: 1.5px dashed var(--gec-crimson); border-radius: var(--radius-sm); background: rgba(163,4,15,0.03);">
-                <span class="element-role-tag">[H1 DISPLAY TITLE: 2 ROWS]</span>
-                <div class="skel-title-h1" style="width: 88%;"></div>
-                <div class="skel-line" style="width: 96%; height: 28px; background: var(--gec-crimson); opacity: 0.15; border-radius: 4px; margin-top: 8px;"></div>
+              <!-- Eyebrow + Priority Cluster -->
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span class="element-role-tag role-crimson" id="hero-status-tag">[APPLICATIONS OPEN · COHORT 04]</span>
+                <span class="wf-chip" id="hero-priority-chip" style="background: rgba(163,4,15,0.1); border-color: var(--gec-crimson); color: var(--gec-crimson); font-weight: 800; font-size: 10px;">
+                  P1 FLAGSHIP INITIATIVE
+                </span>
+                <span class="card-target-tag" style="font-size: 9px;">EDITORIAL BILLBOARD</span>
+              </div>
+              
+              <!-- H1 Title Container (Live DOM text, not burned into video) -->
+              <div style="padding: 18px; border: 1.5px dashed var(--gec-crimson); border-radius: var(--radius-sm); background: rgba(163,4,15,0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span class="element-role-tag">[H1 DISPLAY TITLE · LIVE DOM TEXT]</span>
+                  <span class="dim-label" style="font-size: 9px;">DECOUPLED FROM VIDEO · ACCESSIBLE</span>
+                </div>
+                <h1 id="hero-headline" style="font-family: var(--font-display); font-size: 32px; font-weight: 800; line-height: 1.15; color: var(--gec-ink); margin: 0; text-transform: uppercase;">
+                  STARTUP DEVELOPMENT PROGRAM 2026
+                </h1>
+                <div id="hero-subline" style="font-size: 14px; font-weight: 600; color: var(--gec-crimson); margin-top: 8px; font-family: var(--font-mono);">
+                  Have an idea? Let’s see how far you can take it.
+                </div>
               </div>
 
-              <!-- Brand Motto Line -->
-              <div style="display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 6px 14px; border: 1.5px solid var(--gec-gold); border-radius: 99px; background: rgba(251,202,5,0.1);">
-                <span class="dim-label" style="color: #A16207; font-weight: 800;">[BRAND LINE: INNOVATE · INSPIRE · IMPACT]</span>
+              <!-- Deadline / Urgency Notice Badge -->
+              <div class="hero-deadline-badge" id="hero-deadline-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="hero-deadline-text">Applications close 28 September · 23:59 IST</span>
               </div>
 
-              <!-- Body Skeleton (3 Lines, max 68ch) -->
-              <div style="max-width: 68ch; padding: 14px; border: 1px dashed rgba(34,34,34,0.25); border-radius: var(--radius-xs);">
-                <span class="element-role-tag">[BODY PROSE SKELETON: 3 LINES · MAX-W 68CH]</span>
-                <div class="skel-line" style="width: 100%;"></div>
-                <div class="skel-line" style="width: 94%;"></div>
-                <div class="skel-line" style="width: 68%;"></div>
+              <!-- Mobile Dedicated Video Slot (9:16 Vertical Poster · §16 Mobile Behaviour) -->
+              <div class="hero-media-slot-mobile wf-media-container ratio-9-16" style="cursor: pointer;" onclick="window.open('../concepts/hero-directions.html', '_blank')">
+                <svg class="architectural-cross" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <line x1="0" y1="0" x2="100" y2="100" />
+                  <line x1="100" y1="0" x2="0" y2="100" />
+                </svg>
+                <div style="text-align: center; z-index: 2; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                  <span class="element-role-tag role-crimson">[VERTICAL ANIMATED POSTER 9:16]</span>
+                  <div style="font-weight: 800; font-size: 11px; color: var(--gec-crimson);">[MOBILE CAMPAIGN KEY VISUAL]</div>
+                  <span class="dim-label" style="font-size: 9px;">6–15s Seamless Loop · WebM/MP4</span>
+                  <div class="wf-chip" style="font-size: 9px; background: rgba(16,185,129,0.15); border-color:#10b981; color:#065f46;">● 9:16 Mobile Native</div>
+                </div>
+              </div>
+
+              <!-- Body Prose Description (Live DOM Text, max 68ch) -->
+              <div style="max-width: 68ch; padding: 14px; border: 1px dashed rgba(34,34,34,0.25); border-radius: var(--radius-xs); background: rgba(255,255,255,0.5);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <span class="element-role-tag">[BODY PROSE · MAX-W 68CH]</span>
+                  <span class="dim-label" style="font-size: 9px;">EDITORIAL CONTEXT</span>
+                </div>
+                <p id="hero-context" style="margin: 0; font-size: 13px; line-height: 1.6; color: #444; font-family: var(--font-sans);">
+                  A 12-week venture acceleration sprint providing dedicated student founder cohorts with faculty mentors, prototyping sandbox access, and pre-seed demo slots.
+                </p>
               </div>
 
               <!-- Dual Action Cluster -->
-              <div style="display: flex; gap: 16px; margin-top: 6px;">
-                <div class="wf-action-slot action-fill-crimson" style="width: 210px; cursor: pointer;" onclick="navigatePage('initiatives')">[EXPLORE INITIATIVES CTA]</div>
-                <div class="wf-action-slot action-outline-ink" style="width: 180px; cursor: pointer;" onclick="navigatePage('about')">[DISCOVER GEC CTA]</div>
+              <div style="display: flex; gap: 14px; margin-top: 4px; flex-wrap: wrap;">
+                <div class="wf-action-slot action-fill-crimson" id="hero-primary-cta" style="min-width: 220px; cursor: pointer;" onclick="openPublicApplyModal('Startup Development Program (SDP) Cohort 04')">
+                  [ APPLY NOW FOR COHORT 04 ]
+                </div>
+                <div class="wf-action-slot action-outline-ink" id="hero-secondary-cta" style="min-width: 180px; cursor: pointer;" onclick="navigatePage('initiatives'); exploreInitiativeDetail(1);">
+                  [ EXPLORE PROGRAM ]
+                </div>
               </div>
+
             </div>
 
-            <!-- Right Visual Canvas (Col 8-12) -->
-            <div class="wf-media-container ratio-4-3" style="min-height: 400px; cursor: pointer;" onclick="window.open('../concepts/hero-directions.html', '_blank')">
+            <!-- Right Visual Canvas (Desktop 16:9 Animated Video Poster Stage · Col 8-12) -->
+            <div class="hero-media-slot-desktop wf-media-container" style="cursor: pointer;" onclick="window.open('../concepts/hero-directions.html', '_blank')">
               <svg class="architectural-cross" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <line x1="0" y1="0" x2="100" y2="100" />
                 <line x1="100" y1="0" x2="0" y2="100" />
               </svg>
-              <div style="text-align: center; z-index: 2; padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                <span class="element-role-tag role-crimson">[HERO DYNAMIC VISUAL STAGE · POST-TOPBAR LOGO DOCKING]</span>
-                <div style="font-weight: 800; font-size: 13px; color: var(--gec-crimson);">[OPTION 1: INTERACTIVE VENTURE ECOSYSTEM ORBIT]</div>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
-                  <span class="wf-chip" style="background:rgba(16,185,129,0.15); border-color:#10b981; color:#065f46;">● Live Cohort 04 Beacon</span>
-                  <span class="wf-chip">₹1.2Cr+ Seed Pool</span>
-                  <span class="wf-chip">40+ Mentors</span>
+              <div style="text-align: center; z-index: 2; padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 100%; box-sizing: border-box;">
+                <span class="element-role-tag role-crimson" id="hero-media-tag">[HERO DYNAMIC VIDEO POSTER · 16:9 DESKTOP]</span>
+                <div id="hero-media-title">
+                  [CAMPAIGN KEY VISUAL · 16:9 WEBM/MP4]
                 </div>
-                <span class="dim-label">Logo docks into topbar → Hero activates Ecosystem Constellation</span>
-                <div class="wf-action-slot action-fill-crimson" style="height: 36px; padding: 0 16px; margin-top: 6px; font-size: 11px;">
-                  [EXPLORE ALL 3 HERO VISUAL OPTIONS ↗]
+                <div id="hero-media-subtitle" class="dim-label">
+                  Desktop 16:9 Video Loop · Mobile 9:16 Vertical Fallback (6–15s · Sound Off)
                 </div>
+                <div id="hero-media-chips" style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 360px;">
+                  <span class="wf-chip" style="background:rgba(16,185,129,0.15); border-color:#10b981; color:#065f46;">● Video Poster (16:9)</span>
+                  <span class="wf-chip">Vertical Mobile (9:16)</span>
+                  <span class="wf-chip">DOM Text Decoupled</span>
+                  <span class="wf-chip">Auto-Expiry Scheduled</span>
+                </div>
+                <div class="wf-action-slot action-fill-crimson" style="height: 36px; padding: 0 16px; margin-top: 8px; font-size: 11px;">
+                  [EXPLORE HERO VISUAL LAB &amp; POSTER STAGES ↗]
+                </div>
+                <span class="dim-label" style="font-size: 9px; color: #64748b;">
+                  Audio muted by default · Essential content lives in live DOM HTML
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Dedicated Secondary Spotlight Dock (§8 Rotation Rules: 1 Primary + up to 2 Secondary) -->
+          <div class="hero-secondary-dock">
+            <div class="hero-secondary-dock-header">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span class="element-role-tag">[CONCURRENT INITIATIVES · 25% SECONDARY ATTENTION WEIGHT]</span>
+                <span class="dim-label" style="font-size: 9px;">MANUAL SELECTION · NO AUTO-CAROUSEL</span>
+              </div>
+              <span class="dim-label" style="font-size: 9px; font-family: var(--font-mono);">
+                CLICK TO SWITCH BILLBOARD FOCUS ↗
+              </span>
+            </div>
+
+            <div class="hero-secondary-strip">
+              <div class="hero-secondary-card active-secondary" id="sel-hero-01" onclick="switchHeroCampaign('sdp')">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-family: var(--font-mono); font-size: 10px; font-weight: 800; color: var(--gec-crimson);">01 / STARTUP PROGRAM</span>
+                  <span class="element-role-tag role-crimson" style="font-size: 8px;">P1 ACTIVE</span>
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: var(--gec-ink);">Cohort 04 Admissions</div>
+                <div class="dim-label" style="font-size: 10px;">Closes 28 Sep · 75% Attention Focus</div>
+              </div>
+
+              <div class="hero-secondary-card" id="sel-hero-02" onclick="switchHeroCampaign('ideathon')">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-family: var(--font-mono); font-size: 10px; font-weight: 800; color: #64748b;">02 / IDEATHON 2026</span>
+                  <span class="element-role-tag" style="font-size: 8px; border-color: #f59e0b; color: #b45309;">P0 48H</span>
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: var(--gec-ink);">Venture Sprint Arena</div>
+                <div class="dim-label" style="font-size: 10px;">Final Call · 25% Attention Slot</div>
+              </div>
+
+              <div class="hero-secondary-card" id="sel-hero-03" onclick="switchHeroCampaign('esummit')">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-family: var(--font-mono); font-size: 10px; font-weight: 800; color: #64748b;">03 / E-SUMMIT 2026</span>
+                  <span class="element-role-tag" style="font-size: 8px; border-color: #10b981; color: #047857;">P2 LIVE</span>
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: var(--gec-ink);">Campus Auditorium</div>
+                <div class="dim-label" style="font-size: 10px;">Happening Now · 25% Attention Slot</div>
               </div>
             </div>
           </div>
@@ -3964,6 +4214,313 @@
       });
 
       showPublicToast('Sector Filter', `Showing ${count} venture(s) in sector: "${sector.toUpperCase()}".`, 'info');
+    }
+
+    // 11. Dynamic Hero Spotlight System (§docs/GEC_Dynamic_Hero_Spotlight_Frozen.md)
+    const PUBLIC_HERO_SPOTLIGHT_DATA = {
+      'sdp': {
+        campaign: 'Startup Development Program 2026',
+        statusTag: '[APPLICATIONS OPEN · COHORT 04]',
+        statusClass: 'role-crimson',
+        priority: 'P1 FLAGSHIP INITIATIVE',
+        headline: 'STARTUP DEVELOPMENT PROGRAM 2026',
+        subline: 'Have an idea? Let’s see how far you can take it.',
+        deadline: 'Applications close 28 September · 23:59 IST',
+        context: 'A 12-week venture acceleration sprint providing dedicated student founder cohorts with faculty mentors, prototyping sandbox access, and pre-seed demo slots.',
+        primaryCta: '[ APPLY NOW FOR COHORT 04 ]',
+        primaryAction: "openPublicApplyModal('Startup Development Program (SDP) Cohort 04')",
+        secondaryCta: '[ EXPLORE PROGRAM ]',
+        secondaryAction: "navigatePage('initiatives'); exploreInitiativeDetail(1);",
+        mediaTitle: '[CAMPAIGN KEY VISUAL · 16:9 WEBM/MP4]',
+        mediaSubtitle: 'Desktop 16:9 Video Loop · Mobile 9:16 Vertical Fallback (6–15s · Sound Off)',
+        mediaChips: ['● Video Poster (16:9)', 'Vertical Mobile (9:16)', 'DOM Text Decoupled', 'Auto-Expiry Scheduled'],
+        simBtnId: 'sim-btn-sdp',
+        secondaryCardId: 'sel-hero-01',
+        fields: {
+          campaign: 'Startup Development Program (SDP) 2026',
+          status: 'Applications Open (Ground Execution Stage 02/08)',
+          priority: 'P1 — Flagship GEC Initiative (Controls Hero)',
+          headline: 'STARTUP DEVELOPMENT PROGRAM 2026',
+          supportingText: 'A 12-week venture acceleration sprint providing student founder cohorts with faculty mentors, prototyping sandbox, and pre-seed demo slots.',
+          badge: 'APPLICATIONS OPEN · COHORT 04',
+          desktopVideo: 'sdp-2026-desktop-16x9.webm (H.264/VP9 · 60fps · 9.4s loop)',
+          mobileVideo: 'sdp-2026-mobile-9x16.webm (Vertical 1080x1920 · 9.4s loop)',
+          desktopPoster: 'sdp-2026-poster-desktop.webp (1920x1080)',
+          mobilePoster: 'sdp-2026-poster-mobile.webp (1080x1920)',
+          primaryCta: 'Apply Now → #modal-apply-sdp',
+          secondaryCta: 'Explore Program → /initiatives/sdp-cohort-04',
+          startDate: '20 Sep 2026 · 10:00 AM IST',
+          endDate: '28 Sep 2026 · 11:59 PM IST (Auto-Expiry Trigger)',
+          publishStatus: 'Live (Synchronized to CDN edge)',
+          fallbackMode: 'Evergreen GEC Brand Hero (Auto-reverts on expiry)'
+        }
+      },
+      'ideathon': {
+        campaign: 'Ideathon 2026 Venture Sprint',
+        statusTag: '[48 HOURS LEFT · FINAL APPLICATION WINDOW]',
+        statusClass: 'role-crimson',
+        priority: 'P0 CRITICAL INSTITUTIONAL WINDOW',
+        headline: 'IDEATHON 2026 VENTURE SPRINT',
+        subline: '48 hours to pitch, prototype, and defend your venture.',
+        deadline: 'Strict Deadline: Closes in 48 Hours · 14 Team Slots Left',
+        context: 'Greater Noida’s premier 48-hour student venture sprint. Fast-track entry for teams building AI, climate-tech, consumer hardware, and fintech solutions.',
+        primaryCta: '[ REGISTER TEAM (FINAL CALL) ]',
+        primaryAction: "openPublicApplyModal('Ideathon 2026 Venture Sprint')",
+        secondaryCta: '[ VIEW PROBLEM STATEMENTS ]',
+        secondaryAction: "navigatePage('initiatives'); showPublicToast('Problem Statements', 'Reviewing 12 domain problem statements.', 'info');",
+        mediaTitle: '[HIGH-INTENSITY KINETIC POSTER]',
+        mediaSubtitle: 'Urgency Window Active · Desktop 16:9 / Mobile 9:16 (Auto-Locks at Expiry)',
+        mediaChips: ['● P0 Urgency Gate', 'High-Contrast Kinetic Poster', 'Verified Countdown', 'Auto-Locks at Expiry'],
+        simBtnId: 'sim-btn-ideathon',
+        secondaryCardId: 'sel-hero-02',
+        fields: {
+          campaign: 'Ideathon 2026 Venture Sprint',
+          status: 'Urgency / Deadline Phase (Ground Stage 03/08)',
+          priority: 'P0 — Critical Institutional Window (High Urgency)',
+          headline: 'IDEATHON 2026 VENTURE SPRINT',
+          supportingText: '48 hours to pitch, prototype, and defend your venture before seasoned angel investors and alumni founders.',
+          badge: '48 HOURS LEFT · FINAL APPLICATION WINDOW',
+          desktopVideo: 'ideathon-urgency-16x9.webm (Kinetic typography loop · 8.2s)',
+          mobileVideo: 'ideathon-urgency-9x16.webm (Vertical kinetic loop · 8.2s)',
+          desktopPoster: 'ideathon-key-visual.webp (1920x1080)',
+          mobilePoster: 'ideathon-key-visual-vertical.webp (1080x1920)',
+          primaryCta: 'Register Team → #modal-apply-ideathon',
+          secondaryCta: 'View Problem Statements → /initiatives/ideathon-2026',
+          startDate: '18 Sep 2026 · 09:00 AM IST',
+          endDate: '22 Sep 2026 · 11:59 PM IST',
+          publishStatus: 'Live (Urgency Override Active)',
+          fallbackMode: 'Evergreen GEC Brand Hero (Auto-reverts on expiry)'
+        }
+      },
+      'esummit': {
+        campaign: 'Galgotias E-Summit 2026',
+        statusTag: '[EVENT IS LIVE · MAIN AUDITORIUM]',
+        statusClass: 'role-gold',
+        priority: 'P2 MAJOR EVENT / EXPERIENCE',
+        headline: 'GALGOTIAS E-SUMMIT 2026',
+        subline: '50+ Founders. 12 Keynotes. Live Venture Arena.',
+        deadline: 'Happening Today · 09:30 AM – 06:00 PM IST',
+        context: 'The annual flagship entrepreneurship summit is currently underway on ground. Campus screens, live stream broadcasting, and investor pitching are in session.',
+        primaryCta: '[ WATCH LIVE STREAM ↗ ]',
+        primaryAction: "showPublicToast('Live Broadcast', 'Connecting to auditorium live stream feed...', 'info')",
+        secondaryCta: '[ FULL EVENT SCHEDULE ]',
+        secondaryAction: "navigatePage('stories'); showPublicToast('Event Schedule', 'Loading today’s keynote schedule & speaker line-up.', 'info');",
+        mediaTitle: '[LIVE EVENT BROADCAST POSTER]',
+        mediaSubtitle: 'Campus Auditorium Feed · 16:9 High-Framerate Stream Stage',
+        mediaChips: ['● Event Live', 'Stream Broadcast', 'Campus Screen Mirror', 'Post-Event Recap Ready'],
+        simBtnId: 'sim-btn-esummit',
+        secondaryCardId: 'sel-hero-03',
+        fields: {
+          campaign: 'Galgotias E-Summit 2026',
+          status: 'Event Live (Ground Stage 05/08)',
+          priority: 'P2 — Major Event / Ground Experience',
+          headline: 'GALGOTIAS E-SUMMIT 2026',
+          supportingText: '50+ Founders, 12 Keynotes, and the Inter-University Venture Arena are underway right now.',
+          badge: 'EVENT IS LIVE · MAIN AUDITORIUM',
+          desktopVideo: 'esummit-live-ambient-16x9.webm (Stage ambient stream · 12s)',
+          mobileVideo: 'esummit-live-ambient-9x16.webm (Vertical stage stream · 12s)',
+          desktopPoster: 'esummit-stage-poster.webp (1920x1080)',
+          mobilePoster: 'esummit-stage-poster-vertical.webp (1080x1920)',
+          primaryCta: 'Watch Live Stream → https://live.gecell.org',
+          secondaryCta: 'Full Event Schedule → /stories/esummit-schedule',
+          startDate: '20 Sep 2026 · 09:30 AM IST',
+          endDate: '20 Sep 2026 · 06:00 PM IST',
+          publishStatus: 'Live (Ground Live Stream Active)',
+          fallbackMode: 'Evergreen GEC Brand Hero (Auto-reverts on expiry)'
+        }
+      },
+      'evergreen': {
+        campaign: 'Evergreen GEC Brand Hero (Fallback State)',
+        statusTag: '[GALGOTIAS ENTREPRENEURSHIP CELL]',
+        statusClass: '',
+        priority: 'EVERGREEN BRAND DEFAULT (ZERO-GAP FALLBACK)',
+        headline: 'IDEAS BEGIN HERE. BUILDERS GROW HERE.',
+        subline: 'Innovate. Inspire. Impact.',
+        deadline: 'Always Active · Student Community & Venture Ecosystem',
+        context: 'Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.',
+        primaryCta: '[ EXPLORE INITIATIVES ]',
+        primaryAction: "navigatePage('initiatives')",
+        secondaryCta: '[ DISCOVER GEC ]',
+        secondaryAction: "navigatePage('about')",
+        mediaTitle: '[INTERACTIVE VENTURE ECOSYSTEM ORBIT]',
+        mediaSubtitle: 'Perpetual Constellation & Identity Loop · Zero-Gap Fallback',
+        mediaChips: ['● Brand Default', 'Ecosystem Orbit', '₹1.2Cr+ Seed Pool', '40+ Mentors Active'],
+        simBtnId: 'sim-btn-evergreen',
+        secondaryCardId: null,
+        fields: {
+          campaign: 'Evergreen GEC Brand State (§15 Fallback Behaviour)',
+          status: 'Brand Default (Active when no top-tier campaign qualifies)',
+          priority: 'Baseline Evergreen Architecture',
+          headline: 'IDEAS BEGIN HERE. BUILDERS GROW HERE.',
+          supportingText: 'Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support.',
+          badge: 'GALGOTIAS ENTREPRENEURSHIP CELL',
+          desktopVideo: 'gec-brand-orbit-16x9.webm (Interactive Constellation Orbit)',
+          mobileVideo: 'gec-brand-orbit-9x16.webm (Vertical Constellation Orbit)',
+          desktopPoster: 'gec-brand-evergreen.webp (1920x1080)',
+          mobilePoster: 'gec-brand-evergreen-vertical.webp (1080x1920)',
+          primaryCta: 'Explore Initiatives → /initiatives',
+          secondaryCta: 'Discover GEC → /about',
+          startDate: 'Perpetual Baseline',
+          endDate: 'None (Perpetual)',
+          publishStatus: 'Always Armed / Zero-Gap Fallback',
+          fallbackMode: 'Active Baseline'
+        }
+      }
+    };
+
+    let activeHeroKey = 'sdp';
+
+    function switchHeroCampaign(key, btnEl) {
+      const data = PUBLIC_HERO_SPOTLIGHT_DATA[key];
+      if (!data) return;
+      activeHeroKey = key;
+
+      // Update simulator buttons
+      document.querySelectorAll('.hero-sim-btn').forEach(b => b.classList.remove('active'));
+      const simBtn = document.getElementById(data.simBtnId) || btnEl;
+      if (simBtn) simBtn.classList.add('active');
+
+      // Update DOM Text Elements (Decoupled from media!)
+      const statusTag = document.getElementById('hero-status-tag');
+      const priorityChip = document.getElementById('hero-priority-chip');
+      const headline = document.getElementById('hero-headline');
+      const subline = document.getElementById('hero-subline');
+      const deadlineText = document.getElementById('hero-deadline-text');
+      const context = document.getElementById('hero-context');
+      const primaryCta = document.getElementById('hero-primary-cta');
+      const secondaryCta = document.getElementById('hero-secondary-cta');
+      const mediaTitle = document.getElementById('hero-media-title');
+      const mediaSubtitle = document.getElementById('hero-media-subtitle');
+      const mediaChips = document.getElementById('hero-media-chips');
+
+      if (statusTag) {
+        statusTag.textContent = data.statusTag;
+        statusTag.className = 'element-role-tag ' + (data.statusClass || '');
+      }
+      if (priorityChip) priorityChip.textContent = data.priority;
+      if (headline) headline.textContent = data.headline;
+      if (subline) subline.textContent = data.subline;
+      if (deadlineText) deadlineText.textContent = data.deadline;
+      if (context) context.textContent = data.context;
+      if (primaryCta) {
+        primaryCta.textContent = data.primaryCta;
+        primaryCta.setAttribute('onclick', data.primaryAction);
+      }
+      if (secondaryCta) {
+        secondaryCta.textContent = data.secondaryCta;
+        secondaryCta.setAttribute('onclick', data.secondaryAction);
+      }
+      if (mediaTitle) mediaTitle.textContent = data.mediaTitle;
+      if (mediaSubtitle) mediaSubtitle.textContent = data.mediaSubtitle;
+      if (mediaChips) {
+        mediaChips.innerHTML = data.mediaChips.map((c, i) => `
+          <span class="wf-chip" ${i === 0 ? 'style="background:rgba(16,185,129,0.15); border-color:#10b981; color:#065f46;"' : ''}>${c}</span>
+        `).join('');
+      }
+
+      // Update Secondary Selector active state
+      document.querySelectorAll('.hero-secondary-card').forEach(c => c.classList.remove('active-secondary'));
+      if (data.secondaryCardId) {
+        const secCard = document.getElementById(data.secondaryCardId);
+        if (secCard) secCard.classList.add('active-secondary');
+      }
+
+      showPublicToast('Hero Spotlight Synced', `Hero billboard switched to: "${data.campaign}".`, 'info');
+    }
+
+    function openHeroCmsTelemetryModal() {
+      const activeData = PUBLIC_HERO_SPOTLIGHT_DATA[activeHeroKey] || PUBLIC_HERO_SPOTLIGHT_DATA['sdp'];
+      const f = activeData.fields;
+
+      const bodyHtml = `
+        <div style="font-family: var(--font-mono); font-size: 11px; line-height: 1.5; color: #1e293b;">
+          <div style="padding: 10px 14px; background: rgba(163,4,15,0.06); border: 1px solid rgba(163,4,15,0.2); border-radius: 4px; margin-bottom: 14px;">
+            <strong style="color: var(--gec-crimson);">FROZEN SPEC COMPLIANCE (§12 CMS INTEGRATION)</strong>
+            <p style="margin: 4px 0 0 0; font-size: 10px; color: #64748b;">
+              Displays the 16 exact data fields configured under <code>Dashboard &gt; Hero Spotlight</code> in CMS.
+            </p>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+            <tbody>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; width: 38%; color: #64748b;">01. Campaign</td>
+                <td style="padding: 6px 8px; font-weight: 700; color: #0f172a;">${f.campaign}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">02. Lifecycle Status</td>
+                <td style="padding: 6px 8px;"><span class="status-pill open">${f.status}</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">03. Content Priority</td>
+                <td style="padding: 6px 8px;"><span class="card-target-tag" style="background:#fee2e2; color:#991b1b; font-weight:800;">${f.priority}</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">04. Headline (Live DOM)</td>
+                <td style="padding: 6px 8px; font-weight: 700;">${f.headline}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">05. Supporting Context</td>
+                <td style="padding: 6px 8px; color: #475569;">${f.supportingText}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">06. Eyebrow / Badge</td>
+                <td style="padding: 6px 8px; font-weight: 700; color: var(--gec-crimson);">${f.badge}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">07. Desktop Video (16:9)</td>
+                <td style="padding: 6px 8px;"><code>${f.desktopVideo}</code></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">08. Mobile Video (9:16)</td>
+                <td style="padding: 6px 8px;"><code>${f.mobileVideo}</code></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">09. Desktop Poster (16:9)</td>
+                <td style="padding: 6px 8px;"><code>${f.desktopPoster}</code></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">10. Mobile Poster (9:16)</td>
+                <td style="padding: 6px 8px;"><code>${f.mobilePoster}</code></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">11. Primary CTA</td>
+                <td style="padding: 6px 8px; font-weight: 700; color: var(--gec-crimson);">${f.primaryCta}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">12. Secondary CTA</td>
+                <td style="padding: 6px 8px;">${f.secondaryCta}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">13. Start Timestamp</td>
+                <td style="padding: 6px 8px;">${f.startDate}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">14. Expiry Timestamp</td>
+                <td style="padding: 6px 8px; font-weight: 700; color: #dc2626;">${f.endDate}</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">15. Publish Status</td>
+                <td style="padding: 6px 8px;"><span class="status-pill published">${f.publishStatus}</span></td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 8px; font-weight: 700; color: #64748b;">16. Fallback Mode</td>
+                <td style="padding: 6px 8px; font-weight: 700; color: #047857;">${f.fallbackMode}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      openPublicModal({
+        tag: 'CMS SPOTLIGHT CONTROL PANEL',
+        title: `Hero Spotlight Telemetry: ${activeData.campaign}`,
+        bodyHtml: bodyHtml,
+        confirmText: 'Open in CMS Console ↗',
+        onConfirm: () => {
+          window.location.href = '../cms-wireframes/index.html';
+        }
+      });
     }
   </script>
 </body>
