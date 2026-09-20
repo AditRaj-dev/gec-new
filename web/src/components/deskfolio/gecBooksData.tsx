@@ -206,7 +206,7 @@ export function BookCoverArtwork({
         </header>
 
         <div className="gec-book-cover__mini-center">
-          <GecMark size={24} />
+          <GecMark size={28} />
           <h4 className="gec-book-cover__mini-title">{spec.shortTitle}</h4>
         </div>
 

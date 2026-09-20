@@ -881,12 +881,15 @@ function DeskLamp({
       role="switch"
       aria-checked={on}
       aria-label="Desk lamp light"
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation()
+        haptic('selection')
         if (!on) setWarmup(true)
         onToggle()
       }}
       {...dropIn(item.rotate, index, !!reduce)}
     >
+      {on && <span className="df-lamp-bulb-glow" aria-hidden="true" />}
       <svg className="df-lamp-cast" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="lamp-beam" x1="121" y1="80" x2="-480" y2="300" gradientUnits="userSpaceOnUse">
@@ -1062,32 +1065,61 @@ export function DeskFolioDesktop() {
   }, [])
 
   const [activeBookId, setActiveBookId] = useState<string | null>(null)
-  const [readingState, setReadingState] = useState<'idle' | 'flying-in' | 'open' | 'flying-out'>('idle')
+  const [departingBookId, setDepartingBookId] = useState<string | null>(null)
+  const [readingState, setReadingState] = useState<
+    'idle' | 'flying-in' | 'open' | 'closing' | 'flying-out' | 'switching'
+  >('idle')
   const originButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const activeBook = useMemo(
     () => (activeBookId ? GEC_BOOKS.find((b) => b.id === activeBookId) ?? null : null),
     [activeBookId],
   )
 
+  const isBusyTransitioning =
+    readingState === 'flying-in' ||
+    readingState === 'closing' ||
+    readingState === 'flying-out' ||
+    readingState === 'switching'
+
   const handleSelectBook = (bookId: string) => {
-    if (readingState !== 'idle') return
+    if (isBusyTransitioning) return
+    if (bookId === activeBookId) return
+
     haptic('selection')
-    setActiveBookId(bookId)
-    if (reduce) {
-      setReadingState('open')
+
+    if (readingState === 'open' && activeBookId) {
+      // Direct smooth switch from an open book to another book!
+      const prevBookId = activeBookId
+      setDepartingBookId(prevBookId)
+      setActiveBookId(bookId)
+      if (reduce) {
+        setDepartingBookId(null)
+        setReadingState('open')
+      } else {
+        setReadingState('switching')
+      }
     } else {
-      setReadingState('flying-in')
+      setActiveBookId(bookId)
+      if (reduce) {
+        setReadingState('open')
+      } else {
+        setReadingState('flying-in')
+      }
     }
   }
 
-  const handleCloseBook = () => {
+  const handleRequestClose = () => {
+    if (readingState !== 'open') return
     if (reduce) {
-      const returnId = activeBookId
-      setReadingState('idle')
-      setActiveBookId(null)
-      if (returnId) {
-        originButtonRefs.current[returnId]?.focus()
-      }
+      handleFlightOutComplete()
+    } else {
+      setReadingState('closing')
+    }
+  }
+
+  const handleBookClosed = () => {
+    if (reduce) {
+      handleFlightOutComplete()
     } else {
       setReadingState('flying-out')
     }
@@ -1097,6 +1129,7 @@ export function DeskFolioDesktop() {
     const returnId = activeBookId
     setReadingState('idle')
     setActiveBookId(null)
+    setDepartingBookId(null)
     if (returnId) {
       originButtonRefs.current[returnId]?.focus()
     }
@@ -1167,7 +1200,7 @@ export function DeskFolioDesktop() {
             }}
           >
             <div
-              className="demo-stage deskfolio-demo-stage"
+              className={`demo-stage deskfolio-demo-stage ${lampOn ? 'is-lamp-lit' : ''}`}
               style={
                 {
                   width: `${STAGE_BASE_W}px`,
@@ -1179,6 +1212,7 @@ export function DeskFolioDesktop() {
                 } as React.CSSProperties
               }
             >
+              <div className="df-stage-lamp-overlay" aria-hidden="true" />
               <MatEditContext.Provider value={matEdit}>
                 {activeMatKey && (
                   <div
@@ -1195,7 +1229,14 @@ export function DeskFolioDesktop() {
                   GEC_BOOKS.map((book) => {
                     const coord = DESK_BOOK_COORDINATES[book.id]
                     if (!coord) return null
-                    const isCurrentTraveling = activeBookId === book.id && readingState !== 'idle'
+                    const isCurrentTraveling =
+                      isBusyTransitioning &&
+                      (activeBookId === book.id || departingBookId === book.id)
+                    const isCurrentOpen =
+                      (readingState === 'open' || readingState === 'closing') &&
+                      activeBookId === book.id
+                    const isHidden = isCurrentTraveling || isCurrentOpen
+                    const isDisabled = isBusyTransitioning || activeBookId === book.id
                     return (
                       <button
                         key={book.id}
@@ -1203,7 +1244,8 @@ export function DeskFolioDesktop() {
                           originButtonRefs.current[book.id] = el
                         }}
                         type="button"
-                        className={`df-mini-desk-book df-mini-desk-book--${book.id} ${isCurrentTraveling ? 'is-hidden' : ''}`}
+                        className={`df-mini-desk-book df-mini-desk-book--${book.id} ${isHidden ? 'is-hidden' : ''}`}
+                        data-desk-book={book.id}
                         style={{
                           left: `${coord.x}px`,
                           top: `${coord.y}px`,
@@ -1211,8 +1253,8 @@ export function DeskFolioDesktop() {
                         }}
                         title={`Open ${book.title}`}
                         aria-label={`Open ${book.title}`}
-                        aria-disabled={readingState !== 'idle'}
-                        disabled={readingState !== 'idle'}
+                        aria-disabled={isDisabled}
+                        disabled={isDisabled}
                         onClick={() => handleSelectBook(book.id)}
                       >
                         <BookCoverArtwork id={book.id} size="mini" />
@@ -1220,81 +1262,141 @@ export function DeskFolioDesktop() {
                     )
                   })}
 
-                {activeBookId && (readingState === 'flying-in' || readingState === 'flying-out') && (
+                {/* Departing flight during book switch */}
+                {departingBookId && readingState === 'switching' && (
                   <motion.div
-                    key={`flight-${activeBookId}-${readingState}`}
+                    key={`flight-departing-${departingBookId}`}
                     className="df-book-flight"
-                    initial={
-                      readingState === 'flying-in'
-                        ? {
-                            left: DESK_BOOK_COORDINATES[activeBookId].x,
-                            top: DESK_BOOK_COORDINATES[activeBookId].y,
-                            width: MINI_BOOK_SIZE.width,
-                            height: MINI_BOOK_SIZE.height,
-                            rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
-                          }
-                        : {
-                            left: CENTER_BOOK_COORDINATES.x,
-                            top: CENTER_BOOK_COORDINATES.y,
-                            width: CENTER_BOOK_COORDINATES.width,
-                            height: CENTER_BOOK_COORDINATES.height,
-                            rotate: 0,
-                          }
-                    }
-                    animate={
-                      readingState === 'flying-in'
-                        ? {
-                            left: CENTER_BOOK_COORDINATES.x,
-                            top: CENTER_BOOK_COORDINATES.y,
-                            width: CENTER_BOOK_COORDINATES.width,
-                            height: CENTER_BOOK_COORDINATES.height,
-                            rotate: 0,
-                          }
-                        : {
-                            left: DESK_BOOK_COORDINATES[activeBookId].x,
-                            top: DESK_BOOK_COORDINATES[activeBookId].y,
-                            width: MINI_BOOK_SIZE.width,
-                            height: MINI_BOOK_SIZE.height,
-                            rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
-                          }
-                    }
+                    initial={{
+                      left: CENTER_BOOK_COORDINATES.x,
+                      top: CENTER_BOOK_COORDINATES.y,
+                      width: CENTER_BOOK_COORDINATES.width,
+                      height: CENTER_BOOK_COORDINATES.height,
+                      rotate: 0,
+                    }}
+                    animate={{
+                      left: DESK_BOOK_COORDINATES[departingBookId].x,
+                      top: DESK_BOOK_COORDINATES[departingBookId].y,
+                      width: MINI_BOOK_SIZE.width,
+                      height: MINI_BOOK_SIZE.height,
+                      rotate: DESK_BOOK_COORDINATES[departingBookId].rotate,
+                    }}
                     transition={
                       reduce
                         ? { duration: 0 }
                         : {
                             type: 'spring',
-                            bounce: 0.18,
-                            duration: readingState === 'flying-in' ? 0.52 : 0.48,
+                            stiffness: 220,
+                            damping: 26,
+                            mass: 0.8,
                           }
                     }
-                    onAnimationComplete={() => {
-                      if (readingState === 'flying-in') {
-                        setReadingState('open')
-                      } else if (readingState === 'flying-out') {
-                        handleFlightOutComplete()
-                      }
-                    }}
                   >
-                    <BookCoverArtwork id={activeBookId} size="full" />
+                    <BookCoverArtwork id={departingBookId} size="full" />
                   </motion.div>
                 )}
 
-                {readingState === 'open' && activeBook && (
-                  <div className="df-book-bloom">
-                    <DeskFolio
-                      key={activeBook.id}
-                      cover={activeBook.cover}
-                      pages={activeBook.pages}
-                      backCover={activeBook.backCover}
-                      closeOnEnd={true}
-                      autoOpen={true}
-                      onClose={handleCloseBook}
-                      pageWidth={PAGE_W}
-                      pageHeight={PAGE_H}
-                      style={coverVars(activeBook.coverTheme)}
-                      virtualizePages={true}
+                {/* Primary flight (flying-in, flying-out, or arriving during switch) */}
+                {activeBookId &&
+                  (readingState === 'flying-in' ||
+                    readingState === 'flying-out' ||
+                    readingState === 'switching') && (
+                    <motion.div
+                      key={`flight-${activeBookId}-${readingState}`}
+                      className="df-book-flight"
+                      initial={
+                        readingState === 'flying-out'
+                          ? {
+                              left: CENTER_BOOK_COORDINATES.x,
+                              top: CENTER_BOOK_COORDINATES.y,
+                              width: CENTER_BOOK_COORDINATES.width,
+                              height: CENTER_BOOK_COORDINATES.height,
+                              rotate: 0,
+                            }
+                          : {
+                              left: DESK_BOOK_COORDINATES[activeBookId].x,
+                              top: DESK_BOOK_COORDINATES[activeBookId].y,
+                              width: MINI_BOOK_SIZE.width,
+                              height: MINI_BOOK_SIZE.height,
+                              rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
+                            }
+                      }
+                      animate={
+                        readingState === 'flying-out'
+                          ? {
+                              left: DESK_BOOK_COORDINATES[activeBookId].x,
+                              top: DESK_BOOK_COORDINATES[activeBookId].y,
+                              width: MINI_BOOK_SIZE.width,
+                              height: MINI_BOOK_SIZE.height,
+                              rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
+                            }
+                          : {
+                              left: CENTER_BOOK_COORDINATES.x,
+                              top: CENTER_BOOK_COORDINATES.y,
+                              width: CENTER_BOOK_COORDINATES.width,
+                              height: CENTER_BOOK_COORDINATES.height,
+                              rotate: 0,
+                            }
+                      }
+                      transition={
+                        reduce
+                          ? { duration: 0 }
+                          : {
+                              type: 'spring',
+                              stiffness: 220,
+                              damping: 26,
+                              mass: 0.8,
+                            }
+                      }
+                      onAnimationComplete={() => {
+                        if (readingState === 'flying-in' || readingState === 'switching') {
+                          setReadingState('open')
+                          setDepartingBookId(null)
+                        } else if (readingState === 'flying-out') {
+                          handleFlightOutComplete()
+                        }
+                      }}
+                    >
+                      <BookCoverArtwork id={activeBookId} size="full" />
+                    </motion.div>
+                  )}
+
+                {(readingState === 'open' || readingState === 'closing') && activeBook && (
+                  <>
+                    <div
+                      className="df-book-backdrop"
+                      onClick={handleRequestClose}
+                      role="button"
+                      tabIndex={-1}
+                      aria-label="Click background to close book"
                     />
-                  </div>
+                    <div className="df-book-bloom">
+                      <button
+                        type="button"
+                        className="df-book-close-button"
+                        onClick={handleRequestClose}
+                        aria-label="Close book (Esc)"
+                        title="Close book (Esc)"
+                      >
+                        <span className="df-book-close-icon" aria-hidden="true">✕</span>
+                        <span>Close [Esc]</span>
+                      </button>
+                      <DeskFolio
+                        key={activeBook.id}
+                        cover={activeBook.cover}
+                        pages={activeBook.pages}
+                        backCover={activeBook.backCover}
+                        closeOnEnd={true}
+                        autoOpen={true}
+                        closeRequested={readingState === 'closing'}
+                        onClose={handleBookClosed}
+                        pageWidth={PAGE_W}
+                        pageHeight={PAGE_H}
+                        style={coverVars(activeBook.coverTheme)}
+                        virtualizePages={true}
+                      />
+                    </div>
+                  </>
                 )}
 
                 <AnimatePresence>
@@ -1327,7 +1429,20 @@ export function DeskFolioDesktop() {
                   {LAMP_ITEM && !lampOverride?.deleted && !lampOn && intro >= 2 && (
                     <motion.div
                       className="df-lamp-hint"
-                      aria-hidden="true"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Tap to turn on desk lamp"
+                      onClick={() => {
+                        haptic('selection')
+                        setLampOn(true)
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          haptic('selection')
+                          setLampOn(true)
+                        }
+                      }}
                       initial={reduce ? false : { opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={reduce ? { opacity: 0 } : { opacity: 0, transition: { duration: 0.22, ease: 'easeIn' } }}

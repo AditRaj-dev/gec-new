@@ -40,13 +40,15 @@ export type DeskFolioProps = {
   virtualizePages?: boolean
   /* automatically open the front cover */
   autoOpen?: boolean
+  /* trigger closing flip from parent */
+  closeRequested?: boolean
   /* fires when book has settled closed */
   onClose?: () => void
 }
 
 // springs
-const FLIP_SPRING = { type: 'spring', bounce: 0.18, duration: 0.52 } as const
-const BLOOM_SPRING = { type: 'spring', bounce: 0.24, duration: 0.52 } as const
+const FLIP_SPRING = { type: 'spring', stiffness: 220, damping: 26 } as const
+const BLOOM_SPRING = { type: 'spring', stiffness: 220, damping: 26 } as const
 const PEEK_SPRING = { type: 'spring', bounce: 0.42, duration: 0.32 } as const
 const PEEK_ANGLE = -13 // corner lift on hover
 
@@ -96,6 +98,7 @@ export function DeskFolio({
   label = 'A little book — drag a corner, tap a side, or use the arrow keys to turn the pages',
   virtualizePages = false,
   autoOpen = false,
+  closeRequested = false,
   onClose,
 }: DeskFolioProps) {
   const reduce = useReducedMotion()
@@ -181,6 +184,18 @@ export function DeskFolio({
     }
   }, [turned, turning, onClose])
 
+  // Handle parent-directed close request
+  useEffect(() => {
+    if (closeRequested) {
+      if (turned > 0) {
+        setTurning(0)
+        setTurned(0)
+      } else if (turned === 0 && turning === null) {
+        onClose?.()
+      }
+    }
+  }, [closeRequested, turned, turning, onClose])
+
   useEffect(() => {
     if (!locked) onTurn?.(turned)
   }, [locked, turned, onTurn])
@@ -192,12 +207,16 @@ export function DeskFolio({
       if (target?.isContentEditable || target?.closest('input, textarea, select')) return
       if (e.key !== 'Escape') return
       e.preventDefault()
-      setTurning(0)
-      setTurned(0)
+      if (turned > 0) {
+        setTurning(0)
+        setTurned(0)
+      } else if (turned === 0 && turning === null) {
+        onClose?.()
+      }
     }
     window.addEventListener('keydown', closeOnEscape)
     return () => window.removeEventListener('keydown', closeOnEscape)
-  }, [interactive, open, locked])
+  }, [interactive, open, locked, turned, turning, onClose])
 
   // direct manipulation
   // cover opens on release; inner sheets follow live

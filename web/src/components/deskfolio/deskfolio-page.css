@@ -593,16 +593,16 @@
     box-shadow 0.24s ease,
     opacity 0.2s ease;
   outline: none;
-  z-index: 8;
+  z-index: 36;
   -webkit-tap-highlight-color: transparent;
 }
 
 .df-mini-desk-book:hover:not(:disabled):not([aria-disabled='true']) {
-  transform: scale(1.045) translateY(-3px);
+  transform: scale(1.055) translateY(-4px);
   box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.4),
-    0 12px 24px -2px rgba(0, 0, 0, 0.55),
-    0 20px 36px -6px rgba(0, 0, 0, 0.38);
+    0 6px 12px rgba(0, 0, 0, 0.45),
+    0 16px 30px -2px rgba(0, 0, 0, 0.6),
+    0 24px 42px -6px rgba(0, 0, 0, 0.42);
 }
 
 .df-mini-desk-book:focus-visible {
@@ -621,16 +621,72 @@
   pointer-events: none;
 }
 
+/* Semi-transparent backdrop under active open book to catch dismiss clicks */
+.df-book-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Elegant floating close badge above the open book spread */
+.df-book-close-button {
+  position: absolute;
+  top: -46px;
+  right: max(12px, calc(50% - 350px));
+  z-index: 50;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px 6px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #fdfaf3;
+  background: rgba(18, 18, 22, 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 12px 28px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.df-book-close-button:hover {
+  background: rgba(28, 28, 34, 0.96);
+  border-color: #fbca05;
+  color: #fbca05;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.df-book-close-icon {
+  font-size: 10px;
+  opacity: 0.8;
+  font-weight: 900;
+}
+
 /* Shared-layout flight carrier during travel transition */
 .df-book-flight {
   position: absolute;
-  z-index: 35;
+  z-index: 40;
   pointer-events: none;
   overflow: hidden;
   border-radius: 4px;
   box-shadow:
-    0 24px 48px -12px rgba(0, 0, 0, 0.65),
-    0 8px 20px rgba(0, 0, 0, 0.45);
+    0 28px 56px -12px rgba(0, 0, 0, 0.7),
+    0 10px 24px rgba(0, 0, 0, 0.5);
   transform-origin: center center;
 }
 
@@ -1133,7 +1189,10 @@
   z-index: 0;
 }
 
-/* interactive desk lamp */
+.df-lamp-dragger {
+  z-index: 26;
+}
+
 .df-lamp {
   position: absolute;
   z-index: 6; /* above the book */
@@ -1155,10 +1214,58 @@
   filter:
     drop-shadow(0 2px 2px rgba(18, 38, 31, 0.38))
     drop-shadow(0 13px 20px rgba(18, 38, 31, 0.28));
+  transition: filter 0.35s ease;
 }
 .df-lamp:focus-visible .df-lamp-img {
   filter: drop-shadow(0 0 0 3px #f3a8c0) drop-shadow(0 13px 20px rgba(18, 38, 31, 0.28));
 }
+.df-lamp.is-on .df-lamp-img {
+  filter:
+    drop-shadow(0 0 20px rgba(255, 230, 140, 0.88))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 14px 24px rgba(0, 0, 0, 0.35));
+}
+
+/* Incandescent lamp bulb glow at the shade aperture */
+.df-lamp-bulb-glow {
+  position: absolute;
+  left: 35%;
+  top: 35%;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 18%, #ffea88 58%, transparent 85%);
+  filter: drop-shadow(0 0 14px #ffc83b) drop-shadow(0 0 26px #ffa500);
+  pointer-events: none;
+  z-index: 3;
+  animation: df-lamp-glow-flicker 3s ease-in-out infinite alternate;
+}
+
+@keyframes df-lamp-glow-flicker {
+  0% { opacity: 0.92; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.94; transform: scale(0.98); }
+}
+
+/* Ambient room cast when lamp is lit */
+.df-stage-lamp-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(
+    ellipse 940px 660px at 84% 18%,
+    rgba(255, 238, 175, 0.16) 0%,
+    rgba(255, 222, 130, 0.08) 45%,
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease-out;
+}
+.deskfolio-demo-stage.is-lamp-lit .df-stage-lamp-overlay {
+  opacity: 1;
+}
+
 /* light cone cast on desk; off state */
 .df-lamp-cast {
   position: absolute;
@@ -1235,9 +1342,14 @@
 /* journal bloom wrapper, centered */
 .df-book-bloom {
   position: relative;
-  z-index: 10;
+  z-index: 40;
   width: 100%;
   align-self: center;
+  pointer-events: none;
+}
+
+.df-book-bloom .deskfolio {
+  pointer-events: none;
 }
 
 /* tap-to-light hint, anchored to lamp */
@@ -1245,8 +1357,9 @@
   position: absolute;
   top: 132px;
   right: 228px;
-  z-index: 5;
-  pointer-events: none;
+  z-index: 28;
+  pointer-events: auto;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -1256,8 +1369,15 @@
   filter: blur(0.12px);
   transform: rotate(-2deg);
   transform-origin: 70% 45%;
+  transition: transform 0.2s ease, color 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
   -webkit-mask-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0 1px, rgba(0, 0, 0, 0.7) 1px 2px, rgba(0, 0, 0, 0.96) 2px 5px);
   mask-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0 1px, rgba(0, 0, 0, 0.7) 1px 2px, rgba(0, 0, 0, 0.96) 2px 5px);
+}
+.df-lamp-hint:hover {
+  transform: rotate(-2deg) scale(1.06);
+  color: #ffe89e;
 }
 .df-lamp-hint-text {
   font-family: 'Caveat', 'Segoe Script', 'Bradley Hand', cursive;

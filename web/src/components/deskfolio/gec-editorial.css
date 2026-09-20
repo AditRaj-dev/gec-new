@@ -113,15 +113,35 @@
   padding-bottom: 3px;
 }
 
+.gec-book-cover--mini.gec-book-cover--handbook {
+  box-shadow:
+    inset 3px 0 0 #8b020b,
+    inset 5px 0 3px rgba(0, 0, 0, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.38),
+    0 1px 3px rgba(0, 0, 0, 0.22);
+}
+
 .gec-book-cover__mini-center {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   gap: 5px;
   margin: auto 0;
+  width: 100%;
+}
+
+.gec-book-cover--mini .gec-book-cover__mark {
+  grid-column: auto;
+  grid-row: auto;
+  align-self: center;
+  margin: 0 auto;
+  width: 28px;
+  height: 28px;
+  display: block;
 }
 
 .gec-book-cover__mini-title {
@@ -132,6 +152,7 @@
   line-height: 1.1;
   text-align: center;
   text-wrap: balance;
+  width: 100%;
 }
 
 .gec-book-cover__mini-footer {
