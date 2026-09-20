@@ -2476,6 +2476,79 @@ export function DeskFolioPage() {
   }, [activeMatKey])
   const devActivityOverride = matOverrides['dev-activity']
   const lampOverride = matOverrides['desk-lamp']
+
+  // Desktop parallax engine: tracks normalized cursor offsets (-1 to 1) from stage center
+  const [stageNorm, setStageNorm] = useState({ x: 0, y: 0 })
+  const stageRef = useRef<HTMLDivElement>(null)
+  const rafRef = useRef<number | null>(null)
+  const targetNorm = useRef({ x: 0, y: 0 })
+  const currentNorm = useRef({ x: 0, y: 0 })
+
+  useEffect(() => {
+    if (compact || reduce) return
+
+    const handlePointerMove = (e: PointerEvent) => {
+      const stage = stageRef.current
+      if (!stage) return
+      const rect = stage.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const nx = Math.max(-1, Math.min(1, (e.clientX - cx) / (rect.width / 2)))
+      const ny = Math.max(-1, Math.min(1, (e.clientY - cy) / (rect.height / 2)))
+      targetNorm.current = { x: nx, y: ny }
+
+      if (rafRef.current === null) {
+        const loop = () => {
+          const dx = targetNorm.current.x - currentNorm.current.x
+          const dy = targetNorm.current.y - currentNorm.current.y
+          currentNorm.current.x += dx * 0.12
+          currentNorm.current.y += dy * 0.12
+          setStageNorm({
+            x: Math.round(currentNorm.current.x * 1000) / 1000,
+            y: Math.round(currentNorm.current.y * 1000) / 1000,
+          })
+          if (Math.abs(dx) > 0.002 || Math.abs(dy) > 0.002) {
+            rafRef.current = requestAnimationFrame(loop)
+          } else {
+            rafRef.current = null
+          }
+        }
+        rafRef.current = requestAnimationFrame(loop)
+      }
+    }
+
+    const handlePointerLeave = () => {
+      targetNorm.current = { x: 0, y: 0 }
+      if (rafRef.current === null) {
+        const loop = () => {
+          const dx = targetNorm.current.x - currentNorm.current.x
+          const dy = targetNorm.current.y - currentNorm.current.y
+          currentNorm.current.x += dx * 0.1
+          currentNorm.current.y += dy * 0.1
+          setStageNorm({
+            x: Math.round(currentNorm.current.x * 1000) / 1000,
+            y: Math.round(currentNorm.current.y * 1000) / 1000,
+          })
+          if (Math.abs(dx) > 0.002 || Math.abs(dy) > 0.002) {
+            rafRef.current = requestAnimationFrame(loop)
+          } else {
+            rafRef.current = null
+          }
+        }
+        rafRef.current = requestAnimationFrame(loop)
+      }
+    }
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true })
+    document.addEventListener('pointerleave', handlePointerLeave)
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      document.removeEventListener('pointerleave', handlePointerLeave)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [compact, reduce])
+
   // book content: active GEC book (portfolio pack) — journal pack preserved behind SHOW_JOURNAL
   const cover = SHOW_JOURNAL ? JOURNAL_COVER : activeBook.cover
   // portfolio has no back cover (uses GEC back covers per book); journal keeps its end leaf
@@ -2495,11 +2568,14 @@ export function DeskFolioPage() {
     <>
       <section className="deskfolio-live">
         <div
+          ref={stageRef}
           className="demo-stage deskfolio-demo-stage"
           style={
             {
               '--df-picker-w': `${pageW}px`,
               '--df-stage-scale': stageScale,
+              '--mouse-x': stageNorm.x,
+              '--mouse-y': stageNorm.y,
               ...bgTheme.style,
             } as React.CSSProperties
           }

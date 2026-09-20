@@ -209,7 +209,7 @@ export function DeskFolio({
   const onPointerMove = (e: React.PointerEvent) => {
     const d = drag.current
     if (!d) return
-    if (Math.abs(e.clientX - d.startX) > 4) d.moved = true
+    if (Math.abs(e.clientX - d.startX) > 10) d.moved = true
     if (!d.follow) return // cover opens on release
     const p =
       d.dir === 'fwd' ? clamp((d.startX - e.clientX) / d.pageW, 0, 1) : clamp((e.clientX - d.startX) / d.pageW, 0, 1)
@@ -251,9 +251,8 @@ export function DeskFolio({
     if (cancelled) return
     // closed book: tap or swipe opens
     if (!open) return turn('fwd')
-    // swipe turns either way; tap only goes forward
-    if (d.moved) turn(d.dir)
-    else if (d.turnZone && d.dir === 'fwd') turn('fwd')
+    // swipe or tap turns in active direction: left page turns back, right page turns fwd
+    turn(d.dir)
   }
 
   const onKeyDown = (e: React.KeyboardEvent) => {

@@ -48,6 +48,7 @@
   border-radius: 22px;
   outline: none;
   touch-action: pan-y;
+  pointer-events: auto;
 }
 /* keyboard focus ring */
 .deskfolio-book:focus-visible {
@@ -2433,6 +2434,8 @@ body.df-armed .df-edit *::-moz-selection {
 
 /* journal bloom wrapper, centered */
 .df-book-bloom {
+  position: relative;
+  z-index: 10;
   align-self: center;
 }
 

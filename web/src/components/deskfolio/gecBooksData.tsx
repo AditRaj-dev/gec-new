@@ -110,7 +110,99 @@ function GecMark() {
   )
 }
 
+function IncubationCover() {
+  return (
+    <article className="gec-book-cover gec-book-cover--incubation">
+      <div className="df-cover-foil-border" aria-hidden="true" />
+      <header className="gec-book-cover__running">
+        <span>GEC ARCHIVES // VENTURE SCALING</span>
+        <span>DOC NO. 2026-INC</span>
+      </header>
+      <div className="gec-book-cover__title-block">
+        <GecMark />
+        <span className="gec-book-cover__mark-label">GEC / 01 // COHORT 2026</span>
+        <h2>Venture Incubation Dossier</h2>
+        <p>From dorm-room spark to institutional scale. A working ledger for student founders.</p>
+      </div>
+      <footer className="gec-book-cover__footer">
+        <span>Galgotias Entrepreneurship Cell</span>
+        <span>Open Volume →</span>
+      </footer>
+    </article>
+  )
+}
+
+function SummitCover() {
+  return (
+    <article className="gec-book-cover gec-book-cover--summit">
+      <div className="df-cover-foil-border df-foil-silver" aria-hidden="true" />
+      <header className="gec-book-cover__running">
+        <span>CONCLAVE MONOGRAPH // NORTH INDIA FLAGSHIP</span>
+        <span>EDITION 2026</span>
+      </header>
+      <div className="gec-book-cover__title-block">
+        <GecMark />
+        <span className="gec-book-cover__mark-label">GEC / 02 // ARENA BLUEPRINT</span>
+        <h2>E-Summit &apos;26 Conclave Blueprint</h2>
+        <p>People, arenas, and capital in productive collision. 15,000+ delegates &amp; ₹12L pitch arena.</p>
+      </div>
+      <footer className="gec-book-cover__footer">
+        <span>E-Summit Conclave Directorate</span>
+        <span>Explore Blueprint →</span>
+      </footer>
+    </article>
+  )
+}
+
+function HandbookCover() {
+  return (
+    <article className="gec-book-cover gec-book-cover--handbook">
+      <div className="df-cover-foil-border" style={{ borderColor: 'rgba(163,4,15,0.45)' }} aria-hidden="true" />
+      <header className="gec-book-cover__running">
+        <span>ZERO-TO-ONE FIELD MANUAL</span>
+        <span>VOL. IV — 2026 REVISED</span>
+      </header>
+      <div className="gec-book-cover__title-block">
+        <GecMark />
+        <span className="gec-book-cover__mark-label">GEC / 03 // FIELD NOTES</span>
+        <h2>Innovator&apos;s Field Handbook</h2>
+        <p>Validation loops, governance checklists &amp; tactical clinic notes for zero-to-one builders.</p>
+      </div>
+      <footer className="gec-book-cover__footer">
+        <span>Founder Field Protocols</span>
+        <span>Open Manual →</span>
+      </footer>
+    </article>
+  )
+}
+
+function FoundersCover() {
+  return (
+    <article className="gec-book-cover gec-book-cover--founders">
+      <div className="df-cover-foil-border" aria-hidden="true" />
+      <header className="gec-book-cover__running">
+        <span>VENTURE ALUMNI ROLL // 2018–2026</span>
+        <span>LIBER FUNDATORUM</span>
+      </header>
+      <div className="gec-book-cover__title-block">
+        <GecMark />
+        <span className="gec-book-cover__mark-label">GEC / 04 // ALUMNI LEDGER</span>
+        <h2>Wall of Founders</h2>
+        <p>The builders, ventures, and institutional syndicates behind ₹180Cr+ in portfolio record.</p>
+      </div>
+      <footer className="gec-book-cover__footer">
+        <span>Galgotias Venture Alumni</span>
+        <span>View Ledger →</span>
+      </footer>
+    </article>
+  )
+}
+
 function BookCover({ spec }: { spec: CoverSpec }) {
+  if (spec.tone === 'incubation') return <IncubationCover />
+  if (spec.tone === 'summit') return <SummitCover />
+  if (spec.tone === 'handbook') return <HandbookCover />
+  if (spec.tone === 'founders') return <FoundersCover />
   return (
     <article className={`gec-book-cover gec-book-cover--${spec.tone}`}>
       <header className="gec-book-cover__running"><span>{spec.series}</span><span>{spec.edition}</span></header>
@@ -297,28 +389,88 @@ export const GEC_BOOKS: GecBook[] = [
 export const GEC_BOOKS_BY_ID: Record<string, GecBook> = Object.fromEntries(GEC_BOOKS.map((book) => [book.id, book]))
 
 interface CompanionBooksProps { activeBookId: string; onSelect: (id: string) => void }
-type CompanionBookPlacement = React.CSSProperties & { '--book-x': string; '--book-y': string; '--book-rotate': string; '--book-scale': number }
+type CompanionBookPlacement = React.CSSProperties & {
+  '--book-x': string
+  '--book-y': string
+  '--book-rotate': string
+  '--book-scale': number
+  '--book-px-factor'?: number
+  '--book-py-factor'?: number
+}
 
 const COMPANION_BOOK_PLACEMENTS: Record<string, CompanionBookPlacement> = {
-  incubation: { '--book-x': '4%', '--book-y': '11%', '--book-rotate': '-7deg', '--book-scale': 0.92 },
-  summit: { '--book-x': '72%', '--book-y': '8%', '--book-rotate': '8deg', '--book-scale': 0.88 },
-  handbook: { '--book-x': '5%', '--book-y': '67%', '--book-rotate': '6deg', '--book-scale': 0.86 },
-  founders: { '--book-x': '82%', '--book-y': '66%', '--book-rotate': '-8deg', '--book-scale': 0.9 },
+  incubation: { '--book-x': '4%', '--book-y': '11%', '--book-rotate': '-7deg', '--book-scale': 0.92, '--book-px-factor': 1.15, '--book-py-factor': 0.95 },
+  summit: { '--book-x': '72%', '--book-y': '8%', '--book-rotate': '8deg', '--book-scale': 0.88, '--book-px-factor': 1.3, '--book-py-factor': 1.1 },
+  handbook: { '--book-x': '5%', '--book-y': '67%', '--book-rotate': '6deg', '--book-scale': 0.86, '--book-px-factor': 0.9, '--book-py-factor': 1.05 },
+  founders: { '--book-x': '82%', '--book-y': '66%', '--book-rotate': '-8deg', '--book-scale': 0.9, '--book-px-factor': 1.25, '--book-py-factor': 1.2 },
 }
 
 export function MatCompanionBooks({ activeBookId, onSelect }: CompanionBooksProps) {
   return (
     <div className="df-mat-companion-shelf" aria-label="Switch GEC book">
-      {GEC_BOOKS.filter((book) => book.id !== activeBookId).map((book) => (
-        <div key={book.id} className="df-resting-book" style={COMPANION_BOOK_PLACEMENTS[book.id]}>
-          <div className="df-resting-book-visual">
-            <DeskFolio cover={book.cover} pages={[]} pageWidth={156} pageHeight={210} className="deskfolio--companion" closedShift="-25%" interactive={false} />
-          </div>
-          <button type="button" className="df-resting-book-hit" title={`Open ${book.title}`} aria-label={`Open ${book.title}`} onClick={() => { haptic('selection'); onSelect(book.id) }}>
-            <span className="deskfolio-sr">Open {book.title}</span>
+      {GEC_BOOKS.filter((book) => book.id !== activeBookId).map((book) => {
+        const placement = COMPANION_BOOK_PLACEMENTS[book.id]
+        return (
+          <button
+            key={book.id}
+            type="button"
+            className={`df-resting-book df-resting-book--${book.id}`}
+            style={
+              {
+                ...placement,
+                '--book-spine-bg': book.spineColor,
+                '--book-cover-bg': book.coverTheme.base,
+                '--book-accent': book.coverTheme.accent,
+              } as React.CSSProperties
+            }
+            title={`Switch to ${book.title}`}
+            aria-label={`Open ${book.title}`}
+            onClick={() => {
+              haptic('selection')
+              onSelect(book.id)
+            }}
+          >
+            {/* Ambient drop shadow cast on cutting mat with counter-parallax */}
+            <div className="df-resting-book-shadow" aria-hidden="true" />
+
+            {/* 3D Isometric Physical Book */}
+            <div className="df-resting-book-3d" aria-hidden="true">
+              {/* Hardcover Spine */}
+              <div className="df-resting-book-spine">
+                <span className="df-spine-rib" />
+                <span className="df-spine-text">{book.shortTitle}</span>
+                <span className="df-spine-logo">GEC</span>
+                <span className="df-spine-rib" />
+              </div>
+
+              {/* Stacked Page Edges (Right and Bottom) */}
+              <div className="df-resting-book-pages-right" />
+              <div className="df-resting-book-pages-bottom" />
+
+              {/* Hardcover Face */}
+              <div className={`df-resting-book-cover df-resting-book-cover--${book.id}`}>
+                <div className="df-resting-book-texture" />
+                <div className="df-resting-book-foil-trim" />
+
+                <div className="df-resting-book-header">
+                  <span className="df-resting-book-badge">{book.badge}</span>
+                  <span className="df-resting-book-pin">✦</span>
+                </div>
+
+                <div className="df-resting-book-body">
+                  <h4 className="df-resting-book-title">{book.shortTitle}</h4>
+                  <p className="df-resting-book-sub">{book.subtitle}</p>
+                </div>
+
+                <div className="df-resting-book-cta">
+                  <span>Inspect &amp; Open</span>
+                  <span className="df-resting-book-arrow">→</span>
+                </div>
+              </div>
+            </div>
           </button>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

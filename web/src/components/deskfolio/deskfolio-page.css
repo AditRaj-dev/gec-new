@@ -630,10 +630,14 @@
   cursor: pointer;
   outline: none;
   pointer-events: auto;
-  transform: rotate(var(--book-rotate, 0deg)) scale(var(--book-scale, 1));
+  --px: calc(var(--book-px-factor, 1) * var(--mouse-x, 0) * 16px);
+  --py: calc(var(--book-py-factor, 1) * var(--mouse-y, 0) * 14px);
+  --prx: calc(var(--mouse-y, 0) * 6deg);
+  --pry: calc(var(--mouse-x, 0) * -6deg);
+  transform: translate3d(var(--px, 0px), var(--py, 0px), 0) rotate(var(--book-rotate, 0deg)) scale(var(--book-scale, 1));
   transform-origin: center;
   transform-style: preserve-3d;
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -642,15 +646,17 @@
   outline-offset: 7px;
 }
 
-/* Realistic drop shadow on the desk mat */
+/* Realistic drop shadow on the desk mat with counter-parallax */
 .df-resting-book-shadow {
   position: absolute;
   inset: 4px;
   border-radius: 8px;
-  background: radial-gradient(ellipse at 45% 55%, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 75%);
+  background: radial-gradient(ellipse at 45% 55%, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.38) 55%, transparent 75%);
   filter: blur(12px);
-  transform: rotateX(32deg) rotateY(-14deg) rotateZ(8deg) translateY(18px) translateZ(-16px);
-  transition: transform 0.45s ease, filter 0.45s ease, opacity 0.45s ease;
+  --spx: calc(var(--mouse-x, 0) * -12px);
+  --spy: calc(var(--mouse-y, 0) * -10px);
+  transform: translate3d(var(--spx, 0px), var(--spy, 0px), 0) rotateX(32deg) rotateY(-14deg) rotateZ(8deg) translateY(18px) translateZ(-16px);
+  transition: transform 0.32s ease, filter 0.32s ease, opacity 0.32s ease;
   pointer-events: none;
   opacity: 0.85;
 }
@@ -661,20 +667,20 @@
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transform: rotateX(32deg) rotateY(-14deg) rotateZ(8deg);
-  transition: transform 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  transform: rotateX(calc(32deg + var(--prx, 0deg))) rotateY(calc(-14deg + var(--pry, 0deg))) rotateZ(8deg);
+  transition: transform 0.38s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 /* Hover lift & tilt effect */
 .df-resting-book:hover .df-resting-book-3d,
 .df-resting-book:focus-visible .df-resting-book-3d {
-  transform: rotateX(20deg) rotateY(-6deg) rotateZ(3deg) translateY(-20px) translateZ(32px) scale(1.06);
+  transform: rotateX(calc(18deg + var(--prx, 0deg))) rotateY(calc(-6deg + var(--pry, 0deg))) rotateZ(3deg) translateY(-22px) translateZ(38px) scale(1.08);
 }
 
 .df-resting-book:hover .df-resting-book-shadow,
 .df-resting-book:focus-visible .df-resting-book-shadow {
-  transform: rotateX(20deg) rotateY(-6deg) rotateZ(3deg) translateY(38px) translateZ(-30px) scale(1.2);
-  filter: blur(22px);
+  transform: translate3d(var(--spx, 0px), var(--spy, 0px), 0) rotateX(18deg) rotateY(-6deg) rotateZ(3deg) translateY(42px) translateZ(-30px) scale(1.25);
+  filter: blur(24px);
   opacity: 0.95;
 }
 
@@ -893,8 +899,397 @@
   transform: translateX(3px);
 }
 
+/* Resting book cover specific skins */
+.df-resting-book-cover--incubation {
+  background:
+    radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, 0.18), transparent 55%),
+    linear-gradient(155deg, #A3040F 0%, #780209 55%, #4A0005 100%) !important;
+  color: #FFF6D6 !important;
+}
+.df-resting-book-cover--summit {
+  background:
+    radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, 0.20), transparent 55%),
+    linear-gradient(155deg, #0F75BC 0%, #0C5B94 50%, #062842 100%) !important;
+  color: #EBF8FF !important;
+}
+.df-resting-book-cover--summit .df-resting-book-foil-trim {
+  border-color: rgba(220, 240, 255, 0.75);
+}
+.df-resting-book-cover--summit .df-resting-book-badge {
+  background: linear-gradient(135deg, #E0F2FE 0%, #38BDF8 100%);
+  color: #082F49;
+}
+.df-resting-book-cover--handbook {
+  background:
+    radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, 0.8), transparent 55%),
+    linear-gradient(155deg, #FCF8ED 0%, #F5E8CE 55%, #EADBBA 100%) !important;
+  color: #222222 !important;
+  border-left: 12px solid #A3040F !important;
+}
+.df-resting-book-cover--handbook .df-resting-book-foil-trim {
+  border-color: rgba(163, 4, 15, 0.5);
+}
+.df-resting-book-cover--handbook .df-resting-book-badge {
+  background: #A3040F;
+  color: #FFFFFF;
+}
+.df-resting-book-cover--handbook .df-resting-book-title {
+  color: #1A1A1A;
+  filter: none;
+}
+.df-resting-book-cover--handbook .df-resting-book-sub {
+  color: #554D47;
+}
+.df-resting-book-cover--handbook .df-resting-book-cta {
+  color: #A3040F;
+  border-top-color: rgba(163, 4, 15, 0.25);
+  text-shadow: none;
+}
+.df-resting-book-cover--founders {
+  background:
+    radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, 0.12), transparent 55%),
+    linear-gradient(155deg, #27272A 0%, #18181B 55%, #09090B 100%) !important;
+  color: #FDFBF7 !important;
+}
+
 /* ==========================================================================
-   GEC Cover & Internal FlipBook Page Styles
+   GEC Main Book Outer Covers (.gec-book-cover)
+   ========================================================================== */
+
+.gec-book-cover {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: clamp(1.5rem, 3.8vw, 2.75rem) clamp(1.25rem, 3.2vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  user-select: none;
+}
+
+.gec-book-cover--incubation {
+  background:
+    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.14) 0%, transparent 60%),
+    linear-gradient(160deg, #A3040F 0%, #750209 50%, #450004 100%);
+  color: #FFF6D6;
+  box-shadow: inset 0 0 0 1px rgba(251, 202, 5, 0.4), inset 0 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.gec-book-cover--summit {
+  background:
+    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.16) 0%, transparent 60%),
+    linear-gradient(160deg, #0F75BC 0%, #0A4F80 50%, #052640 100%);
+  color: #EBF8FF;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), inset 0 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.gec-book-cover--handbook {
+  background:
+    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.9) 0%, transparent 60%),
+    linear-gradient(160deg, #FFFDF8 0%, #F6EDE0 50%, #E8DCC2 100%);
+  color: #222222;
+  box-shadow: inset 0 0 0 1px rgba(163, 4, 15, 0.3), inset 0 0 0 8px rgba(163, 4, 15, 0.08);
+  border-left: 18px solid #A3040F;
+}
+
+.gec-book-cover--founders {
+  background:
+    radial-gradient(120% 90% at 50% 15%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+    linear-gradient(160deg, #27272A 0%, #18181B 50%, #09090B 100%);
+  color: #FDFBF7;
+  box-shadow: inset 0 0 0 1px rgba(251, 202, 5, 0.5), inset 0 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.gec-book-cover--back {
+  background:
+    radial-gradient(120% 90% at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 70%),
+    linear-gradient(160deg, #18181B 0%, #101012 100%);
+  color: #FAF8F5;
+  text-align: center;
+  align-items: center;
+}
+
+.gec-book-cover__running {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: clamp(0.6rem, 0.85vw, 0.72rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  padding-bottom: 8px;
+  border-bottom: 1px solid currentColor;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+.gec-book-cover--handbook .gec-book-cover__running {
+  border-bottom-color: rgba(163, 4, 15, 0.2);
+  color: #A3040F;
+}
+
+.gec-book-cover__title-block {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gec-book-cover__mark {
+  width: clamp(44px, 5.5vw, 64px);
+  height: clamp(44px, 5.5vw, 64px);
+  margin-bottom: 6px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+.gec-book-cover--incubation .gec-book-cover__mark { color: #FBCA05; }
+.gec-book-cover--summit .gec-book-cover__mark { color: #EBF8FF; }
+.gec-book-cover--handbook .gec-book-cover__mark { color: #A3040F; filter: none; }
+.gec-book-cover--founders .gec-book-cover__mark { color: #FFE082; }
+
+.gec-book-cover__mark-label {
+  font-family: monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.gec-book-cover--incubation .gec-book-cover__mark-label { color: #FBCA05; }
+.gec-book-cover--summit .gec-book-cover__mark-label { color: #8ED0FF; }
+.gec-book-cover--handbook .gec-book-cover__mark-label { color: #A3040F; }
+.gec-book-cover--founders .gec-book-cover__mark-label { color: #FFE082; }
+
+.gec-book-cover__title-block h2 {
+  font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(1.5rem, 2.6vw, 2.35rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-transform: uppercase;
+}
+.gec-book-cover--incubation h2 {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF4D0 40%, #FBCA05 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gec-book-cover--summit h2 {
+  background: linear-gradient(135deg, #FFFFFF 0%, #D8EEFF 50%, #A3D7FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gec-book-cover--handbook h2 {
+  color: #1A1A1A;
+}
+.gec-book-cover--founders h2 {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF0C0 40%, #FFE082 80%, #D4A017 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gec-book-cover__title-block p {
+  font-size: clamp(0.75rem, 0.98vw, 0.88rem);
+  line-height: 1.45;
+  margin: 4px 0 0;
+  opacity: 0.85;
+  max-width: 42ch;
+}
+
+.gec-book-cover__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(0.62rem, 0.8vw, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding-top: 10px;
+  border-top: 1px solid currentColor;
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+.gec-book-cover--handbook .gec-book-cover__footer {
+  border-top-color: rgba(163, 4, 15, 0.2);
+  color: #5F5650;
+}
+
+/* ==========================================================================
+   GEC Editorial Magazine Pages (.gec-editorial-page)
+   ========================================================================== */
+
+.gec-editorial-page {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: clamp(1.2rem, 3.2vw, 2.1rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #FFFDF8;
+  color: #222222;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+.gec-editorial-page__running {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5F5650;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 6px;
+}
+
+.gec-editorial-page__content {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(7px, 1.1vw, 13px);
+}
+
+.gec-editorial-page__content h3 {
+  font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(1.1rem, 1.7vw, 1.45rem);
+  font-weight: 850;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: #111111;
+  margin: 0;
+}
+
+.gec-editorial-page__deck {
+  font-size: clamp(0.72rem, 0.92vw, 0.82rem);
+  line-height: 1.55;
+  color: #4A443E;
+  margin: 0;
+}
+
+.gec-editorial-page__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 4px 0;
+  padding: 10px 8px;
+  background: #F8F4EB;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.gec-editorial-page__stats dt {
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-weight: 900;
+  color: #A3040F;
+  line-height: 1.1;
+}
+.gec-editorial-page--summit .gec-editorial-page__stats dt { color: #0F75BC; }
+.gec-editorial-page--founders .gec-editorial-page__stats dt { color: #18181B; }
+
+.gec-editorial-page__stats dd {
+  font-size: 0.58rem;
+  line-height: 1.3;
+  color: #5F5650;
+  margin: 2px 0 0;
+}
+
+.gec-editorial-page__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gec-editorial-page__list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.gec-editorial-page__index {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(163, 4, 15, 0.08);
+  color: #A3040F;
+}
+.gec-editorial-page--summit .gec-editorial-page__index {
+  background: rgba(15, 117, 188, 0.08);
+  color: #0F75BC;
+}
+
+.gec-editorial-page__list h4 {
+  font-size: clamp(0.74rem, 0.92vw, 0.82rem);
+  font-weight: 750;
+  margin: 0 0 2px;
+  color: #1A1A1A;
+}
+
+.gec-editorial-page__list p {
+  font-size: clamp(0.66rem, 0.82vw, 0.74rem);
+  line-height: 1.4;
+  margin: 0;
+  color: #5F5650;
+}
+
+.gec-editorial-page blockquote {
+  margin: 4px 0;
+  padding: 10px 12px;
+  border-left: 3px solid #A3040F;
+  background: #F9F6EE;
+  border-radius: 0 6px 6px 0;
+}
+.gec-editorial-page blockquote p {
+  font-size: clamp(0.72rem, 0.92vw, 0.8rem);
+  font-style: italic;
+  line-height: 1.45;
+  color: #2A2622;
+  margin: 0;
+}
+.gec-editorial-page blockquote cite {
+  display: block;
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 700;
+  color: #A3040F;
+  margin-top: 4px;
+}
+
+.gec-editorial-page__action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(163, 4, 15, 0.06);
+  border: 1px solid rgba(163, 4, 15, 0.16);
+  font-size: 0.68rem;
+}
+.gec-editorial-page__action span {
+  color: #5F5650;
+  font-weight: 500;
+}
+.gec-editorial-page__action strong {
+  color: #A3040F;
+  font-weight: 750;
+}
+
+.gec-editorial-page__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #7A726A;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 6px;
+}
+
+/* ==========================================================================
+   Legacy / Preset Cover & Page Styles
    ========================================================================== */
 
 .df-gec-cover {
