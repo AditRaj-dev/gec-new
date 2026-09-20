@@ -360,7 +360,7 @@ export function DeskFolio({
           aria-hidden={interactive ? undefined : true}
           tabIndex={interactive ? 0 : -1}
           initial={false}
-          animate={{ x: open ? '0%' : closedShift, scale: open ? 1 : 0.96 }}
+          animate={{ x: open ? '0%' : closedShift, scale: 1 }}
           transition={reduce ? { duration: 0 } : BLOOM_SPRING}
           onPointerDown={interactive ? onPointerDown : undefined}
           onPointerMove={interactive ? onPointerMove : undefined}

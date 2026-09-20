@@ -889,7 +889,6 @@ function DeskLamp({
       }}
       {...dropIn(item.rotate, index, !!reduce)}
     >
-      {on && <span className="df-lamp-bulb-glow" aria-hidden="true" />}
       <svg className="df-lamp-cast" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="lamp-beam" x1="121" y1="80" x2="-480" y2="300" gradientUnits="userSpaceOnUse">
@@ -995,6 +994,109 @@ function coverVars(theme: { base: string; ink: 'light' | 'dark' }): React.CSSPro
     '--df-cover-3': `color-mix(in srgb, ${theme.base}, black 16%)`,
     '--df-cover-ink': theme.ink === 'light' ? '#eef3f1' : '#5b4a52',
   } as React.CSSProperties
+}
+
+function FlightCoverArtwork({
+  id,
+  direction,
+}: {
+  id: string
+  direction: 'to-center' | 'to-desk'
+}) {
+  const isToDesk = direction === 'to-desk'
+  const fullW = CENTER_BOOK_COORDINATES.width
+  const fullH = CENTER_BOOK_COORDINATES.height
+  const scaleRatioX = MINI_BOOK_SIZE.width / fullW
+  const scaleRatioY = MINI_BOOK_SIZE.height / fullH
+
+  return (
+    <div
+      className="df-flight-artwork"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        borderRadius: isToDesk ? '3px 6px 6px 3px' : '4px',
+      }}
+    >
+      {/* Mini cover layer: matches desk miniature book */}
+      <motion.div
+        className="df-flight-mini-layer"
+        initial={{
+          opacity: isToDesk ? 0 : 1,
+        }}
+        animate={{
+          opacity: isToDesk ? 1 : 0,
+        }}
+        transition={{
+          duration: 0.35,
+          ease: 'easeInOut',
+          delay: isToDesk ? 0.08 : 0,
+        }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+        }}
+      >
+        <BookCoverArtwork id={id} size="mini" />
+      </motion.div>
+
+      {/* Full cover layer: matches closed 3D book spread */}
+      <motion.div
+        className="df-flight-full-layer"
+        initial={{
+          opacity: isToDesk ? 1 : 0,
+        }}
+        animate={{
+          opacity: isToDesk ? 0 : 1,
+        }}
+        transition={{
+          duration: 0.35,
+          ease: 'easeInOut',
+          delay: isToDesk ? 0 : 0.08,
+        }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          overflow: 'hidden',
+        }}
+      >
+        <motion.div
+          initial={{
+            scaleX: isToDesk ? 1 : scaleRatioX,
+            scaleY: isToDesk ? 1 : scaleRatioY,
+          }}
+          animate={{
+            scaleX: isToDesk ? scaleRatioX : 1,
+            scaleY: isToDesk ? scaleRatioY : 1,
+          }}
+          transition={{
+            type: 'spring',
+            stiffness: 220,
+            damping: 26,
+            mass: 0.8,
+          }}
+          style={{
+            width: `${fullW}px`,
+            height: `${fullH}px`,
+            transformOrigin: 'top left',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+          }}
+        >
+          <BookCoverArtwork id={id} size="full" />
+        </motion.div>
+      </motion.div>
+    </div>
+  )
 }
 
 export function DeskFolioDesktop() {
@@ -1273,6 +1375,8 @@ export function DeskFolioDesktop() {
                       width: CENTER_BOOK_COORDINATES.width,
                       height: CENTER_BOOK_COORDINATES.height,
                       rotate: 0,
+                      boxShadow:
+                        '0 28px 56px -12px rgba(0, 0, 0, 0.7), 0 10px 24px rgba(0, 0, 0, 0.5)',
                     }}
                     animate={{
                       left: DESK_BOOK_COORDINATES[departingBookId].x,
@@ -1280,6 +1384,8 @@ export function DeskFolioDesktop() {
                       width: MINI_BOOK_SIZE.width,
                       height: MINI_BOOK_SIZE.height,
                       rotate: DESK_BOOK_COORDINATES[departingBookId].rotate,
+                      boxShadow:
+                        '0 2px 4px rgba(0, 0, 0, 0.35), 0 8px 18px -2px rgba(0, 0, 0, 0.45)',
                     }}
                     transition={
                       reduce
@@ -1292,7 +1398,7 @@ export function DeskFolioDesktop() {
                           }
                     }
                   >
-                    <BookCoverArtwork id={departingBookId} size="full" />
+                    <FlightCoverArtwork id={departingBookId} direction="to-desk" />
                   </motion.div>
                 )}
 
@@ -1312,6 +1418,8 @@ export function DeskFolioDesktop() {
                               width: CENTER_BOOK_COORDINATES.width,
                               height: CENTER_BOOK_COORDINATES.height,
                               rotate: 0,
+                              boxShadow:
+                                '0 28px 56px -12px rgba(0, 0, 0, 0.7), 0 10px 24px rgba(0, 0, 0, 0.5)',
                             }
                           : {
                               left: DESK_BOOK_COORDINATES[activeBookId].x,
@@ -1319,6 +1427,8 @@ export function DeskFolioDesktop() {
                               width: MINI_BOOK_SIZE.width,
                               height: MINI_BOOK_SIZE.height,
                               rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
+                              boxShadow:
+                                '0 2px 4px rgba(0, 0, 0, 0.35), 0 8px 18px -2px rgba(0, 0, 0, 0.45)',
                             }
                       }
                       animate={
@@ -1329,6 +1439,8 @@ export function DeskFolioDesktop() {
                               width: MINI_BOOK_SIZE.width,
                               height: MINI_BOOK_SIZE.height,
                               rotate: DESK_BOOK_COORDINATES[activeBookId].rotate,
+                              boxShadow:
+                                '0 2px 4px rgba(0, 0, 0, 0.35), 0 8px 18px -2px rgba(0, 0, 0, 0.45)',
                             }
                           : {
                               left: CENTER_BOOK_COORDINATES.x,
@@ -1336,6 +1448,8 @@ export function DeskFolioDesktop() {
                               width: CENTER_BOOK_COORDINATES.width,
                               height: CENTER_BOOK_COORDINATES.height,
                               rotate: 0,
+                              boxShadow:
+                                '0 28px 56px -12px rgba(0, 0, 0, 0.7), 0 10px 24px rgba(0, 0, 0, 0.5)',
                             }
                       }
                       transition={
@@ -1357,7 +1471,10 @@ export function DeskFolioDesktop() {
                         }
                       }}
                     >
-                      <BookCoverArtwork id={activeBookId} size="full" />
+                      <FlightCoverArtwork
+                        id={activeBookId}
+                        direction={readingState === 'flying-out' ? 'to-desk' : 'to-center'}
+                      />
                     </motion.div>
                   )}
 
