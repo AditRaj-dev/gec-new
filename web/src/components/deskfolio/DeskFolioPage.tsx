@@ -2477,90 +2477,6 @@ export function DeskFolioPage() {
   const devActivityOverride = matOverrides['dev-activity']
   const lampOverride = matOverrides['desk-lamp']
 
-  // Desktop parallax engine: tracks normalized cursor offsets (-1 to 1) from stage center
-  const [stageNorm, setStageNorm] = useState({ x: 0, y: 0 })
-  const stageRef = useRef<HTMLDivElement>(null)
-  const rafRef = useRef<number | null>(null)
-  const targetNorm = useRef({ x: 0, y: 0 })
-  const currentNorm = useRef({ x: 0, y: 0 })
-
-  useEffect(() => {
-    if (compact || reduce) return
-
-    const handlePointerMove = (e: PointerEvent) => {
-      const stage = stageRef.current
-      if (!stage) return
-      const rect = stage.getBoundingClientRect()
-      const cx = rect.left + rect.width / 2
-      const cy = rect.top + rect.height / 2
-      const nx = Math.max(-1, Math.min(1, (e.clientX - cx) / (rect.width / 2)))
-      const ny = Math.max(-1, Math.min(1, (e.clientY - cy) / (rect.height / 2)))
-      targetNorm.current = { x: nx, y: ny }
-
-      if (rafRef.current === null) {
-        const loop = () => {
-          const dx = targetNorm.current.x - currentNorm.current.x
-          const dy = targetNorm.current.y - currentNorm.current.y
-          currentNorm.current.x += dx * 0.22
-          currentNorm.current.y += dy * 0.22
-          const roundedX = Math.round(currentNorm.current.x * 1000) / 1000
-          const roundedY = Math.round(currentNorm.current.y * 1000) / 1000
-
-          const stage = stageRef.current
-          if (stage) {
-            stage.style.setProperty('--mouse-x', String(roundedX))
-            stage.style.setProperty('--mouse-y', String(roundedY))
-          }
-
-          setStageNorm({ x: roundedX, y: roundedY })
-          if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
-            rafRef.current = requestAnimationFrame(loop)
-          } else {
-            rafRef.current = null
-          }
-        }
-        rafRef.current = requestAnimationFrame(loop)
-      }
-    }
-
-    const handlePointerLeave = () => {
-      targetNorm.current = { x: 0, y: 0 }
-      if (rafRef.current === null) {
-        const loop = () => {
-          const dx = targetNorm.current.x - currentNorm.current.x
-          const dy = targetNorm.current.y - currentNorm.current.y
-          currentNorm.current.x += dx * 0.16
-          currentNorm.current.y += dy * 0.16
-          const roundedX = Math.round(currentNorm.current.x * 1000) / 1000
-          const roundedY = Math.round(currentNorm.current.y * 1000) / 1000
-
-          const stage = stageRef.current
-          if (stage) {
-            stage.style.setProperty('--mouse-x', String(roundedX))
-            stage.style.setProperty('--mouse-y', String(roundedY))
-          }
-
-          setStageNorm({ x: roundedX, y: roundedY })
-          if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
-            rafRef.current = requestAnimationFrame(loop)
-          } else {
-            rafRef.current = null
-          }
-        }
-        rafRef.current = requestAnimationFrame(loop)
-      }
-    }
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true })
-    document.addEventListener('pointerleave', handlePointerLeave)
-
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove)
-      document.removeEventListener('pointerleave', handlePointerLeave)
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    }
-  }, [compact, reduce])
-
   // book content: active GEC book (portfolio pack) — journal pack preserved behind SHOW_JOURNAL
   const cover = SHOW_JOURNAL ? JOURNAL_COVER : activeBook.cover
   // portfolio has no back cover (uses GEC back covers per book); journal keeps its end leaf
@@ -2580,14 +2496,11 @@ export function DeskFolioPage() {
     <>
       <section className="deskfolio-live">
         <div
-          ref={stageRef}
           className="demo-stage deskfolio-demo-stage"
           style={
             {
               '--df-picker-w': `${pageW}px`,
               '--df-stage-scale': stageScale,
-              '--mouse-x': stageNorm.x,
-              '--mouse-y': stageNorm.y,
               ...bgTheme.style,
             } as React.CSSProperties
           }

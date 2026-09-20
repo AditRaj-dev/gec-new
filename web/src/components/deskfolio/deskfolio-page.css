@@ -616,103 +616,87 @@
   perspective: 1400px;
 }
 
-/* 3D Resting Book: isometric orientation, physical spine, foil embossing */
+/* Grounded physical books resting stationary on the desk mat */
 .df-resting-book {
   position: absolute;
   left: var(--book-x, 5%);
   top: var(--book-y, 10%);
-  width: clamp(135px, 12vw, 165px);
-  height: clamp(170px, 15.5vw, 215px);
+  width: clamp(138px, 12.5vw, 172px);
+  height: clamp(174px, 15.8vw, 220px);
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: 4px 10px 10px 4px;
   background: transparent;
   cursor: pointer;
   outline: none;
   pointer-events: auto;
-  --px: calc(var(--book-px-factor, 1) * var(--mouse-x, 0) * 56px);
-  --py: calc(var(--book-py-factor, 1) * var(--mouse-y, 0) * 44px);
-  --prx: calc(var(--mouse-y, 0) * 14deg);
-  --pry: calc(var(--mouse-x, 0) * -14deg);
-  transform: translate3d(var(--px, 0px), var(--py, 0px), 0) rotate(var(--book-rotate, 0deg)) scale(var(--book-scale, 1));
-  transform-origin: center;
-  transform-style: preserve-3d;
-  will-change: transform;
+  transform: rotate(var(--book-rotate, 0deg)) scale(var(--book-scale, 1));
+  transform-origin: center center;
+  transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
   -webkit-tap-highlight-color: transparent;
 }
 
 .df-resting-book:focus-visible {
   outline: 3px solid #fbca05;
-  outline-offset: 7px;
+  outline-offset: 6px;
 }
 
-/* Realistic drop shadow on the desk mat with counter-parallax */
+/* Grounded contact and ambient drop shadow sitting directly beneath the book on the mat */
 .df-resting-book-shadow {
   position: absolute;
-  inset: 4px;
-  border-radius: 8px;
-  background: radial-gradient(ellipse at 45% 55%, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0.42) 55%, transparent 75%);
-  filter: blur(14px);
-  --spx: calc(var(--book-px-factor, 1) * var(--mouse-x, 0) * -42px);
-  --spy: calc(var(--book-py-factor, 1) * var(--mouse-y, 0) * -34px);
-  transform: translate3d(var(--spx, 0px), var(--spy, 0px), 0) rotateX(32deg) rotateY(-14deg) rotateZ(8deg) translateY(20px) translateZ(-16px);
-  transition: filter 0.32s ease, opacity 0.32s ease;
+  inset: -2px 3px 5px -2px;
+  border-radius: 4px 10px 10px 4px;
+  background: radial-gradient(ellipse at 48% 52%, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 75%);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 8px 18px -2px rgba(0, 0, 0, 0.55),
+    0 16px 30px -6px rgba(0, 0, 0, 0.38);
   pointer-events: none;
-  opacity: 0.85;
-  will-change: transform, filter, opacity;
+  opacity: 0.92;
+  transition: box-shadow 0.22s ease, opacity 0.22s ease;
 }
 
-/* 3D Isometric perspective carrier with responsive mouse-tilt (no transition lag!) */
+/* Subtle, grounded tactile hover response: crisp 3px nudge without floating */
+.df-resting-book:hover {
+  transform: rotate(var(--book-rotate, 0deg)) scale(calc(var(--book-scale, 1) * 1.025)) translateY(-3px);
+}
+
+.df-resting-book:hover .df-resting-book-shadow {
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.55),
+    0 11px 22px -2px rgba(0, 0, 0, 0.62),
+    0 20px 34px -6px rgba(0, 0, 0, 0.42);
+  opacity: 1;
+}
+
+/* Physical Book Body resting flat on the mat */
 .df-resting-book-3d {
   position: relative;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
-  transform: rotateX(calc(32deg + var(--prx, 0deg))) rotateY(calc(-14deg + var(--pry, 0deg))) rotateZ(8deg);
-  will-change: transform;
+  border-radius: 4px 10px 10px 4px;
 }
 
-/* Hover lift wrapper: smoothly lifts up when book is hovered/focused */
-.df-resting-book-lift {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transform: translate3d(0, 0, 0);
-  transition: transform 0.36s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-/* Hover lift & tilt effect */
-.df-resting-book:hover .df-resting-book-lift,
-.df-resting-book:focus-visible .df-resting-book-lift {
-  transform: translateY(-26px) translateZ(46px) scale(1.09);
-}
-
-.df-resting-book:hover .df-resting-book-shadow,
-.df-resting-book:focus-visible .df-resting-book-shadow {
-  filter: blur(28px);
-  opacity: 0.98;
-}
-
-/* Spine thickness & physical details */
+/* Hardcover Spine along left edge */
 .df-resting-book-spine {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 18px;
-  transform-origin: left center;
-  transform: rotateY(-90deg);
+  width: 17px;
   background: var(--book-spine-bg, #5C0106);
+  border-radius: 4px 0 0 4px;
   box-shadow:
-    inset -2px 0 5px rgba(0, 0, 0, 0.6),
-    inset 1px 0 2px rgba(255, 255, 255, 0.25);
+    inset -2px 0 4px rgba(0, 0, 0, 0.55),
+    inset 1px 0 2px rgba(255, 255, 255, 0.22),
+    -1px 0 2px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 8px 0;
   overflow: hidden;
+  z-index: 2;
 }
 
 .df-spine-rib {
@@ -742,15 +726,14 @@
   letter-spacing: 0.06em;
 }
 
-/* Stacked page edge thickness */
+/* Stacked Page Edges (Right and Bottom) */
 .df-resting-book-pages-right {
   position: absolute;
-  top: 2px;
-  bottom: 2px;
-  right: -8px;
-  width: 10px;
-  transform-origin: left center;
-  transform: rotateY(90deg);
+  top: 3px;
+  bottom: 3px;
+  right: -5px;
+  width: 6px;
+  border-radius: 0 2px 2px 0;
   background: repeating-linear-gradient(
     to bottom,
     #fffdf8 0px,
@@ -758,17 +741,17 @@
     #faf4e6 2px,
     #e7dbbf 3px
   );
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.35), 1px 0 2px rgba(0, 0, 0, 0.18);
+  z-index: 0;
 }
 
 .df-resting-book-pages-bottom {
   position: absolute;
-  bottom: -8px;
-  left: 2px;
+  bottom: -5px;
+  left: 14px;
   right: 2px;
-  height: 10px;
-  transform-origin: top center;
-  transform: rotateX(-90deg);
+  height: 6px;
+  border-radius: 0 0 2px 2px;
   background: repeating-linear-gradient(
     to right,
     #fffdf8 0px,
@@ -776,24 +759,26 @@
     #faf4e6 2px,
     #e7dbbf 3px
   );
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.18);
+  z-index: 0;
 }
 
-/* Hardcover face with linen texture */
+/* Hardcover Front Face resting flush */
 .df-resting-book-cover {
   position: absolute;
-  inset: 0;
-  border-radius: 3px 9px 9px 3px;
+  inset: 0 0 0 14px;
+  border-radius: 2px 10px 10px 2px;
   background: var(--book-cover-bg, #80030B);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.22),
-    inset 2px 0 6px rgba(0, 0, 0, 0.4);
-  transform: translateZ(9px);
+    inset 2px 0 5px rgba(0, 0, 0, 0.35),
+    1px 2px 4px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  padding: clamp(9px, 1vw, 12px);
+  padding: clamp(9px, 1.1vw, 13px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 1;
 }
 
 /* Linen weave cover texture */

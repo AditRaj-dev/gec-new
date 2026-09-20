@@ -818,15 +818,13 @@ type CompanionBookPlacement = React.CSSProperties & {
   '--book-y': string
   '--book-rotate': string
   '--book-scale': number
-  '--book-px-factor'?: number
-  '--book-py-factor'?: number
 }
 
 const COMPANION_BOOK_PLACEMENTS: Record<string, CompanionBookPlacement> = {
-  incubation: { '--book-x': '4%', '--book-y': '11%', '--book-rotate': '-7deg', '--book-scale': 0.92, '--book-px-factor': 1.25, '--book-py-factor': 0.95 },
-  summit: { '--book-x': '72%', '--book-y': '8%', '--book-rotate': '8deg', '--book-scale': 0.88, '--book-px-factor': 1.5, '--book-py-factor': 1.3 },
-  handbook: { '--book-x': '5%', '--book-y': '67%', '--book-rotate': '6deg', '--book-scale': 0.86, '--book-px-factor': 0.85, '--book-py-factor': 1.05 },
-  founders: { '--book-x': '82%', '--book-y': '66%', '--book-rotate': '-8deg', '--book-scale': 0.9, '--book-px-factor': 1.35, '--book-py-factor': 1.25 },
+  incubation: { '--book-x': '4%', '--book-y': '12%', '--book-rotate': '-6deg', '--book-scale': 0.92 },
+  summit: { '--book-x': '74%', '--book-y': '10%', '--book-rotate': '7deg', '--book-scale': 0.9 },
+  handbook: { '--book-x': '5%', '--book-y': '66%', '--book-rotate': '5deg', '--book-scale': 0.88 },
+  founders: { '--book-x': '80%', '--book-y': '64%', '--book-rotate': '-7deg', '--book-scale': 0.9 },
 }
 
 export function MatCompanionBooks({ activeBookId, onSelect }: CompanionBooksProps) {
@@ -847,50 +845,48 @@ export function MatCompanionBooks({ activeBookId, onSelect }: CompanionBooksProp
                 '--book-accent': book.coverTheme.accent,
               } as React.CSSProperties
             }
-            title={`Switch to ${book.title}`}
+            title={`Open ${book.title}`}
             aria-label={`Open ${book.title}`}
             onClick={() => {
               haptic('selection')
               onSelect(book.id)
             }}
           >
-            {/* Ambient drop shadow cast on cutting mat with counter-parallax */}
+            {/* Grounded contact and ambient drop shadow directly on cutting mat */}
             <div className="df-resting-book-shadow" aria-hidden="true" />
 
-            {/* 3D Isometric Physical Book: Parallax & Hover Lift */}
+            {/* Physical Hardcover Book resting still on desk */}
             <div className="df-resting-book-3d" aria-hidden="true">
-              <div className="df-resting-book-lift">
-                {/* Hardcover Spine */}
-                <div className="df-resting-book-spine">
-                  <span className="df-spine-rib" />
-                  <span className="df-spine-text">{book.shortTitle}</span>
-                  <span className="df-spine-logo">GEC</span>
-                  <span className="df-spine-rib" />
+              {/* Hardcover Spine */}
+              <div className="df-resting-book-spine">
+                <span className="df-spine-rib" />
+                <span className="df-spine-text">{book.shortTitle}</span>
+                <span className="df-spine-logo">GEC</span>
+                <span className="df-spine-rib" />
+              </div>
+
+              {/* Stacked Page Edges (Right and Bottom) */}
+              <div className="df-resting-book-pages-right" />
+              <div className="df-resting-book-pages-bottom" />
+
+              {/* Hardcover Face */}
+              <div className={`df-resting-book-cover df-resting-book-cover--${book.id}`}>
+                <div className="df-resting-book-texture" />
+                <div className="df-resting-book-foil-trim" />
+
+                <div className="df-resting-book-header">
+                  <span className="df-resting-book-badge">{book.badge}</span>
+                  <span className="df-resting-book-pin">✦</span>
                 </div>
 
-                {/* Stacked Page Edges (Right and Bottom) */}
-                <div className="df-resting-book-pages-right" />
-                <div className="df-resting-book-pages-bottom" />
+                <div className="df-resting-book-body">
+                  <h4 className="df-resting-book-title">{book.shortTitle}</h4>
+                  <p className="df-resting-book-sub">{book.subtitle}</p>
+                </div>
 
-                {/* Hardcover Face */}
-                <div className={`df-resting-book-cover df-resting-book-cover--${book.id}`}>
-                  <div className="df-resting-book-texture" />
-                  <div className="df-resting-book-foil-trim" />
-
-                  <div className="df-resting-book-header">
-                    <span className="df-resting-book-badge">{book.badge}</span>
-                    <span className="df-resting-book-pin">✦</span>
-                  </div>
-
-                  <div className="df-resting-book-body">
-                    <h4 className="df-resting-book-title">{book.shortTitle}</h4>
-                    <p className="df-resting-book-sub">{book.subtitle}</p>
-                  </div>
-
-                  <div className="df-resting-book-cta">
-                    <span>Inspect &amp; Open</span>
-                    <span className="df-resting-book-arrow">→</span>
-                  </div>
+                <div className="df-resting-book-cta">
+                  <span>Open Volume</span>
+                  <span className="df-resting-book-arrow">→</span>
                 </div>
               </div>
             </div>
