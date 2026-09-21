@@ -7,6 +7,7 @@
 .team-stage-wrapper {
   position: relative;
   width: 100%;
+  overflow-x: clip;
   --gec-canvas: #FCF8ED;
   --gec-surface-sand: #F4E2CA;
   --gec-surface-card: #FFFDF8;
@@ -117,6 +118,7 @@
   padding: 48px 24px;
   border-radius: var(--radius-md);
   position: relative;
+  overflow-x: clip;
 }
 
 @media (min-width: 640px) {

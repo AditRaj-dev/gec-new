@@ -4429,6 +4429,19 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Auto-navigate on load & on hash change so React shells can request pages
+    (function initHashRouting(){
+      const validPages = ['home','about','teams','initiatives','stories'];
+      function applyFromHash(){
+        const raw = (window.location.hash || '').replace('#','').trim();
+        if (validPages.indexOf(raw) !== -1) navigatePage(raw);
+      }
+      window.addEventListener('DOMContentLoaded', applyFromHash);
+      window.addEventListener('hashchange', applyFromHash);
+      // If already parsed
+      if (document.readyState !== 'loading') applyFromHash();
+    })();
+
     // 2. Viewport Switcher
     function setCanvasViewport(mode) {
       const root = document.getElementById('gec-canvas-root');

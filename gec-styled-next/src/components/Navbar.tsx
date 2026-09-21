@@ -127,28 +127,28 @@ export const Navbar: React.FC = () => {
             Home
           </Link>
           <Link
+            href="/about"
+            className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
+          >
+            About
+          </Link>
+          <Link
             href="/teams"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
             Teams
           </Link>
           <Link
-            href="/archives"
+            href="/initiatives"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
-            Archives
+            Initiatives
           </Link>
           <Link
-            href="/newsletter"
+            href="/stories"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
-            Dispatch
-          </Link>
-          <Link
-            href="#apply"
-            className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
-          >
-            Apply
+            Stories
           </Link>
         </nav>
 
@@ -231,41 +231,11 @@ export const Navbar: React.FC = () => {
       {/* Mobile Drawer — 5 core routes */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-[rgba(163,4,15,0.15)] bg-[#FCF8ED] px-4 pt-3 pb-6 space-y-3">
-          <Link
-            href="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
-          >
-            Home
-          </Link>
-          <Link
-            href="/teams"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
-          >
-            Teams
-          </Link>
-          <Link
-            href="/archives"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
-          >
-            Archives
-          </Link>
-          <Link
-            href="/newsletter"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
-          >
-            Dispatch
-          </Link>
-          <Link
-            href="#apply"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
-          >
-            Apply
-          </Link>
+          <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Home</Link>
+          <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">About</Link>
+          <Link href="/teams" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Teams</Link>
+          <Link href="/initiatives" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Initiatives</Link>
+          <Link href="/stories" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Stories</Link>
           <div className="pt-2">
             <Link
               href="#apply"

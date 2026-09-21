@@ -1,11 +1,9 @@
+import StyledPageFrame from '@/components/StyledPageFrame';
+
 export default function Home() {
   return (
-    <main aria-label="Galgotias Entrepreneurship Cell website" className="w-full">
-      <iframe
-        className="styled-site-frame"
-        src="/styled.html"
-        title="Galgotias Entrepreneurship Cell"
-      />
+    <main aria-label="Galgotias Entrepreneurship Cell — Home" className="w-full">
+      <StyledPageFrame page="home" />
     </main>
   );
 }
