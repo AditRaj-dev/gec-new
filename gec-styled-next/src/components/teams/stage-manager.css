@@ -1,0 +1,673 @@
+/* ==========================================================================
+   TEAMS STAGE MANAGER — WIREFRAME V2 PERSISTENT SPATIAL SYSTEM
+   Direct port of wireframe-v2/index.html specification (Lines 1747–1989)
+   ========================================================================== */
+
+/* Section Host & Design Tokens */
+.team-stage-wrapper {
+  position: relative;
+  width: 100%;
+  --gec-canvas: #FCF8ED;
+  --gec-surface-sand: #F4E2CA;
+  --gec-surface-card: #FFFDF8;
+  --gec-crimson: #A3040F;
+  --gec-crimson-act: #C62F29;
+  --gec-gold: #FBCA05;
+  --gec-blue: #1F7EC0;
+  --gec-ink: #222222;
+  --gec-ink-muted: #5F5650;
+  --gec-border: rgba(163, 4, 15, 0.16);
+  --shadow-ambient: 0 4px 20px rgba(34, 34, 34, 0.04);
+  --shadow-hover: 0 10px 30px rgba(34, 34, 34, 0.08);
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --font-mono: var(--font-geist-mono, monospace);
+  --font-display: var(--font-sans, sans-serif);
+}
+
+/* Quick Jumper Filter Strip (3.1) */
+.category-filter-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.filter-chip-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(163, 4, 15, 0.22);
+  background: var(--gec-surface-card);
+  color: var(--gec-ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 180ms ease;
+  user-select: none;
+}
+
+.filter-chip-button:hover {
+  background: rgba(163, 4, 15, 0.06);
+  border-color: var(--gec-crimson);
+  transform: translateY(-1px);
+}
+
+.filter-chip-button.active-filter {
+  background: var(--gec-crimson);
+  color: #FFFFFF;
+  border-color: var(--gec-crimson);
+  box-shadow: 0 2px 8px rgba(163, 4, 15, 0.24);
+}
+
+/* Structural Stamp Badges */
+.section-id-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(163, 4, 15, 0.08);
+  border: 1px solid var(--gec-crimson);
+  color: var(--gec-crimson);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  padding: 3px 10px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.section-coord-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(31, 126, 192, 0.08);
+  border: 1px solid rgba(31, 126, 192, 0.28);
+  color: var(--gec-blue);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  padding: 3px 10px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   3.2 Persistent Stage Manager Team System (from wireframes-v2/index.html)
+   ========================================================================== */
+
+.team-stage-manager-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  column-gap: 28px;
+  isolation: isolate;
+  background-color: var(--gec-surface-sand);
+  border-top: 1px solid var(--gec-border);
+  border-bottom: 1px solid var(--gec-border);
+  padding: 48px 24px;
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .team-stage-manager-section {
+    padding: 60px 40px;
+  }
+}
+
+.team-stage-manager-section > .section-id-stamp,
+.team-stage-manager-section > .section-coord-stamp,
+.team-stage-manager-section > .team-stage-storyboard {
+  grid-column: 1 / -1;
+}
+
+/* Storyboard timing ribbon */
+.team-stage-storyboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 26px;
+  padding: 12px 14px;
+  border: 1px dashed rgba(34, 34, 34, 0.28);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 248, 0.78);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gec-ink-muted);
+}
+
+.team-stage-storyboard-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-stage-step {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 9px;
+  border: 1px solid rgba(34, 34, 34, 0.18);
+  border-radius: 999px;
+  background: var(--gec-surface-card);
+}
+
+.team-stage-status {
+  color: var(--gec-crimson);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.team-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--gec-surface-card);
+  border: 1px solid rgba(163, 4, 15, 0.25);
+  color: var(--gec-crimson);
+  font-weight: 700;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.team-mode-toggle:hover {
+  background: var(--gec-crimson);
+  color: #FFFFFF;
+}
+
+/* Horizontal Stack / 3D Rail */
+.team-stage-manager-section .teams-horizontal-stack {
+  view-transition-name: teams-roster;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.team-stage-manager-section .team-item-card {
+  display: grid;
+  grid-template-columns: 80px 1.4fr 2fr 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 24px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--gec-crimson);
+  background: var(--gec-canvas);
+  box-shadow: var(--shadow-ambient);
+  cursor: pointer;
+  transform-origin: left center;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Exact View Transition names and scale/opacity variables from wireframe */
+.team-item-card[data-team-index="1"] { view-transition-name: team-card-1; --preview-scale: 0.93; --preview-opacity: 0.78; }
+.team-item-card[data-team-index="2"] { view-transition-name: team-card-2; --preview-scale: 0.95; --preview-opacity: 0.88; }
+.team-item-card[data-team-index="3"] { view-transition-name: team-card-3; --preview-scale: 0.97; --preview-opacity: 1; }
+.team-item-card[data-team-index="4"] { view-transition-name: team-card-4; --preview-scale: 0.96; --preview-opacity: 0.92; }
+.team-item-card[data-team-index="5"] { view-transition-name: team-card-5; --preview-scale: 0.95; --preview-opacity: 0.88; }
+.team-item-card[data-team-index="6"] { view-transition-name: team-card-6; --preview-scale: 0.94; --preview-opacity: 0.84; }
+.team-item-card[data-team-index="7"] { view-transition-name: team-card-7; --preview-scale: 0.93; --preview-opacity: 0.78; }
+
+#team-detail-blueprint {
+  view-transition-name: team-detail;
+  display: none;
+  min-width: 0;
+  margin-top: 32px;
+  opacity: 0;
+  transform: translate3d(36px, 0, 0) scale(0.985);
+  transform-origin: top right;
+}
+
+/* ==========================================================================
+   Active Stage Manager 3D Rail State (.is-detail-active)
+   ========================================================================== */
+
+.team-stage-manager-section.is-detail-active {
+  grid-template-columns: minmax(200px, 230px) minmax(0, 1fr);
+  min-height: 720px;
+  column-gap: 44px;
+}
+
+.team-stage-manager-section.is-detail-active .teams-horizontal-stack {
+  position: sticky;
+  top: 24px;
+  gap: 14px;
+  margin-top: 32px;
+  padding: 6px 0 18px 0;
+  perspective: 1200px;
+  perspective-origin: left center;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+.team-stage-manager-section.is-detail-active .team-item-card {
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 9px;
+  width: 210px;
+  min-height: 104px;
+  margin-top: 0;
+  padding: 16px 14px;
+  opacity: var(--preview-opacity);
+  transform: rotateY(34deg) scale(var(--preview-scale));
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  box-shadow: 0 12px 30px rgba(34, 34, 34, 0.10);
+}
+
+/* Hide detailed lines and 3rd/4th containers when in rail */
+.team-stage-manager-section.is-detail-active .team-item-card > div:nth-child(3),
+.team-stage-manager-section.is-detail-active .team-item-card > div:nth-child(4),
+.team-stage-manager-section.is-detail-active .team-item-card .skel-title-h2,
+.team-stage-manager-section.is-detail-active .team-item-card .skel-line {
+  display: none !important;
+}
+
+.team-stage-manager-section.is-detail-active .team-item-card .team-index-display {
+  font-size: 22px;
+  text-align: left;
+}
+
+.team-stage-manager-section.is-detail-active .team-item-card .element-role-tag {
+  display: block;
+  overflow: hidden;
+  max-width: 100%;
+  padding: 4px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Active card disappears from rail and expands into the canvas */
+.team-stage-manager-section.is-detail-active .team-item-card.is-active-team {
+  display: none !important;
+}
+
+.team-stage-manager-section.is-detail-active .team-item-card:hover,
+.team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
+  z-index: 4;
+  opacity: 1;
+  transform: translate3d(6px, -2px, 0) rotateY(24deg) scale(0.98);
+  box-shadow: 0 16px 38px rgba(34, 34, 34, 0.14);
+}
+
+.team-stage-manager-section.is-detail-active #team-detail-blueprint {
+  display: block;
+  margin-top: 32px;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  box-shadow: 0 24px 70px rgba(34, 34, 34, 0.12), 0 6px 20px rgba(34, 34, 34, 0.06);
+}
+
+/* Detail Toolbar */
+.team-detail-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.team-detail-toolbar-copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.team-stage-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border: 1px solid rgba(163, 4, 15, 0.28);
+  border-radius: var(--radius-sm);
+  color: var(--gec-crimson);
+  background: var(--gec-surface-card);
+  cursor: pointer;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.team-stage-back:hover {
+  transform: translate3d(-2px, 0, 0);
+  background: #FFFFFF;
+}
+
+.team-stage-back:active {
+  transform: translate3d(0, 0, 0) scale(0.96);
+}
+
+/* ==========================================================================
+   VIEW TRANSITIONS SPECIFICATION (Lines 1903–1913 in wireframes-v2)
+   ========================================================================== */
+
+::view-transition-group(*) {
+  animation-duration: 600ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Shared Stage Manager Expansion/Shrink Morph Groups */
+::view-transition-group(team-shared-1),
+::view-transition-group(team-shared-2),
+::view-transition-group(team-shared-3),
+::view-transition-group(team-shared-4),
+::view-transition-group(team-shared-5),
+::view-transition-group(team-shared-6),
+::view-transition-group(team-shared-7) {
+  animation-duration: 550ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  z-index: 50;
+}
+
+/* Morph Old & New content sizing to prevent distorting text/cards during expansion */
+::view-transition-old(team-shared-1),
+::view-transition-old(team-shared-2),
+::view-transition-old(team-shared-3),
+::view-transition-old(team-shared-4),
+::view-transition-old(team-shared-5),
+::view-transition-old(team-shared-6),
+::view-transition-old(team-shared-7),
+::view-transition-new(team-shared-1),
+::view-transition-new(team-shared-2),
+::view-transition-new(team-shared-3),
+::view-transition-new(team-shared-4),
+::view-transition-new(team-shared-5),
+::view-transition-new(team-shared-6),
+::view-transition-new(team-shared-7) {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* Full Roster Mode <-> Stage Manager View transitions only */
+::view-transition-old(team-detail) {
+  animation: 220ms ease both team-detail-out;
+}
+
+::view-transition-new(team-detail) {
+  animation: 500ms 100ms cubic-bezier(0.22, 1, 0.36, 1) both team-detail-in;
+}
+
+@keyframes team-detail-in {
+  from {
+    opacity: 0;
+    transform: translate3d(40px, 0, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes team-detail-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Cards & Components */
+.team-index-display {
+  font-size: 32px;
+  font-weight: 900;
+  font-family: var(--font-display);
+  color: var(--gec-crimson);
+  text-align: center;
+}
+
+.element-role-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+  width: fit-content;
+  user-select: none;
+}
+
+.role-crimson { background: var(--gec-crimson); color: #FFF; }
+.role-gold    { background: var(--gec-gold); color: #111; }
+.role-blue    { background: var(--gec-blue); color: #FFF; }
+
+.team-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.team-focus-tag {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  background: rgba(34, 34, 34, 0.06);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px dashed rgba(34, 34, 34, 0.25);
+  color: var(--gec-ink);
+}
+
+.modular-subblueprint-wrapper {
+  margin-top: 48px;
+  border: 2px solid var(--gec-blue);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  background: rgba(31, 126, 192, 0.03);
+}
+
+.wf-card-container {
+  border: 1.5px solid var(--gec-crimson);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  background: var(--gec-surface-card);
+  position: relative;
+  box-shadow: var(--shadow-ambient);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.wf-card-container:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.initiatives-offset-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .initiatives-offset-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .initiatives-offset-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.wf-avatar-slot {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gec-crimson);
+  background: rgba(163, 4, 15, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  color: var(--gec-crimson);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.wf-media-container {
+  border: 1.5px solid var(--gec-crimson);
+  background: rgba(163, 4, 15, 0.03);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.wf-media-container svg.architectural-cross {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  stroke: rgba(163, 4, 15, 0.2);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.ratio-1-1 { aspect-ratio: 1 / 1; }
+
+.wf-action-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  user-select: none;
+  transition: all 180ms ease;
+}
+
+.action-fill-crimson {
+  background: var(--gec-crimson);
+  color: #FFFFFF;
+  border: 1.5px solid var(--gec-crimson);
+}
+
+.action-fill-crimson:hover {
+  background: var(--gec-crimson-act);
+  border-color: var(--gec-crimson-act);
+  transform: translateY(-1px);
+}
+
+.action-fill-crimson:active {
+  transform: translateY(1px);
+}
+
+.skel-line {
+  height: 12px;
+  border-radius: var(--radius-xs);
+  background: rgba(95, 86, 80, 0.16);
+  margin-bottom: 8px;
+}
+
+.skel-title-h2 {
+  height: 20px;
+  border-radius: var(--radius-xs);
+  background: rgba(95, 86, 80, 0.2);
+  margin-bottom: 10px;
+}
+
+/* ==========================================================================
+   Responsive Viewport Calibration (from wireframes-v2)
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .team-stage-manager-section.is-detail-active {
+    grid-template-columns: 178px minmax(0, 1fr);
+    column-gap: 22px;
+  }
+  .team-stage-manager-section.is-detail-active .team-item-card {
+    width: 174px;
+    min-height: 94px;
+    transform: rotateY(26deg) scale(var(--preview-scale));
+  }
+  .team-stage-manager-section.is-detail-active .team-item-card:hover,
+  .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
+    transform: translate3d(5px, -2px, 0) rotateY(18deg) scale(0.98);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-stage-storyboard {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .team-stage-manager-section.is-detail-active {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+  }
+  .team-stage-manager-section.is-detail-active .team-stage-storyboard { order: 1; }
+  .team-stage-manager-section.is-detail-active #team-detail-blueprint { order: 2; }
+  .team-stage-manager-section.is-detail-active .teams-horizontal-stack {
+    order: 3;
+    position: static;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 8px 6px 18px;
+    perspective: 1000px;
+    scrollbar-width: none;
+  }
+  .team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { display: none; }
+  .team-stage-manager-section.is-detail-active .team-item-card {
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    width: auto;
+    flex: 0 0 156px;
+    min-height: 68px;
+    margin-top: 0;
+    padding: 10px !important;
+    transform: rotateY(8deg) scale(0.96);
+  }
+  .team-stage-manager-section.is-detail-active .team-item-card.is-active-team,
+  .team-stage-manager-section.is-detail-active .team-item-card:hover,
+  .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
+    transform: translate3d(3px, -2px, 0) rotateY(3deg) scale(0.99);
+  }
+  .team-detail-toolbar { align-items: flex-start; }
+  .team-detail-toolbar-copy { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-stage-manager-section .team-item-card,
+  .team-stage-back {
+    transition: opacity 1ms linear !important;
+    transform: none !important;
+  }
+}

@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 
   <style>
     /* ==========================================================================
@@ -86,7 +87,7 @@
 
     body {
       font-family: var(--font-body);
-      background: var(--gec-canvas);
+      background: #0E0F12;
       color: var(--gec-ink);
       min-height: 100vh;
       overflow-x: hidden;
@@ -230,20 +231,20 @@
        3. CANVAS STAGE & VIEWPORT CONTAINMENT
        ========================================================================== */
     #canvas-stage {
-      padding: 0;
+      padding: 32px 24px 96px;
       display: flex;
       justify-content: center;
-      background: var(--gec-canvas);
-      min-height: 100vh;
+      background: #0E0F12;
+      min-height: calc(100vh - 64px);
     }
 
     .canvas-frame {
       width: 100%;
-      max-width: none;
+      max-width: 1440px;
       background: var(--gec-canvas);
       color: var(--gec-ink);
-      border-radius: 0;
-      box-shadow: none;
+      border-radius: var(--radius-md);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
       position: relative;
       overflow: hidden;
       transition: max-width var(--duration-macro) var(--ease-spring);
@@ -275,7 +276,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: none;
+      border-bottom: 2px solid var(--gec-crimson);
     }
 
     .status-left {
@@ -539,15 +540,13 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -2;
       pointer-events: none;
       display: block;
-      contain: strict;
     }
 
     .has-shader > :not(.gec-shader-layer) {
       position: relative;
-      z-index: 1;
     }
 
     .shader-hero {
@@ -568,7 +567,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .gec-shader-layer {
-        display: none;
+        animation: none !important;
       }
       .ambient-motion {
         animation: none !important;
@@ -705,7 +704,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: none;
+      border-bottom: 2px solid var(--gec-crimson);
       background: rgba(252, 248, 237, 0.96);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
@@ -722,14 +721,6 @@
       cursor: pointer;
       text-decoration: none;
       color: inherit;
-    }
-
-    .brand-logo-img {
-      display: block;
-      width: 150px;
-      height: auto;
-      /* The animated Next.js shell owns the single visible top-bar lockup. */
-      visibility: hidden;
     }
 
     .brand-emblem-svg {
@@ -824,7 +815,7 @@
       left: 0;
       right: 0;
       background: var(--gec-canvas);
-      border-bottom: none;
+      border-bottom: 2px solid var(--gec-crimson);
       padding: 24px;
       flex-direction: column;
       gap: 16px;
@@ -1816,7 +1807,38 @@
         transition-duration: 0.01ms !important;
       }
     }
+
+    /* =============================================================
+       LIVE-SITE OVERRIDE — hide wireframe dev chrome, expose canvas
+       ============================================================= */
+    body.live-site {
+      background: var(--gec-canvas) !important;
+      overflow-x: hidden;
+    }
+    body.live-site #cockpit-header,
+    body.live-site .canvas-status-ribbon,
+    body.live-site .blueprint-grid-overlay,
+    body.live-site #inspector-drawer,
+    body.live-site .wf-toast-container,
+    body.live-site .site-navbar,
+    body.live-site .site-footer {
+      display: none !important;
+    }
+    body.live-site #canvas-stage {
+      padding: 0 !important;
+      background: var(--gec-canvas) !important;
+      min-height: 100vh;
+    }
+    body.live-site .canvas-frame {
+      max-width: 100% !important;
+      width: 100% !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      background: var(--gec-canvas) !important;
+    }
+    body.live-site .canvas-frame::after { display: none !important; }
   
+
 
     /* ==========================================================================
        STAGE MANAGER BASE COMPONENTS (Straight import from index.html)
@@ -2203,21 +2225,13 @@
       .team-stage-back { transition: opacity 1ms linear !important; transform: none !important; }
     }
 </style>
-<style>
-  /* Production build: exclude wireframe controls and animation diagnostics. */
-  #cockpit-header,
-  .canvas-status-ribbon,
-  .team-stage-storyboard {
-    display: none !important;
-  }
-</style>
 </head>
-<body>
+<body class="live-site">
 
   <!-- ==========================================================================
        TOP CONTROL COCKPIT (Interactive 5-Page Multi-Screen Canvas)
        ========================================================================== -->
-  <template id="wireframe-controls">
+  <header id="cockpit-header" role="banner">
     <div class="cockpit-identity">
       <div class="cockpit-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -2274,7 +2288,7 @@
         Inspector
       </button>
     </div>
-  </template>
+  </header>
 
   <!-- ==========================================================================
        MAIN CANVAS CONTAINER
@@ -2283,7 +2297,7 @@
     <div class="canvas-frame viewport-desktop" id="gec-canvas-root">
       
       <!-- Canvas Status Ribbon -->
-      <template id="wireframe-status-ribbon">
+      <div class="canvas-status-ribbon">
         <div class="status-left">
           <span class="status-pulse-dot"></span>
           <span id="active-screen-label">PAGE 01: HOME · PRODUCTION FROZEN SPECIFICATION</span>
@@ -2292,7 +2306,7 @@
           <span style="color: var(--gec-gold);">BRAND RATIO: 60% CREAM · 25% CRIMSON · 8% CHARCOAL · 4% GOLD · 2% BLUE</span>
           <span id="canvas-width-live" style="color: #94A3B8;">DESKTOP 1440px (100%)</span>
         </div>
-      </template>
+      </div>
 
       <!-- 12-Column Overlay Guide (Toggled via button) -->
       <div class="blueprint-grid-overlay" aria-hidden="true">
@@ -2354,8 +2368,7 @@
         </div>
 
         <!-- 1.1 Hero Spotlight (§docs/GEC_Dynamic_Hero_Spotlight_Frozen.md) -->
-        <section class="wf-section surface-cream has-shader" id="hero-spotlight-section" data-gec-shader="hero-watercolor">
-          <canvas class="gec-shader-layer shader-hero" data-shader-canvas aria-hidden="true"></canvas>
+        <section class="wf-section surface-cream" id="hero-spotlight-section">
           <!-- Hero State Switcher -->
           <div class="hero-spotlight-cockpit">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -2499,8 +2512,7 @@
         </section>
 
         <!-- 1.2 What's Happening (§Frozen Content: Deep Crimson Background) -->
-        <section class="wf-section surface-crimson has-shader" data-gec-shader="crimson-liquid">
-          <canvas class="gec-shader-layer shader-feature" data-shader-canvas aria-hidden="true"></canvas>
+        <section class="wf-section surface-crimson">
           <div style="max-width: 720px; margin-bottom: 32px;">
             <span class="editorial-kicker">REALTIME ECOSYSTEM DISPATCH</span>
             <h2 class="h2-section" style="color: #FFFDF8; margin: 6px 0 10px;">
@@ -2615,8 +2627,7 @@
         </section>
 
         <!-- 1.3 Initiatives Flagship (§Frozen Content) -->
-        <section class="wf-section surface-cream has-shader" data-gec-shader="cream-undertones">
-          <canvas class="gec-shader-layer shader-ambient" data-shader-canvas aria-hidden="true"></canvas>
+        <section class="wf-section surface-cream">
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; flex-wrap: wrap; gap: 16px;">
             <div style="max-width: 650px;">
               <span class="editorial-kicker">PATHWAYS TO EXECUTION</span>
@@ -2687,8 +2698,7 @@
         </section>
 
         <!-- 1.4 Impact (§Frozen Content: Charcoal Background #222222) -->
-        <section class="wf-section surface-charcoal has-shader" data-gec-shader="dark-specular">
-          <canvas class="gec-shader-layer shader-light" data-shader-canvas aria-hidden="true"></canvas>
+        <section class="wf-section surface-charcoal">
           <div style="text-align: center; max-width: 800px; margin: 0 auto 36px;">
             <span class="editorial-kicker">REAL COMPETENCIES · VERIFIED OUTCOMES</span>
             <h2 class="h2-section" style="color: var(--gec-canvas); margin: 6px 0 12px;">
@@ -3416,7 +3426,7 @@
           <div class="section-id-stamp">3.2 THE 7 TEAMS | STAGE MANAGER TRANSITION</div>
           <div class="section-coord-stamp">PART 01: ROSTER | PART 02: ACTIVE TEAM CANVAS</div>
 
-          <template id="wireframe-team-storyboard">
+          <aside class="team-stage-storyboard" aria-label="Animation storyboard timing">
             <div class="team-stage-storyboard-steps">
               <span class="team-stage-step">01 SELECT 0–120MS</span>
               <span class="team-stage-step">02 SPATIAL SWAP 100–450MS</span>
@@ -3424,7 +3434,7 @@
               <span class="team-stage-step">SPRING 250 / 28 / 0.9</span>
             </div>
             <span id="team-stage-status" class="team-stage-status" aria-live="polite">STATE: 01 ACTIVE | DETAIL CANVAS</span>
-          </template>
+          </aside>
 
           <div class="teams-horizontal-stack">
             <!-- Team 01: Startup Development (Gold) -->
@@ -5146,107 +5156,11 @@
       showPublicToast('Sector Filter', `Showing ${count} venture(s) in sector: "${sector.toUpperCase()}".`, 'info');
     }
 
-    // Keep the complete, branded footer identical across each in-canvas page.
-    // The home footer is the canonical markup; the other page canvases retain
-    // their own footer container so existing page visibility rules stay intact.
-    function syncGlobalFooters() {
-      const sourceFooter = document.querySelector('#page-home .site-footer');
-      if (!sourceFooter) return;
-
-      document.querySelectorAll('.site-footer').forEach((footer) => {
-        if (footer !== sourceFooter) footer.innerHTML = sourceFooter.innerHTML;
-      });
-    }
-
-    syncGlobalFooters();
-
     // Check URL parameters for direct page linking (e.g. ?page=teams)
     const requestedPage = new URLSearchParams(window.location.search).get('page');
     if (['home', 'about', 'teams', 'initiatives', 'stories'].includes(requestedPage)) {
       navigatePage(requestedPage);
     }
-  </script>
-  <script type="module">
-    /*
-      Original Shaders.com compositions, tuned from the GEC visual spec.
-      They deliberately use only the GEC palette and stay decorative: the
-      canvases are absolutely positioned, inert, and have CSS fallbacks.
-    */
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const compactScreen = window.matchMedia('(max-width: 768px)').matches;
-
-    const shaderRegistry = {
-      'hero-watercolor': {
-        components: [
-          { type: 'FlowingGradient', props: {
-            colorA: '#FCF8ED', colorB: '#F4E2CA', colorC: '#A3040F', colorD: '#FBCA05',
-            colorSpace: 'oklch', speed: 0.10, distortion: 0.16, seed: 24
-          } }
-        ]
-      },
-      'cream-undertones': {
-        components: [
-          { type: 'FlowingGradient', props: {
-            colorA: '#FCF8ED', colorB: '#FFFDF8', colorC: '#F4E2CA', colorD: '#A3040F',
-            colorSpace: 'oklch', speed: 0.05, distortion: 0.08, seed: 42
-          } }
-        ]
-      },
-      'crimson-liquid': {
-        components: [
-          { type: 'FlowingGradient', props: {
-            colorA: '#72030A', colorB: '#A3040F', colorC: '#C62F29', colorD: '#7D030B',
-            colorSpace: 'oklch', speed: 0.07, distortion: 0.12, seed: 11
-          } }
-        ]
-      },
-      'dark-specular': {
-        components: [
-          { type: 'Swirl', props: {
-            colorA: '#18191C', colorB: '#A3040F', colorSpace: 'oklch',
-            speed: 0.05, detail: 0.35, blend: 16
-          } }
-        ]
-      }
-    };
-
-    async function initialiseGecShaders() {
-      if (reduceMotion || !('gpu' in navigator)) return;
-
-      try {
-        const { createShader } = await import('https://esm.sh/shaders@latest/js');
-        const hosts = [...document.querySelectorAll('[data-gec-shader]')]
-          .filter((host) => !compactScreen || ['hero-watercolor', 'crimson-liquid'].includes(host.dataset.gecShader));
-
-        const initialise = async (host) => {
-          const config = shaderRegistry[host.dataset.gecShader];
-          const canvas = host.querySelector('[data-shader-canvas]');
-          if (!config || !canvas || canvas.dataset.initialised) return;
-          canvas.dataset.initialised = 'true';
-          try {
-            await createShader(canvas, config);
-          } catch (error) {
-            canvas.remove();
-            console.warn('GEC shader fallback retained:', error);
-          }
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              observer.unobserve(entry.target);
-              initialise(entry.target);
-            }
-          });
-        }, { rootMargin: '300px 0px' });
-
-        hosts.forEach((host) => observer.observe(host));
-      } catch (error) {
-        console.warn('GEC shaders unavailable; CSS material fallback retained.', error);
-      }
-    }
-
-    initialiseGecShaders();
   </script>
 </body>
 </html>
