@@ -27,6 +27,11 @@
   color: var(--df-ink);
   font-family: var(--df-font-round);
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 /* 3D scene */
@@ -131,6 +136,11 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
   background:
     radial-gradient(130% 90% at 82% 6%, rgba(255, 255, 255, 0.55), transparent 60%),
     linear-gradient(160deg, var(--df-paper), var(--df-paper-2));
@@ -198,6 +208,19 @@
   padding: 11% 10% 9%;
   overflow: hidden;
   container-type: inline-size; /* type scales via cqw */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.deskfolio-page-content * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .deskfolio-page-content:has(.gec-editorial-page),
@@ -679,3 +702,63 @@
 /* two random peel-stickers, bottom-right gutter */
 .df-mstickers .m3 { bottom: 9%; right: 28%; width: 21vw; max-width: 96px; transform: rotate(-7deg); }
 .df-mstickers .m4 { bottom: 1.5%; right: 4%; width: 23vw; max-width: 104px; transform: rotate(5deg); }
+
+/* Creative Atmospheric Blur & Optical Bokeh Animation */
+@keyframes df-bokeh-float-1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(16px, -20px, 0) scale(1.15);
+    opacity: 0.6;
+  }
+}
+
+@keyframes df-bokeh-float-2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate3d(-20px, 16px, 0) scale(1.2);
+    opacity: 0.48;
+  }
+}
+
+@keyframes df-bokeh-float-3 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(12px, 18px, 0) scale(0.9);
+    opacity: 0.52;
+  }
+}
+
+.animate-df-bokeh-1 {
+  animation: df-bokeh-float-1 8s ease-in-out infinite;
+}
+.animate-df-bokeh-2 {
+  animation: df-bokeh-float-2 11s ease-in-out infinite;
+}
+.animate-df-bokeh-3 {
+  animation: df-bokeh-float-3 9s ease-in-out infinite;
+}
+
+@keyframes df-dock-pulse {
+  0%, 100% {
+    opacity: 0.8;
+    box-shadow: 0 0 16px rgba(251, 202, 5, 0.4), inset 0 0 10px rgba(251, 202, 5, 0.2);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 30px rgba(251, 202, 5, 0.75), inset 0 0 18px rgba(251, 202, 5, 0.45);
+  }
+}
+
+.animate-df-dock-pulse {
+  animation: df-dock-pulse 1.1s ease-in-out infinite;
+}
+

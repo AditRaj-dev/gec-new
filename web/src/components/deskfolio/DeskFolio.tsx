@@ -40,6 +40,8 @@ export type DeskFolioProps = {
   virtualizePages?: boolean
   /* automatically open the front cover */
   autoOpen?: boolean
+  /* delay in ms before auto-opening the cover */
+  autoOpenDelay?: number
   /* trigger closing flip from parent */
   closeRequested?: boolean
   /* fires when book has settled closed */
@@ -47,9 +49,16 @@ export type DeskFolioProps = {
 }
 
 // springs
-const FLIP_SPRING = { type: 'spring', stiffness: 220, damping: 26 } as const
-const BLOOM_SPRING = { type: 'spring', stiffness: 220, damping: 26 } as const
-const PEEK_SPRING = { type: 'spring', bounce: 0.42, duration: 0.32 } as const
+// COVER_SPRING: Stately, weighted, luxurious opening and closing of hardcovers
+const COVER_SPRING = { type: 'spring', stiffness: 68, damping: 16.5, mass: 1.1 } as const
+
+// BLOOM_SPRING: Smooth lateral translation as the book unfolds into spread mode
+const BLOOM_SPRING = { type: 'spring', stiffness: 68, damping: 16.5, mass: 1.1 } as const
+
+// FLIP_SPRING: Responsive yet smooth paper page flips for inner spreads
+const FLIP_SPRING = { type: 'spring', stiffness: 115, damping: 19, mass: 0.9 } as const
+
+const PEEK_SPRING = { type: 'spring', bounce: 0.38, duration: 0.38 } as const
 const PEEK_ANGLE = -13 // corner lift on hover
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v))
@@ -98,6 +107,7 @@ export function DeskFolio({
   label = 'A little book — drag a corner, tap a side, or use the arrow keys to turn the pages',
   virtualizePages = false,
   autoOpen = false,
+  autoOpenDelay = 120,
   closeRequested = false,
   onClose,
 }: DeskFolioProps) {
@@ -165,14 +175,18 @@ export function DeskFolio({
 
   const autoOpenTriggeredRef = useRef(false)
   useEffect(() => {
-    if (!autoOpen || autoOpenTriggeredRef.current || turned !== 0) return
+    if (!autoOpen) {
+      autoOpenTriggeredRef.current = false
+      return
+    }
+    if (autoOpenTriggeredRef.current || turned !== 0) return
     const timer = window.setTimeout(() => {
       autoOpenTriggeredRef.current = true
       setTurning(0)
       setTurned(1)
-    }, 120)
+    }, autoOpenDelay)
     return () => window.clearTimeout(timer)
-  }, [autoOpen, turned])
+  }, [autoOpen, autoOpenDelay, turned])
 
   const wasOpenedRef = useRef(false)
   useEffect(() => {
@@ -203,8 +217,8 @@ export function DeskFolio({
   useEffect(() => {
     if (!interactive || !open || locked) return
     const closeOnEscape = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null
-      if (target?.isContentEditable || target?.closest('input, textarea, select')) return
+      const el = e.target instanceof Element ? e.target : null
+      if (el?.closest('input, textarea, select, [contenteditable="true"]')) return
       if (e.key !== 'Escape') return
       e.preventDefault()
       if (turned > 0) {
@@ -339,7 +353,7 @@ export function DeskFolio({
 
   return (
     <div
-      className={className ? `deskfolio ${className}` : 'deskfolio'}
+      className={className ? `deskfolio select-none ${className}` : 'deskfolio select-none'}
       style={
         {
           '--df-page-w': `${pageWidth}px`,
@@ -349,6 +363,14 @@ export function DeskFolio({
         } as React.CSSProperties
       }
       data-open={open}
+      onCopy={(e) => e.preventDefault()}
+      onCut={(e) => e.preventDefault()}
+      onContextMenu={(e) => {
+        const target = e.target as HTMLElement
+        if (target && !target.closest('input, textarea, [contenteditable="true"]')) {
+          e.preventDefault()
+        }
+      }}
     >
       <div className="deskfolio-stage" style={{ width: spreadWidth, height: pageHeight }}>
         <motion.div
@@ -458,10 +480,16 @@ const BookSheet = memo(function BookSheet({
     const current = rot.get()
     const dist = Math.abs(target - current)
     const v0 = rot.getVelocity()
-    // initial shove so the page leaves immediately
+    // For hardcovers (front/back cover), avoid snappy artificial impulse;
+    // let the weighted spring accelerate smoothly and majestically.
+    const isHardCover = index === 0 || sheet.frontHard || sheet.backHard
+    const springConfig = isHardCover ? COVER_SPRING : FLIP_SPRING
+    const defaultVelocity = isHardCover
+      ? Math.sign(target - current) * 20
+      : Math.sign(target - current) * 60
     const opts =
       dist > 24
-        ? { ...FLIP_SPRING, velocity: Math.abs(v0) < 60 ? Math.sign(target - current) * 540 : v0 }
+        ? { ...springConfig, velocity: Math.abs(v0) < 60 ? defaultVelocity : v0 }
         : PEEK_SPRING
     const controls = animate(rot, target, opts)
     animControlsRef.current = controls

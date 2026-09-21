@@ -23,7 +23,8 @@ function get(): WebHaptics | null {
  *  error/nudge/buzz), a duration in ms, or a custom pattern. Fire-and-forget; errors are swallowed. */
 export function haptic(input?: HapticInput, options?: TriggerOptions): void {
   try {
-    void get()?.trigger(input, options)
+    const normalized = (input as unknown) === 'tap' ? 'light' : input
+    void get()?.trigger(normalized, options)
   } catch {
     /* never let a missing-haptics platform break an interaction */
   }
