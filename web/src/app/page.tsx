@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { NewsletterSection } from '@/components/NewsletterSection';
+import { TeamStageManager } from '@/components/TeamStageManager';
 
 export default function Home() {
   const handleReplay = () => {
@@ -250,7 +251,20 @@ export default function Home() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. NEWSLETTER & DISPATCH ARCHIVES (3D WebGL Bookshelf)                   */}
+      {/* 3. TEAMS & ORGANIZATIONAL STAGE MANAGER (Wireframe V2 Spatial Roster)     */}
+      {/* ========================================================================= */}
+      <section id="team" className="py-12 md:py-20 border-b border-[rgba(163,4,15,0.12)] bg-[#FCF8ED]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <TeamStageManager
+            showHero={true}
+            initialTeamIndex={1}
+            initialMode="detail"
+          />
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 4. NEWSLETTER & DISPATCH ARCHIVES (3D WebGL Bookshelf)                   */}
       {/* ========================================================================= */}
       <NewsletterSection />
 

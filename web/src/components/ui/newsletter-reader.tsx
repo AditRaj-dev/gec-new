@@ -13,7 +13,7 @@ export interface NewsletterReaderProps {
   onClose: () => void;
 }
 
-export function buildDispatchPages(item: NewsletterBookshelfItem) {
+export function buildDispatchPages(item: NewsletterBookshelfItem, completionAction?: React.ReactNode) {
   const isLight = item.color === '#FCF8ED' || item.color === '#F4E2CA' || item.color === '#FFFDF8';
   const foilColor = item.foil || (isLight ? '#A3040F' : '#FBCA05');
   const baseBg = item.color || '#A3040F';
@@ -21,7 +21,8 @@ export function buildDispatchPages(item: NewsletterBookshelfItem) {
 
   const cover = (
     <article
-      className="gec-book-cover"
+      className="gec-book-cover select-none"
+      onCopy={(e) => e.preventDefault()}
       style={{
         background: `radial-gradient(120% 90% at 50% 15%, rgba(255,255,255,0.18) 0%, transparent 60%), linear-gradient(160deg, ${baseBg} 0%, rgba(0,0,0,0.35) 100%)`,
         backgroundColor: baseBg,
@@ -57,7 +58,7 @@ export function buildDispatchPages(item: NewsletterBookshelfItem) {
   );
 
   const page1 = (
-    <article className="gec-editorial-page">
+    <article className="gec-editorial-page select-none" onCopy={(e) => e.preventDefault()}>
       <div className="gec-editorial-page__texture" aria-hidden="true" />
       <header className="gec-editorial-page__running">
         <div className="gec-editorial-page__running-left">
@@ -83,7 +84,7 @@ export function buildDispatchPages(item: NewsletterBookshelfItem) {
   );
 
   const page2 = (
-    <article className="gec-editorial-page">
+    <article className="gec-editorial-page select-none" onCopy={(e) => e.preventDefault()}>
       <div className="gec-editorial-page__texture" aria-hidden="true" />
       <header className="gec-editorial-page__running">
         <div className="gec-editorial-page__running-left">
@@ -127,7 +128,7 @@ export function buildDispatchPages(item: NewsletterBookshelfItem) {
   );
 
   const page3 = (
-    <article className="gec-editorial-page">
+    <article className="gec-editorial-page select-none" onCopy={(e) => e.preventDefault()}>
       <div className="gec-editorial-page__texture" aria-hidden="true" />
       <header className="gec-editorial-page__running">
         <div className="gec-editorial-page__running-left">
@@ -155,7 +156,7 @@ export function buildDispatchPages(item: NewsletterBookshelfItem) {
   );
 
   const page4 = (
-    <article className="gec-editorial-page">
+    <article className="gec-editorial-page select-none" onCopy={(e) => e.preventDefault()}>
       <div className="gec-editorial-page__texture" aria-hidden="true" />
       <header className="gec-editorial-page__running">
         <div className="gec-editorial-page__running-left">
@@ -192,7 +193,7 @@ export function buildDispatchPages(item: NewsletterBookshelfItem) {
   );
 
   const backCover = (
-    <article className="gec-book-cover gec-book-cover--back">
+    <article className="gec-book-cover gec-book-cover--back select-none" onCopy={(e) => e.preventDefault()}>
       <header className="gec-book-cover__running">
         <span>GEC ARCHIVES</span>
         <span>2026</span>
@@ -206,6 +207,7 @@ export function buildDispatchPages(item: NewsletterBookshelfItem) {
         </svg>
         <h2 style={{ color: '#FAF8F5' }}>Build what the evidence can carry.</h2>
         <p style={{ color: 'rgba(255,255,255,0.7)' }}>A working record for student founders.</p>
+        {completionAction && <div className="pt-4 flex justify-center">{completionAction}</div>}
       </div>
       <footer className="gec-book-cover__footer">
         <span>Greater Noida, UP</span>
@@ -271,7 +273,8 @@ export function NewsletterReader({
   return (
     <div
       ref={containerRef}
-      className="relative pt-6 pb-8 px-4 bg-gradient-to-b from-[#FAF6EC] to-[#F4E8D3] min-h-[580px] flex flex-col items-center justify-between"
+      className="relative pt-6 pb-8 px-4 bg-gradient-to-b from-[#FAF6EC] to-[#F4E8D3] min-h-[580px] flex flex-col items-center justify-between select-none"
+      onCopy={(e) => e.preventDefault()}
     >
       {/* Reader Sub-Header */}
       <div className="w-full max-w-4xl flex items-center justify-between mb-4 px-2 text-xs">

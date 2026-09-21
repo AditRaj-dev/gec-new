@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GEC Architecture Canvas — 5-Page Layout Wireframes (Iteration 2)</title>
+  <title>GEC Architecture Canvas — Page 01: Home Wireframe (Iteration 2)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 
   <style>
     /* ==========================================================================
@@ -1004,201 +1003,50 @@
       grid-row: 1;
     }
 
-    /* Teams 7-Row Horizontal Stack & Card System */
+    /* Teams 7-Row Horizontal Stack */
     .teams-horizontal-stack {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
       margin-top: 32px;
     }
 
     .team-item-card {
       display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.7fr) 170px;
-      gap: 28px;
+      grid-template-columns: 80px 1.4fr 2fr 1fr;
+      gap: 24px;
       align-items: center;
-      padding: 24px 28px;
+      padding: 24px;
       border-radius: var(--radius-md);
-      border: 1.5px solid rgba(163, 4, 15, 0.22);
-      background: var(--gec-surface-card);
-      box-shadow: 0 4px 20px rgba(34, 34, 34, 0.04);
-      cursor: pointer;
-      position: relative;
-      transition: transform 240ms var(--ease-spring), box-shadow 240ms var(--ease-spring), border-color 200ms ease;
+      border: 1.5px solid var(--gec-crimson);
+      background: var(--gec-canvas);
+      box-shadow: var(--shadow-ambient);
     }
 
-    .team-item-card:hover {
-      border-color: var(--gec-crimson);
-      box-shadow: 0 12px 32px rgba(163, 4, 15, 0.08), 0 4px 12px rgba(34, 34, 34, 0.04);
-      transform: translateY(-2px);
-    }
-
-    .team-card-identity {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 0;
-    }
-
-    .team-card-meta-top {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 2px;
-    }
-
-    .team-card-num {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--gec-crimson);
-      background: rgba(163, 4, 15, 0.08);
-      border: 1px solid rgba(163, 4, 15, 0.22);
-      border-radius: var(--radius-xs);
-      padding: 2px 7px;
-      line-height: 1.1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .team-card-hover-cue {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--gec-crimson);
-      letter-spacing: 0.06em;
-      margin-left: auto;
-      opacity: 0;
-      transform: translateX(-4px);
-      transition: opacity 180ms ease, transform 180ms ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .team-item-card:hover .team-card-hover-cue {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .team-card-title {
+    .team-index-display {
+      font-size: 32px;
+      font-weight: 900;
       font-family: var(--font-display);
-      font-size: 19px;
-      font-weight: 800;
-      color: var(--gec-ink);
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      margin: 0;
-    }
-
-    .team-card-desc {
-      font-family: var(--font-body);
-      font-size: 13px;
-      color: var(--gec-ink-muted);
-      line-height: 1.55;
-      margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .team-card-meta-bottom {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--gec-ink-muted);
-    }
-
-    .team-meta-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-weight: 600;
-      color: var(--gec-ink);
-    }
-
-    .team-meta-badge svg {
       color: var(--gec-crimson);
-      flex-shrink: 0;
-    }
-
-    .team-meta-sep {
-      color: rgba(34, 34, 34, 0.3);
-      font-weight: 700;
-    }
-
-    .team-meta-subtle {
-      color: var(--gec-ink-subtle);
-    }
-
-    .team-card-responsibilities {
-      min-width: 0;
-    }
-
-    .team-pillars-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-
-    .team-pillars-count-tag {
-      font-family: var(--font-mono);
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      color: var(--gec-crimson);
-      background: rgba(163, 4, 15, 0.06);
-      padding: 2px 6px;
-      border-radius: var(--radius-xs);
+      text-align: center;
     }
 
     .team-chips-container {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
+      margin-top: 8px;
     }
 
     .team-focus-tag {
-      font-size: 11px;
+      font-size: 10px;
       font-family: var(--font-mono);
       font-weight: 600;
-      background: rgba(34, 34, 34, 0.04);
-      color: var(--gec-ink);
-      padding: 3px 9px;
+      background: rgba(34, 34, 34, 0.06);
+      padding: 3px 8px;
       border-radius: var(--radius-xs);
-      border: 1px solid rgba(34, 34, 34, 0.16);
-      transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+      border: 1px dashed rgba(34, 34, 34, 0.25);
     }
-
-    .team-item-card:hover .team-focus-tag {
-      background: rgba(163, 4, 15, 0.04);
-      border-color: rgba(163, 4, 15, 0.22);
-    }
-
-    .team-card-action {
-      text-align: right;
-    }
-
-    .team-card-action .wf-action-slot {
-      height: 42px;
-      width: 100%;
-      cursor: pointer;
-      font-size: 11.5px;
-      letter-spacing: 0.04em;
-    }
-
-    .role-orange { background: #F97316 !important; color: #FFFFFF !important; }
-    .role-burgundy { background: #701A24 !important; color: #FFFFFF !important; }
-    .role-slate { background: #334155 !important; color: #FFFFFF !important; }
-    .role-bronze { background: #854D0E !important; color: #FFFFFF !important; }
 
     /* Modular Blueprint Sub-Wrapper */
     .modular-subblueprint-wrapper {
@@ -1963,9 +1811,9 @@
       transform-origin: top right;
     }
     .team-stage-manager-section.is-detail-active {
-      grid-template-columns: minmax(300px, 330px) minmax(0, 1fr);
+      grid-template-columns: minmax(200px, 230px) minmax(0, 1fr);
       min-height: 720px;
-      column-gap: 38px;
+      column-gap: 44px;
     }
     .team-stage-manager-section.is-detail-active .teams-horizontal-stack {
       position: sticky;
@@ -1979,70 +1827,39 @@
       z-index: 2;
     }
     .team-stage-manager-section.is-detail-active .team-item-card {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 8px;
-      width: 100%;
-      max-width: 320px;
-      min-height: 118px;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 9px;
+      width: 210px;
+      min-height: 104px;
       margin-top: 0;
-      padding: 16px 18px 14px;
+      padding: 16px 14px;
       opacity: var(--preview-opacity);
-      transform: rotateY(10deg) scale(var(--preview-scale));
+      transform: rotateY(34deg) scale(var(--preview-scale));
       transform-origin: left center;
       transform-style: preserve-3d;
       will-change: transform;
-      border: 1.5px solid rgba(163, 4, 15, 0.2);
-      border-radius: var(--radius-md);
-      background: var(--gec-surface-card);
-      box-shadow: 0 10px 28px rgba(34, 34, 34, 0.08);
-      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(34, 34, 34, 0.10);
     }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-card-title {
-      font-size: 15px;
-      font-weight: 800;
-      line-height: 1.25;
-      color: var(--gec-ink);
-      margin: 2px 0 0;
-    }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-card-desc {
-      display: none;
-    }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-meta-subtle {
-      display: none;
-    }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-pillars-header {
-      display: none;
-    }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-chips-container {
-      gap: 4px;
-      margin-top: 2px;
-      max-height: 24px;
+    .team-stage-manager-section.is-detail-active .team-item-card > div:nth-child(3),
+    .team-stage-manager-section.is-detail-active .team-item-card > div:nth-child(4),
+    .team-stage-manager-section.is-detail-active .team-item-card .skel-title-h2,
+    .team-stage-manager-section.is-detail-active .team-item-card .skel-line { display: none; }
+    .team-stage-manager-section.is-detail-active .team-item-card .team-index-display { font-size: 22px; text-align: left; }
+    .team-stage-manager-section.is-detail-active .team-item-card .element-role-tag {
+      display: block;
       overflow: hidden;
-      display: flex;
-      flex-wrap: nowrap;
-    }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-focus-tag {
-      font-size: 9.5px;
-      padding: 2px 6px;
+      max-width: 100%;
+      padding: 4px 6px;
+      text-overflow: ellipsis;
       white-space: nowrap;
-    }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-card-action {
-      display: none;
-    }
-    .team-stage-manager-section.is-detail-active .team-item-card .team-card-hover-cue {
-      opacity: 0.85;
-      transform: none;
     }
     .team-stage-manager-section.is-detail-active .team-item-card.is-active-team { display: none; }
     .team-stage-manager-section.is-detail-active .team-item-card:hover,
     .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
-      z-index: 5;
+      z-index: 4;
       opacity: 1;
-      transform: translate3d(8px, -2px, 0) rotateY(0deg) scale(1.02);
-      border-color: var(--gec-crimson);
-      box-shadow: 0 16px 38px rgba(163, 4, 15, 0.14), 0 4px 12px rgba(34, 34, 34, 0.05);
+      transform: translate3d(6px, -2px, 0) rotateY(24deg) scale(0.98);
+      box-shadow: 0 16px 38px rgba(34, 34, 34, 0.14);
     }
     .team-stage-manager-section.is-detail-active #team-detail-blueprint {
       display: block;
@@ -2095,22 +1912,18 @@
     }
     @keyframes team-detail-out { from { opacity: 1; } to { opacity: 0; } }
     @media (max-width: 1100px) {
-      .team-stage-manager-section.is-detail-active { grid-template-columns: minmax(260px, 280px) minmax(0, 1fr); column-gap: 24px; }
+      .team-stage-manager-section.is-detail-active { grid-template-columns: 178px minmax(0, 1fr); column-gap: 22px; }
       .team-stage-manager-section.is-detail-active .team-item-card {
-        max-width: 280px;
-        transform: rotateY(8deg) scale(var(--preview-scale));
+        width: 174px;
+        min-height: 94px;
+        transform: rotateY(26deg) scale(var(--preview-scale));
       }
       .team-stage-manager-section.is-detail-active .team-item-card:hover,
       .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
-        transform: translate3d(6px, -2px, 0) rotateY(0deg) scale(1.01);
+        transform: translate3d(5px, -2px, 0) rotateY(18deg) scale(0.98);
       }
     }
     @media (max-width: 768px) {
-      .team-item-card {
-        grid-template-columns: 1fr !important;
-        gap: 16px !important;
-        padding: 18px 16px !important;
-      }
       .team-stage-storyboard { align-items: flex-start; flex-direction: column; }
       .team-stage-manager-section.is-detail-active {
         display: flex;
@@ -2125,7 +1938,7 @@
         display: flex;
         width: 100%;
         flex-direction: row;
-        gap: 12px;
+        gap: 10px;
         overflow-x: auto;
         padding: 8px 6px 18px;
         perspective: 1000px;
@@ -2133,21 +1946,19 @@
       }
       .team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { display: none; }
       .team-stage-manager-section.is-detail-active .team-item-card {
-        flex: 0 0 240px;
-        min-height: 100px;
-        padding: 14px 14px 12px !important;
-        transform: rotateY(4deg) scale(0.98);
+        grid-template-columns: 34px minmax(0, 1fr) !important;
+        width: auto;
+        flex: 0 0 156px;
+        min-height: 68px;
+        margin-top: 0;
+        padding: 10px !important;
+        transform: rotateY(8deg) scale(0.96);
       }
       .team-stage-manager-section.is-detail-active .team-item-card.is-active-team,
       .team-stage-manager-section.is-detail-active .team-item-card:hover,
-      .team-stage-manager-section.is-detail-active .team-item-card:focus-visible { transform: translate3d(2px, -2px, 0) rotateY(0deg) scale(1); }
+      .team-stage-manager-section.is-detail-active .team-item-card:focus-visible { transform: translate3d(3px, -2px, 0) rotateY(3deg) scale(0.99); }
       .team-detail-toolbar { align-items: flex-start; }
       .team-detail-toolbar-copy { align-items: flex-start; flex-direction: column; }
-    }
-    #gec-canvas-root.viewport-mobile .team-item-card {
-      grid-template-columns: 1fr !important;
-      gap: 16px !important;
-      padding: 18px 16px !important;
     }
     #gec-canvas-root.viewport-mobile .team-stage-manager-section.is-detail-active { display: flex !important; flex-direction: column !important; }
     #gec-canvas-root.viewport-mobile .team-stage-manager-section.is-detail-active .team-stage-storyboard { order: 1; }
@@ -2158,16 +1969,18 @@
       display: flex !important;
       width: 100%;
       flex-direction: row !important;
-      gap: 12px !important;
+      gap: 10px !important;
       overflow-x: auto;
       padding: 8px 6px 18px;
       perspective: 1000px;
     }
     #gec-canvas-root.viewport-mobile .team-stage-manager-section.is-detail-active .team-item-card {
-      flex: 0 0 240px !important;
-      min-height: 100px !important;
-      padding: 14px 14px 12px !important;
-      transform: rotateY(4deg) scale(0.98);
+      grid-template-columns: 34px minmax(0, 1fr) !important;
+      width: auto;
+      min-height: 68px;
+      flex: 0 0 156px;
+      padding: 10px !important;
+      transform: rotateY(8deg) scale(0.96);
     }
     @media (prefers-reduced-motion: reduce) {
       .team-stage-manager-section .team-item-card,
@@ -2234,7 +2047,8 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Inspect Box
       </button>
-      <a class="tool-btn" href="../cms-wireframes/index.html" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px; color:#e02424; border-color:rgba(224,36,36,0.4);" title="Open CMS Command Center">
+      <a class="tool-btn" href="../index.html" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px; color:#1F7EC0; border-color:rgba(31,126,192,0.4);" title="Open Unified 5-Page Canvas">All-In-One Canvas ↗</a>
+      <a class="tool-btn" href="../../cms-wireframes/index.html" style="text-decoration:none; display:inline-flex; align-items:center; gap:5px; color:#e02424; border-color:rgba(224,36,36,0.4);" title="Open CMS Command Center">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         CMS Console ↗
       </a>
@@ -2896,1197 +2710,7 @@
         </footer>
 
       </div><!-- /page-home -->
-
-      <!-- ======================================================================
-           PAGE 02: ABOUT
-           ====================================================================== -->
-      <div id="page-about" class="page-canvas-section">
-        
-        <!-- Persistent Top Navbar -->
-        <nav class="wf-navbar-global" aria-label="Main Navigation">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <div class="navbar-logo-slot">[GEC BRAND MARK]</div>
-            <span class="dim-label">H: 44px | W: 140px</span>
-          </div>
-          <div class="navbar-links-slot">
-            <div class="navbar-link-item" onclick="navigatePage('home')">[Home]</div>
-            <div class="navbar-link-item active-link">[About]</div>
-            <div class="navbar-link-item" onclick="navigatePage('teams')">[Teams]</div>
-            <div class="navbar-link-item" onclick="navigatePage('initiatives')">[Initiatives]</div>
-            <div class="navbar-link-item" onclick="navigatePage('stories')">[Stories]</div>
-          </div>
-          <div class="navbar-desktop-cta">
-            <div class="wf-action-slot action-fill-crimson" style="height: 42px; padding: 0 20px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">[JOIN / GET INVOLVED CTA]</div>
-          </div>
-          <!-- Mobile Hamburger Toggle (Visible only <= 768px & .viewport-mobile) -->
-          <div class="mobile-nav-toggle-slot" onclick="toggleMobileNav(this)" title="Toggle Mobile Navigation" aria-label="Toggle Mobile Menu">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </div>
-        </nav>
-
-        <!-- Mobile Navigation Drawer -->
-        <div class="wf-mobile-nav-drawer" role="menu">
-          <div class="mobile-drawer-link" onclick="navigatePage('home')">[01. HOME]</div>
-          <div class="mobile-drawer-link active-link" onclick="navigatePage('about')">[02. ABOUT]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('teams')">[03. TEAMS]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('initiatives')">[04. INITIATIVES]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('stories')">[05. STORIES]</div>
-          <div class="wf-action-slot action-fill-crimson" style="height: 48px; width: 100%; margin-top: 6px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">
-            [JOIN / GET INVOLVED CTA]
-          </div>
-        </div>
-
-        <!-- 2.1 About Hero -->
-        <section class="wf-section surface-cream">
-          <div class="section-id-stamp">2.1 ABOUT HERO · EDITORIAL MANIFESTO</div>
-          <div class="section-coord-stamp">CANVAS: WARM CREAM | MAX-W 860px CENTERED</div>
-
-          <div style="max-width: 860px; margin: 0 auto; text-align: center;">
-            <span class="element-role-tag role-crimson">[ABOUT GEC EYEBROW]</span>
-            <div style="padding: 24px; border: 1.5px dashed var(--gec-crimson); border-radius: var(--radius-sm); margin: 16px 0; background: rgba(163,4,15,0.03);">
-              <span class="element-role-tag">[H1 EDITORIAL TITLE — 2 ROWS]</span>
-              <div class="skel-title-h1" style="width: 90%; margin: 8px auto;"></div>
-              <div class="skel-title-h1" style="width: 75%; margin: auto;"></div>
-            </div>
-            <div class="skel-line" style="width: 80%; margin: auto;"></div>
-            <div class="skel-line" style="width: 65%; margin: 8px auto;"></div>
-          </div>
-        </section>
-
-        <!-- 2.2 Our Story & GICRISE Ecosystem -->
-        <section class="wf-section surface-cream" style="border-top: 1px solid rgba(163,4,15,0.15);">
-          <div class="section-id-stamp">2.2 OUR STORY · 6:6 SPLIT</div>
-          <div class="section-coord-stamp">COL 1–6 NARRATIVE / COL 7–12 GICRISE DIAGRAM</div>
-
-          <div class="about-story-split">
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-              <span class="element-role-tag role-crimson">[ORIGIN &amp; EVOLUTION]</span>
-              <div class="skel-title-h2" style="width: 70%;"></div>
-              <div class="wf-card-container">
-                <span class="element-role-tag">[STORY PARAGRAPH 01 SKELETON]</span>
-                <div class="skel-line" style="width: 100%;"></div>
-                <div class="skel-line" style="width: 95%;"></div>
-                <div class="skel-line" style="width: 85%;"></div>
-              </div>
-              <div class="wf-card-container">
-                <span class="element-role-tag role-gold">[GICRISE INCUBATION RELATIONSHIP]</span>
-                <div class="skel-line" style="width: 100%;"></div>
-                <div class="skel-line" style="width: 90%;"></div>
-                <div class="skel-line" style="width: 60%;"></div>
-              </div>
-            </div>
-
-            <div class="wf-media-container ratio-4-3">
-              <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-              <div style="text-align: center; z-index: 2; padding: 24px;">
-                <span class="element-role-tag role-crimson">[GEC &amp; GICRISE INCUBATION MATRIX]</span>
-                <div style="font-size: 11px; font-weight: 700; margin-top: 8px;">[ECOSYSTEM COLLABORATION BLUEPRINT]</div>
-                <span class="dim-label">Aspect 4:3 | Technical Diagram Frame</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 2.3 & 2.4 Mission & Vision (Dual Anchor Cards) -->
-        <section class="wf-section surface-sand">
-          <div class="section-id-stamp">2.3 &amp; 2.4 MISSION &amp; VISION · DUAL ANCHORS</div>
-          <div class="section-coord-stamp">50% / 50% SPLIT CARDS | SOFT SAND SURFACE</div>
-
-          <div class="mission-vision-equal-split">
-            <div class="wf-card-container">
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                <div class="wf-avatar-slot" style="width: 40px; height: 40px; margin: 0;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                </div>
-                <span class="element-role-tag role-crimson">[MISSION STATEMENT CARD]</span>
-              </div>
-              <div class="skel-title-h2" style="width: 65%;"></div>
-              <div class="skel-line" style="width: 100%;"></div>
-              <div class="skel-line" style="width: 92%;"></div>
-              <div style="padding: 10px; margin-top: 16px; border: 1px dashed var(--gec-crimson); border-radius: var(--radius-xs); background: rgba(163,4,15,0.04);">
-                <span class="dim-label" style="font-weight: 700; color: var(--gec-crimson);">[ACTION CORE: CREATE BUILDERS, NOT SPECTATORS]</span>
-              </div>
-            </div>
-
-            <div class="wf-card-container">
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                <div class="wf-avatar-slot" style="width: 40px; height: 40px; margin: 0; border-color: var(--gec-gold); color: #A16207;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                </div>
-                <span class="element-role-tag role-gold">[VISION STATEMENT CARD]</span>
-              </div>
-              <div class="skel-title-h2" style="width: 65%;"></div>
-              <div class="skel-line" style="width: 100%;"></div>
-              <div class="skel-line" style="width: 92%;"></div>
-              <div style="padding: 10px; margin-top: 16px; border: 1px dashed var(--gec-gold); border-radius: var(--radius-xs); background: rgba(251,202,5,0.06);">
-                <span class="dim-label" style="font-weight: 700; color: #A16207;">[CORE VISION: WHERE IDEAS HAVE SOMEWHERE TO GO]</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 2.5 Leadership & Mentors -->
-        <section class="wf-section surface-cream">
-          <div class="section-id-stamp">2.5 LEADERSHIP &amp; MENTORS · 3-TIER ROSTER</div>
-          <div class="section-coord-stamp">TIER 1: CORE LEADERS | TIER 2: MENTORS | TIER 3: TEAMS BRIDGE</div>
-
-          <!-- Tier 1: Core Leadership -->
-          <div style="margin-bottom: 36px;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-              <span class="element-role-tag role-crimson">[TIER 1: CORE OFFICE-BEARERS]</span>
-              <span class="dim-label">3 Equal Columns | Verified Office-Bearers</span>
-            </div>
-            <div class="initiatives-offset-grid">
-              <div class="wf-card-container" style="text-align: center;">
-                <div class="wf-media-container ratio-3-4" style="width: 140px; margin: 0 auto 12px;">
-                  <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                  <span style="font-size: 9px; font-family: var(--font-mono);">[PORTRAIT 3:4]</span>
-                </div>
-                <span class="element-role-tag">[OFFICER NAME BOX]</span>
-                <div class="dim-label" style="font-weight: 800; color: var(--gec-crimson);">[ROLE: PRESIDENT]</div>
-                <div style="margin-top: 8px;"><span class="dim-label">[LINKEDIN / SOCIALS]</span></div>
-              </div>
-
-              <div class="wf-card-container" style="text-align: center;">
-                <div class="wf-media-container ratio-3-4" style="width: 140px; margin: 0 auto 12px;">
-                  <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                  <span style="font-size: 9px; font-family: var(--font-mono);">[PORTRAIT 3:4]</span>
-                </div>
-                <span class="element-role-tag">[OFFICER NAME BOX]</span>
-                <div class="dim-label" style="font-weight: 800; color: var(--gec-crimson);">[ROLE: VICE PRESIDENT]</div>
-                <div style="margin-top: 8px;"><span class="dim-label">[LINKEDIN / SOCIALS]</span></div>
-              </div>
-
-              <div class="wf-card-container" style="text-align: center;">
-                <div class="wf-media-container ratio-3-4" style="width: 140px; margin: 0 auto 12px;">
-                  <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                  <span style="font-size: 9px; font-family: var(--font-mono);">[PORTRAIT 3:4]</span>
-                </div>
-                <span class="element-role-tag">[OFFICER NAME BOX]</span>
-                <div class="dim-label" style="font-weight: 800; color: var(--gec-crimson);">[ROLE: SECRETARY]</div>
-                <div style="margin-top: 8px;"><span class="dim-label">[LINKEDIN / SOCIALS]</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tier 2: Mentors -->
-          <div style="margin-bottom: 36px;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-              <span class="element-role-tag role-gold">[TIER 2: GICRISE INCUBATION MENTORS]</span>
-              <span class="dim-label">Ecosystem Leadership Mentors</span>
-            </div>
-            <div class="initiatives-offset-grid">
-              <div class="wf-card-container" style="text-align: center;">
-                <div class="wf-media-container ratio-3-4" style="width: 120px; margin: 0 auto 12px;">
-                  <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                </div>
-                <span class="element-role-tag">[MENTOR NAME BOX]</span>
-                <div class="dim-label" style="font-weight: 800;">[CEO, GICRISE]</div>
-              </div>
-              <div class="wf-card-container" style="text-align: center;">
-                <div class="wf-media-container ratio-3-4" style="width: 120px; margin: 0 auto 12px;">
-                  <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                </div>
-                <span class="element-role-tag">[MENTOR NAME BOX]</span>
-                <div class="dim-label" style="font-weight: 800;">[INCUBATION MANAGER]</div>
-              </div>
-              <div class="wf-card-container" style="text-align: center;">
-                <div class="wf-media-container ratio-3-4" style="width: 120px; margin: 0 auto 12px;">
-                  <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                </div>
-                <span class="element-role-tag">[MENTOR NAME BOX]</span>
-                <div class="dim-label" style="font-weight: 800;">[MARKETING MANAGER]</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tier 3: Teams Bridge Banner -->
-          <div class="wf-card-container" style="text-align: center; padding: 28px; border-color: var(--gec-crimson); background: rgba(163,4,15,0.03);">
-            <div style="font-size: 22px; font-weight: 900; font-family: var(--font-display); color: var(--gec-crimson);">7 TEAMS. ONE VISION.</div>
-            <div class="dim-label" style="margin: 6px auto 16px;">Meet the student builders driving the initiatives of GEC</div>
-            <div class="wf-action-slot action-fill-crimson" style="margin: auto; width: 190px; cursor: pointer;" onclick="navigatePage('teams')">[MEET OUR TEAMS →]</div>
-          </div>
-        </section>
-
-        <!-- 2.6 Legacy Timeline Flow -->
-        <section class="wf-section surface-sand">
-          <div class="section-id-stamp">2.6 LEGACY · CHRONOLOGICAL MILESTONES</div>
-          <div class="section-coord-stamp">ALTERNATING CENTER-SPINE TIMELINE</div>
-
-          <div style="text-align: center; margin-bottom: 32px;">
-            <span class="element-role-tag role-crimson">[BUILT THROUGH MOMENTS]</span>
-            <div class="skel-title-h2" style="width: 40%; margin: 8px auto;"></div>
-          </div>
-
-          <div class="alternating-timeline-flow">
-            <div class="timeline-split-row">
-              <div class="timeline-card-side wf-card-container">
-                <span class="element-role-tag role-gold">[YEAR: 2023]</span>
-                <div class="skel-title-h2" style="height: 20px; width: 75%;"></div>
-                <div class="skel-line" style="width: 95%;"></div>
-                <div class="skel-line" style="width: 70%;"></div>
-              </div>
-              <div class="timeline-empty-side"></div>
-            </div>
-
-            <div class="timeline-split-row">
-              <div class="timeline-empty-side"></div>
-              <div class="timeline-card-side wf-card-container">
-                <span class="element-role-tag role-gold">[YEAR: 2024]</span>
-                <div class="skel-title-h2" style="height: 20px; width: 75%;"></div>
-                <div class="skel-line" style="width: 95%;"></div>
-                <div class="skel-line" style="width: 70%;"></div>
-              </div>
-            </div>
-
-            <div class="timeline-split-row">
-              <div class="timeline-card-side wf-card-container">
-                <span class="element-role-tag role-gold">[YEAR: 2025]</span>
-                <div class="skel-title-h2" style="height: 20px; width: 75%;"></div>
-                <div class="skel-line" style="width: 95%;"></div>
-                <div class="skel-line" style="width: 70%;"></div>
-              </div>
-              <div class="timeline-empty-side"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="wf-footer-global">
-          <div class="footer-sub-bar">
-            <span>PAGE 02: ABOUT WIREFRAME SPECIFICATION</span>
-            <span>FROZEN SITEMAP §4 COMPLIANT</span>
-          </div>
-        </footer>
-
-      </div><!-- /page-about -->
-
-      <!-- ======================================================================
-           PAGE 03: TEAMS
-           ====================================================================== -->
-      <div id="page-teams" class="page-canvas-section">
-        
-        <nav class="wf-navbar-global" aria-label="Main Navigation">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <div class="navbar-logo-slot">[GEC BRAND MARK]</div>
-            <span class="dim-label">H: 44px | W: 140px</span>
-          </div>
-          <div class="navbar-links-slot">
-            <div class="navbar-link-item" onclick="navigatePage('home')">[Home]</div>
-            <div class="navbar-link-item" onclick="navigatePage('about')">[About]</div>
-            <div class="navbar-link-item active-link">[Teams]</div>
-            <div class="navbar-link-item" onclick="navigatePage('initiatives')">[Initiatives]</div>
-            <div class="navbar-link-item" onclick="navigatePage('stories')">[Stories]</div>
-          </div>
-          <div class="navbar-desktop-cta">
-            <div class="wf-action-slot action-fill-crimson" style="height: 42px; padding: 0 20px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">[JOIN / GET INVOLVED CTA]</div>
-          </div>
-          <!-- Mobile Hamburger Toggle (Visible only <= 768px & .viewport-mobile) -->
-          <div class="mobile-nav-toggle-slot" onclick="toggleMobileNav(this)" title="Toggle Mobile Navigation" aria-label="Toggle Mobile Menu">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </div>
-        </nav>
-
-        <!-- Mobile Navigation Drawer -->
-        <div class="wf-mobile-nav-drawer" role="menu">
-          <div class="mobile-drawer-link" onclick="navigatePage('home')">[01. HOME]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('about')">[02. ABOUT]</div>
-          <div class="mobile-drawer-link active-link" onclick="navigatePage('teams')">[03. TEAMS]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('initiatives')">[04. INITIATIVES]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('stories')">[05. STORIES]</div>
-          <div class="wf-action-slot action-fill-crimson" style="height: 48px; width: 100%; margin-top: 6px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">
-            [JOIN / GET INVOLVED CTA]
-          </div>
-        </div>
-
-        <!-- 3.1 Teams Hero & Quick Jumper -->
-        <section class="wf-section surface-cream">
-          <div class="section-id-stamp">3.1 TEAMS HERO · 7 TEAMS ROSTER</div>
-          <div class="section-coord-stamp">CANVAS: WARM CREAM | 7-TEAM QUICK JUMP BAR</div>
-
-          <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <span class="element-role-tag role-crimson">[THE ENGINE OF GEC]</span>
-            <div style="padding: 18px; border: 1.5px dashed var(--gec-crimson); border-radius: var(--radius-sm); margin: 14px 0; background: rgba(163,4,15,0.03);">
-              <span class="element-role-tag">[H1 TITLE: "7 TEAMS. ONE VISION."]</span>
-              <div class="skel-title-h1" style="width: 60%; margin: auto;"></div>
-            </div>
-            <div class="skel-line" style="width: 85%; margin: auto;"></div>
-            <div class="skel-line" style="width: 65%; margin: 6px auto;"></div>
-
-            <!-- 7 Quick Jump Pills -->
-            <div class="category-filter-strip" style="justify-content: center;">
-              <span class="filter-chip-button active-filter" onclick="filterPublicTeams(1, this)">01. Startup Dev</span>
-              <span class="filter-chip-button" onclick="filterPublicTeams(2, this)">02. PR &amp; Net</span>
-              <span class="filter-chip-button" onclick="filterPublicTeams(3, this)">03. Mktg &amp; CA</span>
-              <span class="filter-chip-button" onclick="filterPublicTeams(4, this)">04. Event Mgmt</span>
-              <span class="filter-chip-button" onclick="filterPublicTeams(5, this)">05. Digital Media</span>
-              <span class="filter-chip-button" onclick="filterPublicTeams(6, this)">06. Technical</span>
-              <span class="filter-chip-button" onclick="filterPublicTeams(7, this)">07. Career Connect</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- 3.2 Persistent Stage Manager Team System -->
-        <section id="teams-stage-manager" class="wf-section surface-sand team-stage-manager-section is-detail-active" data-motion-state="detail">
-          <div class="section-id-stamp">3.2 THE 7 TEAMS · STAGE MANAGER TRANSITION</div>
-          <div class="section-coord-stamp">PART 01: ROSTER · PART 02: ACTIVE TEAM CANVAS</div>
-
-          <aside class="team-stage-storyboard" aria-label="Animation storyboard timing">
-            <div class="team-stage-storyboard-steps">
-              <span class="team-stage-step">01 · SELECT · 0–120MS</span>
-              <span class="team-stage-step">02 · SPATIAL SWAP · 100–450MS</span>
-              <span class="team-stage-step">03 · CONTENT REVEAL · 300–600MS</span>
-              <span class="team-stage-step">SPRING · 250 / 28 / 0.9</span>
-            </div>
-            <span id="team-stage-status" class="team-stage-status" aria-live="polite">STATE · 01 ACTIVE · DETAIL CANVAS</span>
-          </aside>
-
-          <div class="teams-horizontal-stack">
-            <!-- Team 01: Startup Development (Gold) -->
-            <div class="team-item-card is-active-team" data-team-index="1" role="button" tabindex="0" aria-label="Open Startup Development team detail" aria-pressed="true">
-              <div class="team-card-identity">
-                <div class="team-card-meta-top">
-                  <span class="team-card-num">01</span>
-                  <span class="element-role-tag role-gold">[STARTUP DEVELOPMENT]</span>
-                  <span class="team-card-hover-cue">SELECT ↗</span>
-                </div>
-                <h3 class="team-card-title">Startup Development &amp; Incubation</h3>
-                <p class="team-card-desc">Fostering student ventures from raw idea to market validation through structured cohorts and direct incubation alignment with GICRISE.</p>
-                <div class="team-card-meta-bottom">
-                  <span class="team-meta-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Lead: Aarav Sharma
-                  </span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-badge">Cohort Incubation</span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-subtle">4 Coords · 8 Members</span>
-                </div>
-              </div>
-              <div class="team-card-responsibilities">
-                <div class="team-pillars-header">
-                  <span class="dim-label" style="font-weight: 700;">[6 RESPONSIBILITY AREAS]</span>
-                  <span class="team-pillars-count-tag">6 PILLARS</span>
-                </div>
-                <div class="team-chips-container">
-                  <span class="team-focus-tag">Idea Discovery</span>
-                  <span class="team-focus-tag">Venture Building</span>
-                  <span class="team-focus-tag">Founder Relations</span>
-                  <span class="team-focus-tag">Pitching</span>
-                  <span class="team-focus-tag">Mentorship</span>
-                  <span class="team-focus-tag">Ecosystem</span>
-                </div>
-              </div>
-              <div class="team-card-action">
-                <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="exploreTeamDetail(1)">[EXPLORE TEAM →]</div>
-              </div>
-            </div>
-
-            <!-- Team 02: PR & Networking (Bright Red) -->
-            <div class="team-item-card" data-team-index="2" role="button" tabindex="0" aria-label="Open PR and Networking team detail" aria-pressed="false">
-              <div class="team-card-identity">
-                <div class="team-card-meta-top">
-                  <span class="team-card-num">02</span>
-                  <span class="element-role-tag role-crimson">[PR &amp; NETWORKING]</span>
-                  <span class="team-card-hover-cue">SELECT ↗</span>
-                </div>
-                <h3 class="team-card-title">PR &amp; Ecosystem Networking</h3>
-                <p class="team-card-desc">Connecting Galgotias with industry pioneers, angel syndicates, corporate accelerators, and peer university e-cells across India.</p>
-                <div class="team-card-meta-bottom">
-                  <span class="team-meta-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Lead: Ananya Roy
-                  </span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-badge">VC &amp; Corporate Alliances</span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-subtle">4 Coords · 8 Members</span>
-                </div>
-              </div>
-              <div class="team-card-responsibilities">
-                <div class="team-pillars-header">
-                  <span class="dim-label" style="font-weight: 700;">[6 RESPONSIBILITY AREAS]</span>
-                  <span class="team-pillars-count-tag">6 PILLARS</span>
-                </div>
-                <div class="team-chips-container">
-                  <span class="team-focus-tag">External Relations</span>
-                  <span class="team-focus-tag">Speaker Outreach</span>
-                  <span class="team-focus-tag">Partnerships</span>
-                  <span class="team-focus-tag">Networking</span>
-                  <span class="team-focus-tag">Collaborations</span>
-                  <span class="team-focus-tag">Ecosystem</span>
-                </div>
-              </div>
-              <div class="team-card-action">
-                <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="exploreTeamDetail(2)">[EXPLORE TEAM →]</div>
-              </div>
-            </div>
-
-            <!-- Team 03: Marketing & Campus Ambassador (Warm Orange) -->
-            <div class="team-item-card" data-team-index="3" role="button" tabindex="0" aria-label="Open Marketing and Campus Ambassador team detail" aria-pressed="false">
-              <div class="team-card-identity">
-                <div class="team-card-meta-top">
-                  <span class="team-card-num">03</span>
-                  <span class="element-role-tag role-orange">[MARKETING &amp; CA]</span>
-                  <span class="team-card-hover-cue">SELECT ↗</span>
-                </div>
-                <h3 class="team-card-title">Marketing &amp; Campus Ambassador</h3>
-                <p class="team-card-desc">Driving campus awareness, student signups, ambassador networks across all academic blocks, and high-conversion recruitment campaigns.</p>
-                <div class="team-card-meta-bottom">
-                  <span class="team-meta-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Lead: Kabir Mehta
-                  </span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-badge">40+ Block Ambassadors</span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-subtle">4 Coords · 8 Members</span>
-                </div>
-              </div>
-              <div class="team-card-responsibilities">
-                <div class="team-pillars-header">
-                  <span class="dim-label" style="font-weight: 700;">[6 RESPONSIBILITY AREAS]</span>
-                  <span class="team-pillars-count-tag">6 PILLARS</span>
-                </div>
-                <div class="team-chips-container">
-                  <span class="team-focus-tag">Campus Marketing</span>
-                  <span class="team-focus-tag">Campaign Strategy</span>
-                  <span class="team-focus-tag">Community Growth</span>
-                  <span class="team-focus-tag">Ambassadors</span>
-                  <span class="team-focus-tag">Promotions</span>
-                  <span class="team-focus-tag">Engagement</span>
-                </div>
-              </div>
-              <div class="team-card-action">
-                <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="exploreTeamDetail(3)">[EXPLORE TEAM →]</div>
-              </div>
-            </div>
-
-            <!-- Team 04: Event Management (Deep Burgundy) -->
-            <div class="team-item-card" data-team-index="4" role="button" tabindex="0" aria-label="Open Event Management team detail" aria-pressed="false">
-              <div class="team-card-identity">
-                <div class="team-card-meta-top">
-                  <span class="team-card-num">04</span>
-                  <span class="element-role-tag role-burgundy">[EVENT MANAGEMENT]</span>
-                  <span class="team-card-hover-cue">SELECT ↗</span>
-                </div>
-                <h3 class="team-card-title">Event Management &amp; Operations</h3>
-                <p class="team-card-desc">Orchestrating large-scale hackathons, founder fireside chats, pitch arenas, auditorium logistics, and frictionless attendee experiences.</p>
-                <div class="team-card-meta-bottom">
-                  <span class="team-meta-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Lead: Vikram Malhotra
-                  </span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-badge">Stage Ops &amp; Venues</span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-subtle">4 Coords · 8 Members</span>
-                </div>
-              </div>
-              <div class="team-card-responsibilities">
-                <div class="team-pillars-header">
-                  <span class="dim-label" style="font-weight: 700;">[6 RESPONSIBILITY AREAS]</span>
-                  <span class="team-pillars-count-tag">6 PILLARS</span>
-                </div>
-                <div class="team-chips-container">
-                  <span class="team-focus-tag">Event Planning</span>
-                  <span class="team-focus-tag">Venues</span>
-                  <span class="team-focus-tag">Participants</span>
-                  <span class="team-focus-tag">Operations</span>
-                  <span class="team-focus-tag">Logistics</span>
-                  <span class="team-focus-tag">On-Ground Exec</span>
-                </div>
-              </div>
-              <div class="team-card-action">
-                <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="exploreTeamDetail(4)">[EXPLORE TEAM →]</div>
-              </div>
-            </div>
-
-            <!-- Team 05: Digital Media & Promotions (Blue) -->
-            <div class="team-item-card" data-team-index="5" role="button" tabindex="0" aria-label="Open Digital Media team detail" aria-pressed="false">
-              <div class="team-card-identity">
-                <div class="team-card-meta-top">
-                  <span class="team-card-num">05</span>
-                  <span class="element-role-tag role-blue">[DIGITAL MEDIA]</span>
-                  <span class="team-card-hover-cue">SELECT ↗</span>
-                </div>
-                <h3 class="team-card-title">Digital Media &amp; Storytelling</h3>
-                <p class="team-card-desc">Crafting the visual identity of GEC, producing high-octane reels, founder video interviews, photo archives, and editorial magazine issues.</p>
-                <div class="team-card-meta-bottom">
-                  <span class="team-meta-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Lead: Priya Iyer
-                  </span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-badge">Visual &amp; Editorial Lab</span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-subtle">4 Coords · 8 Members</span>
-                </div>
-              </div>
-              <div class="team-card-responsibilities">
-                <div class="team-pillars-header">
-                  <span class="dim-label" style="font-weight: 700;">[6 RESPONSIBILITY AREAS]</span>
-                  <span class="team-pillars-count-tag">6 PILLARS</span>
-                </div>
-                <div class="team-chips-container">
-                  <span class="team-focus-tag">Social Media</span>
-                  <span class="team-focus-tag">Campaigns</span>
-                  <span class="team-focus-tag">Content</span>
-                  <span class="team-focus-tag">Photo &amp; Video</span>
-                  <span class="team-focus-tag">Promotions</span>
-                  <span class="team-focus-tag">Storytelling</span>
-                </div>
-              </div>
-              <div class="team-card-action">
-                <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="exploreTeamDetail(5)">[EXPLORE TEAM →]</div>
-              </div>
-            </div>
-
-            <!-- Team 06: Technical Team (Charcoal + Blue) -->
-            <div class="team-item-card" data-team-index="6" role="button" tabindex="0" aria-label="Open Technical Team detail" aria-pressed="false">
-              <div class="team-card-identity">
-                <div class="team-card-meta-top">
-                  <span class="team-card-num">06</span>
-                  <span class="element-role-tag role-slate">[TECHNICAL TEAM]</span>
-                  <span class="team-card-hover-cue">SELECT ↗</span>
-                </div>
-                <h3 class="team-card-title">Technical &amp; Product Lab</h3>
-                <p class="team-card-desc">Engineering public web platforms, CMS internal command centers, attendance scanners, registration engines, and student developer micro-tools.</p>
-                <div class="team-card-meta-bottom">
-                  <span class="team-meta-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Lead: Siddharth Nair
-                  </span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-badge">Full-Stack &amp; Infra</span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-subtle">4 Coords · 8 Members</span>
-                </div>
-              </div>
-              <div class="team-card-responsibilities">
-                <div class="team-pillars-header">
-                  <span class="dim-label" style="font-weight: 700;">[6 RESPONSIBILITY AREAS]</span>
-                  <span class="team-pillars-count-tag">6 PILLARS</span>
-                </div>
-                <div class="team-chips-container">
-                  <span class="team-focus-tag">Web Development</span>
-                  <span class="team-focus-tag">Infrastructure</span>
-                  <span class="team-focus-tag">Internal Tools</span>
-                  <span class="team-focus-tag">Technical Support</span>
-                  <span class="team-focus-tag">Event Tech</span>
-                  <span class="team-focus-tag">Product Lab</span>
-                </div>
-              </div>
-              <div class="team-card-action">
-                <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="exploreTeamDetail(6)">[EXPLORE TEAM →]</div>
-              </div>
-            </div>
-
-            <!-- Team 07: Internship & Career Connect (Gold + Burgundy) -->
-            <div class="team-item-card" data-team-index="7" role="button" tabindex="0" aria-label="Open Career Connect team detail" aria-pressed="false">
-              <div class="team-card-identity">
-                <div class="team-card-meta-top">
-                  <span class="team-card-num">07</span>
-                  <span class="element-role-tag role-bronze">[CAREER CONNECT]</span>
-                  <span class="team-card-hover-cue">SELECT ↗</span>
-                </div>
-                <h3 class="team-card-title">Career Connect &amp; Talent Ops</h3>
-                <p class="team-card-desc">Bridging high-growth startups with Galgotias builders for paid internships, live project externships, and venture talent placement.</p>
-                <div class="team-card-meta-bottom">
-                  <span class="team-meta-badge">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Lead: Ishaan Gupta
-                  </span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-badge">8-Week Internships</span>
-                  <span class="team-meta-sep">·</span>
-                  <span class="team-meta-subtle">4 Coords · 8 Members</span>
-                </div>
-              </div>
-              <div class="team-card-responsibilities">
-                <div class="team-pillars-header">
-                  <span class="dim-label" style="font-weight: 700;">[6 RESPONSIBILITY AREAS]</span>
-                  <span class="team-pillars-count-tag">6 PILLARS</span>
-                </div>
-                <div class="team-chips-container">
-                  <span class="team-focus-tag">Internships</span>
-                  <span class="team-focus-tag">Career Exposure</span>
-                  <span class="team-focus-tag">Startup Hiring</span>
-                  <span class="team-focus-tag">Industry Bridge</span>
-                  <span class="team-focus-tag">Opportunities</span>
-                  <span class="team-focus-tag">Talent Ops</span>
-                </div>
-              </div>
-              <div class="team-card-action">
-                <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="exploreTeamDetail(7)">[EXPLORE TEAM →]</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3.3 Team Detail Sub-Canvas Blueprint Template -->
-          <div id="team-detail-blueprint" class="modular-subblueprint-wrapper" aria-hidden="false">
-            <div class="team-detail-toolbar">
-              <div class="team-detail-toolbar-copy">
-                <span class="element-role-tag role-blue" id="bp-team-tag">[TEAM DETAIL SUB-PAGE BLUEPRINT · SITEMAP §5 &amp; §6]</span>
-                <span class="dim-label" id="bp-team-route">Route: /teams/startup-development</span>
-              </div>
-            </div>
-
-            <div class="wf-card-container" style="background: #FFF; margin-bottom: 24px;">
-              <span class="element-role-tag role-crimson" id="bp-team-badge">[TEAM HERO: STARTUP DEVELOPMENT]</span>
-              <div id="bp-team-title" style="font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--gec-crimson); margin: 8px 0;">01. STARTUP DEVELOPMENT &amp; INCUBATION</div>
-              <div id="bp-team-desc" class="dim-label" style="font-size: 13px; line-height: 1.6; max-width: 80ch;">Fostering student ventures from raw idea to market validation through structured cohorts, incubation alignment with GICRISE, and founder support networks.</div>
-            </div>
-
-            <!-- 6 Responsibilities Matrix -->
-            <div>
-              <span class="element-role-tag">[WHAT WE OWN: 6 RESPONSIBILITIES MATRIX (3×2)]</span>
-              <div id="bp-team-pillars" class="initiatives-offset-grid" style="margin-top: 14px;">
-                <div class="wf-card-container"><div class="element-role-tag role-crimson">01. Idea Discovery</div><div class="dim-label" style="margin-top: 6px;">Campus-wide problem ideation workshops</div></div>
-                <div class="wf-card-container"><div class="element-role-tag role-crimson">02. Venture Building</div><div class="dim-label" style="margin-top: 6px;">Rapid prototype &amp; proof-of-concept testing</div></div>
-                <div class="wf-card-container"><div class="element-role-tag role-crimson">03. Founder Relations</div><div class="dim-label" style="margin-top: 6px;">Continuous milestone reviews &amp; support</div></div>
-                <div class="wf-card-container"><div class="element-role-tag role-crimson">04. Pitching</div><div class="dim-label" style="margin-top: 6px;">Decks, demo days, and pitch coaching</div></div>
-                <div class="wf-card-container"><div class="element-role-tag role-crimson">05. Mentorship</div><div class="dim-label" style="margin-top: 6px;">Pairing teams with alumni &amp; startup experts</div></div>
-                <div class="wf-card-container"><div class="element-role-tag role-crimson">06. Ecosystem</div><div class="dim-label" style="margin-top: 6px;">Direct pipeline integration into GICRISE</div></div>
-              </div>
-            </div>
-
-            <!-- Head & Roster Matrix -->
-            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 24px; margin-top: 24px;">
-              <div class="wf-card-container" style="text-align: center;">
-                <span class="element-role-tag role-crimson" id="bp-head-tag">[CURRENT HEAD PROFILE]</span>
-                <div class="wf-avatar-slot" style="margin: 14px auto; width: 80px; height: 80px;">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </div>
-                <div id="bp-head-name" style="font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--gec-ink);">Aarav Sharma</div>
-                <div id="bp-head-role" class="dim-label" style="color: var(--gec-crimson); font-weight: 700; margin-top: 4px;">Lead · Startup Development</div>
-              </div>
-              <div class="wf-card-container">
-                <span class="element-role-tag">[TEAM HIERARCHY: COORDINATORS (4) &amp; MEMBERS (8)]</span>
-                <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px;">
-                  <div class="wf-avatar-slot" style="width: 46px; height: 46px;"><span style="font-size: 8px;">COORD</span></div>
-                  <div class="wf-avatar-slot" style="width: 46px; height: 46px;"><span style="font-size: 8px;">COORD</span></div>
-                  <div class="wf-avatar-slot" style="width: 46px; height: 46px;"><span style="font-size: 8px;">MEM</span></div>
-                  <div class="wf-avatar-slot" style="width: 46px; height: 46px;"><span style="font-size: 8px;">MEM</span></div>
-                  <div class="wf-avatar-slot" style="width: 46px; height: 46px;"><span style="font-size: 8px;">MEM</span></div>
-                  <div class="wf-avatar-slot" style="width: 46px; height: 46px;"><span style="font-size: 8px;">MEM</span></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Gallery & Application Split -->
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px;">
-              <div class="wf-card-container">
-                <span class="element-role-tag">[BEHIND THE SCENES GALLERY (4 TILES)]</span>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px;">
-                  <div class="wf-media-container ratio-1-1"><svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg></div>
-                  <div class="wf-media-container ratio-1-1"><svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg></div>
-                  <div class="wf-media-container ratio-1-1"><svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg></div>
-                  <div class="wf-media-container ratio-1-1"><svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg></div>
-                </div>
-              </div>
-              <div class="wf-card-container" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                <span class="element-role-tag role-crimson">[JOIN TEAM APPLICATION CTA]</span>
-                <div class="skel-line" style="width: 80%; margin: 10px auto;"></div>
-                <div id="bp-team-apply-cta" class="wf-action-slot action-fill-crimson" style="height: 42px; width: 100%; cursor: pointer;" onclick="openPublicApplyModal('Team Recruitment: Startup Development')">[APPLY TO TEAM]</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="wf-footer-global">
-          <div class="footer-sub-bar">
-            <span>PAGE 03: TEAMS WIREFRAME SPECIFICATION</span>
-            <span>FROZEN SITEMAP §5 &amp; §6 COMPLIANT</span>
-          </div>
-        </footer>
-
-      </div><!-- /page-teams -->
-
-      <!-- ======================================================================
-           PAGE 04: INITIATIVES
-           ====================================================================== -->
-      <div id="page-initiatives" class="page-canvas-section">
-        
-        <nav class="wf-navbar-global" aria-label="Main Navigation">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <div class="navbar-logo-slot">[GEC BRAND MARK]</div>
-            <span class="dim-label">H: 44px | W: 140px</span>
-          </div>
-          <div class="navbar-links-slot">
-            <div class="navbar-link-item" onclick="navigatePage('home')">[Home]</div>
-            <div class="navbar-link-item" onclick="navigatePage('about')">[About]</div>
-            <div class="navbar-link-item" onclick="navigatePage('teams')">[Teams]</div>
-            <div class="navbar-link-item active-link">[Initiatives]</div>
-            <div class="navbar-link-item" onclick="navigatePage('stories')">[Stories]</div>
-          </div>
-          <div class="navbar-desktop-cta">
-            <div class="wf-action-slot action-fill-crimson" style="height: 42px; padding: 0 20px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">[JOIN / GET INVOLVED CTA]</div>
-          </div>
-          <!-- Mobile Hamburger Toggle (Visible only <= 768px & .viewport-mobile) -->
-          <div class="mobile-nav-toggle-slot" onclick="toggleMobileNav(this)" title="Toggle Mobile Navigation" aria-label="Toggle Mobile Menu">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </div>
-        </nav>
-
-        <!-- Mobile Navigation Drawer -->
-        <div class="wf-mobile-nav-drawer" role="menu">
-          <div class="mobile-drawer-link" onclick="navigatePage('home')">[01. HOME]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('about')">[02. ABOUT]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('teams')">[03. TEAMS]</div>
-          <div class="mobile-drawer-link active-link" onclick="navigatePage('initiatives')">[04. INITIATIVES]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('stories')">[05. STORIES]</div>
-          <div class="wf-action-slot action-fill-crimson" style="height: 48px; width: 100%; margin-top: 6px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">
-            [JOIN / GET INVOLVED CTA]
-          </div>
-        </div>
-
-        <!-- 4.1 Initiatives Hero -->
-        <section class="wf-section surface-cream">
-          <div class="section-id-stamp">4.1 INITIATIVES HERO · ACTION OVER THEORY</div>
-          <div class="section-coord-stamp">CANVAS: WARM CREAM | STATUS FILTER CONTROLS</div>
-
-          <div style="max-width: 820px; margin: 0 auto; text-align: center;">
-            <span class="element-role-tag role-crimson">[ACTION OVER THEORY]</span>
-            <div style="padding: 18px; border: 1.5px dashed var(--gec-crimson); border-radius: var(--radius-sm); margin: 14px 0; background: rgba(163,4,15,0.03);">
-              <span class="element-role-tag">[H1 TITLE: "IDEAS NEED MORE THAN INSPIRATION."]</span>
-              <div class="skel-title-h1" style="width: 75%; margin: auto;"></div>
-            </div>
-            <div class="skel-line" style="width: 85%; margin: auto;"></div>
-            <div class="skel-line" style="width: 60%; margin: 6px auto;"></div>
-
-            <!-- Status Filter Bar -->
-            <div class="category-filter-strip" style="justify-content: center;">
-              <span class="filter-chip-button active-filter" onclick="filterPublicInitiatives('all', this)">All Initiatives</span>
-              <span class="filter-chip-button" onclick="filterPublicInitiatives('open', this)">Applications Open</span>
-              <span class="filter-chip-button" onclick="filterPublicInitiatives('ongoing', this)">Ongoing</span>
-              <span class="filter-chip-button" onclick="filterPublicInitiatives('upcoming', this)">Upcoming</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- 4.2 Initiatives Showcase Matrix -->
-        <section class="wf-section surface-sand">
-          <div class="section-id-stamp">4.2 INITIATIVES CARDS · 3-COLUMNS</div>
-          <div class="section-coord-stamp">SDP / PITCHING SESSIONS / WORKSHOPS SERIES</div>
-
-          <div class="initiatives-offset-grid">
-            <div class="wf-card-container">
-              <div class="wf-media-container ratio-16-9" style="margin-bottom: 14px;">
-                <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                <span class="element-role-tag">[PROGRAM MEDIA 16:9]</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="element-role-tag role-crimson">[APPLICATIONS OPEN]</span>
-                <span class="dim-label">[COHORT 04]</span>
-              </div>
-              <div class="skel-title-h2" style="height: 22px; width: 85%; margin: 8px 0;"></div>
-              <div class="skel-line" style="width: 95%;"></div>
-              <div class="skel-line" style="width: 70%;"></div>
-              <div style="margin-top: 16px;">
-                <div class="wf-action-slot action-fill-crimson" style="height: 40px; width: 100%; cursor: pointer;" onclick="exploreInitiativeDetail(1)">[EXPLORE INITIATIVE →]</div>
-              </div>
-            </div>
-
-            <div class="wf-card-container">
-              <div class="wf-media-container ratio-16-9" style="margin-bottom: 14px;">
-                <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                <span class="element-role-tag">[PROGRAM MEDIA 16:9]</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="element-role-tag role-gold">[ONGOING SESSIONS]</span>
-                <span class="dim-label">[MONTHLY]</span>
-              </div>
-              <div class="skel-title-h2" style="height: 22px; width: 85%; margin: 8px 0;"></div>
-              <div class="skel-line" style="width: 95%;"></div>
-              <div class="skel-line" style="width: 70%;"></div>
-              <div style="margin-top: 16px;">
-                <div class="wf-action-slot action-fill-crimson" style="height: 40px; width: 100%; cursor: pointer;" onclick="exploreInitiativeDetail(2)">[EXPLORE INITIATIVE →]</div>
-              </div>
-            </div>
-
-            <div class="wf-card-container">
-              <div class="wf-media-container ratio-16-9" style="margin-bottom: 14px;">
-                <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                <span class="element-role-tag">[PROGRAM MEDIA 16:9]</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="element-role-tag role-blue">[UPCOMING SERIES]</span>
-                <span class="dim-label">[HANDS-ON]</span>
-              </div>
-              <div class="skel-title-h2" style="height: 22px; width: 85%; margin: 8px 0;"></div>
-              <div class="skel-line" style="width: 95%;"></div>
-              <div class="skel-line" style="width: 70%;"></div>
-              <div style="margin-top: 16px;">
-                <div class="wf-action-slot action-fill-crimson" style="height: 40px; width: 100%; cursor: pointer;" onclick="exploreInitiativeDetail(3)">[EXPLORE INITIATIVE →]</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4.3 Initiative Detail Modular Architecture -->
-          <div id="initiative-detail-blueprint" class="modular-subblueprint-wrapper">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-              <span class="element-role-tag role-blue" id="bp-init-tag">[MODULAR INITIATIVE DETAIL CANVAS · SITEMAP §7]</span>
-              <span class="dim-label" id="bp-init-route">Route: /initiatives/sdp-cohort-04</span>
-            </div>
-
-            <div class="wf-card-container" style="background: #FFF; margin-bottom: 24px;">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
-                <div>
-                  <span class="element-role-tag role-crimson" id="bp-init-badge">[FLAGSHIP PROGRAM: COHORT 04]</span>
-                  <div id="bp-init-title" style="font-family: var(--font-display); font-size: 24px; font-weight: 900; color: var(--gec-crimson); margin: 8px 0;">STARTUP DEVELOPMENT PROGRAM (SDP)</div>
-                  <div id="bp-init-desc" class="dim-label" style="font-size: 13px; line-height: 1.5; max-width: 60ch;">A 12-week intensive pre-incubation sandbox for Galgotias student builders, providing mentorship, pitch coaching, and fast-track GICRISE incubation.</div>
-                </div>
-                <div id="bp-init-apply-btn" class="wf-action-slot action-fill-crimson" style="height: 44px; padding: 0 24px; cursor: pointer;" onclick="openPublicApplyModal('Startup Development Program (SDP) Cohort 04')">[APPLY FOR THIS COHORT]</div>
-              </div>
-            </div>
-
-            <!-- Overview & Eligibility -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-              <div class="wf-card-container">
-                <span class="element-role-tag">[OVERVIEW &amp; WHY IT EXISTS]</span>
-                <div class="dim-label" style="line-height: 1.6; margin-top: 10px; color: var(--gec-ink);">
-                  SDP bridges the gap between classroom theory and real venture creation. Built by student founders for student founders, it equips participants with customer discovery frameworks, legal basics, and functional prototyping guidance.
-                </div>
-              </div>
-              <div class="wf-card-container">
-                <span class="element-role-tag role-gold">[ELIGIBILITY CRITERIA CHECKMARKS]</span>
-                <div style="padding: 8px 12px; margin-top: 8px; border: 1px dashed rgba(34,34,34,0.25); border-radius: var(--radius-xs);"><span class="dim-label" style="font-weight: 700; color: var(--gec-crimson);">✓ Student Builders &amp; Aspiring Founders</span></div>
-                <div style="padding: 8px 12px; margin-top: 6px; border: 1px dashed rgba(34,34,34,0.25); border-radius: var(--radius-xs);"><span class="dim-label" style="font-weight: 700; color: var(--gec-crimson);">✓ Teams of 2 to 5 Members</span></div>
-                <div style="padding: 8px 12px; margin-top: 6px; border: 1px dashed rgba(34,34,34,0.25); border-radius: var(--radius-xs);"><span class="dim-label" style="font-weight: 700; color: var(--gec-crimson);">✓ Working Proof of Concept or Validated Problem</span></div>
-              </div>
-            </div>
-
-            <!-- 4-Stage Stepper Flow -->
-            <div class="wf-card-container" style="margin-bottom: 24px;">
-              <span class="element-role-tag role-crimson">[HOW IT WORKS: 4-STAGE TIMELINE CANVAS]</span>
-              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px;">
-                <div style="padding: 14px; border: 1px dashed var(--gec-crimson); border-radius: var(--radius-xs); text-align: center; cursor: pointer;" onclick="showPublicToast('Stage 01: Screening', 'Application triage and founder background screening.', 'info')">
-                  <span class="element-role-tag">STAGE 01</span>
-                  <div class="dim-label" style="font-weight: 700; margin-top: 6px;">[APPLICATION &amp; SCREENING]</div>
-                </div>
-                <div style="padding: 14px; border: 1px dashed var(--gec-crimson); border-radius: var(--radius-xs); text-align: center; cursor: pointer;" onclick="showPublicToast('Stage 02: Onboarding', 'Orientation sprint and mentor assignment ceremony.', 'info')">
-                  <span class="element-role-tag">STAGE 02</span>
-                  <div class="dim-label" style="font-weight: 700; margin-top: 6px;">[COHORT ONBOARDING]</div>
-                </div>
-                <div style="padding: 14px; border: 1px dashed var(--gec-crimson); border-radius: var(--radius-xs); text-align: center; cursor: pointer;" onclick="showPublicToast('Stage 03: Mentorship', '8 weeks of hands-on sprint reviews and customer testing.', 'info')">
-                  <span class="element-role-tag">STAGE 03</span>
-                  <div class="dim-label" style="font-weight: 700; margin-top: 6px;">[MENTORSHIP &amp; BUILD]</div>
-                </div>
-                <div style="padding: 14px; border: 1.5px solid var(--gec-gold); border-radius: var(--radius-xs); text-align: center; background: rgba(251,202,5,0.06); cursor: pointer;" onclick="showPublicToast('Stage 04: Demo Day', 'Pitching before VC angels and GICRISE incubation panel.', 'gold')">
-                  <span class="element-role-tag role-gold">STAGE 04</span>
-                  <div class="dim-label" style="font-weight: 700; color: #A16207; margin-top: 6px;">[DEMO DAY &amp; INCUBATION]</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- FAQs Accordion & Application Form Split -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-              <div class="wf-card-container">
-                <span class="element-role-tag">[FAQS ACCORDION BLOCK]</span>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
-                  <div class="wf-accordion-item" style="border: 1.5px solid var(--gec-crimson); border-radius: var(--radius-xs); overflow: hidden; background: #FFF;">
-                    <div onclick="toggleFaqAccordion(this)" style="min-height: 48px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;">
-                      <span class="dim-label" style="font-weight: 700; color: var(--gec-ink); font-size: 11px;">[Q1: WHO IS ELIGIBLE FOR SDP COHORT 04?]</span>
-                      <span class="faq-toggle-icon" style="font-family: var(--font-mono); font-weight: 900; font-size: 16px; color: var(--gec-crimson); line-height: 1;">+</span>
-                    </div>
-                    <div class="faq-answer-slot" style="display: none; padding: 12px 16px; border-top: 1px dashed rgba(163,4,15,0.25); background: rgba(163,4,15,0.02); font-size: 11px; font-family: var(--font-mono); color: var(--gec-ink); line-height: 1.5;">
-                      Any registered student team of 2 to 5 members from Galgotias University with an original idea or working software/hardware prototype may apply.
-                    </div>
-                  </div>
-                  <div class="wf-accordion-item" style="border: 1.5px solid var(--gec-crimson); border-radius: var(--radius-xs); overflow: hidden; background: #FFF;">
-                    <div onclick="toggleFaqAccordion(this)" style="min-height: 48px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none;">
-                      <span class="dim-label" style="font-weight: 700; color: var(--gec-ink); font-size: 11px;">[Q2: WHAT INCUBATION SUPPORT DOES GICRISE OFFER?]</span>
-                      <span class="faq-toggle-icon" style="font-family: var(--font-mono); font-weight: 900; font-size: 16px; color: var(--gec-crimson); line-height: 1;">+</span>
-                    </div>
-                    <div class="faq-answer-slot" style="display: none; padding: 12px 16px; border-top: 1px dashed rgba(163,4,15,0.25); background: rgba(163,4,15,0.02); font-size: 11px; font-family: var(--font-mono); color: var(--gec-ink); line-height: 1.5;">
-                      Top cohort teams receive zero-cost co-working space, legal incorporation support, patent/trademark filing facilitation, and investor demo day pitches.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="wf-card-container">
-                <span class="element-role-tag role-crimson">[APPLICATION FORM CANVAS]</span>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
-                  <input type="text" id="pub-app-name" placeholder="[APPLICANT FULL NAME]" style="width: 100%; height: 40px; border: 1px dashed rgba(34,34,34,0.35); border-radius: var(--radius-xs); padding: 0 12px; font-family: var(--font-mono); font-size: 11px; background: #FFF; outline: none; box-sizing: border-box;">
-                  <input type="email" id="pub-app-email" placeholder="[COLLEGE EMAIL / ROLL NO.]" style="width: 100%; height: 40px; border: 1px dashed rgba(34,34,34,0.35); border-radius: var(--radius-xs); padding: 0 12px; font-family: var(--font-mono); font-size: 11px; background: #FFF; outline: none; box-sizing: border-box;">
-                  <div onclick="document.getElementById('pub-deck-file').click()" style="height: 40px; border: 1px dashed rgba(34,34,34,0.35); border-radius: var(--radius-xs); padding: 0 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: #FFF; box-sizing: border-box;">
-                    <span class="dim-label" id="pub-deck-status" style="font-size: 11px;">[PITCH DECK: SELECT PDF/PPT]</span>
-                    <span class="element-role-tag" style="margin: 0; font-size: 9px;">ATTACH FILE</span>
-                  </div>
-                  <input type="file" id="pub-deck-file" style="display: none;" onchange="handleDeckFileSelection(this)">
-                  <div class="wf-action-slot action-fill-crimson" style="height: 42px; margin-top: 4px; cursor: pointer;" onclick="submitPublicApplicationForm()">[SUBMIT APPLICATION]</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="wf-footer-global">
-          <div class="footer-sub-bar">
-            <span>PAGE 04: INITIATIVES WIREFRAME SPECIFICATION</span>
-            <span>FROZEN SITEMAP §7 COMPLIANT</span>
-          </div>
-        </footer>
-
-      </div><!-- /page-initiatives -->
-
-      <!-- ======================================================================
-           PAGE 05: STORIES & STARTUP PORTFOLIO
-           ====================================================================== -->
-      <div id="page-stories" class="page-canvas-section">
-        
-        <nav class="wf-navbar-global" aria-label="Main Navigation">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <div class="navbar-logo-slot">[GEC BRAND MARK]</div>
-            <span class="dim-label">H: 44px | W: 140px</span>
-          </div>
-          <div class="navbar-links-slot">
-            <div class="navbar-link-item" onclick="navigatePage('home')">[Home]</div>
-            <div class="navbar-link-item" onclick="navigatePage('about')">[About]</div>
-            <div class="navbar-link-item" onclick="navigatePage('teams')">[Teams]</div>
-            <div class="navbar-link-item" onclick="navigatePage('initiatives')">[Initiatives]</div>
-            <div class="navbar-link-item active-link">[Stories]</div>
-          </div>
-          <div class="navbar-desktop-cta">
-            <div class="wf-action-slot action-fill-crimson" style="height: 42px; padding: 0 20px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">[JOIN / GET INVOLVED CTA]</div>
-          </div>
-          <!-- Mobile Hamburger Toggle (Visible only <= 768px & .viewport-mobile) -->
-          <div class="mobile-nav-toggle-slot" onclick="toggleMobileNav(this)" title="Toggle Mobile Navigation" aria-label="Toggle Mobile Menu">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </div>
-        </nav>
-
-        <!-- Mobile Navigation Drawer -->
-        <div class="wf-mobile-nav-drawer" role="menu">
-          <div class="mobile-drawer-link" onclick="navigatePage('home')">[01. HOME]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('about')">[02. ABOUT]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('teams')">[03. TEAMS]</div>
-          <div class="mobile-drawer-link" onclick="navigatePage('initiatives')">[04. INITIATIVES]</div>
-          <div class="mobile-drawer-link active-link" onclick="navigatePage('stories')">[05. STORIES]</div>
-          <div class="wf-action-slot action-fill-crimson" style="height: 48px; width: 100%; margin-top: 6px; cursor: pointer;" onclick="openPublicApplyModal('General E-Cell Membership')">
-            [JOIN / GET INVOLVED CTA]
-          </div>
-        </div>
-
-        <!-- 5.1 Stories Hero -->
-        <section class="wf-section surface-cream">
-          <div class="section-id-stamp">5.1 STORIES HERO · CULTURE &amp; INSIGHTS</div>
-          <div class="section-coord-stamp">CANVAS: WARM CREAM | 5 CATEGORIES + PORTFOLIO</div>
-
-          <div style="max-width: 820px; margin: 0 auto; text-align: center;">
-            <span class="element-role-tag role-crimson">[CULTURE &amp; INSIGHTS]</span>
-            <div style="padding: 18px; border: 1.5px dashed var(--gec-crimson); border-radius: var(--radius-sm); margin: 14px 0; background: rgba(163,4,15,0.03);">
-              <span class="element-role-tag">[H1 TITLE: "STORIES BUILD CULTURE."]</span>
-              <div class="skel-title-h1" style="width: 80%; margin: auto;"></div>
-            </div>
-            <div class="skel-line" style="width: 85%; margin: auto;"></div>
-            <div class="skel-line" style="width: 65%; margin: 6px auto;"></div>
-
-            <!-- Sub-Nav Filter Strip -->
-            <div class="category-filter-strip" style="justify-content: center;">
-              <span class="filter-chip-button active-filter" onclick="filterPublicStories('all', this)">All Stories</span>
-              <span class="filter-chip-button" onclick="filterPublicStories('news', this)">News</span>
-              <span class="filter-chip-button" onclick="filterPublicStories('founder', this)">Founder Stories</span>
-              <span class="filter-chip-button" onclick="filterPublicStories('startup', this)">Startup Stories</span>
-              <span class="filter-chip-button" onclick="filterPublicStories('events', this)">Events</span>
-              <span class="filter-chip-button" style="border-color: var(--gec-gold); font-weight: 800; color: #A16207;" onclick="filterPublicStories('portfolio', this)">Startup Portfolio</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- 5.2 Featured Lead Editorial Story -->
-        <section class="wf-section surface-cream" style="border-top: 1px solid rgba(163,4,15,0.15);">
-          <div class="section-id-stamp">5.2 FEATURED EDITORIAL · 7:5 ASYMMETRIC HERO</div>
-          <div class="section-coord-stamp">MEDIA (COL 1–7) / EDITORIAL PROFILE (COL 8–12)</div>
-
-          <div class="hero-asymmetric-split">
-            <div class="wf-media-container ratio-16-9">
-              <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-              <span class="element-role-tag role-crimson">[FEATURED STORY PHOTO 16:9]</span>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 14px;">
-              <div style="display: flex; gap: 8px;">
-                <span class="element-role-tag role-crimson">[FEATURED]</span>
-                <span class="element-role-tag role-gold">[FOUNDER STORY]</span>
-                <span class="dim-label">[5 MIN READ · MARCH 2026]</span>
-              </div>
-              <div class="skel-title-h2" style="height: 30px; width: 90%;"></div>
-              <div class="skel-line" style="width: 100%;"></div>
-              <div class="skel-line" style="width: 95%;"></div>
-              <div class="skel-line" style="width: 80%;"></div>
-              <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
-                <div class="wf-avatar-slot" style="width: 48px; height: 48px; margin: 0;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </div>
-                <div>
-                  <div class="dim-label" style="font-weight: 800; color: var(--gec-ink);">Rohan Verma</div>
-                  <div class="dim-label">Founder of NexaFlow (SDP Cohort 02)</div>
-                </div>
-              </div>
-              <div class="wf-action-slot action-fill-crimson" style="height: 42px; width: 190px; margin-top: 8px; cursor: pointer;" onclick="openPublicStoryReaderModal('Founders in the Making: Rohan Verma &amp; NexaFlow')">[READ FULL STORY →]</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 5.3 Magazine Spread: Founder Profiles -->
-        <section class="wf-section surface-sand">
-          <div class="section-id-stamp">5.3 FOUNDER PROFILES · 2-COLUMN MAGAZINE SPREAD</div>
-          <div class="section-coord-stamp">BG: SOFT SAND | EDITORIAL PULL-QUOTES</div>
-
-          <div style="margin-bottom: 24px;">
-            <span class="element-role-tag role-crimson">[FOUNDER PROFILES]</span>
-            <div class="skel-title-h2" style="width: 35%;"></div>
-          </div>
-
-          <div class="stories-magazine-spread">
-            <div class="editorial-founder-card" style="cursor: pointer;" onclick="openPublicStoryReaderModal('Founder Story: The 0-to-1 Build Journey')">
-              <div class="wf-media-container ratio-1-1">
-                <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                <span style="font-size: 8px; font-family: var(--font-mono);">[1:1 PHOTO]</span>
-              </div>
-              <div>
-                <span class="element-role-tag role-crimson">[FOUNDER STORY]</span>
-                <div class="skel-title-h2" style="height: 20px; width: 75%; margin: 6px 0;"></div>
-                <div class="skel-line" style="width: 100%;"></div>
-                <div class="skel-line" style="width: 75%;"></div>
-                <div style="padding: 10px; margin-top: 12px; border: 1px dashed var(--gec-crimson); border-radius: var(--radius-xs); background: rgba(163,4,15,0.04);">
-                  <span class="dim-label">"GEC gave us our first 50 beta users on campus."</span>
-                </div>
-                <div style="margin-top: 12px;"><span style="font-size: 11px; font-weight: 800; font-family: var(--font-mono); color: var(--gec-crimson);">READ STORY →</span></div>
-              </div>
-            </div>
-
-            <div class="editorial-founder-card" style="cursor: pointer;" onclick="openPublicStoryReaderModal('Startup Story: Campus to Customer Validation')">
-              <div class="wf-media-container ratio-1-1">
-                <svg class="architectural-cross" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" /><line x1="100" y1="0" x2="0" y2="100" /></svg>
-                <span style="font-size: 8px; font-family: var(--font-mono);">[1:1 PHOTO]</span>
-              </div>
-              <div>
-                <span class="element-role-tag role-gold">[STARTUP STORY]</span>
-                <div class="skel-title-h2" style="height: 20px; width: 75%; margin: 6px 0;"></div>
-                <div class="skel-line" style="width: 100%;"></div>
-                <div class="skel-line" style="width: 75%;"></div>
-                <div style="padding: 10px; margin-top: 12px; border: 1px dashed var(--gec-gold); border-radius: var(--radius-xs); background: rgba(251,202,5,0.06);">
-                  <span class="dim-label">"Validating problem-market fit before writing code."</span>
-                </div>
-                <div style="margin-top: 12px;"><span style="font-size: 11px; font-weight: 800; font-family: var(--font-mono); color: var(--gec-crimson);">READ STORY →</span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 5.4 Startup Portfolio Public Directory -->
-        <section class="wf-section surface-cream">
-          <div class="section-id-stamp">5.4 STARTUP PORTFOLIO · DIRECTORY (SITEMAP §8.5)</div>
-          <div class="section-coord-stamp">CANVAS: 4-COLUMN CARDS | SECTOR FILTER MATRIX</div>
-
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
-            <div>
-              <span class="element-role-tag role-gold">[BUILT AT GALGOTIAS]</span>
-              <div class="skel-title-h2" style="width: 260px; margin: 8px 0;"></div>
-              <div class="skel-line" style="width: 360px;"></div>
-            </div>
-            <div class="category-filter-strip" style="margin: 0;">
-              <span class="filter-chip-button active-filter" onclick="filterPublicStartups('all', this)">All Sectors</span>
-              <span class="filter-chip-button" onclick="filterPublicStartups('tech', this)">Tech</span>
-              <span class="filter-chip-button" onclick="filterPublicStartups('consumer', this)">Consumer</span>
-              <span class="filter-chip-button" onclick="filterPublicStartups('health', this)">Health</span>
-              <span class="filter-chip-button" onclick="filterPublicStartups('sustainability', this)">Sustainability</span>
-            </div>
-          </div>
-
-          <div id="portfolio-grid-container" class="portfolio-directory-grid">
-            <div class="wf-card-container portfolio-startup-item" data-sector="tech">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="wf-avatar-slot" style="margin: 0; width: 44px; height: 44px; border-radius: 6px;"><span style="font-size: 8px; font-weight: 800;">TECH</span></div>
-                <span class="element-role-tag role-crimson">[SEED]</span>
-              </div>
-              <span class="element-role-tag" style="margin-top: 12px;">[CLOUDSCALE AI]</span>
-              <div class="dim-label" style="font-weight: 700; color: var(--gec-ink); margin-top: 4px;">Developer workflow acceleration powered by LLMs</div>
-              <div class="skel-line" style="width: 90%; margin-top: 6px;"></div>
-              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--gec-border-subtle); padding-top: 10px; margin-top: 8px;">
-                <span class="element-role-tag role-blue">[SECTOR: TECH]</span>
-                <span class="dim-label" style="cursor: pointer; font-weight: 800; color: var(--gec-crimson);" onclick="showPublicToast('Portfolio Startup', 'Visiting CloudScale AI live showcase ↗', 'info')">[VISIT SITE ↗]</span>
-              </div>
-            </div>
-
-            <div class="wf-card-container portfolio-startup-item" data-sector="consumer">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="wf-avatar-slot" style="margin: 0; width: 44px; height: 44px; border-radius: 6px;"><span style="font-size: 8px; font-weight: 800;">D2C</span></div>
-                <span class="element-role-tag role-gold">[BOOTSTRAP]</span>
-              </div>
-              <span class="element-role-tag" style="margin-top: 12px;">[NUTRIBREWS]</span>
-              <div class="dim-label" style="font-weight: 700; color: var(--gec-ink); margin-top: 4px;">Direct-to-consumer organic functional wellness beverages</div>
-              <div class="skel-line" style="width: 90%; margin-top: 6px;"></div>
-              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--gec-border-subtle); padding-top: 10px; margin-top: 8px;">
-                <span class="element-role-tag role-blue">[SECTOR: CONSUMER]</span>
-                <span class="dim-label" style="cursor: pointer; font-weight: 800; color: var(--gec-crimson);" onclick="showPublicToast('Portfolio Startup', 'Visiting NutriBrews storefront ↗', 'info')">[VISIT SITE ↗]</span>
-              </div>
-            </div>
-
-            <div class="wf-card-container portfolio-startup-item" data-sector="health">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="wf-avatar-slot" style="margin: 0; width: 44px; height: 44px; border-radius: 6px;"><span style="font-size: 8px; font-weight: 800;">HLTH</span></div>
-                <span class="element-role-tag role-crimson">[INCUBATED]</span>
-              </div>
-              <span class="element-role-tag" style="margin-top: 12px;">[MEDIKIT AI]</span>
-              <div class="dim-label" style="font-weight: 700; color: var(--gec-ink); margin-top: 4px;">Smart triage and clinic management for rural health centers</div>
-              <div class="skel-line" style="width: 90%; margin-top: 6px;"></div>
-              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--gec-border-subtle); padding-top: 10px; margin-top: 8px;">
-                <span class="element-role-tag role-blue">[SECTOR: HEALTH]</span>
-                <span class="dim-label" style="cursor: pointer; font-weight: 800; color: var(--gec-crimson);" onclick="showPublicToast('Portfolio Startup', 'Visiting MediKit AI pilot dashboard ↗', 'info')">[VISIT SITE ↗]</span>
-              </div>
-            </div>
-
-            <div class="wf-card-container portfolio-startup-item" data-sector="sustainability">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="wf-avatar-slot" style="margin: 0; width: 44px; height: 44px; border-radius: 6px;"><span style="font-size: 8px; font-weight: 800;">SUST</span></div>
-                <span class="element-role-tag role-gold">[IDEA LAB]</span>
-              </div>
-              <span class="element-role-tag" style="margin-top: 12px;">[ECOPACK SOLUTIONS]</span>
-              <div class="dim-label" style="font-weight: 700; color: var(--gec-ink); margin-top: 4px;">Biodegradable agri-waste packaging for e-commerce</div>
-              <div class="skel-line" style="width: 90%; margin-top: 6px;"></div>
-              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--gec-border-subtle); padding-top: 10px; margin-top: 8px;">
-                <span class="element-role-tag role-blue">[SECTOR: SUSTAINABILITY]</span>
-                <span class="dim-label" style="cursor: pointer; font-weight: 800; color: var(--gec-crimson);" onclick="showPublicToast('Portfolio Startup', 'Visiting EcoPack product specs ↗', 'info')">[VISIT SITE ↗]</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="wf-footer-global">
-          <div class="footer-sub-bar">
-            <span>PAGE 05: STORIES &amp; STARTUP PORTFOLIO WIREFRAME SPECIFICATION</span>
-            <span>FROZEN SITEMAP §8 COMPLIANT</span>
-          </div>
-        </footer>
-
-      </div><!-- /page-stories -->
-
-    </div>
+</div>
   </main>
 
   <!-- ==========================================================================
@@ -4142,40 +2766,28 @@
        12. INTERACTION & CONTROLLER SCRIPT
        ========================================================================== -->
   <script>
-    // Page switcher
+        // Standalone Page Navigation
     function navigatePage(pageKey) {
-      // Toggle views
-      const views = document.querySelectorAll('.page-canvas-section');
-      views.forEach(v => v.classList.remove('active-page'));
-      const activeTarget = document.getElementById('page-' + pageKey);
-      if (activeTarget) activeTarget.classList.add('active-page');
-
-      // Toggle tab buttons safely without relying on event.currentTarget
-      const tabBtns = document.querySelectorAll('.cockpit-tab-btn');
-      tabBtns.forEach(b => {
-        b.classList.remove('active');
-        const clickAttr = b.getAttribute('onclick') || '';
-        if (clickAttr.includes("'" + pageKey + "'")) {
-          b.classList.add('active');
-        }
-      });
-
-      // Close any open mobile nav drawers
-      document.querySelectorAll('.wf-mobile-nav-drawer').forEach(d => d.classList.remove('drawer-open'));
-
-      // Update status label
-      const labels = {
-        'home': 'PAGE 01: HOME · FROZEN SITEMAP §3',
-        'about': 'PAGE 02: ABOUT · FROZEN SITEMAP §4',
-        'teams': 'PAGE 03: TEAMS · FROZEN SITEMAP §5 & §6',
-        'initiatives': 'PAGE 04: INITIATIVES · FROZEN SITEMAP §7',
-        'stories': 'PAGE 05: STORIES & PORTFOLIO · FROZEN SITEMAP §8'
-      };
-      const statusLabel = document.getElementById('active-screen-label');
-      if (statusLabel) statusLabel.textContent = labels[pageKey] || 'GEC CANVAS';
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const cur = (window.location.pathname.split('/').pop().replace('.html', '') || 'home').toLowerCase();
+      if (pageKey === cur || (pageKey === 'home' && (cur === 'index' || cur === ''))) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      window.location.href = pageKey + '.html';
     }
+
+    // Deep-link parameter handler on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const initParam = params.get('initiative');
+      if (initParam && typeof exploreInitiativeDetail === 'function') {
+        setTimeout(() => exploreInitiativeDetail(parseInt(initParam)), 100);
+      }
+      const teamParam = params.get('team');
+      if (teamParam && typeof exploreTeamDetail === 'function') {
+        setTimeout(() => exploreTeamDetail(parseInt(teamParam)), 100);
+      }
+    });
 
     // Viewport switcher
     function setCanvasViewport(mode) {
@@ -4591,6 +3203,10 @@
     }
 
     function exploreTeamDetail(teamIndex) {
+      if (!document.getElementById('team-stage-card')) {
+        window.location.href = 'teams.html?team=' + teamIndex;
+        return;
+      }
       const data = PUBLIC_TEAMS_DATA[teamIndex];
       if (!data) return;
 
@@ -4709,6 +3325,10 @@
     };
 
     function exploreInitiativeDetail(initIndex) {
+      if (!document.getElementById('init-detail-card')) {
+        window.location.href = 'initiatives.html?initiative=' + initIndex;
+        return;
+      }
       const data = PUBLIC_INITIATIVES_DATA[initIndex];
       if (!data) return;
 
@@ -5145,15 +3765,9 @@
         bodyHtml: bodyHtml,
         confirmText: 'Open in CMS Console ↗',
         onConfirm: () => {
-          window.location.href = '../cms-wireframes/index.html';
+          window.location.href = '../../cms-wireframes/index.html';
         }
       });
-    }
-
-    // Allow deterministic capture of each SPA page from the same index.html.
-    const requestedWireframePage = new URLSearchParams(window.location.search).get('page');
-    if (['home', 'about', 'teams', 'initiatives', 'stories'].includes(requestedWireframePage)) {
-      navigatePage(requestedWireframePage);
     }
   </script>
 </body>

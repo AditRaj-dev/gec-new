@@ -379,36 +379,14 @@ export function NewsletterSection() {
         </div>
 
         {/* ===================================================================== */}
-        {/* 3D WEBGL BOOKSHELF STAGE                                              */}
+        {/* 3D BOOKSHELF STAGE                                                    */}
         {/* ===================================================================== */}
-        <div className="relative rounded-2xl border border-[rgba(163,4,15,0.2)] bg-[#FFFDF8] shadow-sm overflow-hidden">
-          {/* Subtle Architectural Top Rail & Coordinate Badge */}
-          <div className="px-6 py-3 border-b border-[rgba(163,4,15,0.12)] bg-[#F4E2CA]/30 flex items-center justify-between text-xs font-mono text-[#5F5650]">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#1F7EC0]" />
-              <span className="font-semibold text-[#222222]">SHELF ARCHIVE 01</span>
-              <span>&middot;</span>
-              <span>{filteredBooks.length} EDITIONS AVAILABLE</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-3">
-              <span>CONTROLS: DRAG TO PAN &middot; CLICK TO FOCUS</span>
-              <span className="px-2 py-0.5 rounded bg-[#A3040F]/10 text-[#A3040F] font-bold">WEBGL 3D</span>
-            </div>
-          </div>
-
-          {/* 3D Bookshelf Component */}
-          <div className="w-full bg-[#FAF6EC] relative">
-            <NewsletterBookshelf
-              items={filteredBooks}
-              height={580}
-              brand="GEC DISPATCH"
-              onSelect={handleSelectBook}
-              className="bg-[#FAF6EC]"
-            />
-          </div>
-
-          {/* Wooden / Sand Shelf Base Trim */}
-          <div className="h-4 bg-gradient-to-r from-[#EBD4B4] via-[#F4E2CA] to-[#EBD4B4] border-t border-[rgba(163,4,15,0.2)] shadow-inner" />
+        <div className="w-full">
+          <NewsletterBookshelf
+            items={filteredBooks}
+            brand="GEC DISPATCH"
+            onSelect={handleSelectBook}
+          />
         </div>
 
         {/* ===================================================================== */}
@@ -416,7 +394,7 @@ export function NewsletterSection() {
         {/* ===================================================================== */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left 7 Columns: Selected Dispatch Inspector */}
-          <div className="lg:col-span-7 bg-[#FFFDF8] border border-[rgba(163,4,15,0.18)] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="lg:col-span-7 bg-[#FFFDF8] border border-[rgba(163,4,15,0.18)] rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 select-none" onCopy={(e) => e.preventDefault()}>
             {selectedDispatch ? (
               <>
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[rgba(163,4,15,0.12)]">

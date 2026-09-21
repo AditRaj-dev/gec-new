@@ -146,7 +146,7 @@ export const Navbar: React.FC = () => {
             <span className="w-2 h-2 rounded-full bg-[#FBCA05] animate-pulse" />
           </Link>
           <Link
-            href="#team"
+            href="/#team"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
             Team
@@ -274,7 +274,7 @@ export const Navbar: React.FC = () => {
             E-Summit &apos;26
           </Link>
           <Link
-            href="#team"
+            href="/#team"
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]"
           >

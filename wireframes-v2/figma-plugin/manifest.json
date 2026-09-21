@@ -1,0 +1,12 @@
+{
+  "name": "GEC Wireframes & Design System Importer",
+  "id": "gec-wireframes-importer",
+  "api": "1.0.0",
+  "main": "code.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": [
+    "figma",
+    "dev"
+  ]
+}
