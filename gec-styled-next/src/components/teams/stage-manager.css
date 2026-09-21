@@ -1,13 +1,11 @@
 /* ==========================================================================
-   TEAMS STAGE MANAGER — WIREFRAME V2 PERSISTENT SPATIAL SYSTEM
-   Direct port of wireframe-v2/index.html specification (Lines 1747–1989)
+   TEAMS STAGE MANAGER — Editorial Redesign
+   Photos, polished cards, clean typography — no wireframe residue.
    ========================================================================== */
 
-/* Section Host & Design Tokens */
 .team-stage-wrapper {
   position: relative;
   width: 100%;
-  overflow-x: clip;
   --gec-canvas: #FCF8ED;
   --gec-surface-sand: #F4E2CA;
   --gec-surface-card: #FFFDF8;
@@ -17,659 +15,470 @@
   --gec-blue: #1F7EC0;
   --gec-ink: #222222;
   --gec-ink-muted: #5F5650;
+  --gec-ink-subtle: #8A817A;
   --gec-border: rgba(163, 4, 15, 0.16);
-  --shadow-ambient: 0 4px 20px rgba(34, 34, 34, 0.04);
-  --shadow-hover: 0 10px 30px rgba(34, 34, 34, 0.08);
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --font-mono: var(--font-geist-mono, monospace);
-  --font-display: var(--font-sans, sans-serif);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-x: clip;
 }
 
-/* Quick Jumper Filter Strip (3.1) */
-.category-filter-strip {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.filter-chip-button {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(163, 4, 15, 0.22);
-  background: var(--gec-surface-card);
-  color: var(--gec-ink);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 180ms ease;
-  user-select: none;
-}
-
-.filter-chip-button:hover {
-  background: rgba(163, 4, 15, 0.06);
-  border-color: var(--gec-crimson);
-  transform: translateY(-1px);
-}
-
-.filter-chip-button.active-filter {
-  background: var(--gec-crimson);
-  color: #FFFFFF;
-  border-color: var(--gec-crimson);
-  box-shadow: 0 2px 8px rgba(163, 4, 15, 0.24);
-}
-
-/* Structural Stamp Badges */
-.section-id-stamp {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(163, 4, 15, 0.08);
-  border: 1px solid var(--gec-crimson);
-  color: var(--gec-crimson);
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  padding: 3px 10px;
-  border-radius: var(--radius-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-.section-coord-stamp {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(31, 126, 192, 0.08);
-  border: 1px solid rgba(31, 126, 192, 0.28);
-  color: var(--gec-blue);
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  padding: 3px 10px;
-  border-radius: var(--radius-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  width: fit-content;
-  margin-top: 6px;
-}
-
-/* ==========================================================================
-   3.2 Persistent Stage Manager Team System (from wireframes-v2/index.html)
-   ========================================================================== */
-
+/* Section container */
 .team-stage-manager-section {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  column-gap: 28px;
-  isolation: isolate;
-  background-color: var(--gec-surface-sand);
-  border-top: 1px solid var(--gec-border);
-  border-bottom: 1px solid var(--gec-border);
+  column-gap: 32px;
   padding: 48px 24px;
-  border-radius: var(--radius-md);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #FFFDF8 0%, #FCF8ED 100%);
+  border: 1px solid rgba(163, 4, 15, 0.1);
+  box-shadow: 0 4px 24px rgba(34, 34, 34, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  isolation: isolate;
   position: relative;
   overflow-x: clip;
 }
 
 @media (min-width: 640px) {
   .team-stage-manager-section {
-    padding: 60px 40px;
+    padding: 56px 40px;
   }
 }
 
-.team-stage-manager-section > .section-id-stamp,
-.team-stage-manager-section > .section-coord-stamp,
-.team-stage-manager-section > .team-stage-storyboard {
+.team-stage-manager-section > .col-span-full {
   grid-column: 1 / -1;
 }
 
-/* Storyboard timing ribbon */
-.team-stage-storyboard {
+/* ================= ROSTER MODE (full width rows) ================= */
+.teams-horizontal-stack {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-top: 26px;
-  padding: 12px 14px;
-  border: 1px dashed rgba(34, 34, 34, 0.28);
-  border-radius: var(--radius-sm);
-  background: rgba(255, 253, 248, 0.78);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--gec-ink-muted);
+  flex-direction: column;
+  gap: 14px;
+  grid-column: 1 / -1;
+  min-width: 0;
 }
 
-.team-stage-storyboard-steps {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+.team-item-card {
+  display: block;
+  padding: 0;
+  border-radius: 16px;
+  border: 1px solid rgba(163, 4, 15, 0.14);
+  background: #FFFDF8;
+  cursor: pointer;
+  overflow: hidden;
+  transform-origin: left center;
+  transition: transform 320ms var(--ease-spring), box-shadow 240ms ease, border-color 200ms ease;
+  box-shadow: 0 1px 2px rgba(34, 34, 34, 0.03), 0 6px 20px rgba(34, 34, 34, 0.03);
+}
+.team-item-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(163, 4, 15, 0.35);
+  box-shadow: 0 4px 8px rgba(34, 34, 34, 0.04), 0 14px 30px rgba(163, 4, 15, 0.08);
+}
+.team-item-card:focus-visible {
+  outline: 2px solid var(--gec-crimson);
+  outline-offset: 3px;
 }
 
-.team-stage-step {
-  display: inline-flex;
+.roster-row-content {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
   align-items: center;
-  min-height: 28px;
-  padding: 0 9px;
-  border: 1px solid rgba(34, 34, 34, 0.18);
-  border-radius: 999px;
-  background: var(--gec-surface-card);
+  gap: 20px;
+  padding: 18px 20px;
 }
 
-.team-stage-status {
-  color: var(--gec-crimson);
+.roster-row-photo {
+  width: 88px;
+  height: 88px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #F4E2CA;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(163, 4, 15, 0.12);
+}
+
+.roster-row-main { min-width: 0; }
+
+.roster-row-title {
+  font-size: 18px;
   font-weight: 800;
-  white-space: nowrap;
+  color: var(--gec-ink);
+  letter-spacing: -0.02em;
+  margin: 4px 0 4px;
+  line-height: 1.25;
 }
 
-.team-mode-toggle {
+.roster-row-desc {
+  font-size: 13px;
+  color: var(--gec-ink-muted);
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.roster-row-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: var(--gec-surface-card);
-  border: 1px solid rgba(163, 4, 15, 0.25);
-  color: var(--gec-crimson);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 12px;
   font-weight: 700;
-  font-size: 10px;
+  color: var(--gec-crimson);
+  background: rgba(163, 4, 15, 0.06);
+  border: 1px solid rgba(163, 4, 15, 0.2);
   cursor: pointer;
-  transition: all 160ms ease;
+  transition: all 180ms ease;
+  white-space: nowrap;
 }
-
-.team-mode-toggle:hover {
+.roster-row-cta:hover {
   background: var(--gec-crimson);
-  color: #FFFFFF;
+  color: #FFFDF8;
+  border-color: var(--gec-crimson);
 }
 
-/* Horizontal Stack / 3D Rail */
-.team-stage-manager-section .teams-horizontal-stack {
-  view-transition-name: teams-roster;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-top: 32px;
+@media (max-width: 640px) {
+  .roster-row-content {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px 16px;
+  }
+  .roster-row-photo { width: 64px; height: 64px; border-radius: 12px; }
+  .roster-row-cta { display: none; }
+  .roster-row-title { font-size: 15px; }
+  .roster-row-desc { -webkit-line-clamp: 2; font-size: 12px; }
 }
 
-.team-stage-manager-section .team-item-card {
-  display: grid;
-  grid-template-columns: 80px 1.4fr 2fr 1fr;
-  gap: 24px;
-  align-items: center;
-  padding: 24px;
-  border-radius: var(--radius-md);
-  border: 1.5px solid var(--gec-crimson);
-  background: var(--gec-canvas);
-  box-shadow: var(--shadow-ambient);
-  cursor: pointer;
-  transform-origin: left center;
-  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Exact View Transition names and scale/opacity variables from wireframe */
-.team-item-card[data-team-index="1"] { view-transition-name: team-card-1; --preview-scale: 0.93; --preview-opacity: 0.78; }
-.team-item-card[data-team-index="2"] { view-transition-name: team-card-2; --preview-scale: 0.95; --preview-opacity: 0.88; }
-.team-item-card[data-team-index="3"] { view-transition-name: team-card-3; --preview-scale: 0.97; --preview-opacity: 1; }
-.team-item-card[data-team-index="4"] { view-transition-name: team-card-4; --preview-scale: 0.96; --preview-opacity: 0.92; }
-.team-item-card[data-team-index="5"] { view-transition-name: team-card-5; --preview-scale: 0.95; --preview-opacity: 0.88; }
-.team-item-card[data-team-index="6"] { view-transition-name: team-card-6; --preview-scale: 0.94; --preview-opacity: 0.84; }
-.team-item-card[data-team-index="7"] { view-transition-name: team-card-7; --preview-scale: 0.93; --preview-opacity: 0.78; }
-
-#team-detail-blueprint {
-  view-transition-name: team-detail;
-  display: none;
-  min-width: 0;
-  margin-top: 32px;
-  opacity: 0;
-  transform: translate3d(36px, 0, 0) scale(0.985);
-  transform-origin: top right;
-}
-
-/* ==========================================================================
-   Active Stage Manager 3D Rail State (.is-detail-active)
-   ========================================================================== */
-
+/* ================= DETAIL MODE (rail + canvas) ================= */
 .team-stage-manager-section.is-detail-active {
-  grid-template-columns: minmax(200px, 230px) minmax(0, 1fr);
-  min-height: 720px;
-  column-gap: 44px;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: 32px;
+}
+
+@media (max-width: 900px) {
+  .team-stage-manager-section.is-detail-active {
+    grid-template-columns: 1fr;
+  }
 }
 
 .team-stage-manager-section.is-detail-active .teams-horizontal-stack {
+  grid-column: 1;
+  gap: 10px;
   position: sticky;
-  top: 24px;
-  gap: 14px;
-  margin-top: 32px;
-  padding: 6px 0 18px 0;
-  perspective: 1200px;
-  perspective-origin: left center;
-  transform-style: preserve-3d;
-  z-index: 2;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 4px 4px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(163, 4, 15, 0.2) transparent;
+}
+.team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { width: 4px; }
+.team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar-thumb {
+  background: rgba(163, 4, 15, 0.2);
+  border-radius: 2px;
 }
 
+/* Redesigned compact rail card */
 .team-stage-manager-section.is-detail-active .team-item-card {
-  grid-template-columns: 42px minmax(0, 1fr);
-  gap: 9px;
-  width: 210px;
-  min-height: 104px;
-  margin-top: 0;
-  padding: 16px 14px;
-  opacity: var(--preview-opacity);
-  transform: rotateY(34deg) scale(var(--preview-scale));
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  will-change: transform;
-  box-shadow: 0 12px 30px rgba(34, 34, 34, 0.10);
+  opacity: var(--preview-opacity, 0.92);
+  transition: transform 300ms var(--ease-spring), opacity 240ms ease, border-color 200ms ease, box-shadow 240ms ease;
 }
-
-/* Hide detailed lines and 3rd/4th containers when in rail */
-.team-stage-manager-section.is-detail-active .team-item-card > div:nth-child(3),
-.team-stage-manager-section.is-detail-active .team-item-card > div:nth-child(4),
-.team-stage-manager-section.is-detail-active .team-item-card .skel-title-h2,
-.team-stage-manager-section.is-detail-active .team-item-card .skel-line {
-  display: none !important;
-}
-
-.team-stage-manager-section.is-detail-active .team-item-card .team-index-display {
-  font-size: 22px;
-  text-align: left;
-}
-
-.team-stage-manager-section.is-detail-active .team-item-card .element-role-tag {
-  display: block;
-  overflow: hidden;
-  max-width: 100%;
-  padding: 4px 6px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Active card disappears from rail and expands into the canvas */
-.team-stage-manager-section.is-detail-active .team-item-card.is-active-team {
-  display: none !important;
-}
-
 .team-stage-manager-section.is-detail-active .team-item-card:hover,
 .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
-  z-index: 4;
   opacity: 1;
-  transform: translate3d(6px, -2px, 0) rotateY(24deg) scale(0.98);
-  box-shadow: 0 16px 38px rgba(34, 34, 34, 0.14);
+  transform: translateX(3px);
+  border-color: rgba(163, 4, 15, 0.4);
+  box-shadow: 0 6px 22px rgba(163, 4, 15, 0.1);
 }
-
-.team-stage-manager-section.is-detail-active #team-detail-blueprint {
-  display: block;
-  margin-top: 32px;
+.team-stage-manager-section.is-detail-active .team-item-card.is-active-team {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  box-shadow: 0 24px 70px rgba(34, 34, 34, 0.12), 0 6px 20px rgba(34, 34, 34, 0.06);
+  border-color: var(--gec-crimson);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1px var(--gec-crimson), 0 10px 28px rgba(163, 4, 15, 0.14);
+  transform: none;
 }
 
-/* Detail Toolbar */
-.team-detail-toolbar {
-  display: flex;
+.rail-card-content {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 14px;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 14px;
+  padding: 12px 14px;
 }
 
-.team-detail-toolbar-copy {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+.rail-card-photo {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #F4E2CA;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(163, 4, 15, 0.1);
+}
+
+.rail-card-body {
   min-width: 0;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.team-stage-back {
+.rail-card-index {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rail-card-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--gec-ink);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rail-card-lead {
+  font-size: 11px;
+  color: var(--gec-ink-subtle);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rail-card-chevron {
+  color: var(--gec-ink-subtle);
+  transition: transform 200ms ease, color 200ms ease;
+  flex-shrink: 0;
+}
+.team-item-card:hover .rail-card-chevron {
+  color: var(--gec-crimson);
+  transform: translateX(2px);
+}
+.team-stage-manager-section.is-detail-active .team-item-card.is-active-team .rail-card-chevron {
+  color: var(--gec-crimson);
+}
+
+/* ================= DETAIL CANVAS ================= */
+.detail-canvas {
+  grid-column: 2;
+  min-width: 0;
+  animation: canvasIn 400ms var(--ease-spring);
+}
+
+@media (max-width: 900px) {
+  .detail-canvas { grid-column: 1; margin-top: 24px; }
+  .team-stage-manager-section.is-detail-active .teams-horizontal-stack {
+    position: static;
+    max-height: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+}
+
+.team-stage-manager-section:not(.is-detail-active) .detail-canvas {
+  display: none;
+}
+
+@keyframes canvasIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero band */
+.detail-hero {
+  position: relative;
+  min-height: 240px;
+  padding: 32px;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.detail-hero-inner { color: #FFFDF8; max-width: 60ch; }
+
+.detail-hero-tag {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.detail-hero-title {
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: #FFFDF8;
+  margin: 0 0 8px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.detail-hero-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 253, 248, 0.9);
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Pillars */
+.pillar-card {
+  padding: 18px;
+  border-radius: 14px;
+  background: #FFFDF8;
+  border: 1px solid rgba(163, 4, 15, 0.12);
+  transition: transform 220ms var(--ease-spring), border-color 200ms ease, box-shadow 200ms ease;
+}
+.pillar-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(163, 4, 15, 0.28);
+  box-shadow: 0 8px 22px rgba(163, 4, 15, 0.06);
+}
+.pillar-num {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.pillar-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gec-ink);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.pillar-desc {
+  font-size: 13px;
+  color: var(--gec-ink-muted);
+  line-height: 1.5;
+}
+
+/* Lead card */
+.lead-card {
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #FFFFFF, #FFFDF8);
+  border: 1px solid rgba(163, 4, 15, 0.14);
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.lead-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 16px;
+  border: 3px solid #FFFDF8;
+  box-shadow: 0 0 0 1px rgba(163, 4, 15, 0.15), 0 12px 28px rgba(34, 34, 34, 0.1);
+}
+.lead-label {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gec-crimson);
+  margin-bottom: 4px;
+}
+.lead-name {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--gec-ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.lead-role {
+  font-size: 12px;
+  color: var(--gec-ink-muted);
+  line-height: 1.4;
+}
+
+/* Team composition */
+.team-composition {
+  padding: 24px;
+  border-radius: 16px;
+  background: #FFFDF8;
+  border: 1px solid rgba(163, 4, 15, 0.14);
+}
+
+.avatar-chip {
   width: 44px;
   height: 44px;
-  flex: 0 0 44px;
-  border: 1px solid rgba(163, 4, 15, 0.28);
-  border-radius: var(--radius-sm);
-  color: var(--gec-crimson);
-  background: var(--gec-surface-card);
-  cursor: pointer;
-  transition: transform 180ms ease, opacity 180ms ease;
-}
-
-.team-stage-back:hover {
-  transform: translate3d(-2px, 0, 0);
-  background: #FFFFFF;
-}
-
-.team-stage-back:active {
-  transform: translate3d(0, 0, 0) scale(0.96);
-}
-
-/* ==========================================================================
-   VIEW TRANSITIONS SPECIFICATION (Lines 1903–1913 in wireframes-v2)
-   ========================================================================== */
-
-::view-transition-group(*) {
-  animation-duration: 600ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Shared Stage Manager Expansion/Shrink Morph Groups */
-::view-transition-group(team-shared-1),
-::view-transition-group(team-shared-2),
-::view-transition-group(team-shared-3),
-::view-transition-group(team-shared-4),
-::view-transition-group(team-shared-5),
-::view-transition-group(team-shared-6),
-::view-transition-group(team-shared-7) {
-  animation-duration: 550ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  z-index: 50;
-}
-
-/* Morph Old & New content sizing to prevent distorting text/cards during expansion */
-::view-transition-old(team-shared-1),
-::view-transition-old(team-shared-2),
-::view-transition-old(team-shared-3),
-::view-transition-old(team-shared-4),
-::view-transition-old(team-shared-5),
-::view-transition-old(team-shared-6),
-::view-transition-old(team-shared-7),
-::view-transition-new(team-shared-1),
-::view-transition-new(team-shared-2),
-::view-transition-new(team-shared-3),
-::view-transition-new(team-shared-4),
-::view-transition-new(team-shared-5),
-::view-transition-new(team-shared-6),
-::view-transition-new(team-shared-7) {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  object-position: top left;
-}
-
-/* Full Roster Mode <-> Stage Manager View transitions only */
-::view-transition-old(team-detail) {
-  animation: 220ms ease both team-detail-out;
-}
-
-::view-transition-new(team-detail) {
-  animation: 500ms 100ms cubic-bezier(0.22, 1, 0.36, 1) both team-detail-in;
-}
-
-@keyframes team-detail-in {
-  from {
-    opacity: 0;
-    transform: translate3d(40px, 0, 0) scale(0.985);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-@keyframes team-detail-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-/* Cards & Components */
-.team-index-display {
-  font-size: 32px;
-  font-weight: 900;
-  font-family: var(--font-display);
-  color: var(--gec-crimson);
-  text-align: center;
-}
-
-.element-role-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  padding: 2px 8px;
-  border-radius: var(--radius-xs);
-  letter-spacing: 0.04em;
-  margin-bottom: 8px;
-  width: fit-content;
-  user-select: none;
-}
-
-.role-crimson { background: var(--gec-crimson); color: #FFF; }
-.role-gold    { background: var(--gec-gold); color: #111; }
-.role-blue    { background: var(--gec-blue); color: #FFF; }
-
-.team-chips-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.team-focus-tag {
-  font-size: 10px;
-  font-family: var(--font-mono);
-  font-weight: 600;
-  background: rgba(34, 34, 34, 0.06);
-  padding: 3px 8px;
-  border-radius: var(--radius-xs);
-  border: 1px dashed rgba(34, 34, 34, 0.25);
-  color: var(--gec-ink);
-}
-
-.modular-subblueprint-wrapper {
-  margin-top: 48px;
-  border: 2px solid var(--gec-blue);
-  border-radius: var(--radius-lg);
-  padding: 36px;
-  background: rgba(31, 126, 192, 0.03);
-}
-
-.wf-card-container {
-  border: 1.5px solid var(--gec-crimson);
-  border-radius: var(--radius-md);
-  padding: 24px;
-  background: var(--gec-surface-card);
-  position: relative;
-  box-shadow: var(--shadow-ambient);
-  transition: transform 180ms ease, box-shadow 180ms ease;
-}
-
-.wf-card-container:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-}
-
-.initiatives-offset-grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 12px;
-}
-
-@media (min-width: 640px) {
-  .initiatives-offset-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .initiatives-offset-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.wf-avatar-slot {
-  width: 64px;
-  height: 64px;
   border-radius: 50%;
-  border: 1.5px solid var(--gec-crimson);
-  background: rgba(163, 4, 15, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  color: var(--gec-crimson);
-  font-family: var(--font-mono);
-  font-weight: 700;
-}
-
-.wf-media-container {
-  border: 1.5px solid var(--gec-crimson);
-  background: rgba(163, 4, 15, 0.03);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-}
-
-.wf-media-container svg.architectural-cross {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  stroke: rgba(163, 4, 15, 0.2);
-  stroke-width: 1;
-  pointer-events: none;
-}
-
-.ratio-1-1 { aspect-ratio: 1 / 1; }
-
-.wf-action-slot {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
   font-size: 11px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  border-radius: var(--radius-sm);
-  user-select: none;
-  transition: all 180ms ease;
+  letter-spacing: 0.02em;
+  transition: transform 180ms ease;
+  cursor: default;
+}
+.avatar-chip:hover { transform: scale(1.08); }
+
+.avatar-coord {
+  background: linear-gradient(140deg, #A3040F, #7A020B);
+  color: #FCF8ED;
+  box-shadow: 0 2px 6px rgba(163, 4, 15, 0.25);
+}
+.avatar-member {
+  background: linear-gradient(140deg, #F4E2CA, #E8CEA8);
+  color: #5F5650;
+  border: 1px solid rgba(163, 4, 15, 0.1);
 }
 
-.action-fill-crimson {
-  background: var(--gec-crimson);
-  color: #FFFFFF;
-  border: 1.5px solid var(--gec-crimson);
+/* Gallery */
+.gallery-tile {
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #F4E2CA;
+  border: 1px solid rgba(163, 4, 15, 0.12);
+  transition: transform 260ms var(--ease-spring), box-shadow 200ms ease;
 }
-
-.action-fill-crimson:hover {
-  background: var(--gec-crimson-act);
-  border-color: var(--gec-crimson-act);
-  transform: translateY(-1px);
+.gallery-tile:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 28px rgba(34, 34, 34, 0.15);
+  z-index: 2;
+  position: relative;
 }
-
-.action-fill-crimson:active {
-  transform: translateY(1px);
+.gallery-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 300ms ease;
 }
+.gallery-tile:hover img { transform: scale(1.05); }
 
-.skel-line {
-  height: 12px;
-  border-radius: var(--radius-xs);
-  background: rgba(95, 86, 80, 0.16);
-  margin-bottom: 8px;
-}
-
-.skel-title-h2 {
-  height: 20px;
-  border-radius: var(--radius-xs);
-  background: rgba(95, 86, 80, 0.2);
-  margin-bottom: 10px;
-}
-
-/* ==========================================================================
-   Responsive Viewport Calibration (from wireframes-v2)
-   ========================================================================== */
-
-@media (max-width: 1100px) {
-  .team-stage-manager-section.is-detail-active {
-    grid-template-columns: 178px minmax(0, 1fr);
-    column-gap: 22px;
-  }
-  .team-stage-manager-section.is-detail-active .team-item-card {
-    width: 174px;
-    min-height: 94px;
-    transform: rotateY(26deg) scale(var(--preview-scale));
-  }
-  .team-stage-manager-section.is-detail-active .team-item-card:hover,
-  .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
-    transform: translate3d(5px, -2px, 0) rotateY(18deg) scale(0.98);
-  }
-}
-
-@media (max-width: 768px) {
-  .team-stage-storyboard {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .team-stage-manager-section.is-detail-active {
-    display: flex;
-    min-height: 0;
-    flex-direction: column;
-  }
-  .team-stage-manager-section.is-detail-active .team-stage-storyboard { order: 1; }
-  .team-stage-manager-section.is-detail-active #team-detail-blueprint { order: 2; }
-  .team-stage-manager-section.is-detail-active .teams-horizontal-stack {
-    order: 3;
-    position: static;
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    gap: 10px;
-    overflow-x: auto;
-    padding: 8px 6px 18px;
-    perspective: 1000px;
-    scrollbar-width: none;
-  }
-  .team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { display: none; }
-  .team-stage-manager-section.is-detail-active .team-item-card {
-    grid-template-columns: 34px minmax(0, 1fr) !important;
-    width: auto;
-    flex: 0 0 156px;
-    min-height: 68px;
-    margin-top: 0;
-    padding: 10px !important;
-    transform: rotateY(8deg) scale(0.96);
-  }
-  .team-stage-manager-section.is-detail-active .team-item-card.is-active-team,
-  .team-stage-manager-section.is-detail-active .team-item-card:hover,
-  .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
-    transform: translate3d(3px, -2px, 0) rotateY(3deg) scale(0.99);
-  }
-  .team-detail-toolbar { align-items: flex-start; }
-  .team-detail-toolbar-copy { align-items: flex-start; flex-direction: column; }
+/* View Transitions */
+::view-transition-group(*) {
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .team-stage-manager-section .team-item-card,
-  .team-stage-back {
-    transition: opacity 1ms linear !important;
+  .team-item-card, .pillar-card, .gallery-tile, .avatar-chip {
+    transition: none !important;
+    animation: none !important;
     transform: none !important;
   }
 }

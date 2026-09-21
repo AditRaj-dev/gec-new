@@ -35,6 +35,18 @@ animated GEC logo docking from the entrance animation.
 - Mobile teams overflow patched (`overflow-x: clip` on section)
 - Verified desktop 1920×800 + mobile 390×844 — no horizontal scrollbar
 
+### Team Stage Manager — Editorial Redesign (Jan 2026)
+- Removed every wireframe residue: bracket tags, section-id stamps, skeleton lines,
+  storyboard timing ribbons, dashed placeholders, X-crossed gallery boxes
+- Team data cleaned: Title Case names, non-bracketed role tags, added `headPhoto`,
+  `heroImage`, `galleryImages` fields with Unsplash portrait / event photos
+- Rail sidebar cards fully redesigned: 56×56 round photo of team lead, colored
+  `TEAM 0X` index, team short name, lead name, chevron; active card has crimson ring
+- Detail canvas rewritten: cinematic hero band with team image + gradient overlay,
+  numbered pillar cards, circular lead portrait, coordinator/member avatar chips,
+  real Unsplash gallery tiles, polished apply CTA with pulsing status dot
+- Next.js `images.remotePatterns` allows `images.unsplash.com`
+
 ## Backlog
 - P1: Wire "Apply to Team" modal to a backend endpoint (email coordinator)
 - P1: Real coordinator profiles / avatars / social links (replace placeholders)

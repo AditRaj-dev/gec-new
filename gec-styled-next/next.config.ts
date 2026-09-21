@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
     '*.cluster-7.preview.emergentcf.cloud',
     'localhost',
   ],
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+    ],
+  },
 };
 
 export default nextConfig;
