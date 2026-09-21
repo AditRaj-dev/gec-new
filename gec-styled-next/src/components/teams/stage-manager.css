@@ -512,9 +512,31 @@
 .gallery-tile:hover img { transform: scale(1.05); }
 
 ::view-transition-group(*) {
-  animation-duration: 500ms;
+  animation-duration: 600ms;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
+::view-transition-old(team-detail) { animation: 220ms ease both team-detail-out; }
+::view-transition-new(team-detail) { animation: 500ms 100ms cubic-bezier(0.22, 1, 0.36, 1) both team-detail-in; }
+@keyframes team-detail-in {
+  from { opacity: 0; transform: translate3d(40px, 0, 0) scale(0.985); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes team-detail-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Base view-transition-name per rail card so roster ↔ rail morphs stay linked */
+.team-item-card[data-team-index="1"] { view-transition-name: team-card-1; }
+.team-item-card[data-team-index="2"] { view-transition-name: team-card-2; }
+.team-item-card[data-team-index="3"] { view-transition-name: team-card-3; }
+.team-item-card[data-team-index="4"] { view-transition-name: team-card-4; }
+.team-item-card[data-team-index="5"] { view-transition-name: team-card-5; }
+.team-item-card[data-team-index="6"] { view-transition-name: team-card-6; }
+.team-item-card[data-team-index="7"] { view-transition-name: team-card-7; }
+#team-detail-blueprint { view-transition-name: team-detail; }
+.teams-horizontal-stack { view-transition-name: teams-roster; }
+
 @media (prefers-reduced-motion: reduce) {
   .team-item-card, .pillar-card, .gallery-tile, .avatar-chip {
     transition: none !important;

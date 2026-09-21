@@ -45,21 +45,106 @@ export function TeamStageManager({
     const target = teams.find((t) => t.index === teamIndex);
     if (!target) return;
     if (teamIndex === activeTeamIndex && viewMode === 'detail') return;
-    const reducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hasVT = typeof document !== 'undefined' && 'startViewTransition' in document && !reducedMotion;
-    if (hasVT) {
-      const doc = document as Document & { startViewTransition: (cb: () => void) => { finished: Promise<void> } };
-      doc.startViewTransition(() => {
-        flushSync(() => { setActiveTeamIndex(teamIndex); setViewMode('detail'); });
+
+    const reducedMotion = typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasVT = typeof document !== 'undefined' &&
+      'startViewTransition' in document && !reducedMotion;
+
+    /**
+     * Stage-Manager shared-element choreography:
+     *  - Outgoing active card + current detail canvas share `team-shared-{prev}`
+     *    → canvas shrinks into the rail slot the old card came from.
+     *  - Incoming target card + soon-to-be canvas share `team-shared-{next}`
+     *    → target card physically expands into the big detail canvas.
+     *  - Every other rail card gets a stable `team-card-{N}` so their tilted
+     *    positions animate smoothly (roster → rail, rail → roster).
+     */
+    const prepareSharedNames = () => {
+      const blueprint = document.getElementById('team-detail-blueprint');
+      const currentCard = document.querySelector<HTMLElement>(
+        `#${id} .team-item-card.is-active-team`
+      );
+      const nextCard = document.querySelector<HTMLElement>(
+        `#${id} .team-item-card[data-team-index="${teamIndex}"]`
+      );
+
+      // Base names for every rail card (roster ↔ rail morph)
+      document.querySelectorAll<HTMLElement>(`#${id} .team-item-card`).forEach((card) => {
+        card.style.viewTransitionName = `team-card-${card.dataset.teamIndex}`;
       });
+
+      // Pair outgoing card ↔ outgoing canvas
+      if (blueprint && currentCard && viewMode === 'detail') {
+        const outgoing = `team-shared-${currentCard.dataset.teamIndex}`;
+        blueprint.style.viewTransitionName = outgoing;
+        currentCard.style.viewTransitionName = outgoing;
+      }
+      // Incoming card takes the new shared name
+      if (nextCard) {
+        nextCard.style.viewTransitionName = `team-shared-${teamIndex}`;
+      }
+
+      return () => {
+        if (blueprint) blueprint.style.removeProperty('view-transition-name');
+        document.querySelectorAll<HTMLElement>(`#${id} .team-item-card`).forEach((card) => {
+          card.style.removeProperty('view-transition-name');
+        });
+      };
+    };
+
+    if (hasVT) {
+      const cleanup = prepareSharedNames();
+      const doc = document as Document & {
+        startViewTransition: (cb: () => void) => { finished: Promise<void> };
+      };
+      const transition = doc.startViewTransition(() => {
+        flushSync(() => {
+          setActiveTeamIndex(teamIndex);
+          setViewMode('detail');
+        });
+        // Live blueprint takes the incoming shared name so it lands aligned
+        const liveBlueprint = document.getElementById('team-detail-blueprint');
+        if (liveBlueprint) {
+          liveBlueprint.style.viewTransitionName = `team-shared-${teamIndex}`;
+        }
+      });
+      transition.finished.finally(() => cleanup());
     } else {
-      setActiveTeamIndex(teamIndex); setViewMode('detail');
+      setActiveTeamIndex(teamIndex);
+      setViewMode('detail');
     }
     showToast('Team selected', target.name);
   };
 
   const toggleView = (next: 'detail' | 'roster') => {
-    setViewMode(next);
+    const reducedMotion = typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasVT = typeof document !== 'undefined' &&
+      'startViewTransition' in document && !reducedMotion;
+
+    if (hasVT) {
+      const bp = document.getElementById('team-detail-blueprint');
+      if (bp) bp.style.viewTransitionName = 'team-detail';
+      document.querySelectorAll<HTMLElement>(`#${id} .team-item-card`).forEach((card) => {
+        card.style.viewTransitionName = `team-card-${card.dataset.teamIndex}`;
+      });
+
+      const doc = document as Document & {
+        startViewTransition: (cb: () => void) => { finished: Promise<void> };
+      };
+      const transition = doc.startViewTransition(() => {
+        flushSync(() => setViewMode(next));
+      });
+      transition.finished.finally(() => {
+        if (bp) bp.style.removeProperty('view-transition-name');
+        document.querySelectorAll<HTMLElement>(`#${id} .team-item-card`).forEach((card) => {
+          card.style.removeProperty('view-transition-name');
+        });
+      });
+    } else {
+      setViewMode(next);
+    }
     if (next === 'roster') showToast('Roster overview', 'Showing all 7 teams');
   };
 
