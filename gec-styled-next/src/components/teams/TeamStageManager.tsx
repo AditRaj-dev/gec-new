@@ -28,9 +28,7 @@ export function TeamStageManager({
   const [toast, setToast] = useState<{ title: string; desc: string } | null>(null);
   const [isApplyOpen, setIsApplyOpen] = useState(false);
   const [applied, setApplied] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: '', email: '', phone: '', yearBranch: '', interest: '',
-  });
+  const [formData, setFormData] = useState({ fullName:'', email:'', phone:'', yearBranch:'', interest:'' });
 
   const sectionRef = useRef<HTMLElement>(null);
   const toastTimer = useRef<NodeJS.Timeout | null>(null);
@@ -41,33 +39,23 @@ export function TeamStageManager({
     setToast({ title, desc });
     toastTimer.current = setTimeout(() => setToast(null), 3600);
   };
-
   useEffect(() => () => { if (toastTimer.current) clearTimeout(toastTimer.current); }, []);
 
   const exploreTeamDetail = (teamIndex: number) => {
     const target = teams.find((t) => t.index === teamIndex);
     if (!target) return;
     if (teamIndex === activeTeamIndex && viewMode === 'detail') return;
-
-    const reducedMotion = typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const hasVT = typeof document !== 'undefined' && 'startViewTransition' in document && !reducedMotion;
-
     if (hasVT) {
-      const doc = document as Document & {
-        startViewTransition: (cb: () => void) => { finished: Promise<void> };
-      };
+      const doc = document as Document & { startViewTransition: (cb: () => void) => { finished: Promise<void> } };
       doc.startViewTransition(() => {
-        flushSync(() => {
-          setActiveTeamIndex(teamIndex);
-          setViewMode('detail');
-        });
+        flushSync(() => { setActiveTeamIndex(teamIndex); setViewMode('detail'); });
       });
     } else {
-      setActiveTeamIndex(teamIndex);
-      setViewMode('detail');
+      setActiveTeamIndex(teamIndex); setViewMode('detail');
     }
-    showToast('Team selected', `${target.name}`);
+    showToast('Team selected', target.name);
   };
 
   const toggleView = (next: 'detail' | 'roster') => {
@@ -78,54 +66,34 @@ export function TeamStageManager({
   const handleApplyOpen = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (onApplyClick) onApplyClick(activeTeam);
-    setApplied(false);
-    setIsApplyOpen(true);
+    setApplied(false); setIsApplyOpen(true);
   };
-
   const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setApplied(true);
+    e.preventDefault(); setApplied(true);
     setTimeout(() => {
-      setIsApplyOpen(false);
-      setApplied(false);
+      setIsApplyOpen(false); setApplied(false);
       showToast('Application received', `We'll reach out about ${activeTeam.applyTarget}.`);
-      setFormData({ fullName: '', email: '', phone: '', yearBranch: '', interest: '' });
+      setFormData({ fullName:'', email:'', phone:'', yearBranch:'', interest:'' });
     }, 1200);
   };
-
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isApplyOpen) setIsApplyOpen(false);
-    };
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape' && isApplyOpen) setIsApplyOpen(false); };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [isApplyOpen]);
-
   const modalTitleId = useId();
 
   return (
     <div className="team-stage-wrapper w-full">
-      {/* Toast */}
       {toast && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="fixed bottom-6 right-6 z-50 flex items-start gap-3 bg-[#FFFDF8] border border-[rgba(163,4,15,0.28)] shadow-xl rounded-xl p-4 max-w-sm animate-in fade-in slide-in-from-bottom-3 duration-200"
-        >
+        <div role="status" aria-live="polite"
+          className="fixed bottom-6 right-6 z-50 flex items-start gap-3 bg-[#FFFDF8] border border-[rgba(163,4,15,0.28)] shadow-xl rounded-xl p-4 max-w-sm animate-in fade-in slide-in-from-bottom-3 duration-200">
           <div className="w-2 h-2 rounded-full bg-[#A3040F] mt-1.5 shrink-0 animate-pulse" />
           <div className="flex-1 min-w-0">
-            <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#A3040F]">
-              {toast.title}
-            </div>
-            <div className="text-sm font-medium text-[#222222] mt-0.5 truncate">
-              {toast.desc}
-            </div>
+            <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#A3040F]">{toast.title}</div>
+            <div className="text-sm font-medium text-[#222222] mt-0.5 truncate">{toast.desc}</div>
           </div>
-          <button
-            onClick={() => setToast(null)}
-            className="text-[#5F5650] hover:text-[#222222] text-lg leading-none px-1 cursor-pointer"
-            aria-label="Dismiss"
-          >×</button>
+          <button onClick={() => setToast(null)} className="text-[#5F5650] hover:text-[#222222] text-lg leading-none px-1 cursor-pointer" aria-label="Dismiss">×</button>
         </div>
       )}
 
@@ -134,36 +102,25 @@ export function TeamStageManager({
         <section className="py-14 sm:py-20 px-4 sm:px-8 max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFFDF8] border border-[rgba(163,4,15,0.22)] mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#A3040F]" />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#A3040F]">
-              The Engine of GEC
-            </span>
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#A3040F]">The Engine of GEC</span>
           </div>
-
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-[#222222] leading-[1.05]">
             7 Teams. <span className="text-[#A3040F]">One Shared Vision.</span>
           </h1>
-
           <p className="mt-5 text-base sm:text-lg text-[#5F5650] leading-relaxed max-w-2xl mx-auto">
             Different specialised capabilities, working in tight synchronisation to build
             Northern India&apos;s most active student startup ecosystem.
           </p>
-
-          {/* Quick jump chips */}
           <div className="mt-8 flex flex-wrap justify-center gap-2" role="group" aria-label="Jump to team">
             {teams.map((team) => {
               const active = team.index === activeTeamIndex && viewMode === 'detail';
               return (
-                <button
-                  key={team.id}
-                  type="button"
-                  onClick={() => exploreTeamDetail(team.index)}
+                <button key={team.id} type="button" onClick={() => exploreTeamDetail(team.index)}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 cursor-pointer border ${
-                    active
-                      ? 'bg-[#A3040F] text-white border-[#A3040F] shadow-sm'
-                      : 'bg-[#FFFDF8] text-[#5F5650] hover:text-[#222222] hover:bg-white border-[rgba(163,4,15,0.18)]'
+                    active ? 'bg-[#A3040F] text-white border-[#A3040F] shadow-sm'
+                    : 'bg-[#FFFDF8] text-[#5F5650] hover:text-[#222222] hover:bg-white border-[rgba(163,4,15,0.18)]'
                   }`}
-                  aria-pressed={active}
-                >
+                  aria-pressed={active}>
                   <span className="font-mono text-[#A3040F] mr-1 opacity-60">{String(team.index).padStart(2,'0')}</span>
                   {team.shortName}
                 </button>
@@ -174,24 +131,16 @@ export function TeamStageManager({
       )}
 
       {/* STAGE MANAGER */}
-      <section
-        ref={sectionRef}
-        id={id}
-        data-motion-state={viewMode}
-        className={`team-stage-manager-section ${viewMode === 'detail' ? 'is-detail-active' : ''}`}
-      >
-        {/* Simple mode toggle */}
-        <div className="flex items-center justify-between gap-3 mb-6 col-span-full">
-          <div className="text-[11px] font-mono font-bold uppercase tracking-widest text-[#5F5650]">
+      <section ref={sectionRef} id={id} data-motion-state={viewMode}
+        className={`team-stage-manager-section ${viewMode === 'detail' ? 'is-detail-active' : ''}`}>
+        <div className="stage-status-bar">
+          <div className="stage-status-label">
             {viewMode === 'detail'
-              ? <>Now viewing · <span className="text-[#A3040F]">{activeTeam.name}</span></>
-              : 'Full roster · 7 teams'}
+              ? <><span className="stage-status-dim">Now viewing ·</span> <span className="stage-status-name">{activeTeam.name}</span></>
+              : <span className="stage-status-dim">Full roster · 7 teams</span>}
           </div>
-          <button
-            type="button"
-            onClick={() => toggleView(viewMode === 'detail' ? 'roster' : 'detail')}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#FFFDF8] hover:bg-white text-[#222222] border border-[rgba(163,4,15,0.2)] transition-colors cursor-pointer"
-          >
+          <button type="button" onClick={() => toggleView(viewMode === 'detail' ? 'roster' : 'detail')}
+            className="stage-mode-toggle">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               {viewMode === 'detail' ? (
                 <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /></>
@@ -203,96 +152,68 @@ export function TeamStageManager({
           </button>
         </div>
 
-        {/* Rail (compact when detail active) */}
+        {/* Rail / stack of team cards */}
         <div className="teams-horizontal-stack" role="group" aria-label="Teams roster">
           {teams.map((team) => {
             const isActive = team.index === activeTeamIndex;
-            const isCompact = viewMode === 'detail';
+            const roleTagBg = team.tagColor.bg;
+            const roleTagText = team.tagColor.text;
+
             return (
-              <div
-                key={team.id}
-                data-team-index={team.index}
-                role="button"
-                tabIndex={0}
-                aria-label={`Open ${team.name}`}
-                aria-pressed={isActive}
+              <div key={team.id} data-team-index={team.index}
+                role="button" tabIndex={0}
+                aria-label={`Open ${team.name}`} aria-pressed={isActive}
                 onClick={() => exploreTeamDetail(team.index)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    exploreTeamDetail(team.index);
-                  }
-                }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); exploreTeamDetail(team.index); } }}
                 style={{
                   ['--preview-scale' as string]: team.previewScale,
                   ['--preview-opacity' as string]: team.previewOpacity,
                 }}
-                className={`team-item-card ${isActive && isCompact ? 'is-active-team' : ''}`}
+                className={`team-item-card ${isActive && viewMode === 'detail' ? 'is-active-team' : ''}`}
               >
-                {isCompact ? (
-                  // ===== COMPACT SIDEBAR CARD (rail) =====
-                  <div className="rail-card-content">
-                    <div className="rail-card-photo" style={{ backgroundColor: team.tagColor.bg + '22' }}>
-                      <Image
-                        src={team.headPhoto}
-                        alt={team.headName}
-                        width={64}
-                        height={64}
-                        className="w-full h-full object-cover"
-                        unoptimized
-                      />
-                    </div>
-                    <div className="rail-card-body">
-                      <div className="rail-card-index">
-                        <span className="font-mono text-[10px] font-bold" style={{ color: team.tagColor.bg === '#FBCA05' ? '#B87F00' : team.tagColor.bg }}>
-                          {team.roleTag}
-                        </span>
-                      </div>
-                      <div className="rail-card-title">{team.shortName}</div>
-                      <div className="rail-card-lead">{team.headName}</div>
-                    </div>
-                    <svg className="rail-card-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
+                <div className="team-card-identity">
+                  <div className="team-card-meta-top">
+                    <span className="team-card-num">{String(team.index).padStart(2, '0')}</span>
+                    <span className="team-role-tag" style={{ backgroundColor: roleTagBg, color: roleTagText }}>
+                      {team.roleTag}
+                    </span>
+                    <span className="team-card-hover-cue">SELECT ↗</span>
                   </div>
-                ) : (
-                  // ===== FULL ROSTER ROW =====
-                  <div className="roster-row-content">
-                    <div className="roster-row-photo">
-                      <Image
-                        src={team.headPhoto}
-                        alt={team.headName}
-                        width={88}
-                        height={88}
-                        className="w-full h-full object-cover"
-                        unoptimized
-                      />
-                    </div>
-                    <div className="roster-row-main">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] font-mono font-bold tracking-widest uppercase" style={{ color: team.tagColor.bg === '#FBCA05' ? '#B87F00' : team.tagColor.bg }}>
-                          {team.roleTag}
-                        </span>
-                        <span className="text-[10px] font-mono text-[#8A817A]">·</span>
-                        <span className="text-[10px] font-mono text-[#8A817A]">
-                          {team.coordinatorsCount} coordinators · {team.membersCount} members
-                        </span>
-                      </div>
-                      <h3 className="roster-row-title">{team.name}</h3>
-                      <p className="roster-row-desc">{team.desc}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); exploreTeamDetail(team.index); }}
-                      className="roster-row-cta"
-                    >
-                      Explore Team
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
+                  <h3 className="team-card-title">{team.name}</h3>
+                  <p className="team-card-desc">{team.desc}</p>
+                  <div className="team-card-meta-bottom">
+                    <span className="team-meta-badge">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
                       </svg>
-                    </button>
+                      Lead: {team.headName}
+                    </span>
+                    <span className="team-meta-sep">·</span>
+                    <span className="team-meta-subtle">{team.coordinatorsCount} Coords · {team.membersCount} Members</span>
                   </div>
-                )}
+                </div>
+
+                <div className="team-card-responsibilities">
+                  <div className="team-pillars-header">
+                    <span className="team-pillars-label">6 responsibility areas</span>
+                    <span className="team-pillars-count-tag">6 PILLARS</span>
+                  </div>
+                  <div className="team-chips-container">
+                    {team.pillars.map((pillar) => (
+                      <span key={pillar.name} className="team-focus-tag">{pillar.name}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="team-card-action">
+                  <button type="button" className="team-action-button"
+                    onClick={(e) => { e.stopPropagation(); exploreTeamDetail(team.index); }}>
+                    Explore team
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             );
           })}
@@ -300,13 +221,9 @@ export function TeamStageManager({
 
         {/* DETAIL CANVAS */}
         <div id="team-detail-blueprint" className="detail-canvas" aria-hidden={viewMode !== 'detail'}>
-          {/* Hero band with real photo */}
           <div className="detail-hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(20,15,15,0) 30%, rgba(20,15,15,0.86) 100%), url(${activeTeam.heroImage})` }}>
             <div className="detail-hero-inner">
-              <span
-                className="detail-hero-tag"
-                style={{ backgroundColor: activeTeam.tagColor.bg, color: activeTeam.tagColor.text }}
-              >
+              <span className="detail-hero-tag" style={{ backgroundColor: activeTeam.tagColor.bg, color: activeTeam.tagColor.text }}>
                 {activeTeam.roleTag}
               </span>
               <h2 className="detail-hero-title">{activeTeam.name}</h2>
@@ -314,12 +231,9 @@ export function TeamStageManager({
             </div>
           </div>
 
-          {/* Responsibilities */}
           <div className="mt-8">
             <div className="flex items-baseline justify-between mb-4">
-              <h3 className="text-lg font-black text-[#222222] tracking-tight">
-                What we own
-              </h3>
+              <h3 className="text-lg font-black text-[#222222] tracking-tight">What we own</h3>
               <span className="text-[11px] font-mono text-[#8A817A]">6 responsibilities</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -335,18 +249,10 @@ export function TeamStageManager({
             </div>
           </div>
 
-          {/* Lead + Team Grid */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="lead-card">
               <div className="lead-photo">
-                <Image
-                  src={activeTeam.headPhoto}
-                  alt={activeTeam.headName}
-                  width={200}
-                  height={200}
-                  className="w-full h-full object-cover"
-                  unoptimized
-                />
+                <Image src={activeTeam.headPhoto} alt={activeTeam.headName} width={200} height={200} className="w-full h-full object-cover" unoptimized />
               </div>
               <div className="lead-label">Team Lead</div>
               <div className="lead-name">{activeTeam.headName}</div>
@@ -355,50 +261,34 @@ export function TeamStageManager({
 
             <div className="md:col-span-2 team-composition">
               <div className="flex items-baseline justify-between mb-4">
-                <h3 className="text-lg font-black text-[#222222] tracking-tight">
-                  Team composition
-                </h3>
-                <span className="text-[11px] font-mono text-[#8A817A]">
-                  {activeTeam.coordinatorsCount} coordinators · {activeTeam.membersCount} members
-                </span>
+                <h3 className="text-lg font-black text-[#222222] tracking-tight">Team composition</h3>
+                <span className="text-[11px] font-mono text-[#8A817A]">{activeTeam.coordinatorsCount} coordinators · {activeTeam.membersCount} members</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {Array.from({ length: activeTeam.coordinatorsCount }).map((_, i) => (
-                  <div key={`c-${i}`} className="avatar-chip avatar-coord" title={`Coordinator ${i + 1}`}>
-                    C{i + 1}
-                  </div>
+                  <div key={`c-${i}`} className="avatar-chip avatar-coord" title={`Coordinator ${i + 1}`}>C{i + 1}</div>
                 ))}
                 {Array.from({ length: activeTeam.membersCount }).map((_, i) => (
-                  <div key={`m-${i}`} className="avatar-chip avatar-member" title={`Member ${i + 1}`}>
-                    M{i + 1}
-                  </div>
+                  <div key={`m-${i}`} className="avatar-chip avatar-member" title={`Member ${i + 1}`}>M{i + 1}</div>
                 ))}
               </div>
               <div className="mt-6 pt-5 border-t border-[rgba(163,4,15,0.12)] flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <div className="text-xs font-mono uppercase tracking-widest text-[#5F5650]">
-                    Recruitment status
-                  </div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-[#5F5650]">Recruitment status</div>
                   <div className="text-sm font-semibold text-[#222222] mt-0.5">
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 align-middle animate-pulse" />
                     Applications open · Cohort 04
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleApplyOpen}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold bg-[#A3040F] hover:bg-[#C62F29] text-white shadow-sm transition-colors cursor-pointer active:scale-95"
-                >
+                <button type="button" onClick={handleApplyOpen}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold bg-[#A3040F] hover:bg-[#C62F29] text-white shadow-sm transition-colors cursor-pointer active:scale-95">
                   Apply to team
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Gallery */}
           <div className="mt-8">
             <div className="flex items-baseline justify-between mb-4">
               <h3 className="text-lg font-black text-[#222222] tracking-tight">Behind the scenes</h3>
@@ -407,14 +297,7 @@ export function TeamStageManager({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {activeTeam.galleryImages.map((src, idx) => (
                 <div key={idx} className="gallery-tile">
-                  <Image
-                    src={src}
-                    alt={`${activeTeam.name} moment ${idx + 1}`}
-                    width={400}
-                    height={400}
-                    className="w-full h-full object-cover"
-                    unoptimized
-                  />
+                  <Image src={src} alt={`${activeTeam.name} moment ${idx + 1}`} width={400} height={400} className="w-full h-full object-cover" unoptimized />
                 </div>
               ))}
             </div>
@@ -424,34 +307,18 @@ export function TeamStageManager({
 
       {/* APPLY MODAL */}
       {isApplyOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={modalTitleId}
+        <div role="dialog" aria-modal="true" aria-labelledby={modalTitleId}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-          onClick={() => setIsApplyOpen(false)}
-        >
-          <div
-            className="w-full max-w-lg bg-[#FFFDF8] rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-[rgba(163,4,15,0.15)]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setIsApplyOpen(false)}
-              className="absolute top-4 right-4 text-[#5F5650] hover:text-[#A3040F] text-2xl leading-none cursor-pointer"
-              aria-label="Close"
-            >×</button>
-
+          onClick={() => setIsApplyOpen(false)}>
+          <div className="w-full max-w-lg bg-[#FFFDF8] rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-[rgba(163,4,15,0.15)]"
+            onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setIsApplyOpen(false)}
+              className="absolute top-4 right-4 text-[#5F5650] hover:text-[#A3040F] text-2xl leading-none cursor-pointer" aria-label="Close">×</button>
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#A3040F]/10 text-[#A3040F] text-[10px] font-mono font-bold uppercase tracking-widest">
               Recruitment · Cohort 04
             </div>
-            <h2 id={modalTitleId} className="text-2xl font-black text-[#222222] mt-2 tracking-tight">
-              Apply to {activeTeam.applyTarget}
-            </h2>
-            <p className="text-sm text-[#5F5650] mt-1 leading-relaxed">
-              Submit your interest and our coordinators will review your profile within 3 working days.
-            </p>
-
+            <h2 id={modalTitleId} className="text-2xl font-black text-[#222222] mt-2 tracking-tight">Apply to {activeTeam.applyTarget}</h2>
+            <p className="text-sm text-[#5F5650] mt-1 leading-relaxed">Submit your interest and our coordinators will review your profile within 3 working days.</p>
             {applied ? (
               <div className="my-8 text-center p-6 bg-[#FBCA05]/10 border border-[#FBCA05]/40 rounded-xl">
                 <div className="text-sm font-bold text-[#A3040F]">Application received!</div>
@@ -461,70 +328,41 @@ export function TeamStageManager({
               <form onSubmit={handleFormSubmit} className="mt-5 space-y-3.5">
                 <label className="block">
                   <span className="block text-xs font-semibold text-[#222222] mb-1">Full name</span>
-                  <input
-                    type="text" required
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  <input type="text" required value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     placeholder="e.g. Priyanshu Sharma"
-                    className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]"
-                  />
+                    className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]" />
                 </label>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <label className="block">
                     <span className="block text-xs font-semibold text-[#222222] mb-1">Email</span>
-                    <input
-                      type="email" required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="you@galgotias.edu"
-                      className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]"
-                    />
+                      className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]" />
                   </label>
                   <label className="block">
                     <span className="block text-xs font-semibold text-[#222222] mb-1">WhatsApp</span>
-                    <input
-                      type="tel" required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    <input type="tel" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+91 98765 43210"
-                      className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]"
-                    />
+                      className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]" />
                   </label>
                 </div>
-
                 <label className="block">
                   <span className="block text-xs font-semibold text-[#222222] mb-1">Year &amp; Branch</span>
-                  <input
-                    type="text" required
-                    value={formData.yearBranch}
-                    onChange={(e) => setFormData({ ...formData, yearBranch: e.target.value })}
+                  <input type="text" required value={formData.yearBranch} onChange={(e) => setFormData({ ...formData, yearBranch: e.target.value })}
                     placeholder="e.g. 2nd Year · B.Tech CSE"
-                    className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]"
-                  />
+                    className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F]" />
                 </label>
-
                 <label className="block">
                   <span className="block text-xs font-semibold text-[#222222] mb-1">Why this team?</span>
-                  <textarea
-                    required rows={3}
-                    value={formData.interest}
-                    onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                  <textarea required rows={3} value={formData.interest} onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
                     placeholder="Tell us about your relevant skills or motivation..."
-                    className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F] resize-none"
-                  />
+                    className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F] resize-none" />
                 </label>
-
                 <div className="pt-2 flex items-center justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsApplyOpen(false)}
-                    className="px-4 py-2.5 text-xs font-bold text-[#5F5650] hover:text-[#222222] cursor-pointer"
-                  >Cancel</button>
-                  <button
-                    type="submit"
-                    className="px-6 py-2.5 text-xs font-bold bg-[#A3040F] hover:bg-[#C62F29] text-white rounded-lg cursor-pointer transition-colors"
-                  >Submit application →</button>
+                  <button type="button" onClick={() => setIsApplyOpen(false)}
+                    className="px-4 py-2.5 text-xs font-bold text-[#5F5650] hover:text-[#222222] cursor-pointer">Cancel</button>
+                  <button type="submit"
+                    className="px-6 py-2.5 text-xs font-bold bg-[#A3040F] hover:bg-[#C62F29] text-white rounded-lg cursor-pointer transition-colors">Submit application →</button>
                 </div>
               </form>
             )}
