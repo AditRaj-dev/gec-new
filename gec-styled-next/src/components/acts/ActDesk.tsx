@@ -8,7 +8,7 @@ import {
   useTransform,
   useReducedMotion,
 } from 'motion/react';
-import { DeskFolioPage, GEC_BOOKS } from '@/components/deskfolio';
+import { DeskFolioPage } from '@/components/deskfolio';
 
 // DeskFolioDesktop (loaded inside DeskFolioPage via its own ssr:false dynamic
 // import) sizes itself from STAGE_BASE_H (720) times a viewport-derived scale
@@ -18,7 +18,7 @@ import { DeskFolioPage, GEC_BOOKS } from '@/components/deskfolio';
 // this section shifts when the scene finishes loading.
 const DESK_SCENE_HEIGHT = 'clamp(420px, 62vw, 720px)';
 
-export function ActDesk() {
+export function ActDesk({ programmeCount }: { programmeCount: number }) {
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -26,8 +26,6 @@ export function ActDesk() {
     offset: ['start end', 'center center'],
   });
   const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
-
-  const programmeCount = GEC_BOOKS.length;
 
   return (
     <section

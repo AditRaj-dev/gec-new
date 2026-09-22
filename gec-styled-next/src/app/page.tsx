@@ -30,7 +30,7 @@ export default async function Home() {
         noun="programmes"
         effect="wipe"
       />
-      <ActDesk />
+      <ActDesk programmeCount={initiatives.length} />
       <CurtainInterstitial
         headline="Every issue we ever sent."
         count={GEC_DISPATCH_ARCHIVE.length}
