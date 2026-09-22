@@ -2,6 +2,10 @@ import { getInitiatives, getTeams, getStories } from '@/lib/api';
 import { HERO_CAMPAIGNS } from '@/lib/siteContent';
 import { ActOpening } from '@/components/acts/ActOpening';
 import { ActCount } from '@/components/acts/ActCount';
+import { ActDesk } from '@/components/acts/ActDesk';
+import { ActShelf } from '@/components/acts/ActShelf';
+import { CurtainInterstitial } from '@/components/CurtainInterstitial';
+import { GEC_DISPATCH_ARCHIVE } from '@/components/NewsletterSection';
 
 export default async function Home() {
   const [initiatives, teams, stories] = await Promise.all([
@@ -20,6 +24,20 @@ export default async function Home() {
           { label: 'Ventures', value: String(stories.length) },
         ]}
       />
+      <CurtainInterstitial
+        headline="Every programme, one living desk."
+        count={initiatives.length}
+        noun="programmes"
+        effect="wipe"
+      />
+      <ActDesk />
+      <CurtainInterstitial
+        headline="Every issue we ever sent."
+        count={GEC_DISPATCH_ARCHIVE.length}
+        noun="dispatches"
+        effect="wipe"
+      />
+      <ActShelf items={GEC_DISPATCH_ARCHIVE} />
     </main>
   );
 }
