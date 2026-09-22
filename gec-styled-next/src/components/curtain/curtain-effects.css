@@ -36,4 +36,9 @@
 .gc-seam {
   position: absolute; left: 0; right: 0; top: 50%; height: 2px;
   background: var(--gec-gold); transform: translateY(-1px); pointer-events: none;
+  /* Invisible at rest (--shut is 0 or 1), visible while travelling in
+     between — a parabola peaking at 1 when --shut = 0.5, driven purely by
+     the custom property so it works with a MotionValue-backed --shut with
+     no JS re-render needed. */
+  opacity: clamp(0, calc(var(--shut) * (1 - var(--shut)) * 4), 1);
 }

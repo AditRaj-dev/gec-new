@@ -193,6 +193,11 @@ const DOCK_HANDOFF_DELAY_MS =
   DOCK_CROSSFADE_START_MS + DOCK_CROSSFADE_DURATION_MS + 40;
 const DOCK_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
+// Must match the panels' own `duration-700` transition-transform class below —
+// this is how long the seam stays visible: only while the panels are actually
+// travelling, not for the rest of the unmount handoff.
+const PANEL_TRAVEL_DURATION_MS = 700;
+
 /**
  * BrandEntranceCurtain
  *
@@ -210,6 +215,7 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
 }) => {
   const [shouldRender, setShouldRender] = useState(false);
   const [curtainOpen, setCurtainOpen] = useState(false);
+  const [isTraveling, setIsTraveling] = useState(false);
   const [isUnmounted, setIsUnmounted] = useState(false);
   const [frame, setFrame] = useState(0);
   const [flightStyle, setFlightStyle] = useState<React.CSSProperties>({});
@@ -218,6 +224,7 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
   const hasTriggeredDockRef = useRef(false);
   const rafRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
+  const travelTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const bubbleMorphers = useMemo(
     () => ({
@@ -279,7 +286,12 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
     const handleReplay = () => {
       hasTriggeredDockRef.current = false;
       startTimeRef.current = null;
+      if (travelTimeoutRef.current) {
+        clearTimeout(travelTimeoutRef.current);
+        travelTimeoutRef.current = null;
+      }
       setCurtainOpen(false);
+      setIsTraveling(false);
       setIsUnmounted(false);
       setFlightStyle({});
       setFrame(0);
@@ -295,6 +307,10 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
     return () => {
       window.cancelAnimationFrame(initFrame);
       window.removeEventListener('gec-replay-intro', handleReplay);
+      if (travelTimeoutRef.current) {
+        clearTimeout(travelTimeoutRef.current);
+        travelTimeoutRef.current = null;
+      }
     };
   }, [initCheck, targetSlotId]);
 
@@ -303,6 +319,14 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
     if (hasTriggeredDockRef.current) return;
     hasTriggeredDockRef.current = true;
     setCurtainOpen(true);
+
+    // The seam is only meaningful while the panels are physically travelling
+    // — gate it on that window specifically, not on `curtainOpen`, which
+    // stays true for the whole (longer) unmount handoff.
+    setIsTraveling(true);
+    travelTimeoutRef.current = setTimeout(() => {
+      setIsTraveling(false);
+    }, PANEL_TRAVEL_DURATION_MS);
 
     const targetLogo = document.getElementById(targetSlotId);
     const movingBox = movingBoxRef.current;
@@ -558,8 +582,11 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
           hero bisects the logo; a moving one reads as the split opening. */}
       <div
         aria-hidden
-        className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[rgba(163,4,15,0.28)] transition-opacity duration-300"
-        style={{ opacity: curtainOpen ? 1 : 0 }}
+        className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 transition-opacity duration-300"
+        style={{
+          backgroundColor: 'color-mix(in srgb, var(--gec-crimson) 28%, transparent)',
+          opacity: isTraveling ? 1 : 0,
+        }}
       />
 
       {/* Skip Button */}

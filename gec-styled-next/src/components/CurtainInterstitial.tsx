@@ -1,13 +1,11 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
   useScroll,
   useTransform,
   useReducedMotion,
-  useMotionValueEvent,
   motion,
-  type MotionValue,
 } from 'motion/react';
 import { CurtainPanels, type CurtainEffect } from './curtain/panels';
 import {
@@ -66,7 +64,7 @@ export function CurtainInterstitial({
   return (
     <div ref={ref} className="relative h-[180vh]">
       <div className="sticky top-0 h-[100dvh] overflow-hidden">
-        <CurtainShell shut={shut} effect={effect} />
+        <CurtainPanels effect={effect} shut={shut} showSeam />
         <motion.div
           style={{ opacity: hold, y: lift }}
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 px-6 text-center"
@@ -81,17 +79,4 @@ export function CurtainInterstitial({
       </div>
     </div>
   );
-}
-
-/** Bridges a MotionValue to the CSS custom property the effects read. */
-function CurtainShell({
-  shut,
-  effect,
-}: {
-  shut: MotionValue<number>;
-  effect: CurtainEffect;
-}) {
-  const [value, setValue] = useState(0);
-  useMotionValueEvent(shut, 'change', setValue);
-  return <CurtainPanels effect={effect} shut={value} showSeam />;
 }
