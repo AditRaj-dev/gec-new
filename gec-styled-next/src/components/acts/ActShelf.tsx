@@ -19,16 +19,29 @@ const NewsletterBookshelf = dynamic(
   { ssr: false }
 );
 
-// NewsletterBookshelf reserves min-h-[580px]/md:min-h-[620px] for its own
-// "persistent stage" plus a ~52px top rail. An explicit height on this
-// wrapper — the same value whether the dynamic import is still loading or
-// the widget has mounted — keeps that space constant so nothing around the
-// section shifts when it finishes loading.
-const SHELF_WIDGET_HEIGHT = 'clamp(480px, 58vw, 620px)';
+// NewsletterBookshelf's own root ("persistent stage" + top rail,
+// newsletter-bookshelf.tsx:608 declares `min-h-[580px] md:min-h-[620px]`
+// on the stage itself, on top of a ~52px top rail plus borders above it)
+// enforces a real minimum height of ~632px below the 768px breakpoint and
+// ~672px at or above it, regardless of what this wrapper offers — measured
+// live at 768px, the mounted widget is 675px tall. This wrapper's floor is
+// set above that measured case with headroom, and must never sit below the
+// widget's own min-height at any width, or the mounted widget's height
+// wins over ours and the bottom gets clipped by this section's
+// overflow-hidden sticky viewport. If NewsletterBookshelf's min-h values
+// change, this floor must move with them.
+const SHELF_WIDGET_HEIGHT = 'clamp(700px, 58vw, 740px)';
 
-// The track is rendered deliberately wider than the viewport so vertical
-// scroll has real horizontal shelf to pan across, at both 1440px and 768px.
-const SHELF_TRACK_WIDTH = 'min(1700px, 220vw)';
+// NewsletterBookshelf lays its spines out in a single row — each spine is
+// 46-55px wide with a 14px gap at >=640px widths, inside ~32px of
+// container padding (newsletter-bookshelf.tsx ~608-660). Deriving the
+// track's width from items.length, instead of a flat viewport-relative
+// guess, keeps how far the shelf travels proportional to how much shelf
+// there actually is: today's 12-item archive doesn't pan past its own
+// content, and the width — and therefore the travel — grows automatically
+// as the dispatch archive grows.
+const SHELF_SPINE_ALLOWANCE = 70; // px/item: widest spine (55) + gap (14) + rounding
+const SHELF_TRACK_CHROME = 120; // px: container padding + safety margin so NewsletterBookshelf's own internal overflow-x-auto row never has to activate
 
 export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -37,9 +50,16 @@ export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
   const [travel, setTravel] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
-  // Size the negative x range from the track's real rendered width, not a
-  // guessed pixel constant — it changes with viewport width and with
-  // SHELF_TRACK_WIDTH's own clamp.
+  // Content-driven width, not a flat viewport-relative guess — see
+  // SHELF_SPINE_ALLOWANCE/SHELF_TRACK_CHROME above.
+  const trackWidth = items.length * SHELF_SPINE_ALLOWANCE + SHELF_TRACK_CHROME;
+
+  // Size the negative x range from the track's real rendered width. The
+  // ResizeObserver below still matters even though trackWidth is now a
+  // fixed function of items.length and viewport-independent: it re-reads
+  // viewport.clientWidth whenever the viewport is resized, which is what
+  // actually changes travel across breakpoints (trackWidth itself doesn't
+  // depend on viewport width, only on item count).
   useLayoutEffect(() => {
     const track = trackRef.current;
     const viewport = viewportRef.current;
@@ -147,10 +167,18 @@ export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
         className="sticky top-0 flex h-screen flex-col justify-center gap-6 overflow-hidden py-10"
       >
         {heading}
-        <motion.div ref={trackRef} style={{ x }} className="flex w-max">
+        <motion.div
+          ref={trackRef}
+          style={{ x }}
+          // When the archive is short enough that the track already fits
+          // the viewport (travel === 0, nothing to pan), center it like
+          // the heading/CTA above and below instead of leaving it hugging
+          // the left edge.
+          className={travel === 0 ? 'mx-auto flex w-max' : 'flex w-max'}
+        >
           <div
             className="relative"
-            style={{ width: SHELF_TRACK_WIDTH, height: SHELF_WIDGET_HEIGHT }}
+            style={{ width: trackWidth, height: SHELF_WIDGET_HEIGHT }}
           >
             <NewsletterBookshelf items={items} brand="GEC DISPATCH" />
           </div>
