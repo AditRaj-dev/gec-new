@@ -1,0 +1,48 @@
+/* Act II marquee — constant-velocity CSS transform loop, duplicated track. */
+.act-count__viewport {
+  overflow: hidden;
+}
+
+.act-count__marquee {
+  display: flex;
+  width: max-content;
+  animation: gec-marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.act-count__track {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.act-count__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0 clamp(1.75rem, 3vw, 3.25rem);
+  white-space: nowrap;
+}
+
+@keyframes gec-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-count__marquee {
+    animation: none;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .act-count__track {
+    flex-wrap: wrap;
+    flex-shrink: 1;
+  }
+  .act-count__track[data-duplicate='true'] {
+    display: none;
+  }
+}
