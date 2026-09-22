@@ -32,51 +32,81 @@ const NewsletterBookshelf = dynamic(
 // change, this floor must move with them.
 const SHELF_WIDGET_HEIGHT = 'clamp(700px, 58vw, 740px)';
 
-// NewsletterBookshelf lays its spines out in a single row — each spine is
-// 46-55px wide with a 14px gap at >=640px widths, inside ~32px of
-// container padding (newsletter-bookshelf.tsx ~608-660). Deriving the
-// track's width from items.length, instead of a flat viewport-relative
-// guess, keeps how far the shelf travels proportional to how much shelf
-// there actually is: today's 12-item archive doesn't pan past its own
-// content, and the width — and therefore the travel — grows automatically
-// as the dispatch archive grows.
-const SHELF_SPINE_ALLOWANCE = 70; // px/item: widest spine (55) + gap (14) + rounding
-const SHELF_TRACK_CHROME = 120; // px: container padding + safety margin so NewsletterBookshelf's own internal overflow-x-auto row never has to activate
+// The one place in NewsletterBookshelf's tree with this utility class is
+// its own internal cover row (newsletter-bookshelf.tsx:629,
+// `overflow-x-auto`) — the element that actually lays the covers out
+// side by side. Selecting it structurally, rather than guessing a
+// per-item pixel width, means we read the real DOM instead of duplicating
+// a number that lives in a file we don't own and can't edit.
+const COVER_ROW_SELECTOR = '[class*="overflow-x-auto"]';
+
+// The exit flip fires in the last stretch of this pinned section
+// regardless of travel, so the act still has a dominant motion beat at
+// widths where the shelf already fits and there is nothing to pan.
+const EXIT_FLIP_RANGE: [number, number] = [0.82, 1];
 
 export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [travel, setTravel] = useState(0);
+  // Real measured width of NewsletterBookshelf's own cover row, or null
+  // before it's known (nothing mounted yet / not found). Also drives the
+  // track's own rendered width, so the pan visually reveals more covers
+  // instead of just sliding a same-width box around.
+  const [contentWidth, setContentWidth] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Content-driven width, not a flat viewport-relative guess — see
-  // SHELF_SPINE_ALLOWANCE/SHELF_TRACK_CHROME above.
-  const trackWidth = items.length * SHELF_SPINE_ALLOWANCE + SHELF_TRACK_CHROME;
-
-  // Size the negative x range from the track's real rendered width. The
-  // ResizeObserver below still matters even though trackWidth is now a
-  // fixed function of items.length and viewport-independent: it re-reads
-  // viewport.clientWidth whenever the viewport is resized, which is what
-  // actually changes travel across breakpoints (trackWidth itself doesn't
-  // depend on viewport width, only on item count).
+  // Nothing here is forced or guessed: the cover row is left to size
+  // itself (NewsletterBookshelf renders exactly as it does on its other
+  // routes), and we read its real scrollWidth — which reports full content
+  // width even while the row's own overflow-x-auto would otherwise clip
+  // it. Travel is therefore genuinely content-driven: it is legitimately
+  // zero when the covers already fit the viewport (today's 12-item
+  // archive at 1440px, for example), and grows on its own as the archive
+  // grows, with no constant here to fall out of sync with
+  // newsletter-bookshelf.tsx. Do not reintroduce a forced/guessed width to
+  // manufacture travel — a sparse archive is supposed to sit still.
   useLayoutEffect(() => {
-    const track = trackRef.current;
+    const container = containerRef.current;
     const viewport = viewportRef.current;
-    if (!track || !viewport) return;
+    if (!container || !viewport) return;
 
-    const measure = () => {
-      const overflow = track.scrollWidth - viewport.clientWidth;
-      setTravel(overflow > 0 ? overflow : 0);
-    };
-    measure();
-
+    let coverRow: HTMLElement | null = null;
     const ro = new ResizeObserver(measure);
-    ro.observe(track);
+
+    function measure() {
+      const row =
+        coverRow ?? container!.querySelector<HTMLElement>(COVER_ROW_SELECTOR);
+      if (row && row !== coverRow) {
+        coverRow = row;
+        ro.observe(row);
+      }
+      // Before NewsletterBookshelf's ssr:false chunk has mounted, `row` is
+      // null — width unknown, not zero content. Report that as "no travel
+      // yet" without ever producing a NaN/negative jump: contentWidth
+      // stays null (track keeps its safe full-width fallback) until a real
+      // measurement exists.
+      const width = row ? row.scrollWidth : null;
+      setContentWidth(width);
+      const overflow = (width ?? 0) - viewport!.clientWidth;
+      setTravel(overflow > 0 ? overflow : 0);
+    }
+
+    measure();
     ro.observe(viewport);
+
+    // The cover row doesn't exist in the DOM until the dynamic import
+    // resolves; a MutationObserver on the container catches that mount
+    // (and any later reshuffle) so we start observing the real row instead
+    // of only ever seeing the pre-mount "not found" state.
+    const mo = new MutationObserver(measure);
+    mo.observe(container, { childList: true, subtree: true });
+
     window.addEventListener('resize', measure);
     return () => {
       ro.disconnect();
+      mo.disconnect();
       window.removeEventListener('resize', measure);
     };
   }, []);
@@ -86,6 +116,13 @@ export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
     offset: ['start start', 'end end'],
   });
   const x = useTransform(scrollYProgress, [0, 1], [0, -travel]);
+
+  // The act's second beat: one cover flips open as the section is
+  // scrolled past, independent of travel — so at widths where the shelf
+  // already fits (travel === 0) the act still has a dominant motion idea
+  // instead of sitting motionless.
+  const exitFlipRotate = useTransform(scrollYProgress, EXIT_FLIP_RANGE, [0, 180]);
+  const flipItem = items[0];
 
   const heading = (
     <div className="mx-auto flex max-w-[52ch] flex-col gap-3 px-6 text-center">
@@ -168,22 +205,72 @@ export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
       >
         {heading}
         <motion.div
-          ref={trackRef}
-          style={{ x }}
+          style={{
+            x,
+            // Before a real measurement exists, the track keeps its
+            // normal full-row width (matches the heading/CTA) as a safe
+            // fallback. Once NewsletterBookshelf has mounted and its cover
+            // row has been measured, the track is sized to that real
+            // content width — whether or not it ends up overflowing the
+            // viewport — so a fitting shelf is centered at its own size
+            // rather than stretched, and an overflowing one is exactly as
+            // wide as its covers, not a guess.
+            width: contentWidth ?? undefined,
+          }}
           // When the archive is short enough that the track already fits
           // the viewport (travel === 0, nothing to pan), center it like
           // the heading/CTA above and below instead of leaving it hugging
           // the left edge.
-          className={travel === 0 ? 'mx-auto flex w-max' : 'flex w-max'}
+          className={travel === 0 ? 'mx-auto flex' : 'flex'}
         >
           <div
-            className="relative"
-            style={{ width: trackWidth, height: SHELF_WIDGET_HEIGHT }}
+            ref={containerRef}
+            className="relative w-full"
+            style={{ height: SHELF_WIDGET_HEIGHT }}
           >
             <NewsletterBookshelf items={items} brand="GEC DISPATCH" />
           </div>
         </motion.div>
         {cta}
+
+        {flipItem && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-6 right-6"
+            style={{ width: 96, height: 128, perspective: 1200 }}
+          >
+            <motion.div
+              style={{
+                rotateY: exitFlipRotate,
+                transformStyle: 'preserve-3d',
+              }}
+              className="relative h-full w-full"
+            >
+              <div
+                className="absolute inset-0 flex flex-col justify-between rounded-lg p-2 [backface-visibility:hidden]"
+                style={{
+                  background: flipItem.color ?? 'var(--gec-crimson)',
+                  boxShadow: 'var(--elev-lifted)',
+                }}
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.06em] text-white/80">
+                  {flipItem.editionNumber ?? flipItem.date}
+                </span>
+                <span className="font-display text-xs font-bold leading-tight text-white">
+                  {flipItem.title}
+                </span>
+              </div>
+              <div
+                className="surface-card absolute inset-0 flex items-center justify-center rounded-lg p-2 text-center [backface-visibility:hidden] [transform:rotateY(180deg)]"
+                style={{ boxShadow: 'var(--elev-lifted)' }}
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.06em] text-[var(--gec-ink-muted)]">
+                  Open the shelf →
+                </span>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </div>
     </section>
   );
