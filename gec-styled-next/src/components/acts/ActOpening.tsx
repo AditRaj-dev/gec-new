@@ -128,10 +128,7 @@ export function ActOpening({
               {/* Right: featured card */}
               <div
                 className="surface-card relative flex flex-col gap-5 rounded-2xl p-7"
-                style={{
-                  background: 'var(--gec-surface-card)',
-                  boxShadow: 'var(--elev-lifted)',
-                }}
+                style={{ boxShadow: 'var(--elev-lifted)' }}
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--gec-ink-muted)]">

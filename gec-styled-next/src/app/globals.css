@@ -87,6 +87,9 @@
   --dur-ui:      180ms;
   --dur-layout:  320ms;
   --dur-act:     480ms;
+  /* Ambient loop duration (e.g. Act II's marquee) — deliberately outside the
+     interaction-timing scale above. Do not "fix" this down to --dur-act. */
+  --dur-marquee: 28s;
   --ease-out:    cubic-bezier(0.165, 0.84, 0.44, 1);
 
   /* z-index scale — semantic, never arbitrary */
@@ -119,6 +122,7 @@ p { text-wrap: pretty; }
 .surface-cream { background: var(--gec-canvas); }
 .surface-sand  { background: var(--gec-surface-sand); }
 .surface-crimson { background: var(--gec-crimson); color: #FFFFFF; }
+.surface-card  { background: var(--gec-surface-card); }
 
 /* blueprint detail layer — the project's own language (section-id-stamp,
    coordinate stamps). Use DELIBERATELY and SPARINGLY: a stamp above every

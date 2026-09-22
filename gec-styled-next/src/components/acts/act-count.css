@@ -6,7 +6,8 @@
 .act-count__marquee {
   display: flex;
   width: max-content;
-  animation: gec-marquee 28s linear infinite;
+  /* --dur-marquee (globals.css) — ambient loop, outside the DURATION scale. */
+  animation: gec-marquee var(--dur-marquee) linear infinite;
   will-change: transform;
 }
 
