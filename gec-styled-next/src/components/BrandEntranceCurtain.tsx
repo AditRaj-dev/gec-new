@@ -536,7 +536,7 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
     >
       {/* Top Split Panel */}
       <div
-        className="absolute inset-x-0 top-0 h-1/2 origin-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] border-b border-[rgba(163,4,15,0.14)]"
+        className="absolute inset-x-0 top-0 h-1/2 origin-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
         style={{
           backgroundColor,
           transform: curtainOpen ? 'translateY(-100%)' : 'translateY(0%)',
@@ -546,12 +546,20 @@ export const BrandEntranceCurtain: React.FC<BrandEntranceCurtainProps> = ({
 
       {/* Bottom Split Panel */}
       <div
-        className="absolute inset-x-0 bottom-0 h-1/2 origin-bottom transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] border-t border-[rgba(163,4,15,0.14)]"
+        className="absolute inset-x-0 bottom-0 h-1/2 origin-bottom transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
         style={{
           backgroundColor,
           transform: curtainOpen ? 'translateY(100%)' : 'translateY(0%)',
           pointerEvents: curtainOpen ? 'none' : 'auto',
         }}
+      />
+
+      {/* Seam — visible only while the panels travel. A static line across the
+          hero bisects the logo; a moving one reads as the split opening. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[rgba(163,4,15,0.28)] transition-opacity duration-300"
+        style={{ opacity: curtainOpen ? 1 : 0 }}
       />
 
       {/* Skip Button */}

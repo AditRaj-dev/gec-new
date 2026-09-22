@@ -1,0 +1,39 @@
+.gc-panels { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.gc-panel  { position: absolute; background: var(--gec-crimson); will-change: transform, clip-path; }
+
+/* doors — vertical: two panels meet in the middle */
+.gc-doors-v .gc-panel-a { inset: 0 0 auto 0; height: 50.5%; transform: translateY(calc((var(--shut) - 1) * 100%)); }
+.gc-doors-v .gc-panel-b { inset: auto 0 0 0; height: 50.5%; transform: translateY(calc((1 - var(--shut)) * 100%)); }
+
+/* doors — horizontal */
+.gc-doors-h .gc-panel-a { inset: 0 auto 0 0; width: 50.5%; transform: translateX(calc((var(--shut) - 1) * 100%)); }
+.gc-doors-h .gc-panel-b { inset: 0 0 0 auto; width: 50.5%; transform: translateX(calc((1 - var(--shut)) * 100%)); }
+
+/* wipe — one angled panel sweeps across */
+.gc-wipe .gc-panel-a { inset: -14% -22%; transform: translateX(calc((var(--shut) - 1) * 118%)) skewX(-11deg); }
+.gc-wipe .gc-panel-b { display: none; }
+
+/* iris — circle grows from centre */
+.gc-iris .gc-panel-a { inset: 0; clip-path: circle(calc(var(--shut) * 78%) at 50% 50%); }
+.gc-iris .gc-panel-b { display: none; }
+
+/* blinds — slats scale shut */
+.gc-blinds .gc-panel { left: 0; right: 0; height: 20%; transform: scaleY(var(--shut)); transform-origin: top; }
+.gc-blinds .gc-panel:nth-child(1) { top: 0; }
+.gc-blinds .gc-panel:nth-child(2) { top: 20%; }
+.gc-blinds .gc-panel:nth-child(3) { top: 40%; }
+.gc-blinds .gc-panel:nth-child(4) { top: 60%; }
+.gc-blinds .gc-panel:nth-child(5) { top: 80%; }
+
+/* stagger-wipe — columns cascade down */
+.gc-stagger-wipe .gc-panel { top: 0; bottom: 0; width: 20.4%; transform: translateY(calc((var(--shut) - 1) * 101%)); }
+.gc-stagger-wipe .gc-panel:nth-child(1) { left: 0; }
+.gc-stagger-wipe .gc-panel:nth-child(2) { left: 20%; }
+.gc-stagger-wipe .gc-panel:nth-child(3) { left: 40%; }
+.gc-stagger-wipe .gc-panel:nth-child(4) { left: 60%; }
+.gc-stagger-wipe .gc-panel:nth-child(5) { left: 80%; }
+
+.gc-seam {
+  position: absolute; left: 0; right: 0; top: 50%; height: 2px;
+  background: var(--gec-gold); transform: translateY(-1px); pointer-events: none;
+}
