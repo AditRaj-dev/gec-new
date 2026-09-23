@@ -342,7 +342,7 @@ export function TeamStageManager({
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="detail-responsibilities mt-8">
             <div className="flex items-baseline justify-between mb-4">
               <h3 className="text-lg font-black text-[#222222] tracking-tight">What we own</h3>
               <span className="text-[11px] font-mono text-[#8A817A]">6 responsibilities</span>
@@ -360,7 +360,7 @@ export function TeamStageManager({
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="detail-people mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="lead-card">
               <div className="lead-photo">
                 <Image src={activeTeam.headPhoto} alt={activeTeam.headName} width={200} height={200} className="w-full h-full object-cover" unoptimized />
@@ -400,7 +400,7 @@ export function TeamStageManager({
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="detail-gallery mt-8">
             <div className="flex items-baseline justify-between mb-4">
               <h3 className="text-lg font-black text-[#222222] tracking-tight">Behind the scenes</h3>
               <span className="text-[11px] font-mono text-[#8A817A]">Snapshots from the field</span>
