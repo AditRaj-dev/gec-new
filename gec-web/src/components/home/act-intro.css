@@ -39,23 +39,6 @@
   height: 100%;
 }
 
-/* The home act presents Stage Manager as a window floating on the desktop,
-   echoing the compact macOS composition instead of filling every edge. */
-@media (min-width: 901px) {
-  .stage-act__manager {
-    display: grid;
-    place-items: center;
-    box-sizing: border-box;
-    padding: clamp(28px, 5dvh, 52px) clamp(28px, 4vw, 64px);
-  }
-
-  .stage-act__manager .team-stage-wrapper {
-    width: min(92vw, calc(82dvh * 1.486), 1130px);
-    height: auto;
-    aspect-ratio: 1.486;
-  }
-}
-
 .stage-act__manager .team-stage-manager-section .team-item-card {
   transition-property: transform, opacity;
   transition-duration: var(--dur-act);
