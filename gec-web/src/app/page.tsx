@@ -1,33 +1,25 @@
-import { getInitiatives, getTeams, getStories } from '@/lib/api';
+import { getInitiatives, getTeams } from '@/lib/api';
 import { HERO_CAMPAIGNS } from '@/lib/siteContent';
 import { Hero } from '@/components/home/Hero';
 import { Happening } from '@/components/home/Happening';
-import { ActCount } from '@/components/acts/ActCount';
+import { Impact } from '@/components/home/Impact';
+import { Milestones } from '@/components/home/Milestones';
+import { Speakers } from '@/components/home/Speakers';
+import { Partners } from '@/components/home/Partners';
+import { FinalCta } from '@/components/home/FinalCta';
 import { ActDesk } from '@/components/acts/ActDesk';
 import { ActShelf } from '@/components/acts/ActShelf';
 import { ActStage } from '@/components/acts/ActStage';
-import { ActClose } from '@/components/acts/ActClose';
 import { CurtainInterstitial } from '@/components/CurtainInterstitial';
 import { GEC_DISPATCH_ARCHIVE } from '@/components/NewsletterSection';
 
 export default async function Home() {
-  const [initiatives, teams, stories] = await Promise.all([
-    getInitiatives(),
-    getTeams(),
-    getStories(),
-  ]);
+  const [initiatives, teams] = await Promise.all([getInitiatives(), getTeams()]);
 
   return (
     <main aria-label="Galgotias Entrepreneurship Cell">
       <Hero campaigns={HERO_CAMPAIGNS} />
       <Happening />
-      <ActCount
-        stats={[
-          { label: 'Teams', value: String(teams.length) },
-          { label: 'Programmes', value: String(initiatives.length) },
-          { label: 'Ventures', value: String(stories.length) },
-        ]}
-      />
       <CurtainInterstitial
         headline="Every programme, one living desk."
         count={initiatives.length}
@@ -35,6 +27,8 @@ export default async function Home() {
         effect="wipe"
       />
       <ActDesk programmeCount={initiatives.length} />
+      <Impact />
+      <Milestones />
       <CurtainInterstitial
         headline="Every issue we ever sent."
         count={GEC_DISPATCH_ARCHIVE.length}
@@ -42,6 +36,7 @@ export default async function Home() {
         effect="wipe"
       />
       <ActShelf items={GEC_DISPATCH_ARCHIVE} />
+      <Speakers />
       <CurtainInterstitial
         headline="The people behind all of it."
         count={teams.length}
@@ -49,7 +44,8 @@ export default async function Home() {
         effect="doors-h"
       />
       <ActStage teams={teams} />
-      <ActClose />
+      <Partners />
+      <FinalCta />
     </main>
   );
 }

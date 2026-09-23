@@ -1,0 +1,79 @@
+/* Milestones — styled.html 2726–2804. */
+
+.milestones__intro {
+  margin-bottom: 32px;
+}
+
+.milestones__heading {
+  color: var(--gec-ink);
+  margin-top: 6px;
+}
+
+.milestones__lede {
+  margin-top: 8px;
+}
+
+.milestones__card {
+  background: #fffdf8;
+}
+
+.milestones__thumb {
+  height: 140px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gec-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.milestones__thumb--crimson {
+  background: rgba(163, 4, 15, 0.06);
+}
+
+.milestones__thumb--blue {
+  background: rgba(31, 126, 192, 0.06);
+}
+
+.milestones__thumb--gold {
+  background: rgba(251, 202, 5, 0.08);
+}
+
+.milestones__meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.milestones__place {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--gec-ink-muted);
+}
+
+.milestones__title {
+  font-size: 16px;
+  color: var(--gec-ink);
+  margin-bottom: 6px;
+}
+
+.milestones__desc {
+  font-size: 12px;
+  color: var(--gec-ink-muted);
+  line-height: 1.5;
+}
+
+.milestones__footer {
+  margin-top: 14px;
+  border-top: 1px solid var(--gec-border-subtle);
+  padding-top: 10px;
+}
+
+.milestones__relive-link {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--gec-crimson);
+  cursor: pointer;
+}
