@@ -11,7 +11,6 @@ const SLAT_EFFECTS: CurtainEffect[] = ['blinds', 'stagger-wipe'];
 export function CurtainPanels({
   effect,
   shut,
-  showSeam = false,
 }: {
   effect: CurtainEffect;
   /**
@@ -20,7 +19,6 @@ export function CurtainPanels({
    * React re-render on every frame — see CurtainInterstitial.
    */
   shut: MotionValue<number> | number;
-  showSeam?: boolean;
 }) {
   const count = SLAT_EFFECTS.includes(effect) ? 5 : 2;
   return (
@@ -32,9 +30,6 @@ export function CurtainPanels({
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className={`gc-panel gc-panel-${i === 0 ? 'a' : 'b'}`} />
       ))}
-      {/* Visibility is CSS-driven off --shut (see .gc-seam) so it works
-          whether `shut` above is a plain number or a MotionValue. */}
-      {showSeam && <div className="gc-seam" />}
     </motion.div>
   );
 }

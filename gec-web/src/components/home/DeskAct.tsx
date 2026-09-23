@@ -26,7 +26,7 @@ export function DeskAct({ programmeCount }: { programmeCount: number }) {
         </div>
       </div>
       <FullViewportAct surface="cream" runway={2.4} label="the initiatives desk" id="desk">
-        {() => <DeskFolioPage />}
+        {() => <DeskFolioPage fillViewport />}
       </FullViewportAct>
       <div className="act-exit surface-cream">
         <ViewTransitionLink href="/initiatives" className="gec-btn btn-outline-ink">

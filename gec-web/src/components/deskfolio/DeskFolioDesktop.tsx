@@ -1099,7 +1099,7 @@ function FlightCoverArtwork({
   )
 }
 
-export function DeskFolioDesktop() {
+export function DeskFolioDesktop({ fillViewport = false }: { fillViewport?: boolean }) {
   const [viewport, setViewport] = useState(() => ({
     w: typeof window === 'undefined' ? 1200 : window.innerWidth,
     h: typeof window === 'undefined' ? 900 : window.innerHeight,
@@ -1152,8 +1152,11 @@ export function DeskFolioDesktop() {
   const stageScale = useMemo(() => {
     const pad = viewport.w < 768 ? 0 : 16
     const availableW = viewport.w - pad
-    return Math.min(1, Math.max(0.24, Math.round((availableW / STAGE_BASE_W) * 1000) / 1000))
-  }, [viewport.w])
+    const widthScale = availableW / STAGE_BASE_W
+    const heightScale = viewport.h / STAGE_BASE_H
+    const scale = fillViewport ? Math.min(widthScale, heightScale) : Math.min(1, widthScale)
+    return Math.max(0.24, Math.round(scale * 1000) / 1000)
+  }, [fillViewport, viewport.h, viewport.w])
 
   const bgTheme = GEC_MAT_THEMES.find((theme) => theme.id === 'gec-crimson') ?? GEC_MAT_THEMES[0]
 
@@ -1274,20 +1277,22 @@ export function DeskFolioDesktop() {
   const lampOverride = matOverrides['desk-lamp']
 
   return (
-    <section className="deskfolio-live">
+    <section className={`deskfolio-live ${fillViewport ? 'deskfolio-live--fill' : ''}`}>
         <div
-          className="df-stage-scale-wrapper"
+          className={`df-stage-scale-wrapper ${fillViewport ? 'df-stage-scale-wrapper--fill' : ''}`}
           style={{
             width: '100vw',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'flex-start',
+            alignItems: fillViewport ? 'center' : 'flex-start',
             overflow: 'hidden',
-            minHeight: `${Math.round(STAGE_BASE_H * stageScale)}px`,
-            height: `${Math.round(STAGE_BASE_H * stageScale)}px`,
+            minHeight: fillViewport ? '100dvh' : `${Math.round(STAGE_BASE_H * stageScale)}px`,
+            height: fillViewport ? '100dvh' : `${Math.round(STAGE_BASE_H * stageScale)}px`,
             margin: '0 0 0 50%',
             transform: 'translateX(-50%)',
             position: 'relative',
+            backgroundColor: fillViewport ? bgTheme.style.backgroundColor : undefined,
+            backgroundImage: fillViewport ? bgTheme.style.backgroundImage : undefined,
           }}
         >
           <div
@@ -1296,7 +1301,7 @@ export function DeskFolioDesktop() {
               width: `${STAGE_BASE_W}px`,
               height: `${STAGE_BASE_H}px`,
               transform: `scale(${stageScale})`,
-              transformOrigin: 'top center',
+              transformOrigin: fillViewport ? 'center center' : 'top center',
               flexShrink: 0,
             }}
           >

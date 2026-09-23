@@ -8,6 +8,7 @@ import {
   motion,
 } from 'motion/react';
 import { CurtainPanels, type CurtainEffect } from './curtain/panels';
+import { ShaderLayer } from './ShaderLayer';
 import {
   liveKicker,
   CURTAIN_SHUT_KEYFRAMES,
@@ -44,19 +45,23 @@ export function CurtainInterstitial({
     [0, 1, 1, 0]
   );
   const lift = useTransform(hold, [0, 1], [14, 0]);
+  const shaderOpacity = useTransform(shut, [0, 0.82, 1], [0, 0, 1]);
 
   const kicker = liveKicker(count, noun);
 
   // Reduced motion: a static crimson band carrying the same words. No travel.
   if (reduce) {
     return (
-      <div data-surface="crimson" className="surface-crimson flex flex-col items-center justify-center gap-2 px-6 py-20 text-center">
-        <span className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.09em] text-[var(--gec-gold)]">
-          {kicker}
-        </span>
-        <p className="m-0 max-w-[24ch] text-[length:var(--text-2xl)] font-bold leading-[1.02] text-white">
-          {headline}
-        </p>
+      <div data-surface="crimson" className="surface-crimson gec-shader-host gec-fallback-liquid">
+        <ShaderLayer family="liquid" />
+        <div className="relative flex flex-col items-center justify-center gap-2 px-6 py-20 text-center">
+          <span className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.09em] text-[var(--gec-gold)]">
+            {kicker}
+          </span>
+          <p className="m-0 max-w-[24ch] text-[length:var(--text-2xl)] font-bold leading-[1.02] text-white">
+            {headline}
+          </p>
+        </div>
       </div>
     );
   }
@@ -64,10 +69,17 @@ export function CurtainInterstitial({
   return (
     <div ref={ref} data-surface="crimson" className="relative h-[180vh]">
       <div className="sticky top-0 h-[100dvh] overflow-hidden">
-        <CurtainPanels effect={effect} shut={shut} showSeam />
+        <CurtainPanels effect={effect} shut={shut} />
+        <motion.div
+          aria-hidden="true"
+          className="gc-shader-layer gec-shader-host"
+          style={{ opacity: shaderOpacity }}
+        >
+          <ShaderLayer family="liquid" />
+        </motion.div>
         <motion.div
           style={{ opacity: hold, y: lift }}
-          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 px-6 text-center"
+          className="pointer-events-none absolute inset-0 z-[2] flex flex-col items-center justify-center gap-2 px-6 text-center"
         >
           <span className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.09em] text-[var(--gec-gold)]">
             {kicker}
