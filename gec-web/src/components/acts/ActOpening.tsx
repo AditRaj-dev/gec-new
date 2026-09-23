@@ -17,7 +17,7 @@ export function ActOpening({
   const active = campaigns[activeKey] ?? campaigns[keys[0]];
   const prefersReducedMotion = useReducedMotion();
 
-  const slideDuration = DURATION.ui / 1000;
+  const slideDuration = DURATION.micro / 1000;
 
   return (
     <section
@@ -68,7 +68,7 @@ export function ActOpening({
                   ? { opacity: 1 }
                   : { opacity: 0, y: -16 }
               }
-              transition={{ duration: slideDuration, ease: EASE.out }}
+              transition={{ duration: slideDuration, ease: EASE.spring }}
               className="grid grid-cols-1 gap-10 lg:grid-cols-[3fr_2fr] lg:items-end"
             >
               {/* Left: headline column */}

@@ -1,16 +1,15 @@
 /** Motion tokens. Every duration, easing and stagger in the app comes from here. */
 export const DURATION = {
   instant: 120,
-  ui: 180,
-  layout: 320,
+  micro: 180,
+  macro: 320,
   act: 480,
 } as const;
 
 export const EASE = {
-  /** ease-out-quart — entrances */
-  out: [0.165, 0.84, 0.44, 1] as const,
-  /** css string form, for stylesheets and transition shorthand */
-  outCss: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+  /** --ease-spring: the wireframe's single interactive curve */
+  spring: [0.16, 1, 0.3, 1] as const,
+  springCss: 'cubic-bezier(0.16, 1, 0.3, 1)',
 } as const;
 
 export const STAGGER = 0.04; // seconds between items in a list
