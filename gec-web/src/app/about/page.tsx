@@ -64,7 +64,7 @@ export default function AboutPage() {
   return (
     <main aria-label="About Galgotias Entrepreneurship Cell">
       {/* ---- Hero ---- */}
-      <section className="surface-cream gec-grain">
+      <section className="surface-cream">
         <div className="mx-auto max-w-[900px] px-6 py-24 text-center md:px-10 md:py-32 lg:px-16">
           <span className="font-mono text-xs uppercase tracking-[0.09em] text-[var(--gec-crimson)]">
             Who We Are

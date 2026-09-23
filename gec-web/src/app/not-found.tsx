@@ -17,7 +17,7 @@ const ROUTES: { href: string; label: string; description: string }[] = [
 export default function NotFound() {
   return (
     <main aria-label="Page not found">
-      <section className="surface-cream gec-grain">
+      <section className="surface-cream">
         <div className="mx-auto flex min-h-[70vh] max-w-[900px] flex-col items-center justify-center gap-12 px-6 py-24 text-center md:px-10">
           <div className="flex max-w-[46ch] flex-col gap-3">
             <h1

@@ -14,7 +14,7 @@ export default function StoriesPage() {
       {/* ---- Hero ---- */}
       {/* The only eyebrow on this route — the portfolio section below deliberately
           has none, so this pattern doesn't repeat above every section heading. */}
-      <section className="surface-sand gec-grain">
+      <section className="surface-sand">
         <div className="mx-auto max-w-[860px] px-6 py-24 text-center md:px-10 md:py-32 lg:px-16">
           <span className="font-mono text-xs uppercase tracking-[0.09em] text-[var(--gec-ink-muted)]">
             Culture &amp; Insights

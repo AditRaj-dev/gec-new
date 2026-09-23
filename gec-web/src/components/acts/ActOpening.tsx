@@ -22,7 +22,7 @@ export function ActOpening({
   return (
     <section
       aria-label="Current campaigns"
-      className="surface-cream gec-grain relative min-h-[100dvh] overflow-hidden"
+      className="surface-cream relative min-h-[100dvh] overflow-hidden"
     >
       <div className="relative z-[1] mx-auto flex min-h-[100dvh] max-w-[1440px] flex-col justify-between px-6 py-10 md:px-10 lg:px-16">
         {/* Campaign pills */}
