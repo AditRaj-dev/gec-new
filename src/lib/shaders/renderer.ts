@@ -66,7 +66,7 @@ export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily):
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 
-  let raf = 0, last = 0, frozen = false, prevDraw = 0;
+  let raf = 0, last = 0, frozen = false, prevDraw = 0, destroyed = false;
   const samples: number[] = [];
   const minGap = 1000 / FPS_CAP;
   const loop = (now: number) => {
@@ -83,10 +83,10 @@ export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily):
   };
 
   const api: ShaderRenderer = {
-    play() { if (!frozen && !raf) { prevDraw = 0; raf = requestAnimationFrame(loop); } },
+    play() { if (!destroyed && !frozen && !raf) { prevDraw = 0; raf = requestAnimationFrame(loop); } },
     pause() { cancelAnimationFrame(raf); raf = 0; },
     freeze() { api.pause(); frozen = true; draw(performance.now()); },
-    destroy() { api.pause(); ro.disconnect(); gl.getExtension('WEBGL_lose_context')?.loseContext(); },
+    destroy() { destroyed = true; api.pause(); ro.disconnect(); gl.getExtension('WEBGL_lose_context')?.loseContext(); },
   };
   draw(t0);
   return api;

@@ -12,10 +12,19 @@ import { MIN_WIDTH } from '@/lib/shaders/policy';
 export function ShaderLayer({ family }: { family: ShaderFamily }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const [state, setState] = useState<'off' | 'ready' | 'failed'>('off');
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${MIN_WIDTH}px)`);
+    setMatches(mq.matches);
+    const onChange = () => setMatches(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   useEffect(() => {
     const canvas = ref.current;
-    if (!canvas || window.innerWidth < MIN_WIDTH) return;
+    if (!canvas || !matches) return;
     const r = createRenderer(canvas, family);
     if (!r) { setState('failed'); return; }
     setState('ready');
@@ -36,7 +45,7 @@ export function ShaderLayer({ family }: { family: ShaderFamily }) {
       canvas.removeEventListener('webglcontextlost', onLost);
       r.destroy();
     };
-  }, [family]);
+  }, [family, matches]);
 
   if (state === 'failed') return null;
   return <canvas ref={ref} aria-hidden="true" data-ready={state === 'ready' || undefined} className={`gec-shader-layer gec-shader-${family}`} />;

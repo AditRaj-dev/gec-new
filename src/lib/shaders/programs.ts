@@ -32,8 +32,8 @@ void main() {
   vec3 col = mix(uC0, uC1, smoothstep(0.35, 0.85, f));
   col = mix(col, uC2, smoothstep(0.55, 0.95, q.x) * 0.6);
   col = mix(col, uC3, smoothstep(0.7, 1.0, q.y) * 0.35);
-  col -= smoothstep(0.02, 0.0, abs(f - 0.6)) * 0.08;
-  float w = smoothstep(1.1, 0.2, distance(uv, vec2(0.78, 0.78)));
+  col -= (1.0 - smoothstep(0.0, 0.02, abs(f - 0.6))) * 0.08;
+  float w = 1.0 - smoothstep(0.2, 1.1, distance(uv, vec2(0.78, 0.78)));
   gl_FragColor = vec4(mix(uC0, col, w), 1.0);
 }`;
 
@@ -60,7 +60,7 @@ void main() {
   float n = fbm(vec2(uv.x * 3.0, uv.y * 1.5) + t);
   float y = uv.y * 18.0 + n * 4.0;
   float line = pow(1.0 - abs(fract(y) - 0.5) * 2.0, 24.0);
-  float sweep = smoothstep(0.35, 0.0, abs(uv.x - (fract(t * 0.5) * 1.4 - 0.2)));
+  float sweep = 1.0 - smoothstep(0.0, 0.35, abs(uv.x - (fract(t * 0.5) * 1.4 - 0.2)));
   vec3 col = mix(uC0, uC1, uv.y);
   col += uC2 * line * 0.55;
   col += uC3 * line * sweep * 0.35;
