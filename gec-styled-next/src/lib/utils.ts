@@ -2,10 +2,16 @@
  * Minimal, dependency-free class-name joiner (clsx-style). Accepts strings,
  * numbers, arrays, and boolean-keyed objects; skips falsy values.
  *
- * This is a local implementation — it does not resolve conflicting Tailwind
- * utilities the way `tailwind-merge` would, because none of this codebase's
- * call sites rely on that (each call site branches with a ternary rather
- * than passing overlapping utility classes to merge).
+ * This is a local implementation — unlike `tailwind-merge`, it does NOT
+ * dedupe or resolve conflicting Tailwind utilities. All inputs are simply
+ * concatenated in argument order, and if two land in the output targeting
+ * the same CSS property (e.g. two `shadow-*` classes), Tailwind's generated
+ * stylesheet order decides the winner — not "last argument wins" the way
+ * callers of a merging `cn` would expect. Any `className` passthrough prop
+ * built on this helper should only ever be given classes that don't overlap
+ * with the component's own; branch with a ternary (or combine into one
+ * class, e.g. a single `shadow-[a,b]`) instead of passing two conditional
+ * classes that touch the same property.
  */
 export type ClassValue =
   | string

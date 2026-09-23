@@ -746,12 +746,11 @@ export function NewsletterBookshelf({
                     }}
                     className={cn(
                       'relative rounded-t-sm rounded-b-xs flex flex-col justify-between items-center py-2.5 px-1 overflow-hidden transition-transform duration-200 ease-out motion-reduce:transition-none',
-                      isJustDocked && 'shadow-[0_0_20px_rgba(251,202,5,0.55)]',
                       stage === 'shelf' && !isJustDocked &&
                         'group-hover:-translate-y-5.5 group-hover:scale-[1.03] group-hover:shadow-[0_24px_28px_-6px_rgba(0,0,0,0.4),inset_0_0_0_1px_rgba(255,255,255,0.2)]',
                       stage === 'shelf' &&
                         'group-focus-visible:ring-2 group-focus-visible:ring-[#A3040F] group-focus-visible:ring-offset-2',
-                      'shadow-[0_8px_12px_-4px_rgba(0,0,0,0.25)]'
+                      isJustDocked ? 'shadow-[0_0_20px_rgba(251,202,5,0.55),0_8px_12px_-4px_rgba(0,0,0,0.25)]' : 'shadow-[0_8px_12px_-4px_rgba(0,0,0,0.25)]'
                     )}
                   >
                     {/* Cylindrical 3D Spine Curvature Lighting */}
