@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import {
   LOGO_VIEWBOX,
   LOGO_COLORS,
@@ -120,36 +121,36 @@ export const Navbar: React.FC = () => {
 
         {/* Desktop Navigation Links — 5 core routes */}
         <nav className="hidden lg:flex items-center gap-10 text-sm font-semibold text-[#222222]">
-          <Link
+          <ViewTransitionLink
             href="/"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
             Home
-          </Link>
-          <Link
+          </ViewTransitionLink>
+          <ViewTransitionLink
             href="/about"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
             About
-          </Link>
-          <Link
+          </ViewTransitionLink>
+          <ViewTransitionLink
             href="/teams"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
             Teams
-          </Link>
-          <Link
+          </ViewTransitionLink>
+          <ViewTransitionLink
             href="/initiatives"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
             Initiatives
-          </Link>
-          <Link
+          </ViewTransitionLink>
+          <ViewTransitionLink
             href="/stories"
             className="hover:text-[#A3040F] transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#A3040F] hover:after:w-full after:transition-all after:duration-200"
           >
             Stories
-          </Link>
+          </ViewTransitionLink>
         </nav>
 
         {/* Desktop Actions */}
@@ -231,11 +232,11 @@ export const Navbar: React.FC = () => {
       {/* Mobile Drawer — 5 core routes */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-[rgba(163,4,15,0.15)] bg-[#FCF8ED] px-4 pt-3 pb-6 space-y-3">
-          <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Home</Link>
-          <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">About</Link>
-          <Link href="/teams" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Teams</Link>
-          <Link href="/initiatives" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Initiatives</Link>
-          <Link href="/stories" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Stories</Link>
+          <ViewTransitionLink href="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Home</ViewTransitionLink>
+          <ViewTransitionLink href="/about" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">About</ViewTransitionLink>
+          <ViewTransitionLink href="/teams" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Teams</ViewTransitionLink>
+          <ViewTransitionLink href="/initiatives" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Initiatives</ViewTransitionLink>
+          <ViewTransitionLink href="/stories" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-semibold text-[#222222] hover:text-[#A3040F]">Stories</ViewTransitionLink>
           <div className="pt-2">
             <Link
               href="#apply"

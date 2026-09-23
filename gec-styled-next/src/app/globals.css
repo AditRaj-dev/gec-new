@@ -164,3 +164,22 @@ p { text-wrap: pretty; }
   background: var(--gec-canvas);
 }
 .site-logo-dock { display: none; }
+
+/* Route transitions — the `wipe` curtain extended to navigation.
+   Browsers without View Transitions support fall through to an ordinary
+   instant navigation, which is a correct outcome here. */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) {
+  animation: gc-wipe-out var(--dur-layout) var(--ease-out) both;
+}
+::view-transition-new(root) {
+  animation: gc-wipe-in var(--dur-layout) var(--ease-out) both;
+}
+@keyframes gc-wipe-out { to { transform: translateX(-6%); opacity: 0; } }
+@keyframes gc-wipe-in  { from { transform: translateX(6%); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+}
