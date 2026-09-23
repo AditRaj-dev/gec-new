@@ -624,10 +624,9 @@ export function NewsletterBookshelf({
         </div>
 
         {/* Physical Book Spines Row */}
-        {/* data-gec-shelf-row: read by src/components/acts/ActShelf.tsx to
-            measure this row's real scrollWidth for its scroll-driven pan.
-            Keep this attribute on whichever element lays the covers out
-            side by side if this row is ever restructured. */}
+        {/* data-gec-shelf-row: read by src/components/acts/FullViewportAct
+            consumers to drive the row's scrollLeft from page scroll. Keep it
+            on whichever element lays the covers out side by side. */}
         <div
           ref={shelfScrollRef}
           data-gec-shelf-row

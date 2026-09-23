@@ -15,6 +15,16 @@ export interface TeamStageManagerProps {
   onApplyClick?: (team: TeamStageData) => void;
 }
 
+const TEAM_CONFIG: Record<number, { roleClass: string; roleTag: string; badge: string }> = {
+  1: { roleClass: 'role-gold', roleTag: '[STARTUP DEVELOPMENT]', badge: 'Cohort Incubation' },
+  2: { roleClass: 'role-crimson', roleTag: '[PR & NETWORKING]', badge: 'VC & Corporate Alliances' },
+  3: { roleClass: 'role-orange', roleTag: '[MARKETING & CA]', badge: '40+ Block Ambassadors' },
+  4: { roleClass: 'role-burgundy', roleTag: '[EVENT MANAGEMENT]', badge: 'Stage Ops & Venues' },
+  5: { roleClass: 'role-blue', roleTag: '[DIGITAL MEDIA]', badge: 'Visual & Editorial Lab' },
+  6: { roleClass: 'role-slate', roleTag: '[TECHNICAL TEAM]', badge: 'Full-Stack & Infra' },
+  7: { roleClass: 'role-bronze', roleTag: '[CAREER CONNECT]', badge: '8-Week Internships' },
+};
+
 export function TeamStageManager({
   initialTeamIndex = 1,
   initialMode = 'detail',
@@ -241,15 +251,27 @@ export function TeamStageManager({
         <div className="teams-horizontal-stack" role="group" aria-label="Teams roster">
           {teams.map((team) => {
             const isActive = team.index === activeTeamIndex;
-            const roleTagBg = team.tagColor.bg;
-            const roleTagText = team.tagColor.text;
+            const meta = TEAM_CONFIG[team.index] || {
+              roleClass: 'role-gold',
+              roleTag: `[${team.shortName.toUpperCase()}]`,
+              badge: team.roleTag,
+            };
 
             return (
-              <div key={team.id} data-team-index={team.index}
-                role="button" tabIndex={0}
-                aria-label={`Open ${team.name}`} aria-pressed={isActive}
+              <div
+                key={team.id}
+                data-team-index={team.index}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open ${team.name} team detail`}
+                aria-pressed={isActive}
                 onClick={() => exploreTeamDetail(team.index)}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); exploreTeamDetail(team.index); } }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    exploreTeamDetail(team.index);
+                  }
+                }}
                 style={{
                   ['--preview-scale' as string]: team.previewScale,
                   ['--preview-opacity' as string]: team.previewOpacity,
@@ -259,20 +281,21 @@ export function TeamStageManager({
                 <div className="team-card-identity">
                   <div className="team-card-meta-top">
                     <span className="team-card-num">{String(team.index).padStart(2, '0')}</span>
-                    <span className="team-role-tag" style={{ backgroundColor: roleTagBg, color: roleTagText }}>
-                      {team.roleTag}
-                    </span>
+                    <span className={`element-role-tag ${meta.roleClass}`}>{meta.roleTag}</span>
                     <span className="team-card-hover-cue">SELECT ↗</span>
                   </div>
                   <h3 className="team-card-title">{team.name}</h3>
                   <p className="team-card-desc">{team.desc}</p>
                   <div className="team-card-meta-bottom">
                     <span className="team-meta-badge">
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
                       </svg>
                       Lead: {team.headName}
                     </span>
+                    <span className="team-meta-sep">·</span>
+                    <span className="team-meta-badge">{meta.badge}</span>
                     <span className="team-meta-sep">·</span>
                     <span className="team-meta-subtle">{team.coordinatorsCount} Coords · {team.membersCount} Members</span>
                   </div>
@@ -280,7 +303,7 @@ export function TeamStageManager({
 
                 <div className="team-card-responsibilities">
                   <div className="team-pillars-header">
-                    <span className="team-pillars-label">6 responsibility areas</span>
+                    <span className="dim-label" style={{ fontWeight: 700 }}>[6 RESPONSIBILITY AREAS]</span>
                     <span className="team-pillars-count-tag">6 PILLARS</span>
                   </div>
                   <div className="team-chips-container">
@@ -291,13 +314,16 @@ export function TeamStageManager({
                 </div>
 
                 <div className="team-card-action">
-                  <button type="button" className="team-action-button"
-                    onClick={(e) => { e.stopPropagation(); exploreTeamDetail(team.index); }}>
-                    Explore team
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </button>
+                  <div
+                    className="wf-action-slot action-fill-crimson"
+                    style={{ height: '42px', width: '100%', cursor: 'pointer' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      exploreTeamDetail(team.index);
+                    }}
+                  >
+                    [EXPLORE TEAM →]
+                  </div>
                 </div>
               </div>
             );
