@@ -1274,8 +1274,7 @@ export function DeskFolioDesktop() {
   const lampOverride = matOverrides['desk-lamp']
 
   return (
-    <>
-      <section className="deskfolio-live">
+    <section className="deskfolio-live">
         <div
           className="df-stage-scale-wrapper"
           style={{
@@ -1582,77 +1581,5 @@ export function DeskFolioDesktop() {
           </div>
         </div>
       </section>
-
-      <div className="tagline deskfolio-writeup">
-        <div className="df-writeup-intro">
-          <h1 className="df-writeup-name">DeskFolio</h1>
-          <p className="df-writeup-tagline">A pocket-sized portfolio that opens like a book.</p>
-          <p className="df-writeup-copy">
-            Built as a cute artist showcase with draggable desk pieces and editable stickers. What began as a journal idea
-            quietly turned into a portfolio.
-          </p>
-          <p className="df-writeup-copy df-writeup-aside">
-            I was going to name it Cutefolio, but someone had already used it.
-          </p>
-        </div>
-        <div className="df-writeup-pills" aria-label="Deskfolio notes">
-          <span className="df-writeup-pill df-writeup-pill--orange">Long-press edits</span>
-          <span className="df-writeup-pill df-writeup-pill--green">Freepik + hand-built assets</span>
-          <span className="df-writeup-pill df-writeup-pill--blue">React + motion.dev</span>
-        </div>
-        <div className="df-howto">
-          <div className="df-howto-frame">
-            <img
-              className="df-howto-bear"
-              src="/stickers/items/sticker-cutie-bear.svg"
-              width={300}
-              height={297}
-              loading="lazy"
-              decoding="async"
-              alt="A bear sticker on the desk with the long-press edit menu floating above it"
-            />
-            <div className="df-howto-menu" aria-hidden="true">
-              <span className="df-howto-menu-row">
-                <LbResize className="df-howto-menu-ico" /> Resize
-              </span>
-              <span className="df-howto-menu-row">
-                <LbReplace className="df-howto-menu-ico" /> Replace
-              </span>
-              <span className="df-howto-menu-row df-howto-menu-row--danger">
-                <LbTrash className="df-howto-menu-ico" /> Delete
-              </span>
-            </div>
-            <svg className="df-howto-cursor" viewBox="0 0 64 64" aria-hidden="true">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M7.78696 6.09422C6.7281 5.68898 5.68898 6.7281 6.09422 7.78696L24.9891 57.1574C25.394 58.2154 26.8598 58.2962 27.3786 57.2892L36.7699 39.0589C37.2761 38.0763 38.0763 37.2761 39.0589 36.7699L57.2892 27.3786C58.2962 26.8598 58.2154 25.394 57.1574 24.9891L7.78696 6.09422ZM2.35847 9.21669C0.716609 4.92667 4.92668 0.716611 9.21669 2.35847L58.5871 21.2533C62.8737 22.8939 63.2012 28.8325 59.121 30.9345L40.8908 40.3258C40.6482 40.4507 40.4507 40.6482 40.3258 40.8908L30.9345 59.121C28.8325 63.2012 22.8939 62.8737 21.2533 58.5871L2.35847 9.21669Z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-          <div className="df-howto-text">
-            <span className="df-howto-eyebrow">How to use</span>
-            <p>
-              Press and hold any sticker or desk object and this little menu blooms up: <strong>Resize</strong> to scale
-              it, <strong>Replace</strong> to swap in a different sticker, or <strong>Delete</strong> to clear it off the
-              desk.
-            </p>
-            <p>Drag anything to move it around.</p>
-          </div>
-        </div>
-        <div className="df-reference-strip">
-          <span className="df-reference-title">References</span>
-          <div className="df-reference-pills">
-            <a href="https://codepen.io/fossheim/pen/xxboBzO" target="_blank" rel="noreferrer">
-              Polaroid
-            </a>
-            <a href="https://codepen.io/kreitlow/pen/mqgxYo" target="_blank" rel="noreferrer">
-              iPod Shuffle
-            </a>
-          </div>
-        </div>
-      </div>
-    </>
   )
 }

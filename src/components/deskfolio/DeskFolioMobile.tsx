@@ -75,55 +75,49 @@ export function DeskFolioMobile() {
   }, [activeBook.pages])
 
   return (
-    <>
-      <section className="deskfolio-live">
-        <div
-          className="demo-stage deskfolio-demo-stage"
-          style={
-            {
-              '--df-picker-w': `${mobile.w}px`,
-              '--df-stage-scale': 1,
-              ...bgTheme.style,
-            } as React.CSSProperties
+    <section className="deskfolio-live">
+      <div
+        className="demo-stage deskfolio-demo-stage"
+        style={
+          {
+            '--df-picker-w': `${mobile.w}px`,
+            '--df-stage-scale': 1,
+            ...bgTheme.style,
+          } as React.CSSProperties
+        }
+      >
+        {intro >= 2 && (
+          <div className="df-mstickers" aria-hidden="true">
+            <img className="m3" src={ITM + mStickers[0]} alt="" width={96} height={96} loading="lazy" decoding="async" />
+            <img className="m4" src={ITM + mStickers[1]} alt="" width={104} height={104} loading="lazy" decoding="async" />
+          </div>
+        )}
+
+        <motion.div
+          className="df-book-bloom df-book-bloom--mobile"
+          initial={false}
+          animate={
+            reduce
+              ? { opacity: 1, y: 0, scale: 1 }
+              : { opacity: intro >= 1 ? 1 : 0, y: intro >= 1 ? 0 : 12, scale: intro >= 1 ? 1 : 0.94 }
           }
+          transition={reduce ? { duration: 0 } : STAGE_SPRING}
         >
-          {intro >= 2 && (
-            <div className="df-mstickers" aria-hidden="true">
-              <img className="m3" src={ITM + mStickers[0]} alt="" width={96} height={96} loading="lazy" decoding="async" />
-              <img className="m4" src={ITM + mStickers[1]} alt="" width={104} height={104} loading="lazy" decoding="async" />
+          <div className="df-mobile-scaler" style={{ width: mobile.w, height: mobile.h }}>
+            <div className="df-mobile-scaler-inner" style={{ transform: `scale(${mobile.scale})`, left: -mobile.w }}>
+              <DeskFolio
+                cover={cover}
+                pages={mobilePages}
+                closeOnEnd={true}
+                closedShift="0%"
+                pageWidth={mobile.pageW}
+                pageHeight={mobile.pageH}
+                virtualizePages={true}
+              />
             </div>
-          )}
-
-          <motion.div
-            className="df-book-bloom df-book-bloom--mobile"
-            initial={false}
-            animate={
-              reduce
-                ? { opacity: 1, y: 0, scale: 1 }
-                : { opacity: intro >= 1 ? 1 : 0, y: intro >= 1 ? 0 : 12, scale: intro >= 1 ? 1 : 0.94 }
-            }
-            transition={reduce ? { duration: 0 } : STAGE_SPRING}
-          >
-            <div className="df-mobile-scaler" style={{ width: mobile.w, height: mobile.h }}>
-              <div className="df-mobile-scaler-inner" style={{ transform: `scale(${mobile.scale})`, left: -mobile.w }}>
-                <DeskFolio
-                  cover={cover}
-                  pages={mobilePages}
-                  closeOnEnd={true}
-                  closedShift="0%"
-                  pageWidth={mobile.pageW}
-                  pageHeight={mobile.pageH}
-                  virtualizePages={true}
-                />
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <p className="tagline">
-        This component is best experienced on desktop. The desktop preview unlocks the full set of interactions, customizations, and effects.
-      </p>
-    </>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   )
 }

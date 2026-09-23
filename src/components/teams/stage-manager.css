@@ -23,23 +23,47 @@
   overflow-x: clip;
 }
 
-/* Section container */
+/* Section container — sticky to screen, locked in place */
 .team-stage-manager-section {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
   align-items: start;
   column-gap: 32px;
-  padding: 48px 24px;
+  padding: 24px 20px;
   border-radius: 20px;
   background: linear-gradient(180deg, #FFFDF8 0%, #FCF8ED 100%);
   border: 1px solid rgba(163, 4, 15, 0.1);
   box-shadow: 0 4px 24px rgba(34, 34, 34, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   isolation: isolate;
-  position: relative;
-  overflow-x: clip;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 @media (min-width: 640px) {
-  .team-stage-manager-section { padding: 56px 40px; }
+  .team-stage-manager-section { padding: 28px 32px; }
+}
+
+/* Remove all scrollbars across all stage manager elements */
+.team-stage-manager-section,
+.team-stage-manager-section *,
+.teams-horizontal-stack,
+.detail-canvas,
+.team-item-card {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.team-stage-manager-section::-webkit-scrollbar,
+.team-stage-manager-section *::-webkit-scrollbar,
+.teams-horizontal-stack::-webkit-scrollbar,
+.detail-canvas::-webkit-scrollbar,
+.team-item-card::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .stage-status-bar {
@@ -249,71 +273,149 @@
 .team-action-button:hover { background: var(--gec-crimson-act); border-color: var(--gec-crimson-act); }
 .team-action-button:active { transform: scale(0.98); }
 
+/* Role tags & action slot */
+.element-role-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.role-gold { background: #FBCA05; color: #222222; }
+.role-crimson { background: #A3040F; color: #FFFFFF; }
+.role-orange { background: #F97316; color: #FFFFFF; }
+.role-burgundy { background: #7B020B; color: #FFFFFF; }
+.role-blue { background: #1F7EC0; color: #FFFFFF; }
+.role-slate { background: #334155; color: #FFFFFF; }
+.role-bronze { background: #854D0E; color: #FFFFFF; }
+
+.dim-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--gec-ink-subtle, #8A817A);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wf-action-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
+  user-select: none;
+}
+.action-fill-crimson {
+  background: var(--gec-crimson);
+  color: #FFFDF8;
+  border: 1.5px solid var(--gec-crimson);
+}
+.wf-action-slot:hover {
+  background: var(--gec-crimson-act);
+  border-color: var(--gec-crimson-act);
+}
+.wf-action-slot:active {
+  transform: scale(0.98);
+}
+
 @media (max-width: 900px) {
   .team-item-card { grid-template-columns: 1fr; gap: 14px; padding: 18px 20px; }
   .team-card-action { text-align: left; }
-  .team-action-button { width: auto; padding: 0 16px; }
+  .team-action-button, .wf-action-slot { width: auto; padding: 0 16px; }
 }
 
-/* ================= DETAIL MODE (3D rail + canvas) — styled.html spec ================= */
+/* ================= DETAIL MODE (3D rail + canvas) ================= */
 .team-stage-manager-section.is-detail-active {
-  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
-  gap: 38px;
-  min-height: 720px;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: 32px;
+  row-gap: 16px;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
 @media (max-width: 900px) {
-  .team-stage-manager-section.is-detail-active { grid-template-columns: 1fr; }
+  .team-stage-manager-section.is-detail-active {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
 }
 
+.team-stage-manager-section.is-detail-active .stage-status-bar {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+/* Sidebar rail — strictly NOT scrollable, no scrollbars */
 .team-stage-manager-section.is-detail-active .teams-horizontal-stack {
   grid-column: 1;
-  position: sticky;
-  top: 100px;
-  gap: 14px;
-  padding: 8px 4px 24px 0;
+  grid-row: 2;
+  position: relative;
+  top: 0;
+  gap: 8px;
+  padding: 4px 4px 4px 0;
   perspective: 1200px;
   perspective-origin: left center;
   transform-style: preserve-3d;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  overflow-x: visible;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(163, 4, 15, 0.2) transparent;
+  height: 100%;
+  max-height: calc(100vh - 100px);
+  overflow: hidden !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { width: 4px; }
-.team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar-thumb { background: rgba(163, 4, 15, 0.2); border-radius: 2px; }
+.team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
 
-/* Compact card (rail): 3D tilted with per-team scale/opacity — 16:10 ratio */
+/* Compact card in rail mode */
 .team-stage-manager-section.is-detail-active .team-item-card {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 6px;
+  justify-content: center;
+  gap: 4px;
   width: 100%;
-  max-width: 100%;
-  aspect-ratio: 16 / 10;
-  padding: 14px 16px 12px;
+  max-width: 320px;
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 8px 12px;
   grid-template-columns: none;
   opacity: var(--preview-opacity, 0.9);
-  transform: rotateY(10deg) scale(var(--preview-scale, 0.95));
+  transform: rotateY(8deg) scale(var(--preview-scale, 0.96));
   transform-origin: left center;
   transform-style: preserve-3d;
   will-change: transform, opacity;
-  transition: transform 400ms var(--ease-spring), opacity 300ms ease, border-color 200ms ease, box-shadow 300ms ease;
-  box-shadow: 0 10px 28px rgba(34, 34, 34, 0.08);
+  transition: transform 300ms var(--ease-spring), opacity 240ms ease, border-color 200ms ease, box-shadow 240ms ease;
+  box-shadow: 0 4px 16px rgba(34, 34, 34, 0.06);
 }
 .team-stage-manager-section.is-detail-active .team-item-card:hover,
 .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
   z-index: 5;
   opacity: 1;
-  transform: translate3d(8px, -2px, 0) rotateY(0deg) scale(1.02);
+  transform: translate3d(8px, 0, 0) rotateY(0deg) scale(1.02);
   border-color: var(--gec-crimson);
-  box-shadow: 0 16px 38px rgba(163, 4, 15, 0.14), 0 4px 12px rgba(34, 34, 34, 0.05);
+  box-shadow: 0 12px 30px rgba(163, 4, 15, 0.14);
 }
 /* Active card is HIDDEN from rail — it's on the canvas */
 .team-stage-manager-section.is-detail-active .team-item-card.is-active-team { display: none; }
 
-/* In compact rail — hide non-essential meta, keep num + role + title + chips */
+/* In compact rail — hide long desc and bottom meta, keep top num + role + title + chips */
 .team-stage-manager-section.is-detail-active .team-item-card .team-card-desc,
 .team-stage-manager-section.is-detail-active .team-item-card .team-card-meta-bottom,
 .team-stage-manager-section.is-detail-active .team-item-card .team-pillars-header,
@@ -321,22 +423,22 @@
   display: none;
 }
 .team-stage-manager-section.is-detail-active .team-item-card .team-card-title {
-  font-size: 14.5px;
+  font-size: 13.5px;
   font-weight: 800;
-  line-height: 1.25;
-  margin: 4px 0 2px;
+  line-height: 1.2;
+  margin: 2px 0 1px;
 }
 .team-stage-manager-section.is-detail-active .team-item-card .team-chips-container {
-  gap: 4px;
-  margin-top: 4px;
-  max-height: 46px;
+  gap: 3px;
+  margin-top: 2px;
+  max-height: 38px;
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
 }
 .team-stage-manager-section.is-detail-active .team-item-card .team-focus-tag {
-  font-size: 9.5px;
-  padding: 2px 6px;
+  font-size: 9px;
+  padding: 1px 5px;
   white-space: nowrap;
 }
 .team-stage-manager-section.is-detail-active .team-item-card .team-card-hover-cue {
@@ -345,10 +447,10 @@
 }
 
 @media (max-width: 1100px) {
-  .team-stage-manager-section.is-detail-active { grid-template-columns: 200px minmax(0, 1fr); gap: 22px; }
+  .team-stage-manager-section.is-detail-active { grid-template-columns: 200px minmax(0, 1fr); gap: 20px; }
   .team-stage-manager-section.is-detail-active .team-item-card {
     max-width: 200px;
-    transform: rotateY(22deg) scale(var(--preview-scale, 0.95));
+    transform: rotateY(16deg) scale(var(--preview-scale, 0.95));
   }
 }
 @media (max-width: 900px) {
@@ -357,31 +459,33 @@
     max-height: none;
     display: flex;
     flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 12px;
-    padding: 8px 4px 20px;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 10px;
+    padding: 6px 4px 14px;
     perspective: 1000px;
-    scrollbar-width: none;
+    scrollbar-width: none !important;
   }
-  .team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { display: none; }
+  .team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { display: none !important; }
   .team-stage-manager-section.is-detail-active .team-item-card {
-    flex: 0 0 200px;
-    max-width: 200px;
-    min-height: 96px;
+    flex: 0 0 180px;
+    max-width: 180px;
+    min-height: 84px;
     transform: rotateY(8deg) scale(0.96);
-    padding: 10px 12px;
-  }
-  .team-stage-manager-section.is-detail-active .team-item-card:hover,
-  .team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
-    transform: translate3d(3px, -2px, 0) rotateY(0deg) scale(0.99);
+    padding: 8px 10px;
   }
 }
 
 /* ================= DETAIL CANVAS ================= */
 .detail-canvas {
   grid-column: 2;
+  grid-row: 2;
   min-width: 0;
+  height: 100%;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
   animation: canvasIn 400ms var(--ease-spring);
   /* Bordered card wrapper — matches the visual language of team-item-card */
   background: linear-gradient(160deg, #FFFFFF 0%, #FFFDF8 100%);
@@ -390,6 +494,26 @@
   box-shadow: 0 2px 12px rgba(34, 34, 34, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   padding: 24px;
 }
+.detail-canvas::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Roster mode (full list) — also remove scrollbars */
+.team-stage-manager-section:not(.is-detail-active) .teams-horizontal-stack {
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding-bottom: 24px;
+}
+.team-stage-manager-section:not(.is-detail-active) .teams-horizontal-stack::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 @media (min-width: 640px) {
   .detail-canvas { padding: 28px 32px; }
 }
