@@ -148,6 +148,8 @@ export const Navbar: React.FC = () => {
           className="mobile-nav-toggle"
           onClick={() => setMobileMenuOpen((open) => !open)}
           aria-label="Toggle Navigation"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-nav-drawer"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <line x1="3" y1="6" x2="21" y2="6" />
@@ -158,7 +160,7 @@ export const Navbar: React.FC = () => {
       </nav>
 
       {/* Mobile Drawer */}
-      <div className={cn('mobile-nav-drawer', mobileMenuOpen && 'drawer-open')} role="menu">
+      <div id="mobile-nav-drawer" className={cn('mobile-nav-drawer', mobileMenuOpen && 'drawer-open')} role="menu">
         {MOBILE_NAV_ROUTES.map((route) => (
           <ViewTransitionLink
             key={route.href}

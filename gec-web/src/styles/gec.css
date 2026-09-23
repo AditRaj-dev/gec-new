@@ -522,6 +522,20 @@ body {
 html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
 @media (prefers-reduced-motion: reduce) { .site-navbar { transition: none; } }
 
+/* Focus state (§DESIGN.md §4). Footer sits on charcoal, so its link uses
+   the gold token instead of crimson to keep contrast. */
+.nav-link:focus-visible,
+.mobile-nav-toggle:focus-visible,
+.brand-mark:focus-visible {
+  outline: 2px solid var(--gec-crimson);
+  outline-offset: 2px;
+}
+
+.site-footer__link:focus-visible {
+  outline: 2px solid var(--gec-gold);
+  outline-offset: 2px;
+}
+
 /* Grids & Layout Containers */
 .hero-asymmetric-split {
   display: grid;
