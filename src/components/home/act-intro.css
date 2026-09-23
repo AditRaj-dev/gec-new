@@ -50,8 +50,9 @@
   }
 
   .stage-act__manager .team-stage-wrapper {
-    width: min(92vw, 1240px);
-    height: min(82dvh, 760px);
+    width: min(92vw, calc(82dvh * 1.486), 1130px);
+    height: auto;
+    aspect-ratio: 1.486;
   }
 }
 
