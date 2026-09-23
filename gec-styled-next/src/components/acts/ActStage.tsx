@@ -18,6 +18,10 @@ import './act-stage.css';
  *
  * The entrance peel is driven from here via a `data-peel` attribute
  * (see act-stage.css) rather than touching TeamStageManager's markup.
+ * act-stage.css selects cards via `[data-team-index]` (an attribute
+ * TeamStageManager.tsx already renders on every card) scoped under the
+ * `.act-stage__rail` wrapper below, which this component owns — so none
+ * of TeamStageManager's own class names are load-bearing for the peel.
  */
 export function ActStage({ teams }: { teams: Team[] }) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -52,7 +56,7 @@ export function ActStage({ teams }: { teams: Team[] }) {
         </p>
       </div>
 
-      <div className="w-full">
+      <div className="act-stage__rail w-full">
         <TeamStageManager
           initialTeamIndex={1}
           initialMode="detail"
