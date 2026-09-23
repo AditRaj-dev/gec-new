@@ -160,7 +160,7 @@ export function PortfolioGrid() {
     return PORTFOLIO_VENTURES.filter((v) => v.sector === filter);
   }, [filter]);
 
-  const fadeDuration = prefersReducedMotion ? 0 : DURATION.ui / 1000;
+  const fadeDuration = prefersReducedMotion ? 0 : DURATION.micro / 1000;
 
   return (
     <div>
@@ -191,7 +191,7 @@ export function PortfolioGrid() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: fadeDuration, ease: EASE.out }}
+            transition={{ duration: fadeDuration, ease: EASE.spring }}
           >
             {filtered.length === 0 ? (
               <EmptyState />

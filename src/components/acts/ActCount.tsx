@@ -27,7 +27,7 @@ function StatValue({ value }: { value: string }) {
 
     const controls = animate(0, target, {
       duration: DURATION.act / 1000,
-      ease: EASE.out,
+      ease: EASE.spring,
       onUpdate(latest) {
         el.textContent = value.replace(match[0], Math.round(latest).toString());
       },

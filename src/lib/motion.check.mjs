@@ -1,5 +1,10 @@
 import assert from 'node:assert/strict';
-import { curtainProgress, liveKicker, exitDuration } from './motion.ts';
+import { DURATION, EASE, curtainProgress, liveKicker, exitDuration } from './motion.ts';
+
+assert.equal(DURATION.micro, 180);
+assert.equal(DURATION.macro, 320);
+assert.deepEqual([...EASE.spring], [0.16, 1, 0.3, 1]);
+assert.equal(EASE.springCss, 'cubic-bezier(0.16, 1, 0.3, 1)');
 
 // fully open before the interstitial starts
 assert.equal(curtainProgress(0, 100, 1000).shut, 0);
