@@ -32,13 +32,13 @@ const NewsletterBookshelf = dynamic(
 // change, this floor must move with them.
 const SHELF_WIDGET_HEIGHT = 'clamp(700px, 58vw, 740px)';
 
-// The one place in NewsletterBookshelf's tree with this utility class is
-// its own internal cover row (newsletter-bookshelf.tsx:629,
-// `overflow-x-auto`) — the element that actually lays the covers out
-// side by side. Selecting it structurally, rather than guessing a
-// per-item pixel width, means we read the real DOM instead of duplicating
-// a number that lives in a file we don't own and can't edit.
-const COVER_ROW_SELECTOR = '[class*="overflow-x-auto"]';
+// Coupled to `data-gec-shelf-row` on the cover row in
+// src/components/ui/newsletter-bookshelf.tsx (currently line ~629) — that
+// attribute exists solely so this selector can find the row that lays the
+// covers out side by side without guessing its layout. If that attribute
+// moves or is removed, update this selector to match (see the matching
+// comment there for the other half of this coupling).
+const COVER_ROW_SELECTOR = '[data-gec-shelf-row]';
 
 // The exit flip fires in the last stretch of this pinned section
 // regardless of travel, so the act still has a dominant motion beat at
@@ -73,6 +73,7 @@ export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
     if (!container || !viewport) return;
 
     let coverRow: HTMLElement | null = null;
+    let warnedMissing = false;
     const ro = new ResizeObserver(measure);
 
     function measure() {
@@ -91,16 +92,38 @@ export function ActShelf({ items }: { items: NewsletterBookshelfItem[] }) {
       setContentWidth(width);
       const overflow = (width ?? 0) - viewport!.clientWidth;
       setTravel(overflow > 0 ? overflow : 0);
+      return row;
     }
 
+    // The initial, pre-mount call is expected to find nothing (the
+    // dynamic import hasn't resolved yet) — no warning belongs here.
     measure();
     ro.observe(viewport);
 
     // The cover row doesn't exist in the DOM until the dynamic import
     // resolves; a MutationObserver on the container catches that mount
     // (and any later reshuffle) so we start observing the real row instead
-    // of only ever seeing the pre-mount "not found" state.
-    const mo = new MutationObserver(measure);
+    // of only ever seeing the pre-mount "not found" state. If the
+    // component *has* mounted (this callback only fires on a real subtree
+    // change) and the row still isn't found, `data-gec-shelf-row` is
+    // missing or was moved off the intended element — warn once, loudly,
+    // in development, rather than silently sitting at zero travel forever.
+    const mo = new MutationObserver(() => {
+      const row = measure();
+      if (!row && !warnedMissing) {
+        warnedMissing = true;
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(
+            '[ActShelf] Could not find `[data-gec-shelf-row]` inside the ' +
+              'mounted NewsletterBookshelf. Expected on the cover row in ' +
+              'src/components/ui/newsletter-bookshelf.tsx (~line 629); ' +
+              'looked for it from src/components/acts/ActShelf.tsx. Shelf ' +
+              'travel is disabled (falls back to 0) until that attribute ' +
+              'is restored or COVER_ROW_SELECTOR is updated to match.'
+          );
+        }
+      }
+    });
     mo.observe(container, { childList: true, subtree: true });
 
     window.addEventListener('resize', measure);

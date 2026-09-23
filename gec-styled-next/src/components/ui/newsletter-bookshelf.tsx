@@ -624,8 +624,13 @@ export function NewsletterBookshelf({
         </div>
 
         {/* Physical Book Spines Row */}
+        {/* data-gec-shelf-row: read by src/components/acts/ActShelf.tsx to
+            measure this row's real scrollWidth for its scroll-driven pan.
+            Keep this attribute on whichever element lays the covers out
+            side by side if this row is ever restructured. */}
         <div
           ref={shelfScrollRef}
+          data-gec-shelf-row
           className="relative z-10 flex items-end justify-start gap-2.5 sm:gap-3.5 overflow-x-auto pb-0 px-4 no-scrollbar scroll-smooth"
           style={{ minHeight: '320px' }}
         >
