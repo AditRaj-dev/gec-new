@@ -492,7 +492,7 @@
   height: 72%;
   max-height: calc(100vh - 100px);
   align-self: center;
-  overflow-y: auto;
+  overflow: hidden;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
   animation: canvasIn 400ms var(--ease-spring);
@@ -532,6 +532,7 @@
     width: 100%;
     max-width: none;
     height: 100%;
+    overflow: visible;
     margin-top: 24px;
     padding: 20px;
   }
