@@ -624,7 +624,7 @@ export function NewsletterBookshelf({
         </div>
 
         {/* Physical Book Spines Row */}
-        {/* data-gec-shelf-row: read by src/components/acts/FullViewportAct
+        {/* data-gec-shelf-row: read by src/components/home/ShelfAct
             consumers to drive the row's scrollLeft from page scroll. Keep it
             on whichever element lays the covers out side by side. */}
         <div

@@ -11,6 +11,9 @@ export const EXPECT = {
       'Ideas From People Who Built Them.', 'Sanjeev Bikhchandani', 'Zomato Feeding India',
       'Built With an Ecosystem.', 'Galgotias Incubation Centre for Research, Innovation, Startup & Entrepreneurs', 'WADHWANI',
       "Your Idea Doesn't Need to Be Perfect.", 'It Needs a Beginning.',
+      'Every programme, one living desk.', 'Every story that started here.', 'The people behind all of it.',
+      'Built for People Who Want to Build.', 'Every Venture Starts With a Story.', '7 Teams. One Vision.',
     ],
+    surfaces: ['cream', 'crimson', 'crimson', 'cream', 'charcoal', 'sand', 'crimson', 'cream', 'crimson', 'crimson', 'sand', 'cream', 'crimson', 'charcoal'],
   },
 };
