@@ -1,138 +1,121 @@
 export interface HeroCampaign {
   id: string;
-  key: string;
-  badge: string;
+  /** `id="hero-status-tag"` text + its `status-badge` modifier class. */
+  badgeText: string;
+  badgeClass: 'badge-crimson' | 'badge-gold' | 'badge-blue' | 'badge-outline';
+  /** `id="hero-priority-chip"` — always rendered with the fixed `badge-outline` class. */
   priorityTag: string;
-  deadline: string;
-  headline: string;
+  /** `id="hero-headline"` — two lines; only the first line's colour changes per campaign. */
+  headlineAccent: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  /** `id="hero-subline"` */
   subline: string;
+  /** `id="hero-deadline-text"` */
+  deadline: string;
+  /** `id="hero-context"` */
   context: string;
+  /** `id="hero-primary-cta"` */
   primaryCtaText: string;
   primaryCtaHref: string;
+  /** `id="hero-secondary-cta"` */
   secondaryCtaText: string;
   secondaryCtaHref: string;
-  featuredCard: {
-    tag: string;
-    cohortBadge: string;
-    title: string;
-    description: string;
-    metrics: { label: string; value: string }[];
-    badgeAccent: string;
-  };
+  /** `id="hero-media-title"` */
+  mediaTitle: string;
+  /** `id="hero-media-subtitle"` */
+  mediaSubtitle: string;
 }
 
+// Field-by-field diff against styled.html's `switchHeroCampaign` data (script
+// block 4366–5133). Only elements with an `id="hero-*"` are campaign-driven
+// there — the featured card's "FEATURED CAMPAIGN" tag, "COHORT 04" chip,
+// highlight metrics, and its own "Apply for Cohort 04 →" button are never
+// touched by `switchHeroCampaign` (no field for them exists in its data), so
+// Hero.tsx renders those as fixed content instead of reading them per
+// campaign. `sdp` is the default campaign, so its fields match the
+// wireframe's static hero markup (2340–2481) verbatim rather than the JS
+// simulator data, which is itself only reachable by clicking a sim button.
 export const HERO_CAMPAIGNS: Record<string, HeroCampaign> = {
   sdp: {
     id: 'sdp',
-    key: '01. SDP 2026 (P1 OPEN)',
-    badge: 'APPLICATIONS OPEN · COHORT 04',
+    badgeText: 'APPLICATIONS OPEN · COHORT 04',
+    badgeClass: 'badge-crimson',
     priorityTag: 'P1 FLAGSHIP INITIATIVE',
-    deadline: 'Applications close 28 September · 23:59 IST',
-    headline: 'IDEAS BEGIN HERE. BUILDERS GROW HERE.',
+    headlineAccent: 'var(--gec-crimson)',
+    headlineLine1: 'IDEAS BEGIN HERE.',
+    headlineLine2: 'BUILDERS GROW HERE.',
     subline: 'Innovate. Inspire. Impact.',
+    deadline: 'Applications close 28 September · 23:59 IST',
     context:
       'Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.',
-    primaryCtaText: 'Apply for SDP Cohort 04',
-    primaryCtaHref: '#apply',
-    secondaryCtaText: 'Discover GEC Story',
+    primaryCtaText: 'Explore Initiatives →',
+    primaryCtaHref: '/initiatives',
+    secondaryCtaText: 'Discover GEC',
     secondaryCtaHref: '/about',
-    featuredCard: {
-      tag: 'FEATURED CAMPAIGN',
-      cohortBadge: 'COHORT 04',
-      title: 'STARTUP DEVELOPMENT PROGRAM 2026',
-      description:
-        'A 12-week venture acceleration sprint providing dedicated student founder cohorts with faculty mentors, prototyping sandbox access, and pre-seed demo slots.',
-      metrics: [
-        { label: 'Duration', value: '12 Weeks' },
-        { label: 'Cohort Size', value: '12 Startups' },
-        { label: 'Seed Pipeline', value: '₹50L Pool' },
-      ],
-      badgeAccent: '#A3040F',
-    },
+    mediaTitle: 'STARTUP DEVELOPMENT PROGRAM 2026',
+    mediaSubtitle:
+      'A 12-week venture acceleration sprint providing dedicated student founder cohorts with faculty mentors, prototyping sandbox access, and pre-seed demo slots.',
   },
   ideathon: {
     id: 'ideathon',
-    key: '02. IDEATHON (P0 48H)',
-    badge: 'REGISTRATION LIVE · 48H SPRINT',
-    priorityTag: 'P0 HIGH INTENSITY SPRINT',
-    deadline: 'Registration closes 12 October · 18:00 IST',
-    headline: '48 HOURS TO PROTOTYPE THE FUTURE.',
-    subline: 'Sprint. Validate. Build.',
+    badgeText: '48 HOURS LEFT · FINAL WINDOW',
+    badgeClass: 'badge-gold',
+    priorityTag: 'P0 CRITICAL INSTITUTIONAL WINDOW',
+    headlineAccent: '#b45309',
+    headlineLine1: 'IDEATHON 2026',
+    headlineLine2: 'VENTURE SPRINT',
+    subline: '48 hours to pitch, prototype, and defend your venture.',
+    deadline: 'Strict Deadline: Closes in 48 Hours · 14 Team Slots Left',
     context:
-      'A high-intensity 48-hour inter-college hackathon and business model sprint. Transform raw hypotheses into validated prototypes before industry judges.',
-    primaryCtaText: 'Register Your Team',
-    primaryCtaHref: '#apply',
-    secondaryCtaText: 'Explore Initiatives',
+      'Greater Noida’s premier 48-hour student venture sprint. Fast-track entry for teams building AI, climate-tech, consumer hardware, and fintech solutions.',
+    primaryCtaText: 'Register Team (Final Call) →',
+    primaryCtaHref: '/initiatives',
+    secondaryCtaText: 'View Problem Statements',
     secondaryCtaHref: '/initiatives',
-    featuredCard: {
-      tag: 'HACKATHON SPRINT',
-      cohortBadge: 'ROUND 01',
-      title: 'GALGOTIAS NATIONAL IDEATHON',
-      description:
-        'Rapid validation crucible where 60+ engineering and management teams build working MVPs across AI, CleanTech, and FinTech domains.',
-      metrics: [
-        { label: 'Timeframe', value: '48 Hours' },
-        { label: 'Prize Pool', value: '₹2.5 Lakhs' },
-        { label: 'VC Mentors', value: '15+ Angels' },
-      ],
-      badgeAccent: '#FBCA05',
-    },
+    mediaTitle: 'IDEATHON 2026 VENTURE SPRINT',
+    mediaSubtitle:
+      '48 hours of intense hacking, rapid prototyping, and live venture pitches before angel judges.',
   },
   esummit: {
     id: 'esummit',
-    key: '03. E-SUMMIT (P2 LIVE)',
-    badge: 'ANNUAL FLAGSHIP SUMMIT',
-    priorityTag: 'P2 REGIONAL GATHERING',
-    deadline: 'Main Stage Passes Available · Campus Hub',
-    headline: 'THE LARGEST STUDENT ENTREPRENEURSHIP SUMMIT IN NCR.',
-    subline: 'Network. Pitch. Scale.',
+    badgeText: 'EVENT IS LIVE · MAIN AUDITORIUM',
+    badgeClass: 'badge-blue',
+    priorityTag: 'P2 MAJOR GROUND EXPERIENCE',
+    headlineAccent: 'var(--gec-blue)',
+    headlineLine1: 'GALGOTIAS',
+    headlineLine2: 'E-SUMMIT 2026',
+    subline: '50+ Founders. 12 Keynotes. Live Venture Arena.',
+    deadline: 'Happening Today · 09:30 AM – 06:00 PM IST',
     context:
-      'Bringing together over 1,500 aspiring innovators, 50+ visionary founders, and 20+ angel syndicates for keynotes, live shark arenas, and networking.',
-    primaryCtaText: 'Get Summit Pass',
-    primaryCtaHref: '#apply',
-    secondaryCtaText: 'View Speakers',
-    secondaryCtaHref: '#speakers',
-    featuredCard: {
-      tag: 'ANNUAL SUMMIT',
-      cohortBadge: 'EDITION 2026',
-      title: 'GALGOTIAS E-SUMMIT 2026',
-      description:
-        'Greater Noida’s marquee entrepreneurial gathering featuring keynote stages, pitch competitions, and bilateral investor matchmaking.',
-      metrics: [
-        { label: 'Attendees', value: '1,500+' },
-        { label: 'Founders', value: '50+ On Stage' },
-        { label: 'Exhibition', value: '30 Demo Pods' },
-      ],
-      badgeAccent: '#1F7EC0',
-    },
+      'The annual flagship entrepreneurship summit is currently underway on ground. Campus screens, live stream broadcasting, and investor pitching are in session.',
+    primaryCtaText: 'Watch Live Stream ↗',
+    primaryCtaHref: '/initiatives',
+    secondaryCtaText: 'Full Event Schedule',
+    secondaryCtaHref: '/stories',
+    mediaTitle: 'GALGOTIAS E-SUMMIT 2026',
+    mediaSubtitle:
+      'The annual flagship entrepreneurship summit bringing founders, investors, and students together.',
   },
   evergreen: {
     id: 'evergreen',
-    key: '04. EVERGREEN FALLBACK',
-    badge: 'ALWAYS OPEN · GEC COMMUNITY',
-    priorityTag: 'PERPETUAL ACCESS',
-    deadline: 'Rolling Admissions · All Departments Welcome',
-    headline: 'WHERE AMBITIOUS STUDENTS TURN INTO FOUNDERS.',
-    subline: 'Learn by Doing.',
+    badgeText: 'GALGOTIAS ENTREPRENEURSHIP CELL',
+    badgeClass: 'badge-outline',
+    priorityTag: 'EVERGREEN BRAND BASELINE',
+    headlineAccent: 'var(--gec-crimson)',
+    headlineLine1: 'IDEAS BEGIN HERE.',
+    headlineLine2: 'BUILDERS GROW HERE.',
+    subline: 'Innovate. Inspire. Impact.',
+    deadline: 'Always Active · Student Community & Venture Ecosystem',
     context:
-      'Galgotias Entrepreneurship Cell is your campus launchpad. Join student-led teams, access institutional grants, and connect with experienced mentors.',
-    primaryCtaText: 'Join the Community',
-    primaryCtaHref: '#apply',
-    secondaryCtaText: 'Meet the Teams',
-    secondaryCtaHref: '/teams',
-    featuredCard: {
-      tag: 'COMMUNITY PORTAL',
-      cohortBadge: 'YEAR-ROUND',
-      title: 'GEC STUDENT INCUBATION NETWORK',
-      description:
-        'Continuous access to workshops, peer hack nights, venture advisory, and the Galgotias Incubation Centre (GICRISE) facilities.',
-      metrics: [
-        { label: 'Active Teams', value: '7 Divisions' },
-        { label: 'Community', value: '12k+ Students' },
-        { label: 'Resources', value: '100% Free' },
-      ],
-      badgeAccent: '#222222',
-    },
+      'Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.',
+    primaryCtaText: 'Explore Initiatives →',
+    primaryCtaHref: '/initiatives',
+    secondaryCtaText: 'Discover GEC',
+    secondaryCtaHref: '/about',
+    mediaTitle: 'STUDENT-DRIVEN LAUNCHPAD',
+    mediaSubtitle:
+      'Connecting ambitious students with knowledge, mentorship, and the startup ecosystem.',
   },
 };
 

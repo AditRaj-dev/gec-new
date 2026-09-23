@@ -1,0 +1,193 @@
+/* Hero — styled.html 2340–2481 (excluding .hero-spotlight-cockpit, 2342–2357). */
+
+.hero__primary {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.hero__meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero__kicker {
+  margin: 0;
+}
+
+.hero__subline {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gec-crimson);
+  margin-top: 10px;
+}
+
+.hero__deadline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(163, 4, 15, 0.06);
+  border: 1px solid rgba(163, 4, 15, 0.2);
+  padding: 8px 14px;
+  border-radius: var(--radius-xs);
+  width: fit-content;
+}
+
+.hero__deadline-text {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--gec-crimson);
+}
+
+.hero__context {
+  margin: 0;
+}
+
+.hero__cta-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.hero__card {
+  padding: 32px;
+  background: #fffdf8;
+  border: 1.5px solid var(--gec-crimson);
+  box-shadow: var(--shadow-hover);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__card-glow {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(251, 202, 5, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero__card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.hero__card-cohort {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gec-gold);
+}
+
+.hero__card-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gec-ink);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.hero__card-subtitle {
+  font-size: 13px;
+  color: var(--gec-ink-muted);
+  margin: 10px 0 20px;
+}
+
+.hero__card-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.hero__card-metric {
+  background: var(--gec-canvas);
+  padding: 12px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--gec-border-subtle);
+}
+
+.hero__card-metric-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--gec-ink-muted);
+  text-transform: uppercase;
+}
+
+.hero__card-metric-value {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gec-crimson);
+  font-family: var(--font-display);
+}
+
+.hero__card-cta {
+  width: 100%;
+}
+
+.hero__dock-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.hero__dock-hint {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--gec-ink-muted);
+}
+
+.hero__secondary-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero__secondary-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.hero__secondary-badge {
+  font-size: 9px;
+}
+
+.hero__secondary-title {
+  font-size: 13px;
+  font-weight: 800;
+  margin-top: 4px;
+  color: var(--gec-ink);
+}
+
+.hero__secondary-meta {
+  font-size: 11px;
+  color: var(--gec-ink-muted);
+}
+
+/* `.hero-secondary-card` is now a <button>; the wireframe styling assumes a
+   block-level div, so reset button-specific defaults without touching the
+   shared class in styles/gec.css. */
+.hero-secondary-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.hero-secondary-card:focus-visible {
+  outline: 2px solid var(--gec-crimson);
+  outline-offset: 2px;
+}

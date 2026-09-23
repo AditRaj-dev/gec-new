@@ -1,6 +1,7 @@
 import { getInitiatives, getTeams, getStories } from '@/lib/api';
 import { HERO_CAMPAIGNS } from '@/lib/siteContent';
-import { ActOpening } from '@/components/acts/ActOpening';
+import { Hero } from '@/components/home/Hero';
+import { Happening } from '@/components/home/Happening';
 import { ActCount } from '@/components/acts/ActCount';
 import { ActDesk } from '@/components/acts/ActDesk';
 import { ActShelf } from '@/components/acts/ActShelf';
@@ -18,7 +19,8 @@ export default async function Home() {
 
   return (
     <main aria-label="Galgotias Entrepreneurship Cell">
-      <ActOpening campaigns={HERO_CAMPAIGNS} />
+      <Hero campaigns={HERO_CAMPAIGNS} />
+      <Happening />
       <ActCount
         stats={[
           { label: 'Teams', value: String(teams.length) },
