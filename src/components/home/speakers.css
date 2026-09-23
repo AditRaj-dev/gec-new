@@ -1,0 +1,64 @@
+/* Speakers — styled.html 2878–2953. */
+
+.speakers__intro {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 36px;
+}
+
+.speakers__heading {
+  color: #fffdf8;
+  margin: 6px 0 10px;
+}
+
+.speakers__lede {
+  color: rgba(255, 253, 248, 0.9);
+}
+
+.speakers__card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.speakers__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(163, 4, 15, 0.1);
+  border: 2px solid var(--gec-crimson);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--gec-crimson);
+  margin-bottom: 10px;
+}
+
+.speakers__name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gec-ink);
+}
+
+.speakers__role {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gec-crimson);
+  font-family: var(--font-mono);
+}
+
+.speakers__org {
+  font-size: 11px;
+  color: var(--gec-ink-muted);
+}
+
+.speakers__cta-row {
+  text-align: center;
+  margin-top: 32px;
+}

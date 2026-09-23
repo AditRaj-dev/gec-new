@@ -1,0 +1,64 @@
+/* Partners — styled.html 2956–3008. */
+
+.partners__intro {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 32px;
+}
+
+.partners__heading {
+  color: var(--gec-ink);
+  margin-top: 6px;
+}
+
+.partners__lede {
+  margin: 8px auto 0;
+}
+
+.partners__anchor {
+  max-width: 720px;
+  margin: 0 auto 24px;
+  text-align: center;
+  padding: 28px;
+  border: 1.5px solid var(--gec-crimson);
+}
+
+.partners__anchor-badge {
+  margin-bottom: 10px;
+}
+
+.partners__anchor-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gec-crimson);
+  margin-bottom: 4px;
+}
+
+.partners__anchor-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gec-ink);
+}
+
+.partners__anchor-desc {
+  font-size: 12px;
+  color: var(--gec-ink-muted);
+  margin-top: 6px;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.partners__logo-name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--gec-crimson);
+}
+
+.partners__logo-tag {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--gec-ink-muted);
+}

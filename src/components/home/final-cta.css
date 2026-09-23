@@ -1,0 +1,46 @@
+/* Final CTA — styled.html 3011–3030. */
+
+.final-cta {
+  padding: 80px 48px;
+}
+
+.final-cta__card {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 56px 40px;
+  background: #fffdf8;
+  border: 2px solid var(--gec-gold);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.final-cta__badge {
+  margin-bottom: 14px;
+}
+
+.final-cta__heading {
+  color: var(--gec-ink);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.final-cta__heading-accent {
+  color: var(--gec-crimson);
+}
+
+.final-cta__lede {
+  margin: 0 auto 32px;
+  font-size: 16px;
+}
+
+.final-cta__actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.final-cta__cta {
+  min-width: 200px;
+}
