@@ -4,6 +4,8 @@ import { ActOpening } from '@/components/acts/ActOpening';
 import { ActCount } from '@/components/acts/ActCount';
 import { ActDesk } from '@/components/acts/ActDesk';
 import { ActShelf } from '@/components/acts/ActShelf';
+import { ActStage } from '@/components/acts/ActStage';
+import { ActClose } from '@/components/acts/ActClose';
 import { CurtainInterstitial } from '@/components/CurtainInterstitial';
 import { GEC_DISPATCH_ARCHIVE } from '@/components/NewsletterSection';
 
@@ -38,6 +40,14 @@ export default async function Home() {
         effect="wipe"
       />
       <ActShelf items={GEC_DISPATCH_ARCHIVE} />
+      <CurtainInterstitial
+        headline="The people behind all of it."
+        count={teams.length}
+        noun="teams"
+        effect="doors-h"
+      />
+      <ActStage teams={teams} />
+      <ActClose />
     </main>
   );
 }

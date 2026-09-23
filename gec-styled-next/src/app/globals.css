@@ -91,6 +91,11 @@
      interaction-timing scale above. Do not "fix" this down to --dur-act. */
   --dur-marquee: 28s;
   --ease-out:    cubic-bezier(0.165, 0.84, 0.44, 1);
+  /* CSS mirror of lib/motion.ts STAGGER (0.04s) — needed as an
+     animation-delay token by Act V's card peel (ActStage), which staggers
+     via CSS nth-child rules rather than per-child React props. Keep in
+     sync with STAGGER. */
+  --stagger-card: 40ms;
 
   /* z-index scale — semantic, never arbitrary */
   --z-base: 0; --z-sticky: 20; --z-nav: 40; --z-curtain: 60;

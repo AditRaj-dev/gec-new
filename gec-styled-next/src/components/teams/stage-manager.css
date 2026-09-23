@@ -247,7 +247,7 @@
 
 /* ================= DETAIL MODE (3D rail + canvas) — styled.html spec ================= */
 .team-stage-manager-section.is-detail-active {
-  grid-template-columns: minmax(300px, 340px) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
   gap: 38px;
   min-height: 720px;
 }
@@ -280,7 +280,7 @@
   align-items: stretch;
   gap: 6px;
   width: 100%;
-  max-width: 320px;
+  max-width: 100%;
   min-height: 118px;
   padding: 14px 16px 12px;
   grid-template-columns: none;
