@@ -1,0 +1,97 @@
+/* SiteFooter — wireframe styled.html 3033-3096 inline styles moved here
+   verbatim per the wireframe -> JSX port rules (rule 2). Structural rules
+   (.site-footer, .footer-grid-structure, .footer-sub-bar, .brand-mark,
+   .brand-emblem-svg, .brand-typography, .brand-title, .brand-sub) already
+   live in src/styles/gec.css; this file only holds the footer-scoped
+   overrides and one-off blocks the wireframe expressed as inline style. */
+
+.site-footer__brand {
+  margin-bottom: 16px;
+}
+
+.site-footer__brand-title {
+  color: #FFF;
+}
+
+.site-footer__brand-sub {
+  color: #94A3B8;
+}
+
+.site-footer__blurb {
+  font-size: 13px;
+  color: #94A3B8;
+  max-width: 380px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.site-footer__tagline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gec-gold);
+}
+
+.site-footer__heading {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  color: #FFF;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+
+.site-footer__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.site-footer__link {
+  color: #CBD5E1;
+  text-decoration: none;
+}
+
+.site-footer__portals {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.site-footer__portal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-footer__portal-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFF;
+}
+
+.site-footer__portal-tag {
+  font-size: 10px;
+  font-family: var(--font-mono);
+}
+
+.site-footer__portal-tag--gold {
+  color: var(--gec-gold);
+}
+
+.site-footer__portal-tag--blue {
+  color: var(--gec-blue);
+}
+
+.site-footer__powered {
+  color: var(--gec-gold);
+  font-weight: 700;
+}

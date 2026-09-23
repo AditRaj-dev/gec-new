@@ -3,6 +3,7 @@ import { Archivo, Manrope, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { BrandEntranceCurtain } from '@/components/BrandEntranceCurtain';
 import { Navbar } from '@/components/Navbar';
+import { SiteFooter } from '@/components/SiteFooter';
 
 const archivo = Archivo({ subsets: ['latin'], weight: ['700', '800', '900'], variable: '--font-archivo', display: 'swap' });
 const manrope = Manrope({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-manrope', display: 'swap' });
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <BrandEntranceCurtain />
         <Navbar />
         <div className="flex-1 flex flex-col">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );
