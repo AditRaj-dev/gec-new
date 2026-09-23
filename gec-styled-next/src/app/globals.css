@@ -155,16 +155,6 @@ p { text-wrap: pretty; }
   }
 }
 
-/* Home page iframe styles */
-.styled-site-frame {
-  display: block;
-  width: 100%;
-  height: calc(100svh - 80px);
-  border: 0;
-  background: var(--gec-canvas);
-}
-.site-logo-dock { display: none; }
-
 /* Route transitions — the `wipe` curtain extended to navigation.
    Browsers without View Transitions support fall through to an ordinary
    instant navigation, which is a correct outcome here. */
