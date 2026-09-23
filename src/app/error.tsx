@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <main aria-label="Something broke">
-      <section className="surface-cream gec-grain">
+      <section className="surface-cream">
         <div className="mx-auto flex min-h-[70vh] max-w-[720px] flex-col items-center justify-center gap-8 px-6 py-24 text-center md:px-10">
           <div className="flex max-w-[46ch] flex-col gap-3">
             <h1

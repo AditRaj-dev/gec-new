@@ -100,6 +100,21 @@ body { background: var(--gec-canvas); color: var(--gec-ink); }
 
 .font-display { font-family: var(--font-display); }
 
+/* Temporary compatibility rules for pre-port components.
+   Remove these as later porting tasks replace the legacy consumers. */
+.gec-stamp {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--gec-crimson);
+}
+.gec-regmark { position: absolute; width: 13px; height: 13px; opacity: 0.5; }
+.gec-regmark::before,
+.gec-regmark::after { content: ''; position: absolute; background: var(--gec-crimson); }
+.gec-regmark::before { width: 100%; height: 1px; top: 0; }
+.gec-regmark::after  { height: 100%; width: 1px; left: 0; }
+
 /* Global paper grain — texture spec §10. One layer for the whole site. */
 body::after {
   content: "";
