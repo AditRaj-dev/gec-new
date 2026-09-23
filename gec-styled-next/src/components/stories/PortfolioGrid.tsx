@@ -11,14 +11,17 @@ import { cn } from '@/lib/utils';
  * ventures. Do not paraphrase copy here; if a venture is added or removed in
  * the wireframe, mirror it here rather than editing around it.
  *
- * Accent tokens are remapped onto the four brand colors this app ships
- * (--gec-crimson, --gec-gold, --gec-blue, --gec-ink) — the wireframe's raw
- * green/amber/dark-red literals for CirculaWaste, QuickLogist and ByteCraft
- * have no equivalent CSS custom property in globals.css, so they're folded
- * onto the nearest existing token instead of introducing new color literals.
+ * Accent tokens are remapped onto brand colors this app ships (--gec-gold,
+ * --gec-blue, --gec-ink) — the wireframe's raw green/amber/dark-red literals
+ * for CirculaWaste, QuickLogist and ByteCraft have no equivalent CSS custom
+ * property in globals.css, so they're folded onto the nearest existing token
+ * instead of introducing new color literals. Crimson is deliberately not a
+ * card accent option: this route reserves crimson for exactly one moment —
+ * the active filter chip below — so it isn't reused as decoration on every
+ * card (review finding 2).
  */
 type VentureSector = 'tech' | 'health' | 'sustainability' | 'consumer';
-type AccentToken = 'crimson' | 'gold' | 'blue' | 'ink';
+type AccentToken = 'gold' | 'blue' | 'ink';
 
 interface PortfolioVenture {
   id: string;
@@ -40,7 +43,10 @@ export const PORTFOLIO_VENTURES: PortfolioVenture[] = [
     sector: 'tech',
     sectorLabel: 'AGRITECH / AI',
     stageLabel: 'SEED · ₹75L',
-    accent: 'crimson',
+    // Was 'crimson'. The active filter chip is this route's one reserved
+    // crimson moment (review finding 2) — every card accent moves off
+    // crimson so it isn't reused as decoration six times over.
+    accent: 'ink',
     description:
       'Multispectral drone telemetry analyzing crop disease patterns and pesticide requirements for rural farmers.',
     founders: 'Aman Sharma & Riya Verma',
@@ -119,10 +125,6 @@ const SECTOR_LABELS: Record<VentureSector, string> = {
 };
 
 const ACCENT_CLASSES: Record<AccentToken, { chip: string; badge: string }> = {
-  crimson: {
-    chip: 'bg-[var(--gec-crimson)]/10 border-[var(--gec-crimson)] text-[var(--gec-crimson)]',
-    badge: 'bg-[var(--gec-crimson)] text-white',
-  },
   blue: {
     chip: 'bg-[var(--gec-blue)]/10 border-[var(--gec-blue)] text-[var(--gec-blue)]',
     badge: 'bg-[var(--gec-blue)] text-white',
@@ -282,7 +284,7 @@ function VentureCard({ venture }: { venture: PortfolioVenture }) {
 
       <div className="mt-4 flex items-center justify-between border-t border-[var(--gec-border)] pt-3 text-xs">
         <span className="font-semibold text-[var(--gec-ink)]">{venture.founders}</span>
-        <span className="font-bold text-[var(--gec-crimson)]">Visit →</span>
+        <span className="font-bold text-[var(--gec-ink-muted)]">Visit →</span>
       </div>
     </div>
   );

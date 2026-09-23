@@ -12,9 +12,11 @@ export default function StoriesPage() {
   return (
     <main aria-label="GEC Stories">
       {/* ---- Hero ---- */}
-      <section className="surface-cream gec-grain">
+      {/* The only eyebrow on this route — the portfolio section below deliberately
+          has none, so this pattern doesn't repeat above every section heading. */}
+      <section className="surface-sand gec-grain">
         <div className="mx-auto max-w-[860px] px-6 py-24 text-center md:px-10 md:py-32 lg:px-16">
-          <span className="font-mono text-xs uppercase tracking-[0.09em] text-[var(--gec-crimson)]">
+          <span className="font-mono text-xs uppercase tracking-[0.09em] text-[var(--gec-ink-muted)]">
             Culture &amp; Insights
           </span>
           <h1
@@ -23,7 +25,7 @@ export default function StoriesPage() {
           >
             People Build Companies.
             <br />
-            <span className="text-[var(--gec-crimson)]">Stories Build Culture.</span>
+            Stories Build Culture.
           </h1>
           <p
             className="mx-auto mt-6 max-w-[65ch] text-[var(--gec-ink-muted)]"
@@ -46,11 +48,9 @@ export default function StoriesPage() {
         <div className="mx-auto max-w-[1200px] px-6 py-20 md:px-10 md:py-24 lg:px-16">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-[60ch]">
-              <span className="font-mono text-xs uppercase tracking-[0.09em] text-[var(--gec-crimson)]">
-                Venture Showcase
-              </span>
+              {/* No eyebrow here on purpose — see the hero section's comment above. */}
               <h2
-                className="mt-3 font-display font-bold text-[var(--gec-ink)]"
+                className="font-display font-bold text-[var(--gec-ink)]"
                 style={{ fontSize: 'var(--text-2xl)' }}
               >
                 Built at Galgotias.
