@@ -93,7 +93,7 @@ export default function AboutPage() {
 
       {/* ---- Origin & the GICRISE ecosystem ---- */}
       <section className="surface-sand">
-        <div className="mx-auto max-w-[1200px] px-6 py-20 md:px-10 lg:px-16">
+        <div className="mx-auto max-w-[1200px] px-6 pt-20 pb-14 md:px-10 md:pt-24 md:pb-16 lg:px-16 lg:pt-28 lg:pb-16">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[7fr_5fr] lg:items-start lg:gap-10">
             <div>
               <h2
@@ -131,8 +131,14 @@ export default function AboutPage() {
               className="surface-card rounded-2xl p-8"
               style={{ boxShadow: 'var(--elev-lifted)' }}
             >
+              <span
+                className="inline-flex items-center rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.06em] text-[var(--gec-crimson)]"
+                style={{ borderColor: 'var(--gec-crimson)' }}
+              >
+                Incubation Pipeline Matrix
+              </span>
               <h3
-                className="font-display font-bold text-[var(--gec-ink)]"
+                className="mt-4 font-display font-bold text-[var(--gec-ink)]"
                 style={{ fontSize: 'var(--text-lg)' }}
               >
                 Student Idea to Market Venture
@@ -169,7 +175,7 @@ export default function AboutPage() {
 
       {/* ---- Mission & Vision ---- */}
       <section className="surface-cream">
-        <div className="mx-auto max-w-[1200px] px-6 py-20 md:px-10 lg:px-16">
+        <div className="mx-auto max-w-[1200px] px-6 pt-12 pb-12 md:px-10 md:pt-14 md:pb-14 lg:px-16">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <div
               className="surface-card rounded-2xl p-9"
@@ -236,7 +242,7 @@ export default function AboutPage() {
 
       {/* ---- Leadership & Mentors ---- */}
       <section className="surface-sand">
-        <div className="mx-auto max-w-[1100px] px-6 py-20 md:px-10 lg:px-16">
+        <div className="mx-auto max-w-[1100px] px-6 pt-28 pb-28 md:px-10 md:pt-32 md:pb-36 lg:px-16 lg:pt-36 lg:pb-40">
           <div className="max-w-[65ch]">
             <h2
               className="font-display font-bold text-[var(--gec-ink)]"
@@ -253,7 +259,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:gap-16">
             <div>
               <h3
                 className="font-mono text-xs font-bold uppercase tracking-[0.08em] text-[var(--gec-crimson)]"
@@ -305,11 +311,14 @@ export default function AboutPage() {
 
       {/* ---- Teams banner ---- */}
       <section className="surface-cream">
-        <div className="mx-auto max-w-[1100px] px-6 py-20 md:px-10 lg:px-16">
+        <div className="mx-auto max-w-[1100px] px-6 pt-16 pb-24 md:px-10 md:pt-20 md:pb-28 lg:px-16">
           <div className="flex flex-col items-start justify-between gap-8 rounded-2xl border border-[var(--gec-border)] p-10 sm:flex-row sm:items-center" style={{ background: 'var(--gec-surface-sand)' }}>
             <div className="max-w-[52ch]">
+              <span className="font-mono text-xs uppercase tracking-[0.09em] text-[var(--gec-crimson)]">
+                Team Architecture
+              </span>
               <h2
-                className="font-display font-bold text-[var(--gec-ink)]"
+                className="mt-3 font-display font-bold text-[var(--gec-ink)]"
                 style={{ fontSize: 'var(--text-xl)' }}
               >
                 7 Teams. One Vision.
