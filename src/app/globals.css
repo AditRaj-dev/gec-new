@@ -65,10 +65,40 @@
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-micro: 180ms;
   --duration-macro: 320ms;
+
+  /* Temporary compatibility aliases for pre-port components.
+     Remove these as later porting tasks replace the legacy consumers. */
+  --gec-border: var(--gec-border-subtle);
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.5rem, 1.1rem + 1.6vw, 2rem);
+  --text-2xl: clamp(2rem, 1.4rem + 2.6vw, 3rem);
+  --text-3xl: clamp(2.6rem, 1.6rem + 4.2vw, 4.5rem);
+  --text-hero: clamp(3rem, 1.8rem + 5.4vw, 6rem);
+
+  --elev-flush: 0 0 0 1px rgba(163, 4, 15, 0.12);
+  --elev-raised: 0 1px 2px rgba(90, 40, 20, 0.07), 0 2px 5px -2px rgba(90, 40, 20, 0.10);
+  --elev-lifted: 0 1px 1px rgba(90, 40, 20, 0.05), 0 4px 9px -3px rgba(90, 40, 20, 0.13),
+                 0 12px 24px -12px rgba(90, 40, 20, 0.20);
+  --elev-floating: 0 2px 3px rgba(90, 40, 20, 0.07), 0 10px 20px -6px rgba(90, 40, 20, 0.18),
+                   0 26px 48px -18px rgba(90, 40, 20, 0.30);
+
+  --dur-instant: 120ms;
+  --dur-ui: var(--duration-micro);
+  --dur-layout: var(--duration-macro);
+  --dur-act: 480ms;
+  --dur-marquee: 28s;
+  --ease-out: var(--ease-spring);
+  --stagger-card: 40ms;
 }
 
 html { background: var(--gec-canvas); }
 body { background: var(--gec-canvas); color: var(--gec-ink); }
+
+.font-display { font-family: var(--font-display); }
 
 /* Global paper grain — texture spec §10. One layer for the whole site. */
 body::after {
