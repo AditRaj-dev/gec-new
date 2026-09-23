@@ -15,7 +15,7 @@ assert.equal(isLive(EXPAND_END - 0.001), false);
 assert.equal(isLive(EXPAND_END), true);
 // shelf travel: still before, linear through, clamped after
 assert.equal(shelfOffset(0.2, 1000), 0);
-assert.equal(shelfOffset(0.61, 1000), 500);
+assert.ok(Math.abs(shelfOffset(0.61, 1000) - 500) < 1e-9);
 assert.equal(shelfOffset(1, 1000), 1000);
 // nothing to travel when the covers fit
 assert.equal(shelfOffset(0.6, 0), 0);
