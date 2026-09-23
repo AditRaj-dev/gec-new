@@ -14,7 +14,7 @@ import './hero.css';
 const SECONDARY_CARDS = [
   {
     id: 'sdp',
-    labelColor: 'var(--gec-crimson)',
+    labelClass: 'hero-secondary-card__label--sdp',
     label: '01 / STARTUP DEVELOPMENT',
     badgeClass: 'badge-crimson',
     badgeText: 'P1 ACTIVE',
@@ -23,7 +23,7 @@ const SECONDARY_CARDS = [
   },
   {
     id: 'ideathon',
-    labelColor: '#b45309',
+    labelClass: 'hero-secondary-card__label--ideathon',
     label: '02 / IDEATHON 2026',
     badgeClass: 'badge-gold',
     badgeText: 'P0 48H',
@@ -32,7 +32,7 @@ const SECONDARY_CARDS = [
   },
   {
     id: 'esummit',
-    labelColor: 'var(--gec-blue)',
+    labelClass: 'hero-secondary-card__label--esummit',
     label: '03 / E-SUMMIT 2026',
     badgeClass: 'badge-blue',
     badgeText: 'P2 LIVE',
@@ -94,7 +94,7 @@ export function Hero({ campaigns }: { campaigns: Record<string, HeroCampaign> })
                 <h1 className="h1-display">
                   <span style={{ color: active.headlineAccent }}>{active.headlineLine1}</span>
                   <br />
-                  <span style={{ color: 'var(--gec-ink)' }}>{active.headlineLine2}</span>
+                  <span className="hero__headline-line2">{active.headlineLine2}</span>
                 </h1>
                 <div className="hero__subline">{active.subline}</div>
               </div>
@@ -175,9 +175,7 @@ export function Hero({ campaigns }: { campaigns: Record<string, HeroCampaign> })
               onClick={() => setActiveId(card.id)}
             >
               <div className="hero__secondary-top">
-                <span className="hero__secondary-label" style={{ color: card.labelColor }}>
-                  {card.label}
-                </span>
+                <span className={`hero__secondary-label ${card.labelClass}`}>{card.label}</span>
                 <span className={`status-badge ${card.badgeClass} hero__secondary-badge`}>{card.badgeText}</span>
               </div>
               <div className="hero__secondary-title">{card.title}</div>
