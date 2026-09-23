@@ -50,7 +50,7 @@ export function CurtainInterstitial({
   // Reduced motion: a static crimson band carrying the same words. No travel.
   if (reduce) {
     return (
-      <div className="surface-crimson flex flex-col items-center justify-center gap-2 px-6 py-20 text-center">
+      <div data-surface="crimson" className="surface-crimson flex flex-col items-center justify-center gap-2 px-6 py-20 text-center">
         <span className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.09em] text-[var(--gec-gold)]">
           {kicker}
         </span>
@@ -62,7 +62,7 @@ export function CurtainInterstitial({
   }
 
   return (
-    <div ref={ref} className="relative h-[180vh]">
+    <div ref={ref} data-surface="crimson" className="relative h-[180vh]">
       <div className="sticky top-0 h-[100dvh] overflow-hidden">
         <CurtainPanels effect={effect} shut={shut} showSeam />
         <motion.div

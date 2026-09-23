@@ -36,10 +36,9 @@
   border: 1px solid rgba(163, 4, 15, 0.1);
   box-shadow: 0 4px 24px rgba(34, 34, 34, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   isolation: isolate;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  max-height: 100vh;
+  position: relative;
+  height: 100%;
+  max-height: 100%;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -339,8 +338,8 @@
   grid-template-rows: auto 1fr;
   column-gap: 32px;
   row-gap: 16px;
-  height: 100vh;
-  max-height: 100vh;
+  height: 100%;
+  max-height: 100%;
   overflow: hidden;
 }
 @media (max-width: 900px) {
