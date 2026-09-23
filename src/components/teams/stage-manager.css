@@ -368,9 +368,9 @@
   transform-style: preserve-3d;
   height: 100%;
   max-height: calc(100vh - 100px);
-  overflow: hidden !important;
-  overflow-y: hidden !important;
-  overflow-x: hidden !important;
+  overflow: visible !important;
+  overflow-y: visible !important;
+  overflow-x: visible !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
   display: flex;
