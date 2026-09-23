@@ -1,0 +1,322 @@
+<title>GEC Home Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  /* Single-theme on purpose: the board shows real GEC surface colours, which must not invert. */
+  :root {
+    color-scheme: light;
+    --table: #ECE5D8;
+    --canvas: #FCF8ED;
+    --sand: #F4E2CA;
+    --card: #FFFDF8;
+    --crimson: #A3040F;
+    --crimson-act: #C62F29;
+    --gold: #FBCA05;
+    --blue: #1F7EC0;
+    --ink: #222222;
+    --ink-muted: #5F5650;
+    --ink-subtle: #8A817A;
+    --rule: rgba(34,34,34,0.14);
+    --display: 'Archivo', 'Cabinet Grotesk', system-ui, sans-serif;
+    --body: 'Manrope', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --px-per-screen: 132px;
+  }
+  body { background: var(--table); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; padding-block: 40px 80px; }
+  @media (max-width: 640px) { .wrap { padding-inline: 16px; } }
+
+  header.top h1 { font-family: var(--display); font-weight: 900; font-size: clamp(2rem, 4.4vw, 3.1rem); letter-spacing: -0.035em; line-height: 1.02; margin: 0 0 10px; text-wrap: balance; }
+  header.top h1 em { font-style: normal; color: var(--crimson); }
+  header.top p { max-width: 64ch; color: var(--ink-muted); margin: 0; text-wrap: pretty; }
+  .meta { font-family: var(--mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink-subtle); text-transform: uppercase; margin-bottom: 14px; }
+
+  /* Ratio panel */
+  .ratio { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--table); padding-block: 14px; margin-block: 28px 8px; border-bottom: 1px solid var(--rule); }
+  .ratio-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin-bottom: 8px; font-size: 13px; }
+  .ratio-row strong { font-family: var(--display); font-size: 22px; font-weight: 900; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .ratio-row .ok { color: #15803d; } .ratio-row .warn { color: var(--crimson); }
+  .ratio-row .label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); }
+  .bar { position: relative; display: flex; height: 18px; border: 1px solid var(--rule); margin-top: 18px; }
+  .bar span { height: 100%; transition: flex-grow 320ms cubic-bezier(0.16,1,0.3,1); }
+  .target { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }
+  .target::after { content: '25% target'; position: absolute; top: -17px; left: 4px; font-family: var(--mono); font-size: 10px; white-space: nowrap; color: var(--ink); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; font-size: 12px; color: var(--ink-muted); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; border: 1px solid var(--rule); }
+
+  /* Flow */
+  .flow { display: grid; gap: 0; margin-top: 28px; }
+  .row { display: grid; grid-template-columns: 56px 260px 1fr; gap: 0 24px; align-items: start; }
+  .idx { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink-subtle); padding-top: 14px; text-align: right; font-variant-numeric: tabular-nums; }
+  .strip { position: relative; }
+  .block { position: relative; overflow: hidden; border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .row:first-child .block { border-top: 1px solid var(--rule); border-radius: 6px 6px 0 0; }
+  .row:last-child .block { border-bottom: 1px solid var(--rule); border-radius: 0 0 6px 6px; }
+  .info { padding-block: 12px 26px; border-top: 1px solid var(--rule); min-width: 0; }
+  .row.curtain .info { border-top-style: dashed; }
+  .row.off .block { background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(34,34,34,0.06) 6px 7px) !important; }
+  .row.off .block * { opacity: 0.25; }
+  .row.off .info h3, .row.off .info .headline { color: var(--ink-subtle); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+  .surf-cream { background: var(--canvas); } .surf-sand { background: var(--sand); }
+  .surf-crimson { background: var(--crimson); } .surf-charcoal { background: var(--ink); }
+  .surf-curtain { background: var(--crimson); background-image: linear-gradient(101deg, transparent 49.6%, rgba(0,0,0,0.18) 49.6% 50.4%, transparent 50.4%); }
+
+  .block.full { outline: 3px solid var(--ink); outline-offset: -3px; }
+  .expand-frame { position: absolute; inset: 22% 16%; border: 1.5px dashed var(--crimson); border-radius: 10px; pointer-events: none; z-index: 2; }
+  .expand-frame::before, .expand-frame::after { content: ''; position: absolute; width: 10px; height: 10px; border: solid var(--crimson); }
+  .expand-frame::before { top: -14px; left: -14px; border-width: 2px 0 0 2px; }
+  .expand-frame::after { bottom: -14px; right: -14px; border-width: 0 2px 2px 0; }
+  .expand-label { position: absolute; left: 8px; bottom: 6px; z-index: 3; font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--card); background: var(--ink); padding: 2px 5px; border-radius: 3px; }
+  /* Schematic primitives, drawn on the real surface */
+  .sk { border-radius: 3px; background: rgba(34,34,34,0.13); }
+  .dark .sk { background: rgba(255,253,248,0.2); }
+  .sk.card { background: var(--card); border: 1px solid rgba(163,4,15,0.18); }
+  .dark .sk.card { background: var(--card); border-color: transparent; }
+  .sk.red { background: var(--crimson); } .sk.gold { background: var(--gold); }
+  .sk.h { height: 9px; } .sk.hl { height: 14px; } .sk.t { height: 5px; }
+  .g { display: grid; gap: 5px; flex: 1; }
+  .curtain-copy { margin: auto; text-align: center; color: var(--card); font-family: var(--display); font-weight: 800; font-size: 13px; line-height: 1.2; max-width: 22ch; }
+  .curtain-copy small { display: block; margin-top: 4px; font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: 0.08em; color: rgba(255,253,248,0.72); }
+
+  .info h3 { font-family: var(--display); font-weight: 800; font-size: 19px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+  .headline { font-size: 14px; color: var(--ink-muted); margin: 0 0 10px; font-style: italic; text-wrap: balance; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chip { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--rule); background: var(--card); color: var(--ink-muted); white-space: nowrap; }
+  .chip.act { background: var(--crimson); border-color: var(--crimson); color: var(--card); }
+  .chip.full { background: var(--ink); border-color: var(--ink); color: var(--gold); }
+  .chip.new { background: var(--gold); border-color: #d9ad00; color: var(--ink); }
+  dl { display: grid; grid-template-columns: 76px 1fr; gap: 3px 12px; margin: 0; font-size: 13.5px; }
+  dt { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-subtle); padding-top: 3px; }
+  dd { margin: 0; text-wrap: pretty; }
+  dd code { font-family: var(--mono); font-size: 11.5px; background: var(--card); border: 1px solid var(--rule); border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere; }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; font-weight: 700; cursor: pointer; user-select: none; }
+  .toggle input { width: 18px; height: 18px; accent-color: var(--crimson); cursor: pointer; margin: 0; }
+  .toggle input:focus-visible { outline: 2px solid var(--crimson); outline-offset: 2px; }
+  .warnline { margin-top: 8px; font-size: 12.5px; color: var(--crimson); font-weight: 700; }
+
+  section.questions { margin-top: 56px; }
+  section.questions h2 { font-family: var(--display); font-weight: 900; font-size: 26px; letter-spacing: -0.03em; margin: 0 0 14px; }
+  section.questions ol { margin: 0; padding-left: 22px; display: grid; gap: 12px; max-width: 72ch; }
+  section.questions li::marker { font-family: var(--mono); font-weight: 700; color: var(--crimson); }
+  section.questions b { font-weight: 800; }
+
+  @media (max-width: 760px) {
+    .row { grid-template-columns: 1fr; }
+    .idx { display: none; }
+    .strip { order: 1; }
+    .info { order: 2; border-top: none; padding-block: 10px 28px; }
+    .block { border: 1px solid var(--rule) !important; border-radius: 6px !important; }
+    :root { --px-per-screen: 96px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="meta">gec-web · home · scroll flow v2 · locked · desktop + tablet (≥769px) · 23 Sep 2026</div>
+    <h1>The home page, <em>top to bottom.</em></h1>
+    <p>Every wireframe section in order, drawn on its real surface colour, with the act it carries and the motion it owns. Block heights are rough scroll-length estimates in viewport heights. Switch the curtains off and on to see what they do to the crimson share. Rows marked <b>full viewport</b> pin in place and expand to fill the whole screen.</p>
+  </header>
+
+  <div class="ratio" aria-live="polite">
+    <div class="ratio-row">
+      <span><span class="label">Crimson share </span><strong id="crimsonPct">–</strong></span>
+      <span id="verdict"></span>
+      <span class="label" id="lengthOut"></span>
+    </div>
+    <div class="bar" id="bar"><div class="target" id="target"></div></div>
+    <div class="legend">
+      <span><i style="background:var(--canvas)"></i>Cream</span>
+      <span><i style="background:var(--sand)"></i>Sand</span>
+      <span><i style="background:var(--crimson)"></i>Crimson (incl. curtains)</span>
+      <span><i style="background:var(--ink)"></i>Charcoal</span>
+    </div>
+  </div>
+
+  <div class="flow" id="flow"></div>
+
+  <section class="questions">
+    <h2>Decisions locked, 23 Sep</h2>
+    <ol>
+      <li><b>This flow covers desktop and tablet only (769px and up).</b> Phones need their own layout, so mobile gets a separate flow round before anything is built for it. Screen counts and full-viewport behaviour here do not apply below 769px.</li>
+      <li><b>All three curtains stay.</b> Each one wipes, then its act expands to full screen. Crimson share is about 35%, above the 25% target. That was chosen knowingly.</li>
+      <li><b>The shelf holds founder and startup stories.</b> Newsletter dispatches live only on /stories. The shelf curtain now reads “Every story that started here.” with an N STORIES count. That line is new copy, not from the frozen doc, so confirm or replace it.</li>
+      <li><b>Teams sits on sand,</b> matching the wireframe's /teams stage.</li>
+      <li><b>The three full-screen components come from gec-showcase,</b> not the gec-styled-next copies now sitting in gec-web. The showcase versions leave out the stray DeskFolio write-up, use the newer Stage Manager (wireframe role tags, already sticky at 100vh) and the original /stories newsletter section. Only two small hooks carry over: the <code>data-gec-shelf-row</code> attribute that the scroll-driven shelf travel reads, and the shelf's docked-shadow fix. The <code>lib/</code> data files are identical in both projects.</li>
+      <li><b>The wireframe's figures ship as written</b> (12,000+, ₹50L, FarmVision AI and the rest), not [XX]+. This overrides the frozen copy's “verified data only” rule, so they should be checked before launch.</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+const S = {
+  cream: { cls: 'surf-cream', dark: false, color: 'var(--canvas)' },
+  sand: { cls: 'surf-sand', dark: false, color: 'var(--sand)' },
+  crimson: { cls: 'surf-crimson', dark: true, color: 'var(--crimson)' },
+  charcoal: { cls: 'surf-charcoal', dark: true, color: 'var(--ink)' },
+};
+
+const flow = [
+  { overlay: true, name: 'Brand entrance', surface: 'cream', screens: 1.0, act: 'Prelude', sketch: 'entrance',
+    headline: 'G · E · C',
+    motion: 'Letters assemble at centre, the bulb filament flashes twice and a shimmer passes. At about 5.6s the logo flies (FLIP) into the navbar slot while the cream panels part top and bottom. Skippable, runs once per session.',
+    shader: 'None. Plays on a timer over the hero and takes no scroll, so it is left out of the crimson share.' },
+  { name: 'Hero and campaign switcher', surface: 'cream', screens: 1.0, act: 'I · Opening', sketch: 'split',
+    headline: 'Ideas Begin Here. Builders Grow Here.',
+    motion: 'Revealed as the entrance panels part. Campaign pills swap headline, deadline and featured card.',
+    shader: 'Watercolour wash, animated, hero strength (26%)', exit: '/initiatives' },
+  { name: 'What’s happening', surface: 'crimson', screens: 1.2, sketch: 'bento',
+    headline: 'Always Something in Motion.',
+    motion: 'None. Four-card bento: 6 / 3 / 3 / 12.', shader: 'Red-on-red liquid, animated (34%)' },
+  { curtain: 'desk', name: 'Curtain: wipe', surface: 'crimson', screens: 1.2, sketch: 'curtain',
+    headline: 'Every programme, one living desk.', kicker: 'N PROGRAMMES',
+    motion: 'Scroll-driven diagonal wipe, reversible.', shader: 'Shares the crimson liquid canvas' },
+  { name: 'Initiatives', surface: 'cream', screens: 2.4, act: 'III · Desk', sketch: 'desk', full: true, src: 'gec-showcase/components/deskfolio/* (DeskFolio, Desktop, Mobile, css)',
+    headline: 'Built for People Who Want to Build.',
+    motion: 'Heading and intro scroll past, then the desk pins as an inset frame and expands to the full viewport. At full size it becomes the live DeskFolio: artifacts lift on hover and open on click. Keep scrolling and it releases; the “Explore all initiatives” link sits on the exit.',
+    shader: 'Paper grain and soft light (CSS only)', exit: '/initiatives' },
+  { name: 'Impact', surface: 'charcoal', screens: 0.9, act: 'II · Count', sketch: 'metrics',
+    headline: 'Entrepreneurship Is Learned by Doing.',
+    motion: 'Four [XX]+ figures count up once on entry. Six pillars strip.',
+    shader: 'Specular lines, animated (18%)' },
+  { name: 'Milestones', surface: 'sand', screens: 0.9, sketch: 'three',
+    headline: 'Moments That Shaped GEC.',
+    motion: 'None.', shader: 'Sand fibre grain (CSS only)' },
+  { curtain: 'shelf', name: 'Curtain: wipe', surface: 'crimson', screens: 1.2, sketch: 'curtain',
+    headline: 'Every story that started here.', kicker: 'N STORIES',
+    motion: 'Scroll-driven diagonal wipe, reversible.', shader: 'Shares the crimson liquid canvas' },
+  { name: 'Stories', surface: 'cream', screens: 3.2, act: 'IV · Shelf', sketch: 'shelf', full: true, src: 'gec-showcase/components/ui/newsletter-bookshelf.tsx + newsletter-reader.tsx',
+    headline: 'Every Venture Starts With a Story.',
+    motion: 'The shelf pins as an inset frame and expands to the full viewport. It holds founder and startup stories (dispatches live on /stories only). At full size, vertical scroll drives it sideways, covers open the story reader on click, and one cover flips at the end of the run before it releases.',
+    shader: 'Paper grain and soft light (CSS only)', exit: '/stories' },
+  { name: 'Speakers', surface: 'crimson', screens: 1.0, sketch: 'speakers',
+    headline: 'Ideas From People Who Built Them.',
+    motion: 'None. Eight speaker cards.', shader: 'Red-on-red liquid, animated (34%)' },
+  { curtain: 'stage', name: 'Curtain: doors', surface: 'crimson', screens: 1.2, sketch: 'curtain',
+    headline: 'The people behind all of it.', kicker: 'N TEAMS',
+    motion: 'Scroll-driven doors part horizontally, reversible.', shader: 'Shares the crimson liquid canvas' },
+  { name: 'Teams', surface: 'sand', screens: 2.4, act: 'V · Stage', isNew: true, sketch: 'stage', full: true, src: 'gec-showcase/components/teams/TeamStageManager.tsx + stage-manager.css (already sticky, 100vh)',
+    headline: '7 Teams. One Vision.',
+    motion: 'The stage pins as an inset frame and expands to the full viewport, then the seven team cards peel in from off-canvas 40ms apart. At full size it is the live Stage Manager (card → detail). Keep scrolling and it releases.',
+    shader: 'Sand fibre grain (CSS only)', exit: '/teams' },
+  { name: 'Partners', surface: 'cream', screens: 0.8, sketch: 'partners',
+    headline: 'Built With an Ecosystem.',
+    motion: 'None. GICRISE anchor card and six partner badges.', shader: 'Paper grain (CSS only)' },
+  { name: 'Final call to action', surface: 'crimson', screens: 0.8, act: 'VI · Close', sketch: 'cta',
+    headline: 'Your Idea Doesn’t Need to Be Perfect. It Needs a Beginning.',
+    motion: 'None. The page stops moving when it asks for something.',
+    shader: 'Red-on-red liquid, animated (34%)' },
+  { name: 'Footer', surface: 'charcoal', screens: 0.6, sketch: 'footer',
+    headline: 'Innovate. Inspire. Impact.', motion: 'None.', shader: 'Static grain (CSS only)' },
+];
+
+const curtainsOn = { desk: true, shelf: true, stage: true };
+try { Object.assign(curtainsOn, JSON.parse(localStorage.getItem('gec-flow-curtains') || '{}')); } catch (e) {}
+
+const sk = (cls, style = '') => `<div class="sk ${cls}" style="${style}"></div>`;
+const sketches = {
+  split: () => `<div class="g" style="grid-template-columns:7fr 5fr;align-items:start">
+      <div class="g">${sk('red hl','width:90%')}${sk('hl','width:75%')}${sk('t','width:60%')}${sk('t','width:80%')}
+        <div style="display:flex;gap:5px">${sk('red h','width:38%')}${sk('h','width:30%')}</div></div>
+      ${sk('card','height:72px')}</div>
+    <div class="g" style="grid-template-columns:repeat(3,1fr);flex:0">${sk('card','height:16px')}${sk('card','height:16px')}${sk('card','height:16px')}</div>`,
+  bento: () => `${sk('hl','width:70%')}${sk('t','width:55%')}
+    <div class="g" style="grid-template-columns:repeat(12,1fr);grid-auto-rows:1fr">
+      ${sk('card','grid-column:span 6')}${sk('card','grid-column:span 3')}${sk('card','grid-column:span 3')}${sk('card','grid-column:span 12;min-height:20px')}</div>`,
+  entrance: () => `<div style="position:absolute;inset:0 0 50% 0;border-bottom:1px dashed rgba(163,4,15,.35);transform:translateY(-6%)"></div>
+    <div style="position:absolute;left:12px;top:10px;width:46px;height:12px;border:1px dashed var(--crimson);border-radius:3px"></div>
+    <svg viewBox="0 0 232 130" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true">
+      <path d="M92 58 C 60 40, 45 28, 38 20" fill="none" stroke="var(--crimson)" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <path d="M38 20 l7 1 -3 6" fill="none" stroke="var(--crimson)" stroke-width="1.2"/>
+      <text x="116" y="80" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="34" fill="var(--crimson)" letter-spacing="3">GEC</text>
+      <circle cx="156" cy="50" r="7" fill="var(--gold)" opacity=".85"/><circle cx="156" cy="50" r="13" fill="var(--gold)" opacity=".25"/>
+    </svg>
+    <div style="margin-top:auto;font-family:var(--mono);font-size:9px;color:var(--ink-muted);text-align:right;position:relative">0s → 5.6s → dock 6.2s</div>`,
+  curtain: (r) => `<div class="curtain-copy">${r.headline}<small>${r.kicker}</small></div>`,
+  desk: () => `${sk('hl','width:65%')}${sk('t','width:50%')}
+    <div style="flex:1;margin:6px 14px 0;border-radius:6px;background:#E9D9BE;position:relative;transform:perspective(300px) rotateX(18deg)">
+      ${['left:10%;top:20%;width:26%;height:40%;transform:rotate(-6deg)','left:42%;top:12%;width:22%;height:52%;transform:rotate(3deg);box-shadow:0 8px 14px rgba(34,34,34,.25)','left:70%;top:30%;width:20%;height:36%;transform:rotate(8deg)']
+        .map(s => `<div class="sk card" style="position:absolute;${s}"></div>`).join('')}</div>`,
+  metrics: () => `<div style="margin:0 auto;width:70%" class="g">${sk('hl')}${sk('t','width:80%;margin:0 auto')}</div>
+    <div class="g" style="grid-template-columns:repeat(4,1fr);flex:0">${[1,2,3,4].map(() => `<div class="g" style="gap:3px">${sk('gold hl','width:70%')}${sk('t')}</div>`).join('')}</div>`,
+  three: () => `${sk('hl','width:60%')}${sk('t','width:75%')}
+    <div class="g" style="grid-template-columns:repeat(3,1fr)">${[1,2,3].map(() => `<div class="sk card" style="display:flex;flex-direction:column;padding:4px;gap:3px">${sk('','flex:1;background:rgba(163,4,15,.08)')}${sk('t')}</div>`).join('')}</div>`,
+  shelf: () => `${sk('hl','width:62%')}${sk('t','width:70%')}
+    <div style="flex:1;display:flex;align-items:flex-end;gap:4px;border-bottom:4px solid #7a5a3a;padding:0 4px;overflow:hidden">
+      ${[62,78,55,70,84,60,74,58,80].map((h,i) => `<div class="sk ${i===4?'red':'card'}" style="flex:0 0 18%;height:${h}%;${i===4?'transform:rotateY(28deg)':''}"></div>`).join('')}</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--ink-muted);text-align:right">scroll → travel</div>`,
+  speakers: () => `<div style="margin:0 auto;width:66%" class="g">${sk('hl')}${sk('t')}</div>
+    <div class="g" style="grid-template-columns:repeat(4,1fr)">${Array.from({length:8}, () => `<div class="sk card" style="display:grid;place-items:center;padding:4px"><div style="width:14px;height:14px;border-radius:50%;border:2px solid var(--crimson)"></div></div>`).join('')}</div>`,
+  stage: () => `${sk('hl','width:55%')}
+    <div style="flex:1;display:grid;grid-template-columns:1fr 3fr;gap:6px">
+      <div class="g">${[0,1,2,3].map(i => `<div class="sk card" style="transform:translateX(${-i*4}px) rotate(${-2+i}deg)"></div>`).join('')}</div>
+      <div class="sk card" style="box-shadow:0 8px 18px rgba(34,34,34,.18)"></div></div>`,
+  partners: () => `<div style="margin:0 auto;width:60%" class="g">${sk('hl')}</div>${sk('card','height:24px;width:70%;margin:0 auto;border:1.5px solid var(--crimson)')}
+    <div class="g" style="grid-template-columns:repeat(6,1fr);flex:0">${Array.from({length:6}, () => sk('card','height:16px')).join('')}</div>`,
+  cta: () => `<div class="sk card" style="flex:1;margin:4px 18px;border:2px solid var(--gold);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:8px">
+      ${sk('hl','width:80%')}${sk('red hl','width:60%')}<div style="display:flex;gap:5px;width:70%">${sk('red h','flex:1')}${sk('h','flex:1')}</div></div>`,
+  footer: () => `<div class="g" style="grid-template-columns:2fr 1fr 1fr 1.3fr">${[0,1,2,3].map(i => `<div class="g" style="gap:3px;align-content:start">${sk(i===0?'hl':'t')}${sk('t','width:80%')}${sk('t','width:60%')}</div>`).join('')}</div>`,
+};
+
+function render() {
+  const root = document.getElementById('flow');
+  let seq = 0;
+  root.innerHTML = flow.map((r, i) => {
+    const s = S[r.surface];
+    const off = r.curtain && !curtainsOn[r.curtain];
+    const n = r.overlay ? '00' : r.curtain ? '' : String(++seq).padStart(2, '0');
+    const chips = [
+      r.act ? `<span class="chip act">${r.overlay ? r.act : "Act " + r.act}</span>` : '',
+      r.isNew ? `<span class="chip new">New · not in wireframe</span>` : '',
+      r.full ? `<span class="chip full">Full viewport · pinned</span>` : '',
+      `<span class="chip">${r.surface}</span>`,
+      r.overlay ? `<span class="chip">timed · ~6.2s · no scroll</span>` : `<span class="chip">~${r.screens} screens</span>`,
+      r.exit ? `<span class="chip">exits → ${r.exit}</span>` : '',
+    ].join('');
+    const prev = flow[i - 1], next = flow[i + 1];
+    const redRun = !off && r.surface === 'crimson' && [prev, next].some(x => x && x.surface === 'crimson' && !(x.curtain && !curtainsOn[x.curtain]));
+    return `<div class="row${r.curtain ? ' curtain' : ''}${off ? ' off' : ''}">
+      <div class="idx">${n}</div>
+      <div class="strip"><div class="block ${r.curtain ? 'surf-curtain' : s.cls}${s.dark ? ' dark' : ''}${r.full ? ' full' : ''}" style="height:calc(var(--px-per-screen) * ${r.screens})">${r.full ? '<div class="expand-frame" aria-hidden="true"></div><div class="expand-label">inset → 100vw × 100dvh</div>' : ''}${sketches[r.sketch](r)}</div></div>
+      <div class="info">
+        <h3>${r.name}</h3>
+        <p class="headline">“${r.headline}”</p>
+        <div class="chips">${chips}</div>
+        <dl><dt>Motion</dt><dd>${r.motion}</dd><dt>Surface fx</dt><dd>${r.shader}</dd>${r.src ? `<dt>Component</dt><dd><code>${r.src}</code></dd>` : ''}</dl>
+        ${r.curtain ? `<label class="toggle"><input type="checkbox" id="curtain-${r.curtain}" data-curtain="${r.curtain}" ${off ? '' : 'checked'}> Include this curtain</label>` : ''}
+        ${redRun ? `<div class="warnline">Touches another crimson block: one long red run.</div>` : ''}
+      </div></div>`;
+  }).join('');
+
+  root.querySelectorAll('input[data-curtain]').forEach(el => el.addEventListener('change', () => {
+    curtainsOn[el.dataset.curtain] = el.checked;
+    try { localStorage.setItem('gec-flow-curtains', JSON.stringify(curtainsOn)); } catch (e) {}
+    render();
+    document.getElementById(el.id)?.focus();
+  }));
+
+  const live = flow.filter(r => !r.overlay && !(r.curtain && !curtainsOn[r.curtain]));
+  const total = live.reduce((a, r) => a + r.screens, 0);
+  const by = { cream: 0, sand: 0, crimson: 0, charcoal: 0 };
+  live.forEach(r => by[r.surface] += r.screens);
+  const pct = by.crimson / total * 100;
+  document.getElementById('crimsonPct').textContent = pct.toFixed(0) + '%';
+  const v = document.getElementById('verdict');
+  const diff = pct - 25;
+  v.className = Math.abs(diff) <= 5 ? 'ok' : 'warn';
+  v.textContent = Math.abs(diff) <= 5 ? 'On target (25% ± 5)' : (diff > 0 ? `${diff.toFixed(0)} points over target` : `${(-diff).toFixed(0)} points under target`);
+  document.getElementById('lengthOut').textContent = `page length ≈ ${total.toFixed(1)} screens`;
+  const bar = document.getElementById('bar');
+  bar.querySelectorAll('span').forEach(x => x.remove());
+  ['cream', 'sand', 'crimson', 'charcoal'].forEach(k => {
+    const sp = document.createElement('span');
+    sp.style.background = S[k].color; sp.style.flexGrow = by[k];
+    bar.insertBefore(sp, document.getElementById('target'));
+  });
+  // target marker sits at the point where crimson would reach 25% after cream + sand
+  const before = (by.cream + by.sand) / total * 100;
+  document.getElementById('target').style.left = `calc(${before + 25}% - 1px)`;
+}
+render();
+</script>
