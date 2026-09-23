@@ -513,6 +513,15 @@ body {
   display: flex;
 }
 
+.mobile-nav-drawer .gec-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.site-navbar { transition: transform var(--duration-macro) var(--ease-spring); }
+html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
+@media (prefers-reduced-motion: reduce) { .site-navbar { transition: none; } }
+
 /* Grids & Layout Containers */
 .hero-asymmetric-split {
   display: grid;
