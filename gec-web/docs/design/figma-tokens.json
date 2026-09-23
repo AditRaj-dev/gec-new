@@ -1,0 +1,164 @@
+{
+  "global": {
+    "color": {
+      "brand": {
+        "crimson": {
+          "value": "#A3040F",
+          "type": "color",
+          "description": "Primary brand accent for headings, borders, and CTAs (WCAG AAA contrast)"
+        },
+        "crimson-active": {
+          "value": "#C62F29",
+          "type": "color",
+          "description": "Hover and active button states"
+        },
+        "gold": {
+          "value": "#FBCA05",
+          "type": "color",
+          "description": "Micro-accent for metrics, tags, and category highlights"
+        },
+        "blue": {
+          "value": "#1F7EC0",
+          "type": "color",
+          "description": "Technical team and ecosystem link accent"
+        }
+      },
+      "surface": {
+        "canvas": {
+          "value": "#FCF8ED",
+          "type": "color",
+          "description": "Primary warm cream canvas background (no pure white/black)"
+        },
+        "sand": {
+          "value": "#F4E2CA",
+          "type": "color",
+          "description": "Secondary soft sand surface for alternating sections"
+        },
+        "card": {
+          "value": "#FFFDF8",
+          "type": "color",
+          "description": "Elevated card surface with high contrast against canvas"
+        },
+        "elevated": {
+          "value": "#FFFFFF",
+          "type": "color",
+          "description": "Pure white surface for high-elevation modals and dropdowns"
+        }
+      },
+      "text": {
+        "ink": {
+          "value": "#222222",
+          "type": "color",
+          "description": "Deep charcoal primary body and heading text (WCAG AAA)"
+        },
+        "ink-muted": {
+          "value": "#5F5650",
+          "type": "color",
+          "description": "Secondary metadata, captions, and structural labels"
+        },
+        "ink-subtle": {
+          "value": "#8A817A",
+          "type": "color",
+          "description": "Subtle placeholder and tertiary labels"
+        }
+      },
+      "border": {
+        "subtle": {
+          "value": "rgba(163, 4, 15, 0.18)",
+          "type": "color",
+          "description": "Standard 1px structural boundary line"
+        },
+        "strong": {
+          "value": "#A3040F",
+          "type": "color",
+          "description": "Active/focused border"
+        },
+        "neutral": {
+          "value": "rgba(34, 34, 34, 0.22)",
+          "type": "color",
+          "description": "Secondary neutral container border"
+        }
+      }
+    },
+    "fontFamilies": {
+      "display": {
+        "value": "Cabinet Grotesk",
+        "type": "fontFamilies",
+        "description": "Display & H1/H2 headlines"
+      },
+      "body": {
+        "value": "Manrope",
+        "type": "fontFamilies",
+        "description": "Body, UI text, and metadata"
+      },
+      "mono": {
+        "value": "JetBrains Mono",
+        "type": "fontFamilies",
+        "description": "Coordinates, timestamps, and code badges"
+      }
+    },
+    "borderRadius": {
+      "xs": {
+        "value": "4px",
+        "type": "borderRadius"
+      },
+      "sm": {
+        "value": "8px",
+        "type": "borderRadius",
+        "description": "Standard button and pill radius"
+      },
+      "md": {
+        "value": "14px",
+        "type": "borderRadius",
+        "description": "Card and container radius"
+      },
+      "lg": {
+        "value": "20px",
+        "type": "borderRadius",
+        "description": "Modal and major panel radius"
+      }
+    },
+    "spacing": {
+      "grid-margin": {
+        "value": "48px",
+        "type": "spacing"
+      },
+      "grid-gutter": {
+        "value": "24px",
+        "type": "spacing"
+      },
+      "section-gap": {
+        "value": "32px",
+        "type": "spacing"
+      },
+      "component-gap": {
+        "value": "16px",
+        "type": "spacing"
+      }
+    },
+    "boxShadow": {
+      "ambient": {
+        "value": {
+          "x": 0,
+          "y": 4,
+          "blur": 20,
+          "spread": 0,
+          "color": "rgba(34, 34, 34, 0.04)",
+          "type": "dropShadow"
+        },
+        "type": "boxShadow"
+      },
+      "hover": {
+        "value": {
+          "x": 0,
+          "y": 10,
+          "blur": 30,
+          "spread": 0,
+          "color": "rgba(34, 34, 34, 0.08)",
+          "type": "dropShadow"
+        },
+        "type": "boxShadow"
+      }
+    }
+  }
+}

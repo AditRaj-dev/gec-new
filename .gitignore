@@ -28,3 +28,6 @@ credentials.json
 *.pem
 *.key
 .credentials
+
+gec-web/node_modules/
+gec-web/.next/
