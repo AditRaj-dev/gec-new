@@ -488,7 +488,7 @@
   grid-row: 2;
   min-width: 0;
   width: 100%;
-  max-width: 690px;
+  max-width: none;
   height: 72%;
   max-height: calc(100vh - 100px);
   align-self: center;
