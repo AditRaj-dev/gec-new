@@ -55,6 +55,9 @@ const P = {
   ishaan: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=400&h=400&fit=crop&crop=faces',
 };
 
+// Placeholder coordinator portraits (Unsplash, portrait crop) — swap for real photos.
+const coord = (id: string) => `https://images.unsplash.com/photo-${id}?w=300&h=400&fit=crop&crop=faces`;
+
 const G = {
   incubation: [
     'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1600&h=900&fit=crop',
@@ -122,9 +125,9 @@ export const GEC_TEAMS: TeamStageData[] = [
     coordinatorsCount: 3,
     // Sample roster — replace with real coordinators (add `photo` for portraits).
     coordinators: [
-      { name: 'Ananya Rao', role: 'Coordinator' },
-      { name: 'Kabir Mehta', role: 'Coordinator' },
-      { name: 'Priya Nair', role: 'Coordinator' },
+      { name: 'Ananya Rao', role: 'Coordinator', photo: coord('1494790108377-be9c29b29330') },
+      { name: 'Kabir Mehta', role: 'Coordinator', photo: coord('1506794778202-cad84cf45f1d') },
+      { name: 'Priya Nair', role: 'Coordinator', photo: coord('1438761681033-6461ffad8d80') },
     ],
     membersCount: 8,
     pillars: [
@@ -157,9 +160,9 @@ export const GEC_TEAMS: TeamStageData[] = [
     coordinatorsCount: 3,
     // Sample roster — replace with real coordinators (add `photo` for portraits).
     coordinators: [
-      { name: 'Rohan Gupta', role: 'Coordinator' },
-      { name: 'Isha Verma', role: 'Coordinator' },
-      { name: 'Arjun Bose', role: 'Coordinator' },
+      { name: 'Rohan Gupta', role: 'Coordinator', photo: coord('1472099645785-5658abf4ff4e') },
+      { name: 'Isha Verma', role: 'Coordinator', photo: coord('1534528741775-53994a69daeb') },
+      { name: 'Arjun Bose', role: 'Coordinator', photo: coord('1539571696357-5a69c17a67c6') },
     ],
     membersCount: 8,
     pillars: [
@@ -192,9 +195,9 @@ export const GEC_TEAMS: TeamStageData[] = [
     coordinatorsCount: 3,
     // Sample roster — replace with real coordinators (add `photo` for portraits).
     coordinators: [
-      { name: 'Sneha Iyer', role: 'Coordinator' },
-      { name: 'Vivaan Jain', role: 'Coordinator' },
-      { name: 'Meera Das', role: 'Coordinator' },
+      { name: 'Sneha Iyer', role: 'Coordinator', photo: coord('1517841905240-472988babdf9') },
+      { name: 'Vivaan Jain', role: 'Coordinator', photo: coord('1507591064344-4c6ce005b128') },
+      { name: 'Meera Das', role: 'Coordinator', photo: coord('1524504388940-b1c1722653e1') },
     ],
     membersCount: 8,
     pillars: [
@@ -227,9 +230,9 @@ export const GEC_TEAMS: TeamStageData[] = [
     coordinatorsCount: 3,
     // Sample roster — replace with real coordinators (add `photo` for portraits).
     coordinators: [
-      { name: 'Aditya Singh', role: 'Coordinator' },
-      { name: 'Kavya Reddy', role: 'Coordinator' },
-      { name: 'Neel Kapoor', role: 'Coordinator' },
+      { name: 'Aditya Singh', role: 'Coordinator', photo: coord('1500648767791-00dcc994a43e') },
+      { name: 'Kavya Reddy', role: 'Coordinator', photo: coord('1488426862026-3ee34a7d66df') },
+      { name: 'Neel Kapoor', role: 'Coordinator', photo: coord('1507003211169-0a1dd7228f2d') },
     ],
     membersCount: 8,
     pillars: [
@@ -262,9 +265,9 @@ export const GEC_TEAMS: TeamStageData[] = [
     coordinatorsCount: 3,
     // Sample roster — replace with real coordinators (add `photo` for portraits).
     coordinators: [
-      { name: 'Tara Menon', role: 'Coordinator' },
-      { name: 'Dev Malhotra', role: 'Coordinator' },
-      { name: 'Riya Sen', role: 'Coordinator' },
+      { name: 'Tara Menon', role: 'Coordinator', photo: coord('1544005313-94ddf0286df2') },
+      { name: 'Dev Malhotra', role: 'Coordinator', photo: coord('1506794778202-cad84cf45f1d') },
+      { name: 'Riya Sen', role: 'Coordinator', photo: coord('1531123897727-8f129e1688ce') },
     ],
     membersCount: 8,
     pillars: [
@@ -297,9 +300,9 @@ export const GEC_TEAMS: TeamStageData[] = [
     coordinatorsCount: 3,
     // Sample roster — replace with real coordinators (add `photo` for portraits).
     coordinators: [
-      { name: 'Karan Joshi', role: 'Coordinator' },
-      { name: 'Aisha Khan', role: 'Coordinator' },
-      { name: 'Yash Patel', role: 'Coordinator' },
+      { name: 'Karan Joshi', role: 'Coordinator', photo: coord('1472099645785-5658abf4ff4e') },
+      { name: 'Aisha Khan', role: 'Coordinator', photo: coord('1494790108377-be9c29b29330') },
+      { name: 'Yash Patel', role: 'Coordinator', photo: coord('1539571696357-5a69c17a67c6') },
     ],
     membersCount: 8,
     pillars: [
@@ -332,9 +335,9 @@ export const GEC_TEAMS: TeamStageData[] = [
     coordinatorsCount: 3,
     // Sample roster — replace with real coordinators (add `photo` for portraits).
     coordinators: [
-      { name: 'Nisha Pillai', role: 'Coordinator' },
-      { name: 'Aryan Shah', role: 'Coordinator' },
-      { name: 'Diya Chawla', role: 'Coordinator' },
+      { name: 'Nisha Pillai', role: 'Coordinator', photo: coord('1438761681033-6461ffad8d80') },
+      { name: 'Aryan Shah', role: 'Coordinator', photo: coord('1507591064344-4c6ce005b128') },
+      { name: 'Diya Chawla', role: 'Coordinator', photo: coord('1534528741775-53994a69daeb') },
     ],
     membersCount: 8,
     pillars: [
