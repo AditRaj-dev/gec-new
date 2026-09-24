@@ -1,41 +1,19 @@
 'use client';
 
-import { useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { useMotionValueEvent, useReducedMotion, type MotionValue } from 'motion/react';
 import { CurtainInterstitial } from '@/components/CurtainInterstitial';
 import { FullViewportAct } from '@/components/FullViewportAct';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
-import type { NewsletterBookshelfItem } from '@/components/ui/newsletter-bookshelf';
-import { shelfOffset } from '@/lib/act';
-import { storyToBook } from '@/lib/storyToBook';
+import { aisleRunway, planAisle } from '@/components/stories/aislePlan';
 import type { Story } from '@/lib/types';
 import './act-intro.css';
 
-const NewsletterBookshelf = dynamic(
-  () => import('@/components/ui/newsletter-bookshelf').then((module) => module.NewsletterBookshelf),
+const StoriesAisle = dynamic(
+  () => import('@/components/stories/StoriesAisle').then((module) => module.StoriesAisle),
   { ssr: false }
 );
 
-function ShelfTravel({ progress, items }: { progress: MotionValue<number>; items: NewsletterBookshelfItem[] }) {
-  const box = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  useMotionValueEvent(progress, 'change', (p) => {
-    if (reduce) return;
-    const row = box.current?.querySelector<HTMLElement>('[data-gec-shelf-row]');
-    if (!row) return;
-    row.scrollLeft = shelfOffset(p, row.scrollWidth - row.clientWidth);
-  });
-  return (
-    <div ref={box} className="shelf-travel">
-      <NewsletterBookshelf items={items} brand="GEC Stories" height="100%" />
-    </div>
-  );
-}
-
 export function ShelfAct({ stories }: { stories: Story[] }) {
-  const items = stories.map(storyToBook);
-
   return (
     <div className="home-act">
       <CurtainInterstitial
@@ -54,8 +32,8 @@ export function ShelfAct({ stories }: { stories: Story[] }) {
           </p>
         </div>
       </div>
-      <FullViewportAct surface="cream" runway={3.2} label="the story shelf" id="shelf">
-        {(progress) => <ShelfTravel progress={progress} items={items} />}
+      <FullViewportAct surface="cream" runway={aisleRunway(planAisle(stories).length)} label="the stories aisle" id="shelf">
+        {(progress) => <StoriesAisle progress={progress} stories={stories} />}
       </FullViewportAct>
       <div className="act-exit surface-cream">
         <ViewTransitionLink href="/stories" className="gec-btn btn-outline-ink">

@@ -25,15 +25,21 @@ export interface HeroCampaign {
   mediaTitle: string;
   /** `id="hero-media-subtitle"` */
   mediaSubtitle: string;
+  /** Featured card ("ticket") content: head-band chip, lead stat, three metrics, footer deadline + CTA. */
+  card: {
+    chip: string;
+    lead: { value: string; label: string };
+    metrics: { label: string; value: string }[];
+    closes: string;
+    ctaText: string;
+    ctaHref: string;
+  };
 }
 
 // Field-by-field diff against styled.html's `switchHeroCampaign` data (script
-// block 4366–5133). Only elements with an `id="hero-*"` are campaign-driven
-// there — the featured card's "FEATURED CAMPAIGN" tag, "COHORT 04" chip,
-// highlight metrics, and its own "Apply for Cohort 04 →" button are never
-// touched by `switchHeroCampaign` (no field for them exists in its data), so
-// Hero.tsx renders those as fixed content instead of reading them per
-// campaign. `sdp` is the default campaign, so its fields match the
+// block 4366–5133). The wireframe kept the featured card's chip, metrics and
+// CTA fixed at SDP values; here `card` makes them follow the active campaign
+// too (sdp's `card` is the wireframe's static content). `sdp` is the default campaign, so its fields match the
 // wireframe's static hero markup (2340–2481) verbatim rather than the JS
 // simulator data, which is itself only reachable by clicking a sim button.
 export const HERO_CAMPAIGNS: Record<string, HeroCampaign> = {
@@ -56,6 +62,18 @@ export const HERO_CAMPAIGNS: Record<string, HeroCampaign> = {
     mediaTitle: 'STARTUP DEVELOPMENT PROGRAM 2026',
     mediaSubtitle:
       'A 12-week venture acceleration sprint providing dedicated student founder cohorts with faculty mentors, prototyping sandbox access, and pre-seed demo slots.',
+    card: {
+      chip: 'COHORT 04',
+      lead: { value: '₹50L', label: 'Grant sandbox pool' },
+      metrics: [
+        { label: 'Duration', value: '12 Weeks' },
+        { label: 'Mentorship', value: '1-on-1 Access' },
+        { label: 'Incubation', value: 'GICRISE Fast-Track' },
+      ],
+      closes: 'Closes 28 Sep · 23:59 IST',
+      ctaText: 'Apply for Cohort 04 →',
+      ctaHref: '/initiatives#apply',
+    },
   },
   ideathon: {
     id: 'ideathon',
@@ -70,12 +88,24 @@ export const HERO_CAMPAIGNS: Record<string, HeroCampaign> = {
     context:
       'Greater Noida’s premier 48-hour student venture sprint. Fast-track entry for teams building AI, climate-tech, consumer hardware, and fintech solutions.',
     primaryCtaText: 'Register Team (Final Call) →',
-    primaryCtaHref: '/initiatives',
+    primaryCtaHref: '/initiatives#ideathon-register',
     secondaryCtaText: 'View Problem Statements',
-    secondaryCtaHref: '/initiatives',
+    secondaryCtaHref: '/initiatives#ideathon',
     mediaTitle: 'IDEATHON 2026 VENTURE SPRINT',
     mediaSubtitle:
       '48 hours of intense hacking, rapid prototyping, and live venture pitches before angel judges.',
+    card: {
+      chip: 'FINAL WINDOW',
+      lead: { value: '48h', label: 'Build window' },
+      metrics: [
+        { label: 'Team slots', value: '14 Left' },
+        { label: 'Tracks', value: 'AI · Climate · HW · Fintech' },
+        { label: 'Judging', value: 'Angel Panel' },
+      ],
+      closes: 'Closes in 48 hours',
+      ctaText: 'Register Team →',
+      ctaHref: '/initiatives#ideathon-register',
+    },
   },
   esummit: {
     id: 'esummit',
@@ -89,13 +119,26 @@ export const HERO_CAMPAIGNS: Record<string, HeroCampaign> = {
     deadline: 'Happening Today · 09:30 AM – 06:00 PM IST',
     context:
       'The annual flagship entrepreneurship summit is currently underway on ground. Campus screens, live stream broadcasting, and investor pitching are in session.',
-    primaryCtaText: 'Watch Live Stream ↗',
-    primaryCtaHref: '/initiatives',
+    // ponytail: no stream URL yet; swap to 'Watch Live Stream ↗' + the YouTube link once there is one.
+    primaryCtaText: 'Event Details →',
+    primaryCtaHref: '/initiatives#esummit',
     secondaryCtaText: 'Full Event Schedule',
-    secondaryCtaHref: '/stories',
+    secondaryCtaHref: '/initiatives#schedule',
     mediaTitle: 'GALGOTIAS E-SUMMIT 2026',
     mediaSubtitle:
       'The annual flagship entrepreneurship summit bringing founders, investors, and students together.',
+    card: {
+      chip: 'LIVE NOW',
+      lead: { value: '50+', label: 'Founders on stage' },
+      metrics: [
+        { label: 'Keynotes', value: '12' },
+        { label: 'Venue', value: 'Main Auditorium' },
+        { label: 'Hours', value: '09:30 – 18:00 IST' },
+      ],
+      closes: 'Happening today',
+      ctaText: 'See Today’s Schedule →',
+      ctaHref: '/initiatives#schedule',
+    },
   },
   evergreen: {
     id: 'evergreen',
@@ -116,6 +159,18 @@ export const HERO_CAMPAIGNS: Record<string, HeroCampaign> = {
     mediaTitle: 'STUDENT-DRIVEN LAUNCHPAD',
     mediaSubtitle:
       'Connecting ambitious students with knowledge, mentorship, and the startup ecosystem.',
+    card: {
+      chip: 'ALWAYS OPEN',
+      lead: { value: '7', label: 'Teams to join' },
+      metrics: [
+        { label: 'Community', value: 'Student-Led' },
+        { label: 'Mentorship', value: 'Founders & Faculty' },
+        { label: 'Incubation', value: 'GICRISE' },
+      ],
+      closes: 'Always active',
+      ctaText: 'Explore Initiatives →',
+      ctaHref: '/initiatives',
+    },
   },
 };
 
@@ -133,7 +188,7 @@ export const HAPPENINGS_DATA = [
       { label: 'Access', value: 'Admissions Free for Students' },
     ],
     actionText: 'View Event Details →',
-    actionHref: '/initiatives',
+    actionHref: '/initiatives#esummit',
   },
   {
     type: 'APPLICATIONS OPEN',
@@ -147,7 +202,7 @@ export const HAPPENINGS_DATA = [
       { label: 'Grant', value: 'Prototyping Sandbox' },
     ],
     actionText: 'Apply Now →',
-    actionHref: '#apply',
+    actionHref: '/initiatives#apply',
   },
   {
     type: 'LATEST STORY',
@@ -161,7 +216,7 @@ export const HAPPENINGS_DATA = [
       { label: 'Milestone', value: '₹25L Seed Grant' },
     ],
     actionText: 'Read Story →',
-    actionHref: '/stories',
+    actionHref: '/stories#farmvision-ai',
   },
 ];
 

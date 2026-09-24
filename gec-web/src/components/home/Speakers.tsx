@@ -1,10 +1,13 @@
+import Image from 'next/image';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import './speakers.css';
 
-// styled.html 2878–2953 ("1.7 Speakers Matrix"). No avatars in the
-// wireframe — each speaker is an initials circle, ported as-is.
-const SPEAKERS = [
+// Vertical portrait cards on an infinite trail. Drop a portrait into
+// public/speakers/ and set `photo` on the entry; until then the frame shows initials.
+export type Speaker = { initials: string; name: string; role: string; org: string; photo?: string };
+
+export const SPEAKERS: readonly Speaker[] = [
   { initials: 'AG', name: 'Ashneer Grover', role: 'Co-Founder', org: 'BharatPe' },
   { initials: 'AG', name: 'Aman Gupta', role: 'Co-Founder & CMO', org: 'boAt Lifestyle' },
   { initials: 'SJ', name: 'Sandeep Jain', role: 'Founder & CEO', org: 'GeeksforGeeks' },
@@ -13,7 +16,39 @@ const SPEAKERS = [
   { initials: 'HA', name: 'Himanshu Adlakha', role: 'Co-Founder', org: 'Winston India' },
   { initials: 'IS', name: 'Ishant Sachdeva', role: 'Founder', org: 'Being Chief' },
   { initials: 'TV', name: 'Tushar Vadera', role: 'Founding Member', org: 'Zomato Feeding India' },
-] as const;
+];
+
+/** Infinite portrait trail — shared by the home section and /stories#speakers. */
+export function SpeakersTrail() {
+  return (
+    <div className="speakers__trail">
+      {/* Two identical runs; the track slides by exactly one run for a seamless loop.
+          Each run repeats the list twice so it stays wider than ultrawide viewports. */}
+      <div className="speakers__track">
+        {[0, 1].map((run) => (
+          <ul className="speakers__run" key={run} aria-hidden={run === 1 || undefined}>
+            {[...SPEAKERS, ...SPEAKERS].map((speaker, i) => (
+              <li className="speakers__card" key={i} aria-hidden={i >= SPEAKERS.length || undefined}>
+                <div className="speakers__photo">
+                  {speaker.photo ? (
+                    <Image src={speaker.photo} alt={run === 0 ? speaker.name : ''} fill sizes="240px" className="speakers__img" />
+                  ) : (
+                    <span className="speakers__initials" aria-hidden="true">{speaker.initials}</span>
+                  )}
+                </div>
+                <div className="speakers__meta">
+                  <div className="speakers__name">{speaker.name}</div>
+                  <div className="speakers__role">{speaker.role}</div>
+                  <div className="speakers__org">{speaker.org}</div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function Speakers() {
   return (
@@ -32,19 +67,10 @@ export function Speakers() {
         </p>
       </div>
 
-      <div className="speakers-8col-grid">
-        {SPEAKERS.map((speaker) => (
-          <div className="brand-card speakers__card" key={speaker.name}>
-            <div className="speakers__avatar">{speaker.initials}</div>
-            <div className="speakers__name">{speaker.name}</div>
-            <div className="speakers__role">{speaker.role}</div>
-            <div className="speakers__org">{speaker.org}</div>
-          </div>
-        ))}
-      </div>
+      <SpeakersTrail />
 
       <div className="speakers__cta-row">
-        <ViewTransitionLink href="/stories" className="gec-btn btn-white">
+        <ViewTransitionLink href="/stories#speakers" className="gec-btn btn-white">
           Discover Our Speakers →
         </ViewTransitionLink>
       </div>

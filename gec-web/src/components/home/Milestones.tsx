@@ -1,7 +1,12 @@
-import { ViewTransitionLink } from '@/components/ViewTransitionLink';
+import Image from 'next/image';
+import { MilestoneRelive } from './MilestoneRelive';
 import './milestones.css';
 
 // styled.html 2726–2804 ("1.5 Spotlight" — Historic Milestones).
+// ponytail: Unsplash placeholders (same as teamsData); swap `photo` for real
+// GEC event shots in public/milestones/ — remove it to fall back to the swatch.
+const unsplash = (id: string) => `https://images.unsplash.com/photo-${id}?w=1200&h=750&fit=crop`;
+
 const MILESTONES = [
   {
     badgeClass: 'badge-crimson',
@@ -11,6 +16,7 @@ const MILESTONES = [
     title: 'Foundation Summit & Live Pitch Arena',
     desc: "The historic inauguration of GEC’s campus incubator network, connecting 400+ student innovators with initial angel mentors.",
     swatchClass: 'milestones__thumb--crimson',
+    photo: unsplash('1475721027785-f74eccf877e2'),
   },
   {
     badgeClass: 'badge-blue',
@@ -20,6 +26,7 @@ const MILESTONES = [
     title: 'Galgotias E-Summit Scaling to 1,500+',
     desc: 'Keynotes by unicorn founders, live venture pitch rounds, and regional collegiate participation across NCR.',
     swatchClass: 'milestones__thumb--blue',
+    photo: unsplash('1540575467063-178a50c2df87'),
   },
   {
     badgeClass: 'badge-gold',
@@ -29,6 +36,7 @@ const MILESTONES = [
     title: 'GICRISE Incubation Alliance & Grant Fund',
     desc: 'Formal partnership with Galgotias Incubation Centre establishing the ₹50L student prototype grant pipeline.',
     swatchClass: 'milestones__thumb--gold',
+    photo: unsplash('1515187029135-18ee286d815b'),
   },
 ] as const;
 
@@ -48,6 +56,15 @@ export function Milestones() {
         {MILESTONES.map((milestone) => (
           <div className="brand-card milestones__card" key={milestone.title}>
             <div className={`milestones__thumb ${milestone.swatchClass}`}>
+              {milestone.photo && (
+                <Image
+                  src={milestone.photo}
+                  alt={milestone.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="milestones__img"
+                />
+              )}
               <span className={`status-badge ${milestone.badgeClass}`}>{milestone.badgeText}</span>
             </div>
             <div className="milestones__meta-row">
@@ -57,9 +74,12 @@ export function Milestones() {
             <h3 className="h3-card milestones__title">{milestone.title}</h3>
             <p className="milestones__desc">{milestone.desc}</p>
             <div className="milestones__footer">
-              <ViewTransitionLink href="/stories" className="milestones__relive-link">
-                Relive the Moment →
-              </ViewTransitionLink>
+              <MilestoneRelive
+                title={milestone.title}
+                desc={milestone.desc}
+                meta={`${milestone.yearText} · ${milestone.place}`}
+                photo={milestone.photo}
+              />
             </div>
           </div>
         ))}

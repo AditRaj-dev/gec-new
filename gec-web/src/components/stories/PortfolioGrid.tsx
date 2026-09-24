@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { DURATION, EASE } from '@/lib/motion';
 import { cn } from '@/lib/utils';
+import './portfolio.css';
 
 /**
  * Verbatim from public/styled.html:4238-4337 (`#portfolio-grid-container`,
@@ -33,6 +34,8 @@ interface PortfolioVenture {
   accent: AccentToken;
   description: string;
   founders: string;
+  /** Public site; the card only shows "Visit ↗" when this is set. */
+  url?: string;
 }
 
 export const PORTFOLIO_VENTURES: PortfolioVenture[] = [
@@ -124,21 +127,6 @@ const SECTOR_LABELS: Record<VentureSector, string> = {
   consumer: 'Consumer',
 };
 
-const ACCENT_CLASSES: Record<AccentToken, { chip: string; badge: string }> = {
-  blue: {
-    chip: 'bg-[var(--gec-blue)]/10 border-[var(--gec-blue)] text-[var(--gec-blue)]',
-    badge: 'bg-[var(--gec-blue)] text-white',
-  },
-  gold: {
-    chip: 'bg-[var(--gec-gold)]/15 border-[var(--gec-gold)] text-[var(--gec-ink)]',
-    badge: 'bg-[var(--gec-gold)]/25 text-[var(--gec-ink)]',
-  },
-  ink: {
-    chip: 'bg-[var(--gec-ink)]/8 border-[var(--gec-ink)] text-[var(--gec-ink)]',
-    badge: 'bg-[var(--gec-ink)] text-white',
-  },
-};
-
 type FilterValue = 'all' | VentureSector;
 
 // The filter chips come from SECTOR_LABELS' keys, not a second hand-copied
@@ -165,7 +153,7 @@ export function PortfolioGrid() {
   return (
     <div>
       <div
-        className="flex flex-wrap justify-center gap-2 sm:justify-start"
+        className="pf-filters"
         role="group"
         aria-label="Filter portfolio by sector"
       >
@@ -184,7 +172,7 @@ export function PortfolioGrid() {
         ))}
       </div>
 
-      <div className="relative mt-8">
+      <div className="pf-body">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={filter}
@@ -196,7 +184,7 @@ export function PortfolioGrid() {
             {filtered.length === 0 ? (
               <EmptyState />
             ) : (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="pf-grid">
                 {filtered.map((venture) => (
                   <VentureCard key={venture.id} venture={venture} />
                 ))}
@@ -219,92 +207,38 @@ function FilterButton({
   onClick: () => void;
 }) {
   return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={cn(
-        'inline-flex min-h-11 items-center rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-[0.08em] transition-colors',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-        'focus-visible:ring-[var(--gec-crimson)] focus-visible:ring-offset-[var(--gec-canvas)]',
-        active
-          ? 'border-[var(--gec-crimson)] bg-[var(--gec-crimson)] text-white'
-          : 'border-[var(--gec-border)] bg-[var(--gec-surface-card)] text-[var(--gec-ink-muted)] hover:text-[var(--gec-ink)]'
-      )}
-      style={{ transitionDuration: 'var(--dur-ui)' }}
-    >
+    <button type="button" aria-pressed={active} onClick={onClick} className={cn('pf-chip', active && 'is-active')}>
       {label}
     </button>
   );
 }
 
 function VentureCard({ venture }: { venture: PortfolioVenture }) {
-  const accent = ACCENT_CLASSES[venture.accent];
   return (
-    <div
-      className="surface-card flex flex-col rounded-2xl p-6"
-      style={{ boxShadow: 'var(--elev-raised)' }}
-      data-sector={venture.sector}
-    >
-      <div className="flex items-center justify-between">
-        <div
-          className={cn(
-            'flex h-11 w-11 items-center justify-center rounded-lg border font-display text-base font-black',
-            accent.chip
-          )}
-          aria-hidden="true"
-        >
-          {venture.initials}
-        </div>
-        <span
-          className={cn(
-            'rounded-full px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.04em]',
-            accent.badge
-          )}
-        >
-          {venture.stageLabel}
-        </span>
+    <article id={venture.id} className={`brand-card pf-card pf-accent-${venture.accent}`} data-sector={venture.sector}>
+      <div className="pf-card__top">
+        <div className="pf-initials" aria-hidden="true">{venture.initials}</div>
+        <span className="pf-stage">{venture.stageLabel}</span>
       </div>
-
-      <h3
-        className="mt-4 font-display font-bold text-[var(--gec-ink)]"
-        style={{ fontSize: 'var(--text-lg)' }}
-      >
-        {venture.name}
-      </h3>
-      <div className="mt-1 font-mono text-[11px] font-bold uppercase tracking-[0.04em] text-[var(--gec-ink-muted)]">
-        SECTOR: {venture.sectorLabel}
+      <h3 className="h3-card pf-name">{venture.name}</h3>
+      <div className="pf-sector">SECTOR: {venture.sectorLabel}</div>
+      <p className="body-editorial pf-desc">{venture.description}</p>
+      <div className="pf-foot">
+        <span className="pf-founders">{venture.founders}</span>
+        {venture.url && (
+          <a className="pf-visit" href={venture.url} target="_blank" rel="noreferrer">Visit ↗</a>
+        )}
       </div>
-      <p
-        className="mt-2 flex-1 text-[var(--gec-ink-muted)]"
-        style={{ fontSize: 'var(--text-sm)', lineHeight: 1.55 }}
-      >
-        {venture.description}
-      </p>
-
-      <div className="mt-4 flex items-center justify-between border-t border-[var(--gec-border)] pt-3 text-xs">
-        <span className="font-semibold text-[var(--gec-ink)]">{venture.founders}</span>
-        <span className="font-bold text-[var(--gec-ink-muted)]">Visit →</span>
-      </div>
-    </div>
+    </article>
   );
 }
 
 function EmptyState() {
   return (
-    <div
-      className="surface-card flex flex-col items-center gap-2 rounded-2xl border border-dashed border-[var(--gec-border)] px-6 py-16 text-center"
-      role="status"
-    >
-      <p
-        className="font-display font-bold text-[var(--gec-ink)]"
-        style={{ fontSize: 'var(--text-lg)' }}
-      >
-        No ventures in this sector yet.
-      </p>
-      <p className="max-w-[46ch] text-[var(--gec-ink-muted)]" style={{ fontSize: 'var(--text-sm)' }}>
-        New founders join the Galgotias portfolio every cohort — check back soon, or explore
-        another sector above.
+    <div className="brand-card pf-empty" role="status">
+      <p className="h3-card">No ventures in this sector yet.</p>
+      <p className="body-editorial">
+        New founders join the Galgotias portfolio every cohort — check back soon, or explore another sector above.
       </p>
     </div>
   );

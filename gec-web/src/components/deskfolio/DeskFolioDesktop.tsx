@@ -1101,7 +1101,7 @@ function FlightCoverArtwork({
 
 export function DeskFolioDesktop({ fillViewport = false }: { fillViewport?: boolean }) {
   const [viewport, setViewport] = useState(() => ({
-    w: typeof window === 'undefined' ? 1200 : window.innerWidth,
+    w: typeof window === 'undefined' ? 1200 : document.documentElement.clientWidth,
     h: typeof window === 'undefined' ? 900 : window.innerHeight,
   }))
 
@@ -1109,7 +1109,7 @@ export function DeskFolioDesktop({ fillViewport = false }: { fillViewport?: bool
     let frame = 0
     const measure = () => {
       frame = 0
-      const next = { w: window.innerWidth, h: window.innerHeight }
+      const next = { w: document.documentElement.clientWidth, h: window.innerHeight }
       setViewport((prev) => (prev.w === next.w && prev.h === next.h ? prev : next))
     }
     const on = () => {
@@ -1150,13 +1150,18 @@ export function DeskFolioDesktop({ fillViewport = false }: { fillViewport?: bool
   const PAGE_H = 483
 
   const stageScale = useMemo(() => {
-    const pad = viewport.w < 768 ? 0 : 16
+    const pad = viewport.w < 768 || fillViewport ? 0 : 16
     const availableW = viewport.w - pad
     const widthScale = availableW / STAGE_BASE_W
     const heightScale = viewport.h / STAGE_BASE_H
     const scale = fillViewport ? Math.min(widthScale, heightScale) : Math.min(1, widthScale)
     return Math.max(0.24, Math.round(scale * 1000) / 1000)
   }, [fillViewport, viewport.h, viewport.w])
+
+  // Fill mode: grow the mat along the spare axis so it reaches every viewport edge (no letterbox strips).
+  // ponytail: items stay anchored top-left, so the extra mat lands on the right/bottom edge.
+  const stageW = fillViewport && viewport.w ? Math.max(STAGE_BASE_W, Math.ceil(viewport.w / stageScale)) : STAGE_BASE_W
+  const stageH = fillViewport && viewport.h ? Math.max(STAGE_BASE_H, Math.ceil(viewport.h / stageScale)) : STAGE_BASE_H
 
   const bgTheme = GEC_MAT_THEMES.find((theme) => theme.id === 'gec-crimson') ?? GEC_MAT_THEMES[0]
 
@@ -1281,15 +1286,15 @@ export function DeskFolioDesktop({ fillViewport = false }: { fillViewport?: bool
         <div
           className={`df-stage-scale-wrapper ${fillViewport ? 'df-stage-scale-wrapper--fill' : ''}`}
           style={{
-            width: '100vw',
+            width: fillViewport ? '100%' : '100vw',
             display: 'flex',
             justifyContent: 'center',
             alignItems: fillViewport ? 'center' : 'flex-start',
             overflow: 'hidden',
             minHeight: fillViewport ? '100dvh' : `${Math.round(STAGE_BASE_H * stageScale)}px`,
             height: fillViewport ? '100dvh' : `${Math.round(STAGE_BASE_H * stageScale)}px`,
-            margin: '0 0 0 50%',
-            transform: 'translateX(-50%)',
+            margin: fillViewport ? 0 : '0 0 0 50%',
+            transform: fillViewport ? 'none' : 'translateX(-50%)',
             position: 'relative',
             backgroundColor: fillViewport ? bgTheme.style.backgroundColor : undefined,
             backgroundImage: fillViewport ? bgTheme.style.backgroundImage : undefined,
@@ -1298,8 +1303,8 @@ export function DeskFolioDesktop({ fillViewport = false }: { fillViewport?: bool
           <div
             className="df-stage-scale-inner"
             style={{
-              width: `${STAGE_BASE_W}px`,
-              height: `${STAGE_BASE_H}px`,
+              width: `${stageW}px`,
+              height: `${stageH}px`,
               transform: `scale(${stageScale})`,
               transformOrigin: fillViewport ? 'center center' : 'top center',
               flexShrink: 0,
@@ -1309,8 +1314,8 @@ export function DeskFolioDesktop({ fillViewport = false }: { fillViewport?: bool
               className={`demo-stage deskfolio-demo-stage ${lampOn ? 'is-lamp-lit' : ''}`}
               style={
                 {
-                  width: `${STAGE_BASE_W}px`,
-                  minHeight: `${STAGE_BASE_H}px`,
+                  width: `${stageW}px`,
+                  minHeight: `${stageH}px`,
                   margin: '0 auto',
                   transform: 'none',
                   '--df-picker-w': `${PAGE_W}px`,

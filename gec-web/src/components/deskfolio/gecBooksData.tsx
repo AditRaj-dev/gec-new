@@ -153,7 +153,7 @@ export const BOOK_SPECS: Record<string, BookSpec> = {
   },
 }
 
-function GecMark({ size = 54 }: { size?: number }) {
+export function GecMark({ size = 54 }: { size?: number }) {
   return (
     <svg
       className="gec-book-cover__mark"
@@ -302,7 +302,7 @@ type PageStat = {
   sub?: string
 }
 
-type PageData = {
+export type PageData = {
   running: string
   kicker?: string
   category?: string
@@ -318,7 +318,7 @@ type PageData = {
   action?: { label: string; value: string; tag?: string }
 }
 
-function EditorialPage({ tone, folio, page }: { tone: Tone; folio: number; page: PageData }) {
+export function EditorialPage({ tone, folio, page }: { tone: Tone; folio: number; page: PageData }) {
   const id = `${tone.slice(0, 3).toUpperCase()}—${String(folio).padStart(2, '0')}`
   return (
     <article className={`gec-editorial-page gec-editorial-page--${tone}`}>

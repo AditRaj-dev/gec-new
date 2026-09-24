@@ -1,9 +1,3 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   font-family: var(--font-body);
   color: var(--gec-ink);
@@ -357,15 +351,6 @@ body {
   transition: transform var(--duration-micro) var(--ease-spring);
 }
 
-.brand-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.66), transparent 36%);
-}
-
 .brand-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-card-hover-refined);
@@ -590,12 +575,6 @@ html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
   margin-bottom: 8px;
 }
 
-.speakers-8col-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
 .partner-logos-strip {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -741,9 +720,27 @@ html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
   .bento-span-6, .bento-span-3 { grid-column: span 12; }
   .initiatives-offset-grid { grid-template-columns: 1fr; }
   .metrics-4col-matrix { grid-template-columns: repeat(2, 1fr); }
-  .speakers-8col-grid { grid-template-columns: repeat(2, 1fr); }
   .partner-logos-strip { grid-template-columns: repeat(3, 1fr); }
   .footer-grid-structure { grid-template-columns: 1fr 1fr; }
+}
+
+/* Hero fills the first screen on desktop (navbar is 76px). */
+@media (min-width: 1025px) {
+  #hero-spotlight-section {
+    min-height: calc(100svh - 76px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Large monitors (27"+): laptop sizing left as-is below this tier. */
+@media (min-width: 1600px) {
+  .wf-section { padding-block: clamp(84px, 9vh, 140px); }
+  .h1-display { font-size: clamp(3.8rem, 3.4vw, 5.2rem); }
+  .h2-section { font-size: clamp(2.6rem, 2.2vw, 3.4rem); }
+  .hero-asymmetric-split { gap: 64px; }
+  .hero-secondary-dock { margin-top: 56px; }
 }
 
 @media (max-width: 768px) {
@@ -753,7 +750,6 @@ html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
   .site-navbar { padding: 0 20px; }
   .site-footer { padding: 44px 20px 20px; }
   .metrics-4col-matrix { grid-template-columns: 1fr; }
-  .speakers-8col-grid { grid-template-columns: 1fr 1fr; }
   .partner-logos-strip { grid-template-columns: repeat(2, 1fr); }
   .footer-grid-structure { grid-template-columns: 1fr; }
   .hero-secondary-strip { grid-template-columns: 1fr; }
@@ -779,12 +775,15 @@ html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
 .gec-shader-watercolor { --gec-shader-strength: var(--shader-hero); }
 .gec-shader-liquid { --gec-shader-strength: var(--shader-feature); }
 .gec-shader-specular { --gec-shader-strength: var(--shader-light); }
+/* Print families mix ink into the surface colour themselves, so the canvas runs opaque. */
+.gec-shader-contour, .gec-shader-halftone, .gec-shader-hatch, .gec-shader-riso, .gec-shader-night { --gec-shader-strength: 1; }
 @media (max-width: 768px) { .gec-shader-layer { display: none; } }
 
 /* Finished surfaces without WebGL. */
 .gec-fallback-watercolor {
   background:
     radial-gradient(circle at 76% 22%, rgba(163,4,15,.10), transparent 34%),
+    radial-gradient(circle at 4% 4%, rgba(163,4,15,.08), transparent 26%),
     radial-gradient(circle at 88% 72%, rgba(251,202,5,.07), transparent 28%),
     var(--gec-canvas);
 }

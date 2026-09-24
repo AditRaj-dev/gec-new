@@ -21,21 +21,33 @@ float fbm(vec2 p) {
   return v;
 }`;
 
-/** Watercolor on paper — hero. Pigment pools towards the top right (texture spec §41 fallback position). */
-const WATERCOLOR = `${HEAD}
+/** Watercolor on paper. `falloff` = pigment focus point + fade radii. */
+const watercolor = (focus: string, inner: string, outer: string, pool = '', extraWeight = '') => `${HEAD}
 void main() {
   vec2 uv = gl_FragCoord.xy / uRes;
   vec2 p = uv * vec2(uRes.x / uRes.y, 1.0) * 1.6;
   float t = uTime * 0.02;
   vec2 q = vec2(fbm(p + t), fbm(p + vec2(5.2, 1.3) - t));
   float f = fbm(p + 2.0 * q);
+  ${pool}
   vec3 col = mix(uC0, uC1, smoothstep(0.35, 0.85, f));
   col = mix(col, uC2, smoothstep(0.55, 0.95, q.x) * 0.6);
   col = mix(col, uC3, smoothstep(0.7, 1.0, q.y) * 0.35);
   col -= (1.0 - smoothstep(0.0, 0.02, abs(f - 0.6))) * 0.08;
-  float w = 1.0 - smoothstep(0.2, 1.1, distance(uv, vec2(0.78, 0.78)));
+  float w = 1.0 - smoothstep(${inner}, ${outer}, distance(uv, vec2(${focus})));
+  ${extraWeight}
   gl_FragColor = vec4(mix(uC0, col, w), 1.0);
 }`;
+
+/** Hero: pigment pools towards the top right (texture spec §41 fallback position). */
+const WATERCOLOR = watercolor('0.78, 0.78', '0.2', '1.1',
+  // Second, smaller pool bleeding in from the top-left corner (uv y runs bottom→top).
+  'f += 0.18 * (1.0 - smoothstep(0.0, 0.42, distance(uv, vec2(0.04, 0.96))));',
+  'w = max(w, 1.0 - smoothstep(0.08, 0.5, distance(uv * vec2(uRes.x / uRes.y, 1.0), vec2(0.04 * uRes.x / uRes.y, 0.96))));');
+/** Stage Manager: same wash spread across the whole panel (full colour out to every corner; fades only past them). */
+const WASH = watercolor('0.5, 0.6', '0.8', '1.6',
+  // Pigment pool over the rail/canvas gap and the canvas's top-left, where the noise alone runs pale.
+  'f += 0.22 * (1.0 - smoothstep(0.0, 0.38, distance(uv, vec2(0.27, 0.82))));');
 
 /** Subtle liquid — red on red. Gold stays under 3% of the frame. */
 const LIQUID = `${HEAD}
@@ -67,8 +79,80 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }`;
 
+/**
+ * Print-derived backgrounds for plain cream/sand/crimson sections (route layouts plan §8).
+ * Opaque: they paint the surface colour (uC0) and mix ink in, so the canvas runs at full opacity.
+ * `uScale` = internal px per CSS px, so patterns are sized in CSS px whatever the render scale.
+ * `mask` keeps ink off the copy: RIGHT = empty right side (heroes), EDGES = corners only.
+ */
+// `gutter` = both side margins outside the 1320px content column (plus the 48px section padding),
+// so wide screens get pattern down the empty left and right sides without it running under the copy.
+const RIGHT = 'max(smoothstep(0.5, 1.0, uv.x) * (0.4 + 0.6 * uv.y), gutter)';
+const EDGES = 'max(smoothstep(0.28, 0.9, length((uv - 0.5) * vec2(1.5, 1.15))), gutter)';
+const print = (mask: string, body: string) => `${HEAD}
+uniform float uScale;
+mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
+void main() {
+  vec2 uv = gl_FragCoord.xy / uRes;
+  vec2 p = gl_FragCoord.xy / max(uScale, 0.01);
+  float t = uTime;
+  float w = uRes.x / max(uScale, 0.01);
+  float gw = max((w - 1320.0) * 0.5, 0.0) + 48.0;
+  float gutter = max(1.0 - smoothstep(gw * 0.45, gw + 24.0, p.x), smoothstep(w - gw - 24.0, w - gw * 0.45, p.x));
+  float m = ${mask};
+  ${body}
+}`;
+
+/** Topographic contour lines, every 5th an "index contour" in gold. */
+const CONTOUR_BODY = `
+  float k = fbm(p / 300.0 + vec2(t * 0.012, -t * 0.008)) * 11.0;
+  float d = min(fract(k), 1.0 - fract(k));
+  float major = step(mod(floor(k + 0.5), 5.0), 0.5);
+  float line = 1.0 - smoothstep(0.012 + 0.02 * major, 0.045 + 0.03 * major, d);
+  float a = line * m * 0.26 * (1.0 + 0.6 * major);
+  gl_FragColor = vec4(mix(uC0, mix(uC1, uC2, major), a), 1.0);`;
+const CONTOUR = print(RIGHT, CONTOUR_BODY);
+/** Same lines on the charcoal footer, around the edges and gutters; kept low so copy on top stays readable. */
+const NIGHT = print(EDGES, CONTOUR_BODY.replace('0.26 * (1.0', '0.24 * (1.0'));
+
+/** Newspaper halftone screen at 15°, dot size from slow noise. */
+const HALFTONE = print(EDGES, `
+  vec2 g = rot(0.26) * p / 9.0, c = floor(g) + 0.5;
+  float v = smoothstep(0.3, 0.75, fbm(c * 9.0 / 360.0 + vec2(t * 0.02, t * 0.01)));
+  float rad = 0.48 * v * m;
+  float dotv = 1.0 - smoothstep(rad - 0.1, rad + 0.02, length(fract(g) - 0.5));
+  gl_FragColor = vec4(mix(uC0, uC1, dotv * 0.22 * step(0.04, rad)), 1.0);`);
+
+/** Copper-plate engraving: 45° hatch weighted by noise, cross-hatch in the darks. */
+const HATCH = print(EDGES, `
+  float sh = smoothstep(0.42, 0.78, fbm(p / 320.0 + vec2(t * 0.01, 0.0))) * m;
+  float d1 = abs(fract((p.x + p.y) / 7.0) - 0.5) * 2.0;
+  float d2 = abs(fract((p.x - p.y) / 7.0) - 0.5) * 2.0;
+  float w2 = max(sh - 0.5, 0.0) * 0.9;
+  float l1 = (1.0 - smoothstep(sh * 0.55, sh * 0.55 + 0.18, d1)) * step(0.02, sh);
+  float l2 = (1.0 - smoothstep(w2, w2 + 0.18, d2)) * step(0.5, sh);
+  gl_FragColor = vec4(mix(uC0, uC1, max(l1, l2) * 0.2), 1.0);`);
+
+/** Two-drum risograph on crimson: gold + oxblood screens, misregistered, with grain. */
+const RISO = print(EDGES, `
+  vec2 g1 = rot(1.31) * p / 7.0, g2 = rot(0.26) * (p + vec2(2.0, 1.5)) / 7.0;
+  float v1 = smoothstep(0.5, 0.8, fbm(p / 420.0 + vec2(t * 0.015, 0.0))) * m;
+  float v2 = smoothstep(0.45, 0.8, fbm(p / 300.0 + vec2(-t * 0.012, 5.0)));
+  float d1 = 1.0 - smoothstep(v1 * 0.46 - 0.1, v1 * 0.46 + 0.02, length(fract(g1) - 0.5));
+  float d2 = 1.0 - smoothstep(v2 * 0.5 - 0.1, v2 * 0.5 + 0.02, length(fract(g2) - 0.5));
+  vec3 col = mix(uC0, uC2, d2 * step(0.03, v2) * 0.45);
+  col = mix(col, uC1, d1 * step(0.03, v1) * 0.38);
+  col += (hash(p + fract(t)) - 0.5) * 0.02;
+  gl_FragColor = vec4(col, 1.0);`);
+
 export const PROGRAMS: Record<ShaderFamily, { frag: string; palette: [string, string, string, string] }> = {
   watercolor: { frag: WATERCOLOR, palette: ['#FCF8ED', '#A3040F', '#C62F29', '#FBCA05'] },
+  wash: { frag: WASH, palette: ['#FCF8ED', '#A3040F', '#C62F29', '#FBCA05'] },
   liquid: { frag: LIQUID, palette: ['#72030A', '#A3040F', '#C62F29', '#FBCA05'] },
   specular: { frag: SPECULAR, palette: ['#18191C', '#222222', '#A3040F', '#FBCA05'] },
+  contour: { frag: CONTOUR, palette: ['#FCF8ED', '#A3040F', '#FBCA05', '#FBCA05'] },
+  halftone: { frag: HALFTONE, palette: ['#F4E2CA', '#A3040F', '#A3040F', '#A3040F'] },
+  hatch: { frag: HATCH, palette: ['#FCF8ED', '#222222', '#222222', '#222222'] },
+  night: { frag: NIGHT, palette: ['#141518', '#C62F29', '#FBCA05', '#FBCA05'] },
+  riso: { frag: RISO, palette: ['#A3040F', '#FBCA05', '#72030A', '#72030A'] },
 };

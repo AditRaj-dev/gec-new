@@ -1,0 +1,152 @@
+/* Floating Dispatch bin + broadsheet. Port of design-explorations/newsletter-dispatch.html (commit 4f70a96),
+   locked design (NEWSLETTER_BIN_HANDOFF.md). Changes from the reference: tokens mapped to gec-web, every rule
+   scoped under .bin / .nl, .grid renamed .nl-grid, docked variant added at the end. */
+.bin,.nl{
+  --canvas:var(--gec-canvas); --sand:var(--gec-surface-sand);
+  --crimson:var(--gec-crimson); --crimson-act:var(--gec-crimson-act); --gold:var(--gec-gold); --blue:var(--gec-blue);
+  --ink:var(--gec-ink); --muted:var(--gec-ink-muted);
+  --newsprint:#F0E8D2; --print:#1d1a17;
+  --ease:var(--ease-spring);
+  --display:var(--font-display); --body:var(--font-body); --mono:var(--font-mono);
+  --serif:var(--font-news-serif),Georgia,serif; --head:var(--font-news-head),Georgia,serif; --black:var(--font-blackletter),serif;
+  /* newsprint grain: fractal noise, tinted brown, low alpha */
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .15 .9 0 0 0 -.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fibre:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .06' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .33 0 0 0 0 .18 1.1 0 0 0 -.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+}
+
+/* ───────── floating bin ───────── */
+.bin,.nl button{font:inherit;color:inherit}
+.bin{position:fixed;left:0;top:0;z-index:30;border:0;background:none;padding:0;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
+.bin.is-drag{cursor:grabbing}
+.bin.is-snap{transition:transform .55s var(--ease)}
+.bin:focus-visible{outline:3px solid var(--blue);outline-offset:6px;border-radius:16px}
+.bin .bob{display:block;position:relative;animation:bob 4s ease-in-out infinite}
+.bin .is-drag .bob{animation-play-state:paused;transform:scale(1.08) rotate(-5deg);transition:transform .3s var(--ease)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-10px) rotate(1.5deg)}}
+.bin svg{display:block;width:124px;height:auto;overflow:visible;filter:drop-shadow(0 10px 14px rgba(60,20,10,.22))}
+.bin .ground{position:absolute;left:50%;bottom:-8px;width:78px;height:12px;margin-left:-39px;border-radius:50%;background:radial-gradient(rgba(40,18,12,.32),transparent 70%);animation:ground 4s ease-in-out infinite}
+@keyframes ground{50%{transform:scale(.78);opacity:.55}}
+.bin .pp{transform-box:fill-box;transform-origin:50% 100%;transform:rotate(var(--r));transition:transform .5s var(--ease)}
+.bin:hover .pp{transform:translateY(-16px) rotate(calc(var(--r) * 1.25))}
+.bin:hover .pp:nth-of-type(2){transition-delay:.04s}
+.bin:hover .pp:nth-of-type(3){transition-delay:.08s}
+.bin:hover .pp:nth-of-type(4){transition-delay:.12s}
+.bin.is-launch .pp{animation:fly .62s var(--ease) forwards}
+.bin.is-launch .pp:nth-of-type(2){animation-delay:.05s}
+.bin.is-launch .pp:nth-of-type(3){animation-delay:.1s}
+.bin.is-launch .pp:nth-of-type(4){animation-delay:.14s}
+@keyframes fly{to{transform:translateY(-300px) rotate(calc(var(--r) * 5));opacity:0}}
+.bin .badge{position:absolute;top:2px;right:-4px;z-index:2;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:var(--crimson);color:#fff;font:600 12px/22px var(--mono);border:2px solid var(--canvas);box-shadow:0 4px 10px rgba(163,4,15,.35);animation:pop .5s var(--ease)}
+.bin .badge[hidden]{display:none}
+@keyframes pop{from{transform:scale(0)}}
+.bin .peek{position:absolute;top:34px;right:calc(100% + 12px);white-space:nowrap;background:var(--ink);color:var(--canvas);font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;border-radius:10px;opacity:0;transform:translateX(8px);transition:.35s var(--ease);pointer-events:none}
+.bin .peek::after{content:'';position:absolute;top:50%;right:-5px;width:10px;height:10px;margin-top:-5px;background:inherit;transform:rotate(45deg)}
+.bin .on-left .peek{right:auto;left:calc(100% + 12px);transform:translateX(-8px)}
+.bin .on-left .peek::after{right:auto;left:-5px}
+.bin:hover .peek,.bin:focus-visible .peek,.bin.show-peek .peek{opacity:1;transform:none}
+
+/* ───────── dialog: windowed by default, full screen on demand ───────── */
+.nl{width:min(1140px,94vw);height:min(800px,90vh);max-width:100vw;max-height:100vh;padding:0;border:0;border-radius:18px;overflow:hidden;color:var(--print);background:var(--newsprint);
+  box-shadow:0 40px 120px rgba(40,10,5,.45);transition:width .6s var(--ease),height .6s var(--ease),border-radius .6s var(--ease)}
+.nl[open]{display:flex;flex-direction:column;animation:dlgIn .7s var(--ease)}
+.nl.is-closing{animation:dlgOut .38s ease-in forwards}
+@keyframes dlgIn{from{transform:translate(var(--dx,0),var(--dy,0)) scale(.06) rotate(-8deg);opacity:0}}
+@keyframes dlgOut{to{transform:translate(var(--dx,0),var(--dy,0)) scale(.06) rotate(6deg);opacity:0}}
+.nl::backdrop{background:rgba(34,16,12,.5);backdrop-filter:blur(6px)}
+.nl.is-full{width:100vw;height:100vh;border-radius:0}
+.nl .bar{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;height:52px;padding:0 10px 0 18px;background:var(--ink);color:var(--canvas)}
+.nl .bar-label{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nl .bar-label b{color:var(--gold);font-weight:600}
+.nl .bar-actions{display:flex;gap:6px}
+.nl .bar button{border:1px solid rgba(255,255,255,.18);background:none;color:var(--canvas);font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;border-radius:8px;cursor:pointer}
+.nl .bar button:hover{background:rgba(255,255,255,.1)}
+.nl .bar button:focus-visible{outline:2px solid var(--gold)}
+.nl .body{flex:1;overflow:auto;position:relative;container-type:inline-size;overscroll-behavior:contain}
+
+/* ───────── broadsheet ───────── */
+.nl .paper{min-height:100%;padding:26px clamp(16px,4cqw,60px) 60px;background:var(--grain),var(--fibre),var(--newsprint);box-shadow:inset 0 0 140px rgba(120,80,30,.2)}
+.nl .paper,.nl .paper *{text-shadow:0 0 .5px rgba(29,26,23,.35)} /* ink bleed */
+.nl .mast-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 0;border-top:3px double var(--print);border-bottom:1px solid var(--print);font:500 10.5px var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.nl .mast{display:grid;grid-template-columns:150px 1fr 150px;align-items:center;gap:20px;margin:14px 0 8px}
+.nl .ear{border:1px solid var(--print);padding:8px 10px;font:11px/1.35 var(--serif);text-align:center}
+.nl .ear b{display:block;font:700 10px var(--mono);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;border-bottom:1px solid var(--print);padding-bottom:4px}
+.nl .ear em{font:italic 700 17px var(--head);display:block}
+.nl .mast-title{font:400 clamp(44px,8.6cqw,116px)/1 var(--black);text-align:center;margin:0;letter-spacing:.01em}
+.nl .mast-sub{text-align:center;font:italic 15px var(--serif);color:#4a4239;margin:0 0 10px}
+.nl .mast-rule{border-top:1px solid var(--print);border-bottom:3px double var(--print);height:6px;margin-bottom:30px}
+.nl-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0 38px}
+.nl .lead{min-width:0;transform-origin:0 50%}
+.nl .lead.turn-next{animation:turnNext .7s var(--ease)}
+.nl .lead.turn-prev{animation:turnPrev .7s var(--ease)}
+@keyframes turnNext{from{transform:perspective(1400px) rotateY(-24deg) translateX(60px);opacity:0}}
+@keyframes turnPrev{from{transform:perspective(1400px) rotateY(18deg) translateX(-60px);opacity:0}}
+.nl .kicker{display:inline-block;font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--crimson);border:1px solid var(--crimson);padding:4px 8px;margin:0 0 14px}
+.nl .lead h2{font:900 clamp(30px,4.8cqw,64px)/1.01 var(--head);letter-spacing:-.015em;margin:0 0 14px;text-wrap:balance}
+.nl .dek{font:italic 400 clamp(17px,1.8cqw,22px)/1.45 var(--serif);color:#39322b;margin:0 0 14px;text-wrap:pretty}
+.nl .byline{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:#4a4239;padding:10px 0;border-top:1px solid rgba(29,26,23,.3);border-bottom:1px solid rgba(29,26,23,.3);margin-bottom:22px}
+
+/* halftone plate: grayscale scene × dot screen, thresholded by contrast(), then printed onto newsprint */
+.nl .plate{margin:0 0 24px;position:relative}
+.nl .ht{position:relative;height:clamp(200px,28cqw,340px);overflow:hidden;background:#fff;filter:contrast(18)}
+.nl .ht-src{position:absolute;inset:0;filter:grayscale(1) brightness(1.45) blur(1.1px)}
+.nl .ht-src svg{width:100%;height:100%;display:block}
+.nl .ht::after{content:'';position:absolute;inset:0;background:radial-gradient(closest-side,#777,#fff) 0 0/7px 7px;mix-blend-mode:multiply}
+.nl .plate::after{content:'';position:absolute;inset:0 0 auto;height:clamp(200px,28cqw,340px);background:var(--grain),var(--newsprint);mix-blend-mode:multiply;pointer-events:none}
+.nl .plate figcaption{font:italic 13px var(--serif);color:#4a4239;padding:8px 0;border-bottom:1px solid rgba(29,26,23,.3)}
+.nl .plate figcaption b{font:600 10px var(--mono);font-style:normal;text-transform:uppercase;letter-spacing:.1em;color:var(--crimson);margin-right:8px}
+
+.nl .cols{column-count:2;column-gap:30px;column-rule:1px solid rgba(29,26,23,.22);font:400 17px/1.62 var(--serif);text-align:justify;hyphens:auto}
+.nl .cols p{margin:0 0 12px}
+.nl .cols p:first-child::first-letter{float:left;font:900 70px/.78 var(--head);color:var(--crimson);padding:6px 8px 0 0}
+.nl .cols blockquote{break-inside:avoid;margin:6px 0 16px;padding:12px 0;border-top:3px solid var(--print);border-bottom:1px solid var(--print);font:italic 700 22px/1.2 var(--head);text-align:left}
+.nl .cols blockquote::before{content:'“';color:var(--crimson)}
+.nl .turns{display:flex;justify-content:space-between;gap:12px;margin-top:30px;padding-top:14px;border-top:3px double var(--print)}
+.nl .turns button{border:0;background:none;font:700 15px var(--head);cursor:pointer;padding:6px 0}
+.nl .turns button:hover:not(:disabled){color:var(--crimson)}
+.nl .turns button:disabled{opacity:.3;cursor:default}
+.nl .rail{border-left:1px solid rgba(29,26,23,.35);padding-left:28px;min-width:0}
+.nl .rail h3{font:900 13px var(--display);text-transform:uppercase;letter-spacing:.14em;margin:0 0 12px;display:flex;justify-content:space-between}
+.nl .rail h3 span{color:var(--crimson);font-family:var(--mono);font-weight:500}
+.nl .rolls{list-style:none;margin:0 0 28px;padding:0}
+.nl .roll-item{width:100%;display:grid;grid-template-columns:22px 1fr;gap:4px 12px;align-items:center;text-align:left;border:0;border-bottom:1px solid rgba(29,26,23,.2);background:none;padding:12px 8px;cursor:pointer;transition:background .2s}
+.nl .roll-item:hover{background:rgba(29,26,23,.05)}
+.nl .roll-item svg{grid-row:span 2;width:22px;height:46px}
+.nl .roll-no{font:600 10px var(--mono);letter-spacing:.08em;color:#5a5047;text-transform:uppercase}
+.nl .roll-t{font:700 15px/1.25 var(--head)}
+.nl .roll-item.is-new .roll-no::after{content:'● new';color:var(--crimson);margin-left:8px}
+.nl .roll-item.is-on{background:var(--print);color:var(--newsprint)}
+.nl .roll-item.is-on .roll-no{color:var(--gold)}
+.nl .sub{background:var(--print);color:var(--newsprint);padding:20px;position:relative}
+.nl .sub::before{content:'';position:absolute;inset:6px;border:1px solid rgba(240,232,210,.25);pointer-events:none}
+.nl .sub h4{font:900 22px/1.1 var(--head);margin:0 0 6px}
+.nl .sub p{font:italic 14px var(--serif);margin:0 0 14px;color:#cfc6b2}
+.nl .sub .row{display:flex;gap:6px}
+.nl .sub input{flex:1;min-width:0;border:0;padding:10px;font:14px var(--body);background:var(--newsprint);color:var(--ink)}
+.nl .sub button{border:0;background:var(--gold);color:#111;font:700 11px var(--mono);text-transform:uppercase;padding:0 12px;cursor:pointer}
+.nl .sub .done{font:700 16px var(--head);color:var(--gold);margin:0}
+@container (min-width:1240px){.nl .cols{column-count:3}}
+@container (max-width:900px){.nl .mast{grid-template-columns:1fr}.nl .ear{display:none}}
+@container (max-width:780px){
+  .nl-grid{grid-template-columns:1fr}
+  .nl .rail{border-left:0;padding-left:0;border-top:3px double var(--print);padding-top:20px;margin-top:28px}
+  .nl .cols{column-count:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .bin *,.nl *,.bin *::before,.nl *::before,.bin *::after,.nl *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+/* ───────── gec-web additions ───────── */
+.bin.bin-float{visibility:hidden;transition:opacity .3s var(--ease)} /* controller reveals it after the first snap */
+.bin.bin-float.is-docked,html[data-gec-act="live"] .bin.bin-float{opacity:0;pointer-events:none} /* steps aside for its docked twin and for live full-viewport acts, like the navbar */
+.nl{margin:auto} /* Tailwind preflight zeroes the UA dialog margin that centres it */
+.nl .sub .err{margin:8px 0 0;font:500 12px var(--body);color:var(--crimson)}
+/* Docked bin (/stories #dispatch): same art, hover and launch; sits still, no drag. */
+.bin.bin-dock{position:relative;left:auto;top:auto;z-index:auto;cursor:pointer;transform:none;visibility:visible}
+.bin-dock svg{width:clamp(180px,22vw,280px);filter:drop-shadow(0 18px 24px rgba(60,20,10,.22))}
+.bin-dock .bob,.bin-dock .ground{animation:none}
+.bin-dock .ground{width:170px;margin-left:-85px;height:22px;bottom:-14px}
+.bin-dock .badge{top:10px;right:6px;transform:scale(1.25)}
+.bin-dock .peek{top:60px}
+/* Reader scrolls without a visible scrollbar (wheel, touch, keys and the page turns still work). */
+.nl .body{scrollbar-width:none}
+.nl .body::-webkit-scrollbar{display:none}

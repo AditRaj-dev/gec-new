@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useId } from 'react';
-import { flushSync } from 'react-dom';
+import { createPortal, flushSync } from 'react-dom';
+import { ShaderLayer } from '@/components/ShaderLayer';
 import Image from 'next/image';
 import { GEC_TEAMS, TeamStageData } from '@/lib/teamsData';
+import { TeamEmblem } from './TeamEmblem';
+import { submitForm } from '@/lib/api';
 import './stage-manager.css';
 
 export interface TeamStageManagerProps {
@@ -38,6 +41,8 @@ export function TeamStageManager({
   const [toast, setToast] = useState<{ title: string; desc: string } | null>(null);
   const [isApplyOpen, setIsApplyOpen] = useState(false);
   const [applied, setApplied] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({ fullName:'', email:'', phone:'', yearBranch:'', interest:'' });
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -127,44 +132,26 @@ export function TeamStageManager({
     showToast('Team selected', target.name);
   };
 
-  const toggleView = (next: 'detail' | 'roster') => {
-    const reducedMotion = typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hasVT = typeof document !== 'undefined' &&
-      'startViewTransition' in document && !reducedMotion;
-
-    if (hasVT) {
-      const bp = document.getElementById('team-detail-blueprint');
-      if (bp) bp.style.viewTransitionName = 'team-detail';
-      document.querySelectorAll<HTMLElement>(`#${id} .team-item-card`).forEach((card) => {
-        card.style.viewTransitionName = `team-card-${card.dataset.teamIndex}`;
-      });
-
-      const doc = document as Document & {
-        startViewTransition: (cb: () => void) => { finished: Promise<void> };
-      };
-      const transition = doc.startViewTransition(() => {
-        flushSync(() => setViewMode(next));
-      });
-      transition.finished.finally(() => {
-        if (bp) bp.style.removeProperty('view-transition-name');
-        document.querySelectorAll<HTMLElement>(`#${id} .team-item-card`).forEach((card) => {
-          card.style.removeProperty('view-transition-name');
-        });
-      });
-    } else {
-      setViewMode(next);
-    }
-    if (next === 'roster') showToast('Roster overview', 'Showing all 7 teams');
-  };
-
   const handleApplyOpen = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (onApplyClick) onApplyClick(activeTeam);
-    setApplied(false); setIsApplyOpen(true);
+    setApplied(false); setSubmitError(''); setIsApplyOpen(true);
   };
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); setApplied(true);
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true); setSubmitError('');
+    const res = await submitForm({
+      formType: 'recruitment',
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.interest,
+      metadata: { team: activeTeam.applyTarget, yearBranch: formData.yearBranch, source: 'teams-stage-manager' },
+    });
+    setSubmitting(false);
+    // Keep what the user typed on failure; only confirm when the service accepted it.
+    if (!res.success) { setSubmitError(res.message); return; }
+    setApplied(true);
     setTimeout(() => {
       setIsApplyOpen(false); setApplied(false);
       showToast('Application received', `We'll reach out about ${activeTeam.applyTarget}.`);
@@ -227,24 +214,14 @@ export function TeamStageManager({
 
       {/* STAGE MANAGER */}
       <section ref={sectionRef} id={id} data-motion-state={viewMode}
-        className={`team-stage-manager-section ${viewMode === 'detail' ? 'is-detail-active' : ''}`}>
+        className={`team-stage-manager-section gec-shader-host ${viewMode === 'detail' ? 'is-detail-active' : ''}`}>
+        <ShaderLayer family="wash" />
         <div className="stage-status-bar">
           <div className="stage-status-label">
             {viewMode === 'detail'
               ? <><span className="stage-status-dim">Now viewing ·</span> <span className="stage-status-name">{activeTeam.name}</span></>
               : <span className="stage-status-dim">Full roster · 7 teams</span>}
           </div>
-          <button type="button" onClick={() => toggleView(viewMode === 'detail' ? 'roster' : 'detail')}
-            className="stage-mode-toggle">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              {viewMode === 'detail' ? (
-                <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /></>
-              ) : (
-                <><rect x="3" y="3" width="6" height="18" rx="1" /><rect x="12" y="3" width="9" height="18" rx="1" /></>
-              )}
-            </svg>
-            <span>{viewMode === 'detail' ? 'View all teams' : 'Focus mode'}</span>
-          </button>
         </div>
 
         {/* Rail / stack of team cards */}
@@ -278,6 +255,9 @@ export function TeamStageManager({
                 }}
                 className={`team-item-card ${isActive && viewMode === 'detail' ? 'is-active-team' : ''}`}
               >
+                {/* Rail-only decoration (hidden in roster mode via CSS) */}
+                <span className="team-card-halo" aria-hidden="true" />
+                <TeamEmblem index={team.index} className="team-card-emblem" />
                 <div className="team-card-identity">
                   <div className="team-card-meta-top">
                     <span className="team-card-num">{String(team.index).padStart(2, '0')}</span>
@@ -297,7 +277,7 @@ export function TeamStageManager({
                     <span className="team-meta-sep">·</span>
                     <span className="team-meta-badge">{meta.badge}</span>
                     <span className="team-meta-sep">·</span>
-                    <span className="team-meta-subtle">{team.coordinatorsCount} Coords · {team.membersCount} Members</span>
+                    <span className="team-meta-subtle">{team.coordinatorsCount} Coordinators</span>
                   </div>
                 </div>
 
@@ -330,98 +310,92 @@ export function TeamStageManager({
           })}
         </div>
 
-        {/* DETAIL CANVAS */}
+        {/* DETAIL CANVAS — bento board */}
         <div id="team-detail-blueprint" className="detail-canvas" aria-hidden={viewMode !== 'detail'}>
-          <div className="detail-hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(20,15,15,0) 30%, rgba(20,15,15,0.86) 100%), url(${activeTeam.heroImage})` }}>
-            <div className="detail-hero-inner">
+          <div className="detail-bento" style={{ ['--team-accent' as string]: activeTeam.tagColor.bg }}>
+            <div className="bento-hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(20,15,15,0.05) 20%, rgba(20,15,15,0.88) 100%), url(${activeTeam.heroImage})` }}>
               <span className="detail-hero-tag" style={{ backgroundColor: activeTeam.tagColor.bg, color: activeTeam.tagColor.text }}>
                 {activeTeam.roleTag}
               </span>
               <h2 className="detail-hero-title">{activeTeam.name}</h2>
               <p className="detail-hero-desc">{activeTeam.desc}</p>
             </div>
-          </div>
 
-          <div className="detail-responsibilities mt-8">
-            <div className="flex items-baseline justify-between mb-4">
-              <h3 className="text-lg font-black text-[#222222] tracking-tight">What we own</h3>
-              <span className="text-[11px] font-mono text-[#8A817A]">6 responsibilities</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {activeTeam.pillars.map((pillar, idx) => (
-                <div key={pillar.name} className="pillar-card">
-                  <div className="pillar-num" style={{ color: activeTeam.tagColor.bg === '#FBCA05' ? '#B87F00' : activeTeam.tagColor.bg }}>
-                    {String(idx + 1).padStart(2, '0')}
-                  </div>
-                  <div className="pillar-name">{pillar.name}</div>
-                  <div className="pillar-desc">{pillar.desc}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="detail-people mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="lead-card">
-              <div className="lead-photo">
-                <Image src={activeTeam.headPhoto} alt={activeTeam.headName} width={200} height={200} className="w-full h-full object-cover" unoptimized />
+            <div className="bento-portrait bento-lead">
+              <Image src={activeTeam.headPhoto} alt={activeTeam.headName} fill sizes="260px" className="object-cover" unoptimized />
+              <div className="bento-portrait-text">
+                <span className="bento-portrait-label">Team Lead</span>
+                <span className="bento-portrait-name">{activeTeam.headName}</span>
+                <span className="bento-portrait-role">{activeTeam.headRole}</span>
               </div>
-              <div className="lead-label">Team Lead</div>
-              <div className="lead-name">{activeTeam.headName}</div>
-              <div className="lead-role">{activeTeam.headRole}</div>
             </div>
 
-            <div className="md:col-span-2 team-composition">
-              <div className="flex items-baseline justify-between mb-4">
-                <h3 className="text-lg font-black text-[#222222] tracking-tight">Team composition</h3>
-                <span className="text-[11px] font-mono text-[#8A817A]">{activeTeam.coordinatorsCount} coordinators · {activeTeam.membersCount} members</span>
+            <div className="bento-apply">
+              <span className="bento-apply-eyebrow">Recruitment · Cohort 04</span>
+              <strong className="bento-apply-title">Join {activeTeam.shortName}.</strong>
+              <span className="bento-apply-live">Applications open</span>
+              <button type="button" onClick={handleApplyOpen} className="bento-apply-btn">
+                Apply to team
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </button>
+            </div>
+
+            <div className="bento-panel bento-pillars">
+              <div className="bento-panel-head">
+                <h3>What we own</h3>
+                <span>{activeTeam.pillars.length} responsibilities</span>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {Array.from({ length: activeTeam.coordinatorsCount }).map((_, i) => (
-                  <div key={`c-${i}`} className="avatar-chip avatar-coord" title={`Coordinator ${i + 1}`}>C{i + 1}</div>
+              <ul>
+                {activeTeam.pillars.map((pillar) => (
+                  <li key={pillar.name}>
+                    <span className="pillar-name">{pillar.name}</span>
+                    <span className="pillar-desc">{pillar.desc}</span>
+                  </li>
                 ))}
-                {Array.from({ length: activeTeam.membersCount }).map((_, i) => (
-                  <div key={`m-${i}`} className="avatar-chip avatar-member" title={`Member ${i + 1}`}>M{i + 1}</div>
-                ))}
-              </div>
-              <div className="mt-6 pt-5 border-t border-[rgba(163,4,15,0.12)] flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <div className="text-xs font-mono uppercase tracking-widest text-[#5F5650]">Recruitment status</div>
-                  <div className="text-sm font-semibold text-[#222222] mt-0.5">
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 align-middle animate-pulse" />
-                    Applications open · Cohort 04
-                  </div>
-                </div>
-                <button type="button" onClick={handleApplyOpen}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold bg-[#A3040F] hover:bg-[#C62F29] text-white shadow-sm transition-colors cursor-pointer active:scale-95">
-                  Apply to team
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                </button>
-              </div>
+              </ul>
             </div>
-          </div>
 
-          <div className="detail-gallery mt-8">
-            <div className="flex items-baseline justify-between mb-4">
-              <h3 className="text-lg font-black text-[#222222] tracking-tight">Behind the scenes</h3>
-              <span className="text-[11px] font-mono text-[#8A817A]">Snapshots from the field</span>
+            <div className="bento-panel bento-coords">
+              <div className="bento-panel-head">
+                <h3>Coordinators</h3>
+                <span>{activeTeam.coordinatorsCount}</span>
+              </div>
+              <ul>
+                {(activeTeam.coordinators ?? Array.from({ length: activeTeam.coordinatorsCount }, () => null)).map((coord, i) => (
+                  <li key={`c-${i}`} className="bento-portrait coord-portrait">
+                    {coord?.photo ? (
+                      <Image src={coord.photo} alt={coord.name} fill sizes="140px" className="object-cover" unoptimized />
+                    ) : (
+                      <span className="coord-initials" aria-hidden="true">
+                        {coord ? coord.name.split(' ').map((w) => w[0]).join('').slice(0, 2) : `C${i + 1}`}
+                      </span>
+                    )}
+                    <div className="bento-portrait-text">
+                      <span className="bento-portrait-label">{coord?.role ?? 'Coordinator'}</span>
+                      <span className="bento-portrait-name">{coord?.name ?? `Coordinator ${String(i + 1).padStart(2, '0')}`}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {activeTeam.galleryImages.map((src, idx) => (
-                <div key={idx} className="gallery-tile">
-                  <Image src={src} alt={`${activeTeam.name} moment ${idx + 1}`} width={400} height={400} className="w-full h-full object-cover" unoptimized />
-                </div>
-              ))}
-            </div>
+
+            {activeTeam.galleryImages.filter((src) => src !== activeTeam.heroImage).slice(0, 3).map((src, idx) => (
+              <div key={idx} className={`bento-gallery bento-gallery-${idx + 1}`}>
+                <Image src={src} alt={`${activeTeam.name} moment ${idx + 1}`} fill sizes="(min-width: 901px) 22vw, 50vw" className="object-cover" unoptimized />
+                <span className="bento-gallery-cap">{idx === 0 ? 'Behind the scenes · ' : ''}{idx + 1}/3</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
+
       {/* APPLY MODAL */}
-      {isApplyOpen && (
+      {isApplyOpen && createPortal(
         <div role="dialog" aria-modal="true" aria-labelledby={modalTitleId}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
           onClick={() => setIsApplyOpen(false)}>
-          <div className="w-full max-w-lg bg-[#FFFDF8] rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-[rgba(163,4,15,0.15)]"
+          <div className="w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain bg-[#FFFDF8] rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-[rgba(163,4,15,0.15)]"
             onClick={(e) => e.stopPropagation()}>
             <button type="button" onClick={() => setIsApplyOpen(false)}
               className="absolute top-4 right-4 text-[#5F5650] hover:text-[#A3040F] text-2xl leading-none cursor-pointer" aria-label="Close">×</button>
@@ -469,16 +443,18 @@ export function TeamStageManager({
                     placeholder="Tell us about your relevant skills or motivation..."
                     className="w-full px-3 py-2.5 text-sm bg-white border border-[rgba(163,4,15,0.2)] rounded-lg focus:outline-2 focus:outline-[#A3040F]/40 focus:border-[#A3040F] resize-none" />
                 </label>
+                {submitError && <p role="alert" className="text-xs text-[#A3040F]">{submitError}</p>}
                 <div className="pt-2 flex items-center justify-end gap-3">
                   <button type="button" onClick={() => setIsApplyOpen(false)}
                     className="px-4 py-2.5 text-xs font-bold text-[#5F5650] hover:text-[#222222] cursor-pointer">Cancel</button>
-                  <button type="submit"
-                    className="px-6 py-2.5 text-xs font-bold bg-[#A3040F] hover:bg-[#C62F29] text-white rounded-lg cursor-pointer transition-colors">Submit application →</button>
+                  <button type="submit" disabled={submitting}
+                    className="px-6 py-2.5 text-xs font-bold bg-[#A3040F] hover:bg-[#C62F29] disabled:opacity-60 text-white rounded-lg cursor-pointer transition-colors">{submitting ? 'Sending…' : 'Submit application →'}</button>
                 </div>
               </form>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
