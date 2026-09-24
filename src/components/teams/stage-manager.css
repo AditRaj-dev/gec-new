@@ -659,8 +659,11 @@
 .detail-bento {
   --team-accent: #FBCA05;
   display: grid;
-  grid-template-columns: 1.2fr 1fr 0.9fr 0.95fr;
-  grid-template-rows: 1.25fr 1fr 0.9fr;
+  /* Col 1 wider / col 2 narrower (hero spans both, so it keeps its width): gives the
+     coordinator portraits a ~3:4 shape instead of thin slivers. */
+  grid-template-columns: 1.5fr 0.7fr 0.9fr 0.95fr;
+  /* Bottom row sizes to the coordinator portraits; the top rows share what's left. */
+  grid-template-rows: 1.25fr 1fr auto;
   gap: 12px;
   height: clamp(460px, calc(100vh - 230px), 720px);
   min-height: 0;
@@ -906,22 +909,23 @@
 .bento-coords { grid-column: 1; grid-row: 3; padding: 10px; gap: 8px; }
 .bento-coords .bento-panel-head { padding: 0 4px; }
 .bento-coords ul {
-  flex: 1;
-  min-height: 0;
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.coord-portrait { border-radius: 10px; }
+/* Passport-photo tiles (35×45mm = 7:9), always filling the panel width 3-across. */
+.coord-portrait {
+  aspect-ratio: 7 / 9;
+  border-radius: 10px;
+}
 .coord-portrait .bento-portrait-text { padding: 8px; }
 /* Panel header already says "Coordinators" — the per-tile role label only truncates here */
 .coord-portrait .bento-portrait-label { display: none; }
 .coord-portrait .bento-portrait-name {
-  font-size: 12px;
+  font-size: 13px;
   white-space: normal;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -933,7 +937,7 @@
   display: grid;
   place-items: center;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 18px;
+  font-size: clamp(18px, 1.8vw, 28px);
   font-weight: 700;
   color: rgba(252, 248, 237, 0.9);
 }
@@ -978,7 +982,6 @@
   .bento-apply { grid-column: auto; grid-row: auto; min-height: 210px; }
   .bento-pillars,
   .bento-coords { grid-column: 1 / -1; grid-row: auto; }
-  .bento-coords ul { min-height: 180px; }
   .bento-gallery { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 3; }
   .bento-gallery-1 { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
 }
