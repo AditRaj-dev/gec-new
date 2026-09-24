@@ -2,12 +2,25 @@
 
 import { CurtainInterstitial } from '@/components/CurtainInterstitial';
 import { DeskFolioPage } from '@/components/deskfolio/DeskFolioPage';
+import { InitiativeShelf } from '@/components/deskfolio/InitiativeShelf';
 import { FullViewportAct } from '@/components/FullViewportAct';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
+import { useIsPhone } from '@/lib/useIsPhone';
 import './act-intro.css';
 
-/** The pinned DeskFolio runway on its own; /initiatives uses this without the home curtain and intro. */
+/**
+ * The pinned DeskFolio runway on its own; /initiatives uses this without the home curtain and intro.
+ * Phones get the initiatives bookshelf instead — the desk never loads there.
+ */
 export function DeskRunway() {
+  const phone = useIsPhone();
+  if (phone) {
+    return (
+      <section id="desk" aria-label="the initiatives desk" data-surface="cream" className="surface-cream act-phone">
+        <InitiativeShelf />
+      </section>
+    );
+  }
   return (
     <FullViewportAct surface="cream" runway={2.4} label="the initiatives desk" id="desk">
       {() => <DeskFolioPage fillViewport />}

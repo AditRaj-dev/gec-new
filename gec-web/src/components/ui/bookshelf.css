@@ -1,0 +1,37 @@
+/* NewsletterBookshelf phone extras. Desktop is untouched: everything here sits under the phone query. */
+
+@media (max-width: 768px) {
+  /* Reader arrows move from the book's flanks (off-screen on phones) into the bottom bar. */
+  .gec-shelf-phone-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--gec-surface-card);
+    color: var(--gec-ink);
+    border: 1px solid var(--gec-border-subtle);
+    box-shadow: var(--shadow-card);
+    font: 700 1rem var(--font-body);
+    cursor: pointer;
+    transition: transform var(--duration-micro) var(--ease-spring), opacity var(--duration-micro);
+  }
+  .gec-shelf-phone-arrow:active { transform: scale(0.94); }
+  .gec-shelf-phone-arrow:disabled { opacity: 0.25; pointer-events: none; }
+}
+
+/* Entrance: the spines drop onto the shelf one after another when the row scrolls into view
+   (data-entered is set by an IntersectionObserver in newsletter-bookshelf.tsx). */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  [data-gec-shelf-row]:not([data-entered]) [data-shelf-book] { opacity: 0; }
+  [data-gec-shelf-row][data-entered] [data-shelf-book] {
+    animation: gec-shelf-drop 620ms var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+}
+
+@keyframes gec-shelf-drop {
+  0% { opacity: 0; transform: translateY(-56px) rotate(-4deg); }
+  60% { opacity: 1; transform: translateY(4px) rotate(0.6deg); }
+  100% { opacity: 1; transform: none; }
+}

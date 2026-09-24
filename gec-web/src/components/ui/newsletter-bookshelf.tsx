@@ -2,12 +2,13 @@
 
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { DeskFolio } from '@/components/deskfolio/DeskFolio';
+import { DeskFolio, lastSpreadFor } from '@/components/deskfolio/DeskFolio';
 import { buildDispatchPages } from './newsletter-reader';
 import { cn } from '@/lib/utils';
 import { haptic } from '@/components/deskfolio/haptics';
 import '@/components/deskfolio/deskfolio.css';
 import '@/components/deskfolio/gec-editorial.css';
+import './bookshelf.css';
 
 export interface NewsletterBookshelfItem {
   id: string;
@@ -32,7 +33,20 @@ export interface NewsletterBookshelfProps {
   brand?: string;
   onSelect?: (item: NewsletterBookshelfItem, index: number) => void;
   activeId?: string;
+  /** Pages for an opened volume. Defaults to the Dispatch issue layout (buildDispatchPages). */
+  buildBook?: (item: NewsletterBookshelfItem, completionAction: React.ReactNode) => BookshelfVolume;
 }
+
+export interface BookshelfVolume {
+  cover: React.ReactNode;
+  pages: React.ReactNode[];
+  backCover?: React.ReactNode;
+}
+
+// Phones read one page at a time: volumes are laid out at this page size and scaled to fit,
+// the same way DeskFolioMobile does it.
+const PHONE_PAGE_W = 380;
+const PHONE_PAGE_H = 509;
 
 export const defaultNewsletterBooks: NewsletterBookshelfItem[] = [
   {
@@ -280,6 +294,7 @@ export function NewsletterBookshelf({
   items = defaultNewsletterBooks,
   className,
   onSelect,
+  buildBook = buildDispatchPages,
 }: NewsletterBookshelfProps) {
   const books = useMemo(() => (items.length ? items : defaultNewsletterBooks), [items]);
 
@@ -305,6 +320,19 @@ export function NewsletterBookshelf({
   const bookRefs = useRef<(HTMLDivElement | null)[]>([]);
   const closingFallbackRef = useRef<number | null>(null);
 
+  // Phone entrance: mark the shelf row once it scrolls into view; CSS drops the spines in (bookshelf.css).
+  useEffect(() => {
+    const row = shelfScrollRef.current;
+    if (!row) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      row.dataset.entered = '';
+      io.disconnect();
+    }, { threshold: 0.25 });
+    io.observe(row);
+    return () => io.disconnect();
+  }, []);
+
   // Throttled ResizeObserver for responsive page sizing
   useEffect(() => {
     const el = stageRef.current;
@@ -325,9 +353,15 @@ export function NewsletterBookshelf({
     };
   }, []);
 
-  // Compute flippable page sizes
-  const pageWidth = Math.min(330, Math.max(160, Math.floor((stageWidth - 64) / 2)));
-  const pageHeight = Math.round(pageWidth * 1.38);
+  // Compute flippable page sizes. Phones show a single page (≈86% of the stage, capped so it fits
+  // the stage height), desktops a two-page spread.
+  const phone = stageWidth < 640;
+  const pageWidth = phone
+    ? Math.round(Math.min(stageWidth * 0.86, 420 / (PHONE_PAGE_H / PHONE_PAGE_W)))
+    : Math.min(330, Math.max(160, Math.floor((stageWidth - 64) / 2)));
+  const pageHeight = phone
+    ? Math.round(pageWidth * (PHONE_PAGE_H / PHONE_PAGE_W))
+    : Math.round(pageWidth * 1.38);
 
   const clearClosingFallback = useCallback(() => {
     if (closingFallbackRef.current !== null) {
@@ -419,8 +453,24 @@ export function NewsletterBookshelf({
   // Dispatch pages for active volume
   const activeBookData = useMemo(() => {
     if (!activeBook) return null;
-    return buildDispatchPages(activeBook, <CompleteVolumeAction onComplete={handleClose} />);
-  }, [activeBook, handleClose]);
+    return buildBook(activeBook, <CompleteVolumeAction onComplete={handleClose} />);
+  }, [activeBook, handleClose, buildBook]);
+
+  // Phone reader: a blank left page before every page, so only the right-hand page shows.
+  const readerPages = useMemo(() => {
+    if (!activeBookData) return [];
+    return phone ? activeBookData.pages.flatMap((p) => [null, p]) : activeBookData.pages;
+  }, [activeBookData, phone]);
+
+  const endSpread = activeBookData ? lastSpreadFor(activeBookData.cover, readerPages, activeBookData.backCover) : 0;
+  const spreadLabel =
+    currentSpread === 0
+      ? 'COVER'
+      : currentSpread >= endSpread
+      ? 'BACK COVER'
+      : phone
+      ? `${currentSpread}/${endSpread - 1}`
+      : `SPREAD ${currentSpread} / ${endSpread - 1}`;
 
   // Handle book click on shelf
   const handleSelectBook = useCallback(
@@ -489,17 +539,15 @@ export function NewsletterBookshelf({
     }
   }, []);
 
-  const turnNext = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-    }
+  // DeskFolio pages on its own element's onKeyDown, so the key has to start there — a keydown on
+  // window never reaches it (the arrows used to do nothing).
+  const pressKey = useCallback((key: 'ArrowRight' | 'ArrowLeft') => {
+    stageRef.current
+      ?.querySelector('.deskfolio-book')
+      ?.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
   }, []);
-
-  const turnPrev = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-    }
-  }, []);
+  const turnNext = useCallback(() => pressKey('ArrowRight'), [pressKey]);
+  const turnPrev = useCallback(() => pressKey('ArrowLeft'), [pressKey]);
 
   return (
     <div
@@ -540,9 +588,7 @@ export function NewsletterBookshelf({
               : stage === 'reading'
               ? currentSpread === 0
                 ? 'COVER VIEW'
-                : currentSpread >= 3
-                ? 'BACK COVER'
-                : `SPREAD ${currentSpread} / 2`
+                : spreadLabel
               : `${books.length} EDITIONS CATALOGUED`}
           </span>
         </div>
@@ -652,6 +698,8 @@ export function NewsletterBookshelf({
                   bookRefs.current[index] = el;
                 }}
                 className="relative group shrink-0 flex flex-col items-center select-none cursor-pointer focus:outline-none"
+                data-shelf-book
+                style={{ '--i': index } as React.CSSProperties}
                 tabIndex={0}
                 role="button"
                 aria-label={`Open volume ${book.editionNumber || book.title}`}
@@ -1236,62 +1284,99 @@ export function NewsletterBookshelf({
                     : 'Turn pages with drag or arrows ← →'}
                 </span>
                 <span className="px-2.5 py-0.5 rounded bg-[#FFFDF8] border border-[rgba(163,4,15,0.2)] font-bold text-[#A3040F] shadow-2xs">
-                  {stage === 'closing'
-                    ? 'CLOSING'
-                    : currentSpread === 0
-                    ? 'COVER'
-                    : currentSpread >= 3
-                    ? 'BACK COVER'
-                    : `SPREAD ${currentSpread} / 2`}
+                  {stage === 'closing' ? 'CLOSING' : spreadLabel}
                 </span>
               </div>
             </div>
 
             {/* The Flippable 3D Book Container */}
             <div className="relative flex items-center justify-center py-2 overflow-visible select-none" onCopy={(e) => e.preventDefault()}>
-              {/* Floating Previous Page Button */}
-              <button
-                type="button"
-                onClick={turnPrev}
-                disabled={currentSpread <= 0 || stage === 'closing'}
-                aria-label="Previous page"
-                className="absolute -left-12 sm:-left-16 z-50 size-10 rounded-full bg-[#FFFDF8] hover:bg-white text-[#222222] hover:text-[#A3040F] border border-[rgba(163,4,15,0.22)] shadow-lg flex items-center justify-center font-bold text-base transition-[transform,opacity,background-color,color,border-color] duration-150 ease-out disabled:opacity-20 disabled:pointer-events-none cursor-pointer active:scale-95 motion-reduce:transition-none"
-              >
-                &larr;
-              </button>
+              {/* Floating Previous Page Button (desktop; phones get it in the bottom bar) */}
+              {!phone && (
+                <button
+                  type="button"
+                  onClick={turnPrev}
+                  disabled={currentSpread <= 0 || stage === 'closing'}
+                  aria-label="Previous page"
+                  className="absolute -left-12 sm:-left-16 z-50 size-10 rounded-full bg-[#FFFDF8] hover:bg-white text-[#222222] hover:text-[#A3040F] border border-[rgba(163,4,15,0.22)] shadow-lg flex items-center justify-center font-bold text-base transition-[transform,opacity,background-color,color,border-color] duration-150 ease-out disabled:opacity-20 disabled:pointer-events-none cursor-pointer active:scale-95 motion-reduce:transition-none"
+                >
+                  &larr;
+                </button>
+              )}
 
               {/* DeskFolio Component with Auto-Open and Spring Physics */}
-              <DeskFolio
-                cover={activeBookData.cover}
-                pages={activeBookData.pages}
-                backCover={activeBookData.backCover}
-                pageWidth={pageWidth}
-                pageHeight={pageHeight}
-                initialSpread={0}
-                autoOpen={autoOpenReady}
-                autoOpenDelay={120}
-                closeRequested={isClosing}
-                onClose={handleDeskFolioClosed}
-                onTurn={handleSpreadChange}
-                closeOnEnd={true}
-                virtualizePages={true}
-                className="gec-newsletter-deskfolio shadow-2xl"
-              />
+              {phone ? (
+                // Laid out at the designed page size, scaled to fit; the blank left pages sit off to the left.
+                <div className="df-mobile-scaler" style={{ width: pageWidth, height: pageHeight }}>
+                  <div
+                    className="df-mobile-scaler-inner"
+                    style={{ transform: `scale(${pageWidth / PHONE_PAGE_W})`, left: -pageWidth }}
+                  >
+                    <DeskFolio
+                      cover={activeBookData.cover}
+                      pages={readerPages}
+                      backCover={activeBookData.backCover}
+                      pageWidth={PHONE_PAGE_W}
+                      pageHeight={PHONE_PAGE_H}
+                      closedShift="0%"
+                      initialSpread={0}
+                      autoOpen={autoOpenReady}
+                      autoOpenDelay={120}
+                      closeRequested={isClosing}
+                      onClose={handleDeskFolioClosed}
+                      onTurn={handleSpreadChange}
+                      closeOnEnd={true}
+                      virtualizePages={true}
+                      className="gec-newsletter-deskfolio"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <DeskFolio
+                  cover={activeBookData.cover}
+                  pages={readerPages}
+                  backCover={activeBookData.backCover}
+                  pageWidth={pageWidth}
+                  pageHeight={pageHeight}
+                  initialSpread={0}
+                  autoOpen={autoOpenReady}
+                  autoOpenDelay={120}
+                  closeRequested={isClosing}
+                  onClose={handleDeskFolioClosed}
+                  onTurn={handleSpreadChange}
+                  closeOnEnd={true}
+                  virtualizePages={true}
+                  className="gec-newsletter-deskfolio shadow-2xl"
+                />
+              )}
 
               {/* Floating Next Page Button */}
-              <button
-                type="button"
-                onClick={turnNext}
-                disabled={currentSpread >= 3 || stage === 'closing'}
-                aria-label="Next page"
-                className="absolute -right-12 sm:-right-16 z-50 size-10 rounded-full bg-[#FFFDF8] hover:bg-white text-[#222222] hover:text-[#A3040F] border border-[rgba(163,4,15,0.22)] shadow-lg flex items-center justify-center font-bold text-base transition-[transform,opacity,background-color,color,border-color] duration-150 ease-out disabled:opacity-20 disabled:pointer-events-none cursor-pointer active:scale-95 motion-reduce:transition-none"
-              >
-                &rarr;
-              </button>
+              {!phone && (
+                <button
+                  type="button"
+                  onClick={turnNext}
+                  disabled={currentSpread >= endSpread || stage === 'closing'}
+                  aria-label="Next page"
+                  className="absolute -right-12 sm:-right-16 z-50 size-10 rounded-full bg-[#FFFDF8] hover:bg-white text-[#222222] hover:text-[#A3040F] border border-[rgba(163,4,15,0.22)] shadow-lg flex items-center justify-center font-bold text-base transition-[transform,opacity,background-color,color,border-color] duration-150 ease-out disabled:opacity-20 disabled:pointer-events-none cursor-pointer active:scale-95 motion-reduce:transition-none"
+                >
+                  &rarr;
+                </button>
+              )}
             </div>
 
-            {/* Bottom Quick Return Bar */}
+            {/* Bottom Quick Return Bar (phones: ← put back → ) */}
             <div className="mt-3 flex items-center justify-center gap-3">
+              {phone && (
+                <button
+                  type="button"
+                  onClick={turnPrev}
+                  disabled={currentSpread <= 0 || stage === 'closing'}
+                  aria-label="Previous page"
+                  className="gec-shelf-phone-arrow"
+                >
+                  &larr;
+                </button>
+              )}
               <button
                 type="button"
                 onClick={handleClose}
@@ -1302,6 +1387,17 @@ export function NewsletterBookshelf({
                   &larr; {stage === 'closing' ? 'Folding volume closed...' : 'Put back on shelf'}
                 </span>
               </button>
+              {phone && (
+                <button
+                  type="button"
+                  onClick={turnNext}
+                  disabled={currentSpread >= endSpread || stage === 'closing'}
+                  aria-label="Next page"
+                  className="gec-shelf-phone-arrow"
+                >
+                  &rarr;
+                </button>
+              )}
             </div>
           </div>
         )}

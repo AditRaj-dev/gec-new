@@ -5,8 +5,10 @@ import { useMotionValueEvent, useReducedMotion, type MotionValue } from 'motion/
 import { CurtainInterstitial } from '@/components/CurtainInterstitial';
 import { FullViewportAct } from '@/components/FullViewportAct';
 import { TeamStageManager } from '@/components/teams/TeamStageManager';
+import { TeamFan } from '@/components/teams/TeamFan';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import { isLive } from '@/lib/act';
+import { useIsPhone } from '@/lib/useIsPhone';
 import './act-intro.css';
 
 function StageManager({ progress, initialTeamIndex }: { progress: MotionValue<number>; initialTeamIndex?: number }) {
@@ -35,8 +37,19 @@ function StageManager({ progress, initialTeamIndex }: { progress: MotionValue<nu
   );
 }
 
-/** The pinned Stage Manager runway on its own; /teams uses this without the home curtain and intro. */
+/**
+ * The pinned Stage Manager runway on its own; /teams uses this without the home curtain and intro.
+ * Phones get the team fan instead — the Stage Manager never mounts there.
+ */
 export function StageRunway({ initialTeamIndex }: { initialTeamIndex?: number }) {
+  const phone = useIsPhone();
+  if (phone) {
+    return (
+      <section id="stage" aria-label="the teams stage" data-surface="sand" className="surface-sand act-phone">
+        <TeamFan initialTeamIndex={initialTeamIndex} />
+      </section>
+    );
+  }
   return (
     <FullViewportAct surface="sand" runway={2.4} label="the teams stage" id="stage">
       {(progress) => <StageManager progress={progress} initialTeamIndex={initialTeamIndex} />}
