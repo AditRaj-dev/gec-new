@@ -38,7 +38,22 @@
 @media (max-width: 768px) {
   .act-intro__copy--desk { grid-template-columns: 1fr; }
   .act-intro__copy--desk .act-intro__body { grid-column: 1; grid-row: auto; margin-top: 16px; }
+  /* Phone recompositions (InitiativeShelf, TeamFan) replacing the desk and the Stage Manager. */
+  .act-phone { padding: 8px 16px 24px; }
 }
+
+/* Phones have no curtains: each act header fades up as it enters instead. CSS scroll-driven,
+   so browsers without view() timelines simply show the header. */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .act-intro > * {
+      animation: act-intro-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+    }
+  }
+}
+@keyframes act-intro-rise { from { opacity: 0; transform: translateY(32px); } }
 
 .act-intro__heading {
   color: var(--gec-ink);

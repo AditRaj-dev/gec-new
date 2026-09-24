@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "deskfolio": "^0.1.1",
+    "feral-blinds": "^0.3.1",
     "flubber": "^0.4.2",
     "motion": "^13.4.0",
     "next": "16.3.5",

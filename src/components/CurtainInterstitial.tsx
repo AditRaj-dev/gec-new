@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   useScroll,
   useTransform,
@@ -9,6 +9,7 @@ import {
 } from 'motion/react';
 import { CurtainPanels, type CurtainEffect } from './curtain/panels';
 import { ShaderLayer } from './ShaderLayer';
+import { useIsPhone } from '@/lib/useIsPhone';
 import {
   liveKicker,
   CURTAIN_SHUT_KEYFRAMES,
@@ -27,7 +28,12 @@ export function CurtainInterstitial({
   effect?: CurtainEffect;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  // useReducedMotion() is already true on the client's first render but not on the server;
+  // adopt it after hydration (as FullViewportAct does) so the first render matches the server.
+  const prefersReduced = useReducedMotion();
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => setReduce(!!prefersReduced), [prefersReduced]);
+  const phone = useIsPhone();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -49,10 +55,13 @@ export function CurtainInterstitial({
 
   const kicker = liveKicker(count, noun);
 
+  // Phones: no full-screen curtain. The act header fades up and its shelf/fan make their own entrance.
+  if (phone) return null;
+
   // Reduced motion: a static crimson band carrying the same words. No travel.
   if (reduce) {
     return (
-      <div data-surface="crimson" className="surface-crimson gec-shader-host gec-fallback-liquid">
+      <div ref={ref} data-surface="crimson" className="surface-crimson gec-shader-host gec-fallback-liquid">
         <ShaderLayer family="liquid" />
         <div className="relative flex flex-col items-center justify-center gap-2 px-6 py-20 text-center">
           <span className="font-[family-name:var(--font-mono)] text-[clamp(0.875rem,1.1vw,1.125rem)] font-semibold uppercase tracking-[0.14em] text-[var(--gec-gold)]">

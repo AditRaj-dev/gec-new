@@ -91,6 +91,19 @@ function buildSheets(cover: React.ReactNode, pages: React.ReactNode[], backCover
   return sheets
 }
 
+// last navigable spread: with closeOnEnd the book stops on its last sheet that has a front face
+function lastSpreadOf(sheets: Sheet[], closeOnEnd: boolean) {
+  if (!closeOnEnd) return sheets.length
+  let last = Math.max(0, sheets.length - 1)
+  while (last > 0 && sheets[last]?.front == null) last--
+  return last
+}
+
+/** The spread a closeOnEnd DeskFolio stops at, for callers driving their own next/prev controls. */
+export function lastSpreadFor(cover: React.ReactNode, pages: React.ReactNode[], backCover?: React.ReactNode) {
+  return lastSpreadOf(buildSheets(cover, pages, backCover), true)
+}
+
 export function DeskFolio({
   cover,
   pages,
@@ -114,12 +127,7 @@ export function DeskFolio({
   const reduce = useReducedMotion()
   const sheets = useMemo(() => buildSheets(cover, pages, backCover), [cover, pages, backCover])
   const max = sheets.length
-  // last navigable spread (closeOnEnd)
-  let lastSpread = max
-  if (closeOnEnd) {
-    lastSpread = Math.max(0, max - 1)
-    while (lastSpread > 0 && sheets[lastSpread]?.front == null) lastSpread--
-  }
+  const lastSpread = lastSpreadOf(sheets, closeOnEnd)
 
   const [turned, setTurned] = useState(() => Math.max(0, Math.min(initialSpread, max)))
   const [turning, setTurning] = useState<number | null>(null) // sheet mid-spring

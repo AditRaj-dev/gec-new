@@ -147,6 +147,14 @@
 .bin-dock .ground{width:170px;margin-left:-85px;height:22px;bottom:-14px}
 .bin-dock .badge{top:10px;right:6px;transform:scale(1.25)}
 .bin-dock .peek{top:60px}
+/* Phones: the floating bin is ~60% size so it stops covering the act buttons. The controller measures the
+   bin each snap, so the corner placement follows automatically. Hover-only peek label is dropped. */
+@media (max-width:768px){
+  .bin.bin-float svg{width:74px;filter:drop-shadow(0 6px 9px rgba(60,20,10,.22))}
+  .bin.bin-float .ground{width:48px;margin-left:-24px;height:8px;bottom:-5px}
+  .bin.bin-float .badge{top:-2px;right:-8px;transform:scale(.8)}
+  .bin.bin-float .peek{display:none}
+}
 /* Reader scrolls without a visible scrollbar (wheel, touch, keys and the page turns still work). */
 .nl .body{scrollbar-width:none}
 .nl .body::-webkit-scrollbar{display:none}
