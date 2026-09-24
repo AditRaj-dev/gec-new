@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#FCF8ED" />
+<title>Initiatives · GEC mobile layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="m.css?v=3" />
+</head>
+<body data-page="initiatives" data-pill="apply">
+<main>
+  <!-- 1 · Hero -->
+  <section class="sec cream" data-shader="contour" data-mask="corner">
+    <span class="note">01 RouteHero · cream · shader: contour (corner)</span>
+    <span class="kicker">Action over theory</span>
+    <h1 class="h1">Ideas Need More <span class="accent">Than Inspiration.</span></h1>
+    <p class="lede">Initiatives for building, pitching, learning, collaborating, and connecting with the ecosystem. Every one opens a different path forward.</p>
+    <div class="chips" style="margin-top:20px"><a class="chip" href="#desk">The volumes ↓</a><a class="chip" href="#programmes">Programmes ↓</a><a class="chip" href="#apply">Apply ↓</a></div>
+  </section>
+
+  <!-- 2 · Bookshelf (replaces the DeskFolio act on phones) -->
+  <section class="sec sand" id="desk">
+    <span class="note">02 InitiativeShelf · sand · replaces DeskFolio act · no shader — live act</span>
+    <span class="kicker">The initiatives desk</span>
+    <h2 class="h2">Four Volumes. Pick One.</h2>
+    <div class="shelf" data-shelf role="group" aria-label="Initiative volumes">
+      <button class="book" aria-pressed="true" style="background:#80030B;color:#FCF8ED;--foil:#FBCA05;height:230px" data-id="incubation" data-href="initiatives.html#sdp" data-vol="01" data-kick="Cohort 2026" data-title="Venture Incubation Dossier" data-sub="From dorm-room spark to institutional scale." data-btn="#A3040F">
+        <span class="spine">Incubation<i>GEC/26</i></span><span class="cover"><span>GEC · Cohort 2026</span><b>Venture Incubation Dossier</b><span>GEC / 26</span></span>
+      </button>
+      <button class="book" aria-pressed="false" style="background:#0F75BC;color:#fff;--foil:rgba(255,255,255,.72);height:186px" data-id="summit" data-href="initiatives.html#programmes" data-vol="02" data-kick="Flagship conclave" data-title="E-Summit '26 Conclave Blueprint" data-sub="People, arenas, and capital in productive collision." data-btn="#0F75BC">
+        <span class="spine">E-Summit<i>GEC/26</i></span><span class="cover"><span>GEC · Flagship conclave</span><b>E-Summit '26 Conclave Blueprint</b><span>GEC / 26</span></span>
+      </button>
+      <button class="book" aria-pressed="false" style="background:#FCF8ED;color:#8B020B;--foil:rgba(139,2,11,.42);height:172px;border:1px solid rgba(139,2,11,.25)" data-id="handbook" data-href="initiatives.html#programmes" data-vol="03" data-kick="Founder playbook" data-title="Innovator's Field Handbook" data-sub="Validation loops &amp; operating notes for zero-to-one builders." data-btn="#8B020B">
+        <span class="spine">Handbook<i>GEC/26</i></span><span class="cover"><span>GEC · Founder playbook</span><b>Innovator's Field Handbook</b><span>GEC / 26</span></span>
+      </button>
+      <button class="book" aria-pressed="false" style="background:#18181B;color:#FBCA05;--foil:rgba(251,202,5,.65);height:200px" data-id="founders" data-href="stories.html#portfolio" data-vol="04" data-kick="Alumni roll" data-title="Wall of Founders" data-sub="Alumni ventures, syndicates, and portfolio records." data-btn="#18181B">
+        <span class="spine">Founders<i>GEC/26</i></span><span class="cover"><span>GEC · Alumni roll</span><b>Wall of Founders</b><span>GEC / 26</span></span>
+      </button>
+    </div>
+    <div class="ledge"></div>
+    <div class="shelf-cap" aria-live="polite"></div>
+  </section>
+
+  <!-- 3 · Programmes -->
+  <section class="sec cream" id="programmes" data-shader="halftone">
+    <span class="note">03 Programme cards · cream · filter chips (working) · shader: halftone</span>
+    <span class="kicker">Programmes</span>
+    <h2 class="h2">Pick Your Path.</h2>
+    <div class="chips" role="group" aria-label="Filter programmes" data-filter="#prog-list" style="margin-top:16px">
+      <button class="chip" aria-pressed="true" data-f="all">All</button>
+      <button class="chip" aria-pressed="false" data-f="open">Applications open</button>
+      <button class="chip" aria-pressed="false" data-f="ongoing">Ongoing</button>
+      <button class="chip" aria-pressed="false" data-f="upcoming">Upcoming</button>
+    </div>
+    <div id="prog-list" style="margin-top:16px">
+      <article class="card" data-cat="open">
+        <div class="row"><span class="badge b-crimson">Applications open</span><span class="mono accent">Cohort 04</span></div>
+        <h3 class="h3" style="margin:12px 0 6px">Startup Development Program (SDP)</h3>
+        <p class="p" style="font-size:14px">A 12-week pre-incubation accelerator taking student teams from problem discovery to investor-ready prototypes.</p>
+        <p class="mono muted" style="margin-top:10px">Faculty mentors · Prototyping sandbox · Demo day</p>
+        <a class="link" href="#sdp">Explore initiative →</a>
+      </article>
+      <article class="card" data-cat="ongoing">
+        <div class="row"><span class="badge b-gold">Ongoing sessions</span><span class="mono muted">Monthly</span></div>
+        <h3 class="h3" style="margin:12px 0 6px">Pitching Sessions &amp; Shark Arena</h3>
+        <p class="p" style="font-size:14px">Student founders pitch live before VCs, angel syndicates, and mentors for critique and capital.</p>
+        <p class="mono muted" style="margin-top:10px">Angel feedback · Term-sheet coaching · Demo slots</p>
+        <a class="link" href="#">Explore initiative →</a>
+      </article>
+      <article class="card" data-cat="upcoming">
+        <div class="row"><span class="badge b-blue">Upcoming series</span><span class="mono muted">Weekly</span></div>
+        <h3 class="h3" style="margin:12px 0 6px">Founder Workshops &amp; Masterclasses</h3>
+        <p class="p" style="font-size:14px">Tactical sessions on customer discovery, unit economics, tech architecture, and fundraising.</p>
+        <p class="mono muted" style="margin-top:10px">Frameworks · Financial models · Live Q&amp;A</p>
+        <a class="link" href="#">Explore initiative →</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4 · SDP flagship -->
+  <section class="sec sand" id="sdp" data-shader="hatch">
+    <span class="note">04 Flagship detail · sand · phases → vertical timeline · FAQ details · shader: hatch</span>
+    <span class="kicker">Flagship program · Cohort 04</span>
+    <h2 class="h2">Startup Development Program</h2>
+    <p class="p" style="margin-top:12px">12 weeks of mentorship, pitch coaching, and fast-track GICRISE incubation. Zero fees, zero equity.</p>
+    <ol class="tl">
+      <li><div class="mono accent">Phase 01 · Weeks 1–3</div><h3 class="h3" style="margin:4px 0">Ideation</h3><p class="p" style="font-size:14px">Problem validation, TAM sizing, 50+ customer interviews.</p></li>
+      <li><div class="mono accent">Phase 02 · Weeks 4–6</div><h3 class="h3" style="margin:4px 0">MVP Build</h3><p class="p" style="font-size:14px">Prototyping sandbox, tech architecture, no-code MVPs.</p></li>
+      <li><div class="mono accent">Phase 03 · Weeks 7–9</div><h3 class="h3" style="margin:4px 0">Traction</h3><p class="p" style="font-size:14px">Campus pilots, first user feedback, metric tracking.</p></li>
+      <li style="--dot:var(--gec-gold)"><div class="mono accent">Phase 04 · Weeks 10–12</div><h3 class="h3" style="margin:4px 0">Demo Day</h3><p class="p" style="font-size:14px">Deck polish and closed-door pitches to angel VCs.</p></li>
+    </ol>
+    <div class="card" style="margin-top:28px">
+      <p class="mono">Eligibility</p>
+      <p class="p" style="font-size:14px;margin-top:8px">✓ Galgotias student builders &amp; aspiring founders<br>✓ Teams of 2 to 5 members<br>✓ Proof of concept or validated problem statement</p>
+    </div>
+    <p class="mono" style="margin:28px 0 4px">Frequently asked</p>
+    <details open><summary>Who is eligible for SDP Cohort 04?</summary><p class="p" style="font-size:14px">Any registered student team of 2–5 from Galgotias University or GCET with an original idea or working prototype.</p></details>
+    <details><summary>What incubation support does GICRISE offer?</summary><p class="p" style="font-size:14px">Co-working desks, incorporation help, patent filing, and closed-door demos to angel investors.</p></details>
+    <details><summary>Is there any equity or registration fee?</summary><p class="p" style="font-size:14px">Zero fees and zero equity.</p></details>
+  </section>
+
+  <!-- 5 · Apply form -->
+  <section class="sec cream" id="apply" data-shader="halftone" data-no-pill>
+    <span class="note">05 ProgramForm · cream · 1 column · 16px inputs (no iOS zoom) · shader: halftone</span>
+    <span class="kicker">Apply</span>
+    <h2 class="h2">Cohort 04 closes 28 Sep.</h2>
+    <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Application received ✓'" style="margin-top:8px">
+      <label class="field"><span>Full name</span><input name="name" autocomplete="name" required></label>
+      <label class="field"><span>University email</span><input name="email" type="email" inputmode="email" autocomplete="email" required></label>
+      <label class="field"><span>Phone</span><input name="tel" type="tel" inputmode="tel" autocomplete="tel"></label>
+      <label class="field"><span>Programme</span><select name="prog"><option>Startup Development Program</option><option>Shark Arena</option><option>Founder Workshops</option><option>Join a team</option></select></label>
+      <label class="field"><span>Your idea in two lines</span><textarea name="idea"></textarea></label>
+      <button class="btn" style="margin-top:18px">Submit application</button>
+    </form>
+  </section>
+
+  <!-- 6 · Final CTA -->
+  <section class="sec crimson" data-shader="riso">
+    <span class="note">06 FinalCta · crimson · shader: riso</span>
+    <span class="kicker">Your invitation to build</span>
+    <h2 class="h2">Your Idea Doesn't Need to Be Perfect. It Needs a Beginning.</h2>
+    <div class="actions"><a class="btn white" href="#apply">Apply to SDP</a><a class="btn outline-white" href="stories.html">Read Founder Stories</a></div>
+  </section>
+</main>
+<script src="m.js?v=2"></script>
+<script src="m-shaders.js?v=1"></script>
+</body>
+</html>

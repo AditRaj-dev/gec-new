@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#FCF8ED" />
+<title>Home · GEC mobile layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="m.css?v=3" />
+</head>
+<body data-page="home" data-pill="dispatch">
+
+<!-- Brand entrance: once per session · 4s hold · FLIP to bar logo · 700ms curtain split -->
+<div class="intro" aria-hidden="true">
+  <div class="half top"></div><div class="half bot"></div><div class="seam"></div>
+  <div class="glow"></div>
+  <div class="lockup"><img src="assets/gec-full-logo.svg" alt=""></div>
+  <button class="skip">Skip ›</button>
+</div>
+
+<main>
+  <!-- 1 · Hero -->
+  <section class="sec cream" data-shader="contour" data-mask="corner">
+    <span class="note">01 Hero · cream · shader: contour (corner)</span>
+    <span class="badge b-crimson">Applications open · Cohort 04</span>
+    <h1 class="h1" style="margin-top:16px"><span class="accent">Ideas begin here.</span><br>Builders grow here.</h1>
+    <p class="lede">A student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people and support to take their next step.</p>
+    <p class="mono muted" style="margin:22px 0 10px">Concurrent initiatives · swipe</p>
+    <div class="rail" data-rail>
+      <article class="camp" style="background:linear-gradient(150deg,#A3040F,#5c0208)">
+        <div class="row"><span class="badge b-gold">Cohort 04</span><span class="mono" style="opacity:.8">01 / SDP</span></div>
+        <div><div class="lead">₹50L</div><div class="mono" style="opacity:.8">Grant sandbox pool</div>
+          <dl><dt>Duration</dt><dd>12 weeks</dd><dt>Mentorship</dt><dd>1-on-1 access</dd><dt>Closes</dt><dd>28 Sep · 23:59 IST</dd></dl></div>
+      </article>
+      <article class="camp" style="background:linear-gradient(150deg,#E06D1B,#8a3a07)">
+        <div class="row"><span class="badge b-gold">14 slots left</span><span class="mono" style="opacity:.8">02 / Ideathon</span></div>
+        <div><div class="lead">48h</div><div class="mono" style="opacity:.8">Build window</div>
+          <dl><dt>Tracks</dt><dd>AI · Climate · HW · Fintech</dd><dt>Judging</dt><dd>Angel panel</dd></dl></div>
+      </article>
+      <article class="camp" style="background:linear-gradient(150deg,#1F7EC0,#0b3d61)">
+        <div class="row"><span class="badge b-gold">Apr 14</span><span class="mono" style="opacity:.8">03 / E-Summit</span></div>
+        <div><div class="lead">50+</div><div class="mono" style="opacity:.8">Founders on stage</div>
+          <dl><dt>Keynotes</dt><dd>12</dd><dt>Venue</dt><dd>Main Auditorium</dd></dl></div>
+      </article>
+    </div>
+    <div class="dots"></div>
+    <div class="actions"><a class="btn" href="initiatives.html">Explore Initiatives →</a><a class="btn ghost" href="about.html">Discover GEC</a></div>
+  </section>
+
+  <!-- 2 · Happening -->
+  <section class="sec sand" data-shader="halftone">
+    <span class="note">02 Happening · sand · shader: halftone</span>
+    <span class="kicker">Realtime ecosystem dispatch</span>
+    <h2 class="h2">Always Something in Motion.</h2>
+    <div class="card" style="margin-top:22px">
+      <div class="row"><span class="badge b-blue">Upcoming event</span><span class="mono muted">Apr 14, 2026</span></div>
+      <h3 class="h3" style="margin:12px 0 6px">Galgotias E-Summit 2026: The Builder Arena</h3>
+      <p class="p" style="font-size:14px">Main Auditorium 01 · 10:00 AM – 6:00 PM · 480 seats · free for students</p>
+      <a class="link" href="#">Reserve a seat →</a>
+    </div>
+    <div class="card">
+      <div class="row"><span class="badge b-crimson">Applications open</span><span class="mono muted">Pre-seed</span></div>
+      <h3 class="h3" style="margin:12px 0 6px">SDP Cohort 04</h3>
+      <p class="p" style="font-size:14px">12 weeks from problem discovery to demo day.</p>
+      <a class="link" href="initiatives.html#apply">Apply →</a>
+    </div>
+  </section>
+
+  <!-- 3 · Act I · initiatives bookshelf (replaces DeskFolio on phones) -->
+  <section class="sec cream" id="desk">
+    <span class="note">03 Act I · cream · InitiativeShelf (no DeskFolio on mobile) · no shader — live act</span>
+    <span class="kicker">Act I · the initiatives desk</span>
+    <h2 class="h2">Built for People Who Want to Build.</h2>
+    <p class="p" style="margin-top:10px">Four volumes. Tap a spine to pull one out.</p>
+    <div class="shelf" data-shelf role="group" aria-label="Initiative volumes">
+      <button class="book" aria-pressed="true" style="background:#80030B;color:#FCF8ED;--foil:#FBCA05;height:230px" data-id="incubation" data-href="initiatives.html#sdp" data-vol="01" data-kick="Cohort 2026" data-title="Venture Incubation Dossier" data-sub="From dorm-room spark to institutional scale." data-btn="#A3040F">
+        <span class="spine">Incubation<i>GEC/26</i></span>
+        <span class="cover"><span>GEC · Cohort 2026</span><b>Venture Incubation Dossier</b><span>GEC / 26</span></span>
+      </button>
+      <button class="book" aria-pressed="false" style="background:#0F75BC;color:#fff;--foil:rgba(255,255,255,.72);height:186px" data-id="summit" data-href="initiatives.html#programmes" data-vol="02" data-kick="Flagship conclave" data-title="E-Summit '26 Conclave Blueprint" data-sub="People, arenas, and capital in productive collision." data-btn="#0F75BC">
+        <span class="spine">E-Summit<i>GEC/26</i></span>
+        <span class="cover"><span>GEC · Flagship conclave</span><b>E-Summit '26 Conclave Blueprint</b><span>GEC / 26</span></span>
+      </button>
+      <button class="book" aria-pressed="false" style="background:#FCF8ED;color:#8B020B;--foil:rgba(139,2,11,.42);height:172px;border:1px solid rgba(139,2,11,.25)" data-id="handbook" data-href="initiatives.html#programmes" data-vol="03" data-kick="Founder playbook" data-title="Innovator's Field Handbook" data-sub="Validation loops &amp; operating notes for zero-to-one builders." data-btn="#8B020B">
+        <span class="spine">Handbook<i>GEC/26</i></span>
+        <span class="cover"><span>GEC · Founder playbook</span><b>Innovator's Field Handbook</b><span>GEC / 26</span></span>
+      </button>
+      <button class="book" aria-pressed="false" style="background:#18181B;color:#FBCA05;--foil:rgba(251,202,5,.65);height:200px" data-id="founders" data-href="stories.html#portfolio" data-vol="04" data-kick="Alumni roll" data-title="Wall of Founders" data-sub="Alumni ventures, syndicates, and portfolio records." data-btn="#18181B">
+        <span class="spine">Founders<i>GEC/26</i></span>
+        <span class="cover"><span>GEC · Alumni roll</span><b>Wall of Founders</b><span>GEC / 26</span></span>
+      </button>
+    </div>
+    <div class="ledge"></div>
+    <div class="shelf-cap" aria-live="polite"></div>
+    <a class="btn ghost" href="initiatives.html" style="margin-top:10px">All initiatives</a>
+  </section>
+
+  <!-- 4 · Impact -->
+  <section class="sec charcoal" data-shader="halftone" data-ink="gold" data-strength=".1">
+    <span class="note">04 Impact · charcoal · shader: halftone (gold ink)</span>
+    <span class="kicker">Real competencies · verified outcomes</span>
+    <h2 class="h2">Entrepreneurship Is Learned by Doing.</h2>
+    <div class="stats">
+      <div class="stat"><b>35+</b><span>Events &amp; Experiences</span><small>Summits, hackathons &amp; mixers</small></div>
+      <div class="stat"><b>12,000+</b><span>Students Engaged</span><small>Campus-wide reach</small></div>
+      <div class="stat"><b>45+</b><span>Startups Supported</span><small>Incubated &amp; mentored</small></div>
+      <div class="stat"><b>28+</b><span>Speakers &amp; Mentors</span><small>Unicorn founders &amp; VCs</small></div>
+    </div>
+    <p class="mono" style="color:var(--gec-gold);margin-top:22px;text-align:center">Not just an organisation. A launchpad for growth.</p>
+  </section>
+
+  <!-- 5 · Milestones -->
+  <section class="sec sand" data-shader="hatch">
+    <span class="note">05 Milestones · sand · vertical timeline · shader: hatch</span>
+    <span class="kicker">Historic milestones</span>
+    <h2 class="h2">Moments That Shaped GEC.</h2>
+    <ol class="tl">
+      <li><span class="badge b-crimson">Summit 2023</span><h3 class="h3" style="margin:8px 0 4px">Foundation Summit &amp; Live Pitch Arena</h3><p class="p" style="font-size:14px">Inauguration of GEC's campus incubator network, connecting 400+ student innovators with angel mentors.</p></li>
+      <li style="--dot:var(--gec-blue)"><span class="badge b-blue">E-Summit 2024</span><h3 class="h3" style="margin:8px 0 4px">Galgotias E-Summit Scaling to 1,500+</h3><p class="p" style="font-size:14px">Keynotes by unicorn founders, live pitch rounds, and collegiate participation across NCR.</p></li>
+      <li style="--dot:var(--gec-gold)"><span class="badge b-gold">GICRISE Alliance</span><h3 class="h3" style="margin:8px 0 4px">GICRISE Incubation Alliance &amp; Grant Fund</h3><p class="p" style="font-size:14px">Partnership establishing the ₹50L student prototype grant pipeline.</p></li>
+    </ol>
+  </section>
+
+  <!-- 6 · Act II · stories library aisle (kept as-is; bin steps aside here) -->
+  <section class="sec cream act-head">
+    <span class="note">06 Act II · StoriesAisle phone mode (kept) · Dispatch pill hides here</span>
+    <span class="kicker">Act II · the stories aisle</span>
+    <h2 class="h2">Every Venture Starts With a Story.</h2>
+    <p class="p" style="margin:10px 0 18px">Walk the aisle with the → arrow. Tap a book to read.</p>
+  </section>
+  <div class="live" data-no-pill>
+    <span class="note tag">Live act · capture of the real scene at 390px</span>
+    <img src="assets/stories-aisle-390.png" alt="The GEC stories library aisle: a red carpet between tall bookshelves, a 2026 cohort sign, and a framed card reading “Your story belongs on this shelf.”" width="780" height="1536" loading="lazy">
+  </div>
+
+  <!-- 7 · Speakers -->
+  <section class="sec sand" data-shader="halftone">
+    <span class="note">07 Speakers · sand · swipe rail · shader: halftone</span>
+    <span class="kicker">Real-world perspectives</span>
+    <h2 class="h2">Ideas From People Who Built Them.</h2>
+    <div class="rail" data-rail style="margin-top:20px">
+      <article class="spk"><div class="ph">AG</div><h3 class="h3" style="margin-top:10px">Ashneer Grover</h3><p class="mono muted">Co-Founder · BharatPe</p></article>
+      <article class="spk"><div class="ph">AG</div><h3 class="h3" style="margin-top:10px">Aman Gupta</h3><p class="mono muted">Co-Founder &amp; CMO · boAt</p></article>
+      <article class="spk"><div class="ph">SJ</div><h3 class="h3" style="margin-top:10px">Sandeep Jain</h3><p class="mono muted">Founder &amp; CEO · GeeksforGeeks</p></article>
+      <article class="spk"><div class="ph">SB</div><h3 class="h3" style="margin-top:10px">Sanjeev Bikhchandani</h3><p class="mono muted">Founder · Info Edge</p></article>
+      <article class="spk"><div class="ph">TV</div><h3 class="h3" style="margin-top:10px">Tushar Vadera</h3><p class="mono muted">Founding Member · Feeding India</p></article>
+    </div>
+    <div class="dots"></div>
+  </section>
+
+  <!-- 8 · Act III · teams (compact) -->
+  <section class="sec cream" data-teams id="stage">
+    <span class="note">08 Act III · TeamTabsMobile (replaces Stage Manager) · no shader — live act</span>
+    <span class="kicker">Act III · the teams stage</span>
+    <h2 class="h2"><span class="accent">7 Teams.</span> One Vision.</h2>
+    <div class="chips" role="tablist" style="margin-top:18px">
+      <button class="chip" role="tab"><i style="background:#FBCA05"></i>Startup Dev</button>
+      <button class="chip" role="tab"><i style="background:#A3040F"></i>PR &amp; Net</button>
+      <button class="chip" role="tab"><i style="background:#F97316"></i>Marketing</button>
+      <button class="chip" role="tab"><i style="background:#701A24"></i>Events</button>
+      <button class="chip" role="tab"><i style="background:#1F7EC0"></i>Media</button>
+      <button class="chip" role="tab"><i style="background:#334155"></i>Technical</button>
+      <button class="chip" role="tab"><i style="background:#854D0E"></i>Career</button>
+    </div>
+    <div class="team-track">
+      <div class="team" style="--tc:#FBCA05"><div class="card"><span class="mono muted">Team 01</span><h3 class="h3" style="margin:6px 0">Startup Development &amp; Incubation</h3><p class="p" style="font-size:14px">Fostering student ventures from raw idea to market validation.</p><a class="link" href="teams.html?team=0">Meet the team →</a></div></div>
+      <div class="team" style="--tc:#A3040F"><div class="card"><span class="mono muted">Team 02</span><h3 class="h3" style="margin:6px 0">PR &amp; Networking</h3><p class="p" style="font-size:14px">Connecting Galgotias with industry pioneers, angels and peer e-cells.</p><a class="link" href="teams.html?team=1">Meet the team →</a></div></div>
+      <div class="team" style="--tc:#F97316"><div class="card"><span class="mono muted">Team 03</span><h3 class="h3" style="margin:6px 0">Marketing &amp; Campus Ambassador</h3><p class="p" style="font-size:14px">Campus awareness, signups, and ambassador networks.</p><a class="link" href="teams.html?team=2">Meet the team →</a></div></div>
+      <div class="team" style="--tc:#701A24"><div class="card"><span class="mono muted">Team 04</span><h3 class="h3" style="margin:6px 0">Event Management &amp; Operations</h3><p class="p" style="font-size:14px">Hackathons, fireside chats, pitch arenas and logistics.</p><a class="link" href="teams.html?team=3">Meet the team →</a></div></div>
+      <div class="team" style="--tc:#1F7EC0"><div class="card"><span class="mono muted">Team 05</span><h3 class="h3" style="margin:6px 0">Digital Media &amp; Storytelling</h3><p class="p" style="font-size:14px">Visual identity, reels, founder interviews and the magazine.</p><a class="link" href="teams.html?team=4">Meet the team →</a></div></div>
+      <div class="team" style="--tc:#334155"><div class="card"><span class="mono muted">Team 06</span><h3 class="h3" style="margin:6px 0">Technical &amp; Product Lab</h3><p class="p" style="font-size:14px">Web platforms, CMS, scanners and student dev tools.</p><a class="link" href="teams.html?team=5">Meet the team →</a></div></div>
+      <div class="team" style="--tc:#854D0E"><div class="card"><span class="mono muted">Team 07</span><h3 class="h3" style="margin:6px 0">Career Connect &amp; Talent Ops</h3><p class="p" style="font-size:14px">Paid internships, externships and venture talent placement.</p><a class="link" href="teams.html?team=6">Meet the team →</a></div></div>
+    </div>
+  </section>
+
+  <!-- 9 · Partners -->
+  <section class="sec sand" data-shader="hatch">
+    <span class="note">09 Partners · sand · anchor + 3-col logos · shader: hatch</span>
+    <span class="kicker">Institutional ecosystem</span>
+    <h2 class="h2">Built With an Ecosystem.</h2>
+    <div class="card" style="margin-top:20px;text-align:center"><span class="mono muted">Primary incubation anchor</span><div class="h2" style="margin-top:6px">GICRISE</div></div>
+    <div class="logos">
+      <a href="#"><img src="assets/partners/startup-india.png" alt="Startup India"></a>
+      <a href="#"><img src="assets/partners/msme.svg" alt="MSME"></a>
+      <a href="#"><img src="assets/partners/iic-gu.png" alt="IIC GU"></a>
+      <a href="#"><img src="assets/partners/aws.svg" alt="AWS Activate"></a>
+      <a href="#"><img src="assets/partners/github.svg" alt="GitHub Campus"></a>
+      <a href="#"><img src="assets/partners/wadhwani.png" alt="Wadhwani Foundation"></a>
+    </div>
+  </section>
+
+  <!-- 10 · Final CTA -->
+  <section class="sec crimson" data-shader="riso">
+    <span class="note">10 FinalCta · crimson · shader: riso</span>
+    <span class="kicker">Your invitation to build</span>
+    <h2 class="h2">Your Idea Doesn't Need to Be Perfect. It Needs a Beginning.</h2>
+    <div class="actions"><a class="btn white" href="about.html">Explore GEC</a><a class="btn outline-white" href="initiatives.html">Discover Initiatives</a></div>
+  </section>
+</main>
+
+<script src="m.js?v=2"></script>
+<script src="m-shaders.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEC Mobile Restructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FCF8ED; --sand:#F4E2CA; --card:#FFFDF8; --crimson:#A3040F; --act:#C62F29;
+  --gold:#FBCA05; --blue:#1F7EC0; --ink:#222; --muted:#5F5650; --subtle:#8A817A;
+  --line:rgba(163,4,15,.16); --ink-line:rgba(34,34,34,.14);
+  --display:'Archivo',system-ui,sans-serif; --body:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --keep:#1F7A3A; --adapt:#B26A00; --replace:#A3040F; --drop:#5F5650;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--canvas);color:var(--ink);font:15px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+
+/* doc chrome */
+header.doc{padding:48px 0 28px;border-bottom:1px solid var(--line)}
+.kicker{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--crimson)}
+h1{font:900 clamp(34px,6vw,64px)/1 var(--display);letter-spacing:-.02em;margin:12px 0 14px}
+h1 em{font-style:normal;color:var(--crimson)}
+.lede{max-width:720px;color:var(--muted);font-size:17px}
+nav.toc{position:sticky;top:0;z-index:5;background:rgba(252,248,237,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
+nav.toc a{flex:none;font:500 12px/1 var(--mono);text-decoration:none;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card)}
+nav.toc a:hover{border-color:var(--crimson);color:var(--crimson)}
+section.route{padding:56px 0;border-bottom:1px solid var(--line)}
+section.route:nth-of-type(even){background:var(--sand)}
+h2{font:800 clamp(26px,4vw,40px)/1.05 var(--display);letter-spacing:-.01em;margin:8px 0 10px}
+h3{font:800 18px/1.2 var(--display);margin:0 0 6px}
+.intro{max-width:760px;color:var(--muted);margin-bottom:28px}
+
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:28px}
+.pr{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.pr b{display:block;font:800 15px/1.25 var(--display);margin-bottom:4px}
+.pr p{font-size:14px;color:var(--muted)}
+.pr .n{font:500 11px var(--mono);color:var(--crimson)}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{display:inline-block;font:500 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.t-keep{background:var(--keep)} .t-adapt{background:var(--adapt)} .t-replace{background:var(--replace)} .t-drop{background:var(--drop)}
+
+/* layout: phones + decision table */
+.split{display:grid;grid-template-columns:minmax(0,auto) minmax(360px,1fr);gap:36px;align-items:start}
+@media (max-width:960px){.split{grid-template-columns:1fr}}
+.phones{display:flex;gap:20px;overflow-x:auto;padding:4px 4px 16px;scroll-snap-type:x mandatory}
+.phone-col{flex:none;scroll-snap-align:start}
+.phone-cap{font:500 11px var(--mono);color:var(--subtle);margin:10px 4px 0;text-align:center}
+.phone{width:320px;height:660px;border-radius:38px;background:#111;padding:10px;box-shadow:0 20px 50px rgba(34,34,34,.18)}
+.screen{position:relative;width:100%;height:100%;border-radius:30px;overflow:hidden;background:var(--canvas)}
+.scroll{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;padding-top:52px}
+.scroll::-webkit-scrollbar{display:none}
+
+table.dec{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.dec th{font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-align:left;color:var(--subtle);padding:12px;border-bottom:1px solid var(--line)}
+.dec td{padding:12px;border-bottom:1px solid var(--ink-line);vertical-align:top}
+.dec tr:last-child td{border-bottom:0}
+.dec td:first-child{font-weight:700;width:26%}
+.dec td:nth-child(2){width:1%}
+.dec small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+@media (max-width:640px){.dec td:first-child{width:auto}}
+
+.q{margin-top:18px;background:#fff7d6;border:1px solid #f0d56b;border-radius:14px;padding:14px 16px;font-size:14px}
+.q b{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#7a5a00;display:block;margin-bottom:6px}
+.q ol{padding-left:18px}
+.q li+li{margin-top:4px}
+
+/* ---------- phone UI kit (m-*) ---------- */
+.m-bar{position:absolute;top:0;left:0;right:0;height:52px;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(252,248,237,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.m-logo{font:900 18px/1 var(--display);color:var(--crimson);letter-spacing:-.02em}
+.m-logo span{color:var(--gold)} .m-logo i{font-style:normal;color:var(--blue)}
+.m-burger{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;background:var(--card)}
+.m-burger::before{content:"";width:16px;height:10px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.m-sec{padding:28px 16px;border-bottom:1px solid var(--line)}
+.m-sand{background:var(--sand)} .m-crim{background:var(--crimson);color:#FFFDF8}
+.m-k{font:500 9.5px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--crimson);margin-bottom:6px}
+.m-crim .m-k{color:var(--gold)}
+.m-h{font:900 26px/1.02 var(--display);letter-spacing:-.02em;margin-bottom:8px}
+.m-h.xl{font-size:34px}
+.m-p{font-size:13px;line-height:1.5;color:var(--muted)}
+.m-crim .m-p{color:rgba(255,253,248,.8)}
+.m-btn{display:flex;align-items:center;justify-content:center;height:48px;border-radius:12px;font:700 14px var(--body);background:var(--crimson);color:#fff;margin-top:14px}
+.m-btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink-line)}
+.m-btn.gold{background:var(--gold);color:var(--ink)}
+.m-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 6px 18px rgba(34,34,34,.05)}
+.m-card+.m-card{margin-top:10px}
+.m-meta{font:500 9.5px var(--mono);color:var(--subtle);letter-spacing:.06em;text-transform:uppercase}
+.m-t{font:800 16px/1.2 var(--display);margin:4px 0}
+.m-rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:4px 16px 8px;scrollbar-width:none}
+.m-rail::-webkit-scrollbar{display:none}
+.m-rail>*{flex:none;scroll-snap-align:start}
+.m-dots{display:flex;gap:5px;justify-content:center;margin-top:8px}
+.m-dots i{width:6px;height:6px;border-radius:50%;background:var(--ink-line)}
+.m-dots i:first-child{width:18px;border-radius:3px;background:var(--crimson)}
+.m-chip{flex:none;font:700 12px var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.m-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.m-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m-stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.m-stat b{display:block;font:900 26px/1 var(--display);color:var(--crimson)}
+.m-stat span{font-size:11px;color:var(--muted);line-height:1.3;display:block;margin-top:4px}
+.m-tl{border-left:2px solid var(--crimson);padding-left:14px;margin-left:4px}
+.m-tl>div{position:relative;padding-bottom:14px}
+.m-tl>div::before{content:"";position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--canvas);border:2px solid var(--crimson)}
+.m-img{border-radius:10px;background:linear-gradient(135deg,#e9d3b3,#d9b88f);position:relative;overflow:hidden}
+.m-img.crim{background:linear-gradient(135deg,#7B1113,#C62F29)}
+.m-img.blue{background:linear-gradient(135deg,#1F7EC0,#0f4d78)}
+.m-img.gold{background:linear-gradient(135deg,#FBCA05,#E06D1B)}
+.m-note{position:absolute;right:8px;top:8px;font:500 8.5px var(--mono);background:rgba(255,255,255,.9);color:var(--ink);padding:3px 6px;border-radius:5px}
+.m-acc{border-top:1px solid var(--ink-line)}
+.m-acc>div{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--ink-line);font:700 14px var(--body)}
+.m-acc>div::after{content:"+";font:500 18px var(--mono);color:var(--crimson)}
+.m-acc>div.open::after{content:"–"}
+.m-acc .body{display:block;padding:0 0 12px;font:400 12.5px/1.5 var(--body);color:var(--muted);border-bottom:1px solid var(--ink-line)}
+.m-acc .body::after{content:none}
+.m-fab{position:absolute;right:14px;bottom:14px;z-index:3;height:44px;padding:0 14px;border-radius:22px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:6px;font:700 12px var(--body);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.m-fab::before{content:"✉";font-size:14px}
+.m-spine{width:46px;height:170px;border-radius:4px 4px 2px 2px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;writing-mode:vertical-rl;transform:rotate(180deg);font:800 11px var(--display);color:#fff;letter-spacing:.02em}
+.m-sheet{position:absolute;inset:0;z-index:4;background:rgba(34,34,34,.4)}
+.m-sheet>div{position:absolute;left:0;right:0;bottom:0;background:var(--canvas);border-radius:22px 22px 0 0;padding:10px 20px 24px}
+.m-grab{width:36px;height:4px;border-radius:2px;background:var(--ink-line);margin:0 auto 14px}
+.m-navi{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--ink-line);font:900 26px/1 var(--display)}
+.m-navi small{font:500 10px var(--mono);color:var(--subtle)}
+.m-navi.on{color:var(--crimson)}
+.m-tabs{position:sticky;top:0;z-index:2;background:var(--canvas);display:flex;gap:6px;overflow-x:auto;padding:10px 16px;margin:0 -16px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.m-field{height:46px;border-radius:10px;border:1px solid var(--ink-line);background:#fff;margin-top:8px;padding:0 12px;display:flex;align-items:center;font-size:12px;color:var(--subtle)}
+.m-row{display:flex;gap:10px;align-items:center}
+.m-av{flex:none;width:42px;height:42px;border-radius:50%;background:var(--sand);display:grid;place-items:center;font:800 13px var(--display);color:var(--crimson);border:1px solid var(--line)}
+.m-sq{flex:none;width:44px;height:44px;border-radius:10px}
+
+.m-ent{position:absolute;inset:0;display:grid;place-items:center;background:var(--canvas)}
+.m-ent .logo{font:900 64px/1 var(--display);letter-spacing:-.03em;text-align:center}
+.m-ent .logo small{display:block;font:500 8px/1.4 var(--mono);letter-spacing:.18em;color:var(--muted);margin-top:8px}
+.m-ent .skip{position:absolute;top:18px;right:14px;font:700 9px var(--mono);letter-spacing:.1em;padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+.m-half{position:absolute;left:0;right:0;height:50%;background:var(--canvas);z-index:2}
+.m-half.t{top:0;transform:translateY(-62%);border-bottom:1px solid var(--line)} .m-half.b{bottom:0;transform:translateY(62%);border-top:1px solid var(--line)}
+.m-seam{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--crimson);z-index:2}
+.m-shelf{position:relative;display:flex;align-items:flex-end;gap:5px;padding:0 6px;height:214px}
+.m-ledge{height:14px;margin:0 -4px;border-radius:3px;background:linear-gradient(#b7865a,#8a5d36);box-shadow:0 10px 16px rgba(60,30,10,.25),inset 0 1px 0 rgba(255,255,255,.3)}
+.m-cover{flex:none;width:136px;height:196px;border-radius:3px 8px 8px 3px;padding:12px 10px 12px 16px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:inset 6px 0 0 rgba(0,0,0,.18),0 10px 18px rgba(34,34,34,.25);position:relative}
+.m-cover::after{content:"";position:absolute;inset:6px 6px 6px 12px;border:1px solid var(--foil);border-radius:3px;pointer-events:none}
+.m-cover .ck{font:500 7px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.m-cover .ct{font:900 17px/1 var(--display);letter-spacing:-.01em}
+.m-cover .cs{font:500 7px var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.m-bspine{flex:none;width:34px;border-radius:3px 3px 1px 1px;writing-mode:vertical-rl;transform:rotate(180deg);display:flex;align-items:center;justify-content:space-between;padding:10px 0;font:800 10px var(--display);letter-spacing:.02em;box-shadow:inset -3px 0 0 rgba(0,0,0,.15),0 6px 10px rgba(34,34,34,.18)}
+.m-bspine i{font:500 7px var(--mono);font-style:normal;opacity:.75}
+footer.doc{padding:40px 0 60px;color:var(--muted);font-size:14px}
+code{font:500 12.5px var(--mono);background:rgba(163,4,15,.07);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="wrap">
+    <div class="kicker">GEC · design exploration · v1 · for iteration</div>
+    <h1>Mobile <em>restructure</em></h1>
+    <p class="lede" style="margin-bottom:10px"><a href="route-layouts-mobile/index.html" style="color:var(--crimson);font-weight:800">→ Open the clickable mobile flow (all routes, with shaders)</a></p>
+    <p class="lede">Every route, re-thought for a 360–430px phone. Desktop metaphors (the desk, the shelf aisle, the stage manager, the curtains) stay recognisable but stop being pinned scroll runways. Each section is tagged, then questions at the bottom of each route — answer them and we iterate v2.</p>
+
+    <div class="principles">
+      <div class="pr"><span class="n">01</span><b>No pinned runways under 768px</b><p>Pinned scroll-scenes (<code>FullViewportAct</code>) fight iOS URL-bar resize and thumbs. Mobile gets normal flow + swipe rails.</p></div>
+      <div class="pr"><span class="n">02</span><b>Horizontal = swipe, vertical = read</b><p>Collections (campaigns, stories, speakers, teams) become snap rails. Reading content stays vertical.</p></div>
+      <div class="pr"><span class="n">03</span><b>Thumb zone owns actions</b><p>Menu opens as a bottom sheet. Primary CTAs are full-width 48px. Newsletter bin becomes a bottom-right pill.</p></div>
+      <div class="pr"><span class="n">04</span><b>Cut the ceremony, keep the brand</b><p>Brand entrance stays (once per session). Act curtains between sections become a simple act header. Shaders already off ≤768 — keep it.</p></div>
+      <div class="pr"><span class="n">05</span><b>One breakpoint, one tablet tweak</b><p><code>≤767</code> = this doc. <code>768–1024</code> = desktop layout at 2-col. No third design.</p></div>
+    </div>
+    <div class="legend">
+      <span class="tag t-keep">keep</span><span class="tag t-adapt">adapt</span><span class="tag t-replace">replace</span><span class="tag t-drop">drop on mobile</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#global">Global</a><a href="#home">Home</a><a href="#about">About</a><a href="#teams">Teams</a><a href="#initiatives">Initiatives</a><a href="#stories">Stories</a><a href="#next">Next steps</a>
+</div></nav>
+
+<!-- ================= GLOBAL ================= -->
+<section class="route" id="global"><div class="wrap">
+  <div class="kicker">00 · shell</div>
+  <h2>Global shell</h2>
+  <p class="intro">Navbar, menu, footer, brand curtain, newsletter bin — things on every page.</p>
+  <div class="split">
+    <div class="phones">
+      <div class="phone-col">
+        <div class="phone"><div class="screen">
+          <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+          <div class="scroll">
+            <div class="m-sec"><div class="m-k">Top bar</div><div class="m-h">52px sticky.</div><p class="m-p">Logo left, 40px menu button right. Hides on scroll-down, returns on scroll-up so content gets the full screen.</p></div>
+            <div class="m-sec m-sand"><div class="m-k">Footer</div>
+              <div class="m-acc"><div>Explore</div><div>Programmes</div><div>Connect</div></div>
+              <div class="m-btn gold">Subscribe to the Dispatch</div>
+              <p class="m-p" style="margin-top:14px">© GEC · Galgotias University</p>
+            </div>
+          </div>
+          <div class="m-fab">Dispatch</div>
+        </div></div>
+        <div class="phone-cap">bar + footer accordion + bin pill</div>
+      </div>
+      <div class="phone-col">
+        <div class="phone"><div class="screen">
+          <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+          <div class="scroll"><div class="m-sec"><div class="m-h">…page…</div></div></div>
+          <div class="m-sheet"><div>
+            <div class="m-grab"></div>
+            <div class="m-navi on">Home <small>01</small></div>
+            <div class="m-navi">About <small>02</small></div>
+            <div class="m-navi">Teams <small>03</small></div>
+            <div class="m-navi">Initiatives <small>04</small></div>
+            <div class="m-navi">Stories <small>05</small></div>
+            <div class="m-btn">Join GEC</div>
+          </div></div>
+        </div></div>
+        <div class="phone-cap">menu = bottom sheet (thumb reach)</div>
+      </div>
+    </div>
+    <table class="dec">
+      <tr><th>Piece</th><th>Call</th><th>Mobile behaviour</th></tr>
+      <tr><td>Navbar</td><td><span class="tag t-adapt">adapt</span></td><td>52px bar, hide-on-scroll-down. Logo shrinks to emblem + wordmark only.<small>Existing <code>MOBILE_NAV_ROUTES</code> reused.</small></td></tr>
+      <tr><td>Mobile menu</td><td><span class="tag t-replace">replace</span></td><td>Full-screen overlay → bottom sheet with big numbered links + one CTA. Swipe-down to close.</td></tr>
+      <tr><td>Brand entrance curtain</td><td><span class="tag t-keep">keep</span></td><td>Full sequence kept on mobile, re-framed for portrait. See strip below.</td></tr>
+      <tr><td>Curtain interstitials</td><td><span class="tag t-drop">drop</span></td><td>Replaced by a plain act header (kicker + title). No full-screen reveal between acts.</td></tr>
+      <tr><td>Shader layers</td><td><span class="tag t-keep">keep off</span></td><td>Already disabled ≤768. Surfaces use flat cream/sand + grain.</td></tr>
+      <tr><td>Newsletter bin</td><td><span class="tag t-adapt">adapt</span></td><td>Floating bin → “Dispatch” pill bottom-right. Tap opens broadsheet reader as full-screen sheet. Hidden while menu open / near footer.</td></tr>
+      <tr><td>Footer</td><td><span class="tag t-adapt">adapt</span></td><td>Link columns → accordion. Subscribe button full-width.</td></tr>
+      <tr><td>View transitions</td><td><span class="tag t-keep">keep</span></td><td>Fine on mobile; reduce to simple cross-fade.</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin-top:40px">Brand entrance on mobile</h3>
+  <p class="intro" style="margin-bottom:18px">Same sequence as desktop, re-framed for a portrait screen: lockup scaled to ~70% of screen width and centred, then it flies into the smaller mobile top-bar slot and the curtain splits. Once per session; skip pill stays top-right.</p>
+  <div class="phones">
+    <div class="phone-col"><div class="phone"><div class="screen"><div class="m-ent"><div class="logo"><span style="color:var(--crimson)">G</span></div><span class="skip">SKIP ›</span></div></div></div><div class="phone-cap">0–2s · G bubbles assemble</div></div>
+    <div class="phone-col"><div class="phone"><div class="screen"><div class="m-ent"><div class="logo"><span style="color:var(--crimson)">G</span><span style="color:var(--gold)">E</span><span style="color:var(--blue)">C</span></div><span class="skip">SKIP ›</span></div></div></div><div class="phone-cap">2–4s · E &amp; C arrive, bulb glow</div></div>
+    <div class="phone-col"><div class="phone"><div class="screen"><div class="m-ent" style="background:radial-gradient(circle at 50% 48%,rgba(251,202,5,.22),var(--canvas) 55%)"><div class="logo"><span style="color:var(--crimson)">G</span><span style="color:var(--gold)">E</span><span style="color:var(--blue)">C</span><small>GALGOTIAS<br>ENTREPRENEURSHIP CELL</small></div><span class="skip">SKIP ›</span></div></div></div><div class="phone-cap">4–5.6s · subtitle + shimmer</div></div>
+    <div class="phone-col"><div class="phone"><div class="screen">
+      <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+      <div class="scroll"><div class="m-sec"><div class="m-k">Galgotias Entrepreneurship Cell</div><div class="m-h xl">Build what's next.</div><div class="m-img crim" style="height:130px"></div></div></div>
+      <div class="m-half t"></div><div class="m-half b"></div><div class="m-seam"></div>
+    </div></div><div class="phone-cap">5.6s+ · logo docks to bar, curtain splits (700ms)</div></div>
+  </div>
+  <table class="dec" style="margin-top:12px">
+    <tr><th>Detail</th><th>Call</th><th>Mobile behaviour</th></tr>
+    <tr><td>Logo lockup size</td><td><span class="tag t-adapt">adapt</span></td><td>Scale by width (≈70vw), not height, so it never clips on narrow phones.</td></tr>
+    <tr><td>FLIP dock target</td><td><span class="tag t-adapt">adapt</span></td><td>Target the 52px mobile bar logo; verify the rect is measured after the bar mounts.</td></tr>
+    <tr><td>Curtain split + seam</td><td><span class="tag t-keep">keep</span></td><td>Same 700ms top/bottom split.</td></tr>
+    <tr><td>Skip pill</td><td><span class="tag t-adapt">adapt</span></td><td>Min 44px tap target, clear of the notch (<code>env(safe-area-inset-top)</code>).</td></tr>
+    <tr><td>Height</td><td><span class="tag t-adapt">adapt</span></td><td>Use <code>100dvh</code> so iOS URL bar doesn't shift the seam off-centre.</td></tr>
+  </table>
+  <div class="q"><b>Questions · global</b><ol>
+    <li>Bottom-sheet menu OK, or keep a full-screen menu for brand drama?</li>
+    <li>Hide-on-scroll top bar — yes/no?</li>
+    <li>Dispatch pill on every page, or only Home + Stories?</li>
+    <li>Entrance: full 5.6s on mobile, or trim the hold before docking (~4s)?</li>
+  </ol></div>
+</div></section>
+
+<!-- ================= HOME ================= -->
+<section class="route" id="home"><div class="wrap">
+  <div class="kicker">01 · /</div>
+  <h2>Home</h2>
+  <p class="intro">10 sections today, three of them pinned acts (Desk, Shelf, Stage). Mobile keeps the order but flattens everything into one scroll with swipe rails. Scroll each phone.</p>
+  <div class="split">
+    <div class="phones">
+      <div class="phone-col">
+        <div class="phone"><div class="screen">
+          <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+          <div class="scroll">
+            <div class="m-sec">
+              <div class="m-k">Galgotias Entrepreneurship Cell</div>
+              <div class="m-h xl">Build what's next.</div>
+              <div class="m-rail">
+                <div class="m-card" style="width:250px"><div class="m-img crim" style="height:120px"><span class="m-note">swipe</span></div><div class="m-meta" style="margin-top:10px">01 / Startup development</div><div class="m-t">Cohort 04 Admissions</div></div>
+                <div class="m-card" style="width:250px"><div class="m-img gold" style="height:120px"></div><div class="m-meta" style="margin-top:10px">02 / Ideathon 2026</div><div class="m-t">Venture Sprint Arena</div></div>
+                <div class="m-card" style="width:250px"><div class="m-img blue" style="height:120px"></div><div class="m-meta" style="margin-top:10px">03 / E-Summit 2026</div><div class="m-t">Campus Auditorium</div></div>
+              </div>
+              <div class="m-dots"><i></i><i></i><i></i></div>
+              <div class="m-btn">Join GEC</div><div class="m-btn ghost" style="margin-top:8px">Explore initiatives</div>
+            </div>
+            <div class="m-sec m-sand">
+              <div class="m-k">Realtime ecosystem dispatch</div>
+              <div class="m-h">Always Something in Motion.</div>
+              <div class="m-card"><div class="m-meta">Upcoming · Apr 14, 2026</div><div class="m-t">Galgotias E-Summit 2026: The Builder Arena</div><p class="m-p">Main Auditorium 01 · 10:00–18:00 · 480 seats</p></div>
+              <div class="m-card"><div class="m-meta">Applications open</div><div class="m-t">SDP Cohort 04</div><p class="m-p">Pre-seed cohort</p></div>
+            </div>
+            <div class="m-sec">
+              <div class="m-k">Act I · the initiatives desk</div>
+              <div class="m-h">Built for People Who Want to Build.</div>
+              <div class="m-shelf"><div class="m-cover" style="background:#80030B;color:#FCF8ED;--foil:#FBCA05"><span class="ck">GEC · Cohort 2026</span><span class="ct">Venture Incubation Dossier</span><span class="cs">GEC / 26</span></div><div class="m-bspine" style="background:#0F75BC;color:#FFFFFF;height:147px;">E-Summit<i>GEC/26</i></div><div class="m-bspine" style="background:#FCF8ED;color:#8B020B;height:136px;border:1px solid rgba(139,2,11,.25);">Handbook<i>GEC/26</i></div><div class="m-bspine" style="background:#18181B;color:#FBCA05;height:144px;">Founders<i>GEC/26</i></div></div><div class="m-ledge"></div>
+              <div class="m-meta" style="margin-top:14px">Volume 01 · Cohort 2026</div>
+              <div class="m-t">Venture Incubation Dossier</div>
+              <p class="m-p">From dorm-room spark to institutional scale.</p>
+              <div class="m-btn">Open volume →</div>
+            </div>
+            <div class="m-sec m-sand">
+              <div class="m-k">Real competencies · verified outcomes</div>
+              <div class="m-h">Entrepreneurship Is Learned by Doing.</div>
+              <div class="m-grid2">
+                <div class="m-stat"><b>35+</b><span>Events &amp; experiences</span></div>
+                <div class="m-stat"><b>12,000+</b><span>Students engaged</span></div>
+                <div class="m-stat"><b>45+</b><span>Startups supported</span></div>
+                <div class="m-stat"><b>28+</b><span>Speakers &amp; mentors</span></div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+        <div class="phone-cap">hero → happening → desk → impact</div>
+      </div>
+
+      <div class="phone-col">
+        <div class="phone"><div class="screen">
+          <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+          <div class="scroll">
+            <div class="m-sec">
+              <div class="m-k">Historic milestones</div>
+              <div class="m-h">Moments That Shaped GEC.</div>
+              <div class="m-tl">
+                <div><div class="m-meta">2023</div><div class="m-t">Foundation Summit &amp; Live Pitch Arena</div></div>
+                <div><div class="m-meta">2024</div><div class="m-t">E-Summit scaling to 1,500+</div></div>
+                <div><div class="m-meta">2025</div><div class="m-t">GICRISE Incubation Alliance &amp; Grant Fund</div></div>
+              </div>
+            </div>
+            <div class="m-sec m-sand">
+              <div class="m-k">Act II · the stories aisle</div>
+              <div class="m-h">Every Venture Starts With a Story.</div>
+              <img src="mobile-assets/stories-aisle-390.png" alt="Stories library aisle on a phone" style="display:block;width:calc(100% + 32px);margin:6px -16px 0">
+              <p class="m-p" style="margin-top:8px">Real capture · existing library scene, kept as-is.</p>
+            </div>
+            <div class="m-sec">
+              <div class="m-k">Real-world perspectives</div>
+              <div class="m-h">Ideas From People Who Built Them.</div>
+              <div class="m-rail">
+                <div class="m-card" style="width:200px"><div class="m-img" style="height:150px"></div><div class="m-t">Speaker name</div><div class="m-meta">Founder · Co.</div></div>
+                <div class="m-card" style="width:200px"><div class="m-img" style="height:150px"></div><div class="m-t">Speaker name</div><div class="m-meta">Partner · VC</div></div>
+              </div>
+            </div>
+            <div class="m-sec m-sand">
+              <div class="m-k">Act III · the teams stage</div>
+              <div class="m-h">7 Teams.</div>
+              <div class="m-rail" style="gap:6px">
+                <span class="m-chip on">Startup</span><span class="m-chip">PR</span><span class="m-chip">Marketing</span><span class="m-chip">Events</span><span class="m-chip">Media</span><span class="m-chip">Tech</span><span class="m-chip">Career</span>
+              </div>
+              <div class="m-card" style="margin-top:8px;border-top:4px solid var(--gold)"><div class="m-t">Startup Team</div><p class="m-p">One detail card; chips switch it. Swipe card left/right = next team.</p></div>
+            </div>
+            <div class="m-sec">
+              <div class="m-k">Institutional ecosystem</div>
+              <div class="m-h">Built With an Ecosystem.</div>
+              <div class="m-card" style="text-align:center"><div class="m-meta">Primary incubation anchor</div><div class="m-t" style="font-size:22px">GICRISE</div></div>
+              <div class="m-grid2" style="grid-template-columns:repeat(3,1fr);margin-top:8px">
+                <div class="m-stat" style="height:48px"></div><div class="m-stat" style="height:48px"></div><div class="m-stat" style="height:48px"></div>
+              </div>
+            </div>
+            <div class="m-sec m-crim">
+              <div class="m-k">Every venture</div>
+              <div class="m-h xl">It Needs a Beginning.</div>
+              <div class="m-btn gold">Explore GEC</div>
+              <div class="m-btn ghost" style="color:#fff;border-color:rgba(255,255,255,.35);margin-top:8px">Discover initiatives</div>
+            </div>
+          </div>
+          <div class="m-fab">Dispatch</div>
+        </div></div>
+        <div class="phone-cap">milestones → shelf → speakers → stage → partners → CTA</div>
+      </div>
+    </div>
+
+    <table class="dec">
+      <tr><th>Section</th><th>Call</th><th>Mobile behaviour</th></tr>
+      <tr><td>Hero billboard<small>3 campaigns, click to switch</small></td><td><span class="tag t-adapt">adapt</span></td><td>Headline + swipe rail of 3 campaign cards with dots. Two stacked CTAs. No auto-rotate.</td></tr>
+      <tr><td>Happening</td><td><span class="tag t-adapt">adapt</span></td><td>Event + cohort cards stacked. Meta collapsed to one line.</td></tr>
+      <tr><td>Desk act<small>DeskFolio desk</small></td><td><span class="tag t-replace">replace</span></td><td>Initiatives bookshelf: 4 volumes, one face-out, tap a spine to swap. No DeskFolio on mobile. (Already unpinned ≤768.)</td></tr>
+      <tr><td>Impact</td><td><span class="tag t-adapt">adapt</span></td><td>4 stats as 2×2 grid; count-up kept, triggered on view.</td></tr>
+      <tr><td>Milestones</td><td><span class="tag t-adapt">adapt</span></td><td>Vertical timeline, left rail.</td></tr>
+      <tr><td>Shelf act<small>stories library aisle</small></td><td><span class="tag t-keep">keep</span></td><td>Library scene stays on mobile — already has a phone mode (full-screen <code>100svh</code>, manual walk with the → arrow). Fix: hide the Dispatch bin while the aisle is on screen; it covers the → arrow.</td></tr>
+      <tr><td>Speakers</td><td><span class="tag t-adapt">adapt</span></td><td>Portrait card rail, peek of next card.</td></tr>
+      <tr><td>Stage act<small>stage manager, 7 teams</small></td><td><span class="tag t-replace">replace</span></td><td>Unpinned. Sticky team chips + one detail card, swipe between teams. Keeps team colours as card top border.</td></tr>
+      <tr><td>Partners</td><td><span class="tag t-adapt">adapt</span></td><td>GICRISE hero tile, then 3-col logo grid.</td></tr>
+      <tr><td>Final CTA</td><td><span class="tag t-keep">keep</span></td><td>Crimson block, full-width stacked buttons.</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin-top:40px">Act I on mobile · the initiatives bookshelf</h3>
+  <p class="intro" style="margin-bottom:18px">No DeskFolio on phones. The desk becomes one wooden shelf holding the same four volumes (<code>GEC_BOOKS</code>): the selected book stands face-out, the others show spines. Tap a spine → it slides out face-out and the caption below swaps. “Open volume” goes to <code>/initiatives#&lt;id&gt;</code>. CSS + one piece of state, no desk physics.</p>
+  <div class="phones">
+    <div class="phone-col"><div class="phone"><div class="screen">
+      <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+      <div class="scroll"><div class="m-sec">
+        <div class="m-k">Act I · the initiatives desk</div><div class="m-h">Built for People Who Want to Build.</div>
+        <p class="m-p" style="margin-bottom:16px">Four volumes. Pick one.</p>
+        <div class="m-shelf"><div class="m-cover" style="background:#80030B;color:#FCF8ED;--foil:#FBCA05"><span class="ck">GEC · Cohort 2026</span><span class="ct">Venture Incubation Dossier</span><span class="cs">GEC / 26</span></div><div class="m-bspine" style="background:#0F75BC;color:#FFFFFF;height:147px;">E-Summit<i>GEC/26</i></div><div class="m-bspine" style="background:#FCF8ED;color:#8B020B;height:136px;border:1px solid rgba(139,2,11,.25);">Handbook<i>GEC/26</i></div><div class="m-bspine" style="background:#18181B;color:#FBCA05;height:144px;">Founders<i>GEC/26</i></div></div><div class="m-ledge"></div>
+        <div class="m-meta" style="margin-top:14px">Volume 01 · Cohort 2026</div><div class="m-t">Venture Incubation Dossier</div><p class="m-p">From dorm-room spark to institutional scale.</p>
+        <div class="m-btn" style="background:var(--crimson)">Open volume →</div><div class="m-btn ghost" style="margin-top:8px">All initiatives</div>
+      </div></div>
+    </div></div><div class="phone-cap">default · Incubation face-out</div></div>
+    <div class="phone-col"><div class="phone"><div class="screen">
+      <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+      <div class="scroll"><div class="m-sec">
+        <div class="m-k">Act I · the initiatives desk</div><div class="m-h">Built for People Who Want to Build.</div>
+        <p class="m-p" style="margin-bottom:16px">Four volumes. Pick one.</p>
+        <div class="m-shelf"><div class="m-bspine" style="background:#80030B;color:#FCF8ED;height:180px;">Incubation<i>GEC/26</i></div><div class="m-cover" style="background:#0F75BC;color:#FFFFFF;--foil:rgba(255,255,255,.72)"><span class="ck">GEC · Flagship conclave</span><span class="ct">E-Summit '26 Conclave Blueprint</span><span class="cs">GEC / 26</span></div><div class="m-bspine" style="background:#FCF8ED;color:#8B020B;height:136px;border:1px solid rgba(139,2,11,.25);">Handbook<i>GEC/26</i></div><div class="m-bspine" style="background:#18181B;color:#FBCA05;height:144px;">Founders<i>GEC/26</i></div></div><div class="m-ledge"></div>
+        <div class="m-meta" style="margin-top:14px">Volume 02 · Flagship conclave</div><div class="m-t">E-Summit '26 Conclave Blueprint</div><p class="m-p">People, arenas, and capital in productive collision.</p>
+        <div class="m-btn" style="background:#0F75BC">Open volume →</div><div class="m-btn ghost" style="margin-top:8px">All initiatives</div>
+      </div></div>
+    </div></div><div class="phone-cap">tapped E-Summit spine · swaps face-out</div></div>
+    <div class="phone-col"><div class="phone"><div class="screen">
+      <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+      <div class="scroll"><div class="m-sec">
+        <div class="m-k">Act I · the initiatives desk</div><div class="m-h">Built for People Who Want to Build.</div>
+        <p class="m-p" style="margin-bottom:16px">Four volumes. Pick one.</p>
+        <div class="m-shelf"><div class="m-bspine" style="background:#80030B;color:#FCF8ED;height:180px;">Incubation<i>GEC/26</i></div><div class="m-bspine" style="background:#0F75BC;color:#FFFFFF;height:147px;">E-Summit<i>GEC/26</i></div><div class="m-bspine" style="background:#FCF8ED;color:#8B020B;height:136px;border:1px solid rgba(139,2,11,.25);">Handbook<i>GEC/26</i></div><div class="m-cover" style="background:#18181B;color:#FBCA05;--foil:rgba(251,202,5,.65)"><span class="ck">GEC · Alumni roll</span><span class="ct">Wall of Founders</span><span class="cs">GEC / 26</span></div></div><div class="m-ledge"></div>
+        <div class="m-meta" style="margin-top:14px">Volume 04 · Alumni roll</div><div class="m-t">Wall of Founders</div><p class="m-p">Alumni ventures, syndicates, and portfolio records.</p>
+        <div class="m-btn" style="background:#18181B">Open volume →</div><div class="m-btn ghost" style="margin-top:8px">All initiatives</div>
+      </div></div>
+    </div></div><div class="phone-cap">tapped Founders spine</div></div>
+  </div>
+  <table class="dec" style="margin-top:12px">
+    <tr><th>Detail</th><th>Call</th><th>Mobile behaviour</th></tr>
+    <tr><td>DeskFolio / DeskFolioMobile</td><td><span class="tag t-drop">drop</span></td><td>Not rendered ≤767. Desktop desk untouched.</td></tr>
+    <tr><td>Books</td><td><span class="tag t-keep">keep data</span></td><td>Same 4 volumes + cover colours from <code>gecBooksData</code>; no new content.</td></tr>
+    <tr><td>Interaction</td><td><span class="tag t-replace">new</span></td><td>Spines are buttons (<code>aria-pressed</code>, full-height tap area). Swap = 250ms slide; reduced motion = instant.</td></tr>
+    <tr><td>Fit</td><td><span class="tag t-adapt">adapt</span></td><td>1 cover (136px) + 3 spines (34px) ≈ 260px — fits a 320px phone, no sideways scroll.</td></tr>
+  </table>
+  <div class="q"><b>Questions · home</b><ol>
+    <li>10 sections is long on a phone (~9 screens). Cut any? Candidates: Speakers or Milestones → move to /about.</li>
+    <li>Shelf: spine rail (above) or plain story cards? Spines keep the metaphor but show less info.</li>
+    <li>Stories library + initiatives bookshelf both on Home — decided: keep both.</li>
+  </ol></div>
+</div></section>
+
+<!-- ================= ABOUT ================= -->
+<section class="route" id="about"><div class="wrap">
+  <div class="kicker">02 · /about</div>
+  <h2>About</h2>
+  <p class="intro">Mostly editorial — the easiest route. Two-column blocks stack; timeline goes vertical; leadership becomes compact rows.</p>
+  <div class="split">
+    <div class="phones"><div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+        <div class="scroll">
+          <div class="m-sec"><div class="m-k">About GEC</div><div class="m-h xl">From Curiosity to Community.</div><p class="m-p">Route hero: title + 2-line lede only. Hero art below the fold or dropped.</p></div>
+          <div class="m-sec m-sand"><div class="m-k">Origin</div><p class="m-p">Editorial paragraphs, 16px on device, max 4 before a break.</p>
+            <div class="m-tl" style="margin-top:14px"><div><div class="m-meta">Step 01</div><div class="m-t">Spark</div></div><div><div class="m-meta">Step 02</div><div class="m-t">Build</div></div><div><div class="m-meta">Step 03</div><div class="m-t">Scale</div></div></div>
+          </div>
+          <div class="m-sec">
+            <div class="m-card" style="border-left:4px solid var(--crimson)"><div class="m-k">Our mission</div><div class="m-t">Create Builders, Not Spectators.</div></div>
+            <div class="m-card"><div class="m-k" style="color:var(--ink)">Our vision</div><div class="m-t">A Campus Where Ideas Have Somewhere to Go.</div></div>
+          </div>
+          <div class="m-sec m-sand"><div class="m-k">Governance &amp; guidance</div><div class="m-h">Student-Led. Mentor-Guided.</div>
+            <div class="m-card"><div class="m-row"><div class="m-av">AK</div><div><div class="m-t" style="margin:0">Faculty Lead</div><div class="m-meta">Tap for bio</div></div></div></div>
+            <div class="m-card"><div class="m-row"><div class="m-av">RS</div><div><div class="m-t" style="margin:0">President</div><div class="m-meta">Tap for bio</div></div></div></div>
+          </div>
+          <div class="m-sec"><div class="m-k">Team architecture</div><div class="m-h"><span style="color:var(--crimson)">7 Teams.</span> One Vision.</div><div class="m-btn ghost">Meet the teams →</div></div>
+        </div>
+      </div></div>
+      <div class="phone-cap">/about</div>
+    </div></div>
+    <table class="dec">
+      <tr><th>Section</th><th>Call</th><th>Mobile behaviour</th></tr>
+      <tr><td>Route hero</td><td><span class="tag t-adapt">adapt</span></td><td>Shared <code>RouteHero</code>: title + lede + optional CTA. Same pattern on all routes.</td></tr>
+      <tr><td>Origin + timeline</td><td><span class="tag t-adapt">adapt</span></td><td>Text then vertical <code>rt-timeline</code>.</td></tr>
+      <tr><td>Mission / vision</td><td><span class="tag t-adapt">adapt</span></td><td>Two stacked cards, mission accented.</td></tr>
+      <tr><td>Leadership grid</td><td><span class="tag t-adapt">adapt</span></td><td>Compact rows (initials + role); bio expands inline.</td></tr>
+      <tr><td>Team architecture</td><td><span class="tag t-adapt">adapt</span></td><td>Headline + link to /teams (don't duplicate the team UI here).</td></tr>
+    </table>
+  </div>
+  <div class="q"><b>Questions · about</b><ol>
+    <li>Leadership bios: expand inline, or always visible (longer page)?</li>
+  </ol></div>
+</div></section>
+
+<!-- ================= TEAMS ================= -->
+<section class="route" id="teams"><div class="wrap">
+  <div class="kicker">03 · /teams</div>
+  <h2>Teams</h2>
+  <p class="intro">Desktop = Stage Manager runway. Mobile = sticky team tabs + stacked detail for the active team. Deep link <code>?team=</code> still selects the tab.</p>
+  <div class="split">
+    <div class="phones"><div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+        <div class="scroll">
+          <div class="m-sec"><div class="m-k">The engine behind GEC</div><div class="m-h xl">7 Teams.</div><p class="m-p">Pick a team. Swipe the card for the next one.</p></div>
+          <div class="m-sec m-sand" style="padding-top:0">
+            <div class="m-tabs"><span class="m-chip">Startup</span><span class="m-chip">PR</span><span class="m-chip on">Marketing</span><span class="m-chip">Events</span><span class="m-chip">Media</span><span class="m-chip">Tech</span><span class="m-chip">Career</span></div>
+            <div class="m-img" style="height:150px;margin-top:14px;background:linear-gradient(135deg,#E06D1B,#A3040F)"><span class="m-note">team emblem / photo</span></div>
+            <div class="m-t" style="font-size:22px;margin-top:12px">Marketing</div>
+            <p class="m-p">What the team does, in two or three sentences.</p>
+            <div class="m-k" style="margin-top:14px">What you'll do</div>
+            <div class="m-acc"><div class="open">Campaigns</div><span class="body">Plan and run launch campaigns for E-Summit, Ideathon…</span><div>Brand</div><div>Growth</div></div>
+            <div class="m-k" style="margin-top:14px">Leads</div>
+            <div class="m-row"><div class="m-av">NP</div><div class="m-av">SV</div><div class="m-av">+4</div></div>
+            <div class="m-btn">Apply to Marketing</div>
+          </div>
+        </div>
+      </div></div>
+      <div class="phone-cap">/teams</div>
+    </div></div>
+    <table class="dec">
+      <tr><th>Section</th><th>Call</th><th>Mobile behaviour</th></tr>
+      <tr><td>Route hero</td><td><span class="tag t-adapt">adapt</span></td><td>Shortened.</td></tr>
+      <tr><td>Stage runway<small><code>StageRunway</code></small></td><td><span class="tag t-replace">replace</span></td><td>New <code>TeamTabsMobile</code> reading the same <code>teamsData</code>. Sticky chip bar, one team visible, horizontal swipe changes team.</td></tr>
+      <tr><td>Hover states / card tilt</td><td><span class="tag t-drop">drop</span></td><td>No hover on touch; tap feedback only.</td></tr>
+      <tr><td>Final CTA</td><td><span class="tag t-keep">keep</span></td><td>Shared.</td></tr>
+    </table>
+  </div>
+  <div class="q"><b>Questions · teams</b><ol>
+    <li>Team detail: tabs (one team at a time, above) or a long accordion of all 7?</li>
+    <li>Do teams have real photos yet, or emblems only?</li>
+  </ol></div>
+</div></section>
+
+<!-- ================= INITIATIVES ================= -->
+<section class="route" id="initiatives"><div class="wrap">
+  <div class="kicker">04 · /initiatives</div>
+  <h2>Initiatives</h2>
+  <p class="intro">Longest route (programmes, SDP flagship, schedule, application form). Mobile: programme cards stack, SDP schedule becomes a vertical list, form one column with a sticky apply bar.</p>
+  <div class="split">
+    <div class="phones"><div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+        <div class="scroll">
+          <div class="m-sec"><div class="m-k">Initiatives</div><div class="m-h xl">Pick Your Path.</div>
+            <div class="m-rail" style="gap:6px"><span class="m-chip on">All</span><span class="m-chip">SDP</span><span class="m-chip">Ideathon</span><span class="m-chip">E-Summit</span><span class="m-chip">Workshops</span></div>
+          </div>
+          <div class="m-sec m-sand">
+            <div class="m-card"><div class="m-row"><div class="m-sq m-img crim"></div><div><div class="m-t" style="margin:0">Startup Development Program</div><div class="m-meta">Cohort 04 · applications open</div></div></div><p class="m-p" style="margin-top:8px">Highlights in one line.</p><div class="m-meta" style="color:var(--crimson);margin-top:8px">Explore →</div></div>
+            <div class="m-card"><div class="m-row"><div class="m-sq m-img gold"></div><div><div class="m-t" style="margin:0">Ideathon 2026</div><div class="m-meta">Venture sprint</div></div></div></div>
+            <div class="m-card"><div class="m-row"><div class="m-sq m-img blue"></div><div><div class="m-t" style="margin:0">E-Summit 2026</div><div class="m-meta">Apr 14 · Auditorium</div></div></div></div>
+          </div>
+          <div class="m-sec"><div class="m-k">Flagship program · cohort 04</div><div class="m-h">SDP Schedule</div>
+            <div class="m-tl"><div><div class="m-meta">Week 1–2</div><div class="m-t">Problem discovery</div></div><div><div class="m-meta">Week 3–5</div><div class="m-t">MVP sprint</div></div><div><div class="m-meta">Week 6</div><div class="m-t">Demo day</div></div></div>
+          </div>
+          <div class="m-sec m-sand"><div class="m-k">Apply</div><div class="m-h">Cohort 04</div>
+            <div class="m-field">Full name</div><div class="m-field">Email</div><div class="m-field">Programme ▾</div><div class="m-field" style="height:80px;align-items:flex-start;padding-top:12px">Your idea in two lines</div>
+            <div class="m-btn">Submit application</div>
+          </div>
+        </div>
+        <div class="m-fab" style="background:var(--crimson)">Apply</div>
+      </div></div>
+      <div class="phone-cap">/initiatives</div>
+    </div></div>
+    <table class="dec">
+      <tr><th>Section</th><th>Call</th><th>Mobile behaviour</th></tr>
+      <tr><td>Programmes (<code>rt-offset</code>)</td><td><span class="tag t-adapt">adapt</span></td><td>Offset editorial layout → compact cards + filter chips.</td></tr>
+      <tr><td>DeskFolio<small>desktop desk UI</small></td><td><span class="tag t-replace">replace</span></td><td>Not on this route today; if added, reuse the Home initiatives bookshelf.</td></tr>
+      <tr><td>SDP schedule (<code>rt-schedule</code>)</td><td><span class="tag t-adapt">adapt</span></td><td>Grid → vertical timeline.</td></tr>
+      <tr><td>ProgramForm</td><td><span class="tag t-adapt">adapt</span></td><td>1 column, 46px inputs, correct <code>inputmode</code>/<code>autocomplete</code>, 16px font (no iOS zoom).</td></tr>
+      <tr><td>Apply pill</td><td><span class="tag t-adapt">new</span></td><td>Floating “Apply” jumps to the form; replaces Dispatch pill on this route.</td></tr>
+    </table>
+  </div>
+  <div class="q"><b>Questions · initiatives</b><ol>
+    <li>Filter chips worth it, or just a plain list (only ~4–6 programmes)?</li>
+    <li>Swap the Dispatch pill for an “Apply” pill here — OK?</li>
+  </ol></div>
+</div></section>
+
+<!-- ================= STORIES ================= -->
+<section class="route" id="stories"><div class="wrap">
+  <div class="kicker">05 · /stories</div>
+  <h2>Stories</h2>
+  <p class="intro">Featured story, story list, portfolio grid, newsletter dispatch. Mobile leads with the featured story, then a scannable list; portfolio goes 2-col compact.</p>
+  <div class="split">
+    <div class="phones"><div class="phone-col">
+      <div class="phone"><div class="screen">
+        <div class="m-bar"><div class="m-logo">G<span>E</span><i>C</i></div><div class="m-burger"></div></div>
+        <div class="scroll">
+          <div class="m-sec"><div class="m-k">Editorial voices</div><div class="m-h xl">Stories.</div>
+            <div class="m-img crim" style="height:180px;margin-top:6px"><span class="m-note">featured</span></div>
+            <div class="m-t" style="font-size:20px;margin-top:10px">Campus to Cap Table</div><p class="m-p">Two-line dek.</p><div class="m-meta" style="color:var(--crimson);margin-top:6px">Read the story →</div>
+          </div>
+          <div class="m-sec m-sand"><div class="m-k">Latest</div>
+            <div class="m-card"><div class="m-row"><div class="m-sq m-img"></div><div><div class="m-t" style="margin:0;font-size:14px">Zero to MVP in six weeks</div><div class="m-meta">Founder story · 5 min</div></div></div></div>
+            <div class="m-card"><div class="m-row"><div class="m-sq m-img blue"></div><div><div class="m-t" style="margin:0;font-size:14px">Pitch Night recap</div><div class="m-meta">Event · 3 min</div></div></div></div>
+            <div class="m-card"><div class="m-row"><div class="m-sq m-img gold"></div><div><div class="m-t" style="margin:0;font-size:14px">Mentor notes: pricing</div><div class="m-meta">Guide · 4 min</div></div></div></div>
+          </div>
+          <div class="m-sec"><div class="m-k">Portfolio</div><div class="m-h">Ventures from GEC.</div>
+            <div class="m-grid2"><div class="m-stat" style="height:90px"></div><div class="m-stat" style="height:90px"></div><div class="m-stat" style="height:90px"></div><div class="m-stat" style="height:90px"></div></div>
+          </div>
+          <div class="m-sec m-crim"><div class="m-k">The Dispatch</div><div class="m-h">Read the latest issue.</div><div class="m-btn gold">Open broadsheet</div><div class="m-field" style="border-color:transparent">you@email.com</div><div class="m-btn ghost" style="color:#fff;border-color:rgba(255,255,255,.35);margin-top:8px">Subscribe</div></div>
+        </div>
+      </div></div>
+      <div class="phone-cap">/stories</div>
+    </div></div>
+    <table class="dec">
+      <tr><th>Section</th><th>Call</th><th>Mobile behaviour</th></tr>
+      <tr><td>Featured story</td><td><span class="tag t-adapt">adapt</span></td><td>Full-width image, title, dek, link.</td></tr>
+      <tr><td>Story grid (<code>brand-card</code>)</td><td><span class="tag t-adapt">adapt</span></td><td>Compact list rows (thumb + title + meta) — faster to scan than big cards.</td></tr>
+      <tr><td>Stories library aisle</td><td><span class="tag t-keep">keep</span></td><td>Lives on Home only (<code>ShelfAct</code>) — nothing to do on this route.</td></tr>
+      <tr><td>PortfolioGrid</td><td><span class="tag t-adapt">adapt</span></td><td>Currently 1-col ≤640 → 2-col compact tiles.</td></tr>
+      <tr><td>Dispatch + DockedBin</td><td><span class="tag t-adapt">adapt</span></td><td>Inline crimson block; docked bin hidden (pill covers it). Broadsheet opens full-screen.</td></tr>
+    </table>
+  </div>
+  <div class="q"><b>Questions · stories</b><ol>
+    <li>List rows vs. big cards for the story grid?</li>
+    <li>Portfolio: 2-col tiles or 1-col with more detail?</li>
+  </ol></div>
+</div></section>
+
+<!-- ================= NEXT ================= -->
+<section class="route" id="next"><div class="wrap">
+  <div class="kicker">06 · after sign-off</div>
+  <h2>How we build it</h2>
+  <p class="intro">Once this doc is agreed, implementation order (each step shippable alone):</p>
+  <table class="dec">
+    <tr><th>Step</th><th></th><th>Work</th></tr>
+    <tr><td>1 · Shell</td><td><span class="tag t-adapt">css+</span></td><td>Top bar, bottom-sheet menu, footer accordion, Dispatch pill. Touches <code>Navbar</code>, <code>SiteFooter</code>, <code>dispatch-bin</code>.</td></tr>
+    <tr><td>2 · Unpin acts</td><td><span class="tag t-replace">tsx</span></td><td>Acts already unpinned ≤768 via CSS. Fix the 0px-until-mounted jump; curtains → act header; desk → new <code>InitiativeShelf</code> on mobile.</td></tr>
+    <tr><td>3 · Home rails</td><td><span class="tag t-adapt">css</span></td><td>Hero rail, speakers rail, shelf spines, stats grid, timeline. Mostly CSS scroll-snap, no carousel lib.</td></tr>
+    <tr><td>4 · Teams mobile</td><td><span class="tag t-replace">tsx</span></td><td><code>TeamTabsMobile</code> for Home Stage act + /teams.</td></tr>
+    <tr><td>5 · Routes</td><td><span class="tag t-adapt">css</span></td><td>About, Initiatives, Stories per tables above.</td></tr>
+    <tr><td>6 · Verify</td><td><span class="tag t-keep">qa</span></td><td>360 / 390 / 430 widths, iOS Safari URL bar, no horizontal scroll, tap targets ≥44px, extend <code>smoke.expect.mjs</code> with a mobile pass.</td></tr>
+  </table>
+</div></section>
+
+<footer class="doc"><div class="wrap">GEC mobile restructure · v1 · reply with answers to the numbered questions (e.g. “global 1: full-screen”) and I'll cut v2.</div></footer>
+</body>
+</html>

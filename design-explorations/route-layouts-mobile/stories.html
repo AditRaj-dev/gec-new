@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#FCF8ED" />
+<title>Stories · GEC mobile layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="m.css?v=3" />
+</head>
+<body data-page="stories" data-pill="dispatch">
+<main>
+  <!-- 1 · Hero -->
+  <section class="sec cream" data-shader="contour" data-mask="corner">
+    <span class="note">01 RouteHero · cream · shader: contour (corner)</span>
+    <span class="kicker">Culture &amp; insights</span>
+    <h1 class="h1">People Build Companies. <span class="accent">Stories Build Culture.</span></h1>
+    <p class="lede">Ideas, failures, experiments, wins, and lessons from inside the Galgotias ecosystem.</p>
+    <div class="chips" style="margin-top:20px"><a class="chip" href="#portfolio">Portfolio ↓</a><a class="chip" href="#dispatch">The Dispatch ↓</a></div>
+  </section>
+
+  <!-- 2 · Featured -->
+  <section class="sec sand" data-shader="halftone">
+    <span class="note">02 Featured · sand · image → copy · shader: halftone</span>
+    <span class="kicker">Featured founder story</span>
+    <div class="cover-img"><span class="mono">SDP Cohort 02 alumni · ₹75L seed raised</span></div>
+    <h2 class="h2" style="margin-top:18px;font-size:30px">From Hostel Whiteboard to Seed Stage</h2>
+    <p class="p" style="margin-top:10px">How Aman Sharma &amp; Riya Verma built FarmVision AI into a drone analytics platform serving 10,000 farmers.</p>
+    <p style="font:italic 600 17px/1.45 var(--body);border-left:3px solid var(--gec-crimson);padding-left:12px;margin-top:16px">“GEC gave us the initial push when everyone else said agriculture was too complex for a college project.”</p>
+    <p class="mono muted" style="margin-top:14px">6 min read · September 2026</p>
+    <a class="btn" href="#" style="margin-top:14px">Read Full Story →</a>
+  </section>
+
+  <!-- 3 · Story list -->
+  <section class="sec cream" data-shader="hatch">
+    <span class="note">03 Spread → list rows · cream · filter chips (working) · shader: hatch</span>
+    <span class="kicker">Founder voices</span>
+    <h2 class="h2">Dispatches From the Ground.</h2>
+    <div class="chips" role="group" aria-label="Filter stories" data-filter="#story-list" style="margin-top:16px">
+      <button class="chip" aria-pressed="true" data-f="all">All</button>
+      <button class="chip" aria-pressed="false" data-f="founders">Founders</button>
+      <button class="chip" aria-pressed="false" data-f="startups">Startups</button>
+      <button class="chip" aria-pressed="false" data-f="events">Events</button>
+    </div>
+    <div id="story-list" style="margin-top:8px">
+      <a class="rowcard" href="#" data-cat="founders"><span class="thumb" style="background:linear-gradient(135deg,#FBCA05,#E06D1B)"></span><span><span class="mono" style="color:#9A7A00">Founder story</span><b class="h3" style="display:block;font-size:17px;margin:2px 0">Bootstrapping Hardware in Greater Noida</b><span class="mono muted">7 min</span></span></a>
+      <a class="rowcard" href="#" data-cat="startups"><span class="thumb" style="background:linear-gradient(135deg,#1F7EC0,#0b3d61)"></span><span><span class="mono accent">Startup story</span><b class="h3" style="display:block;font-size:17px;margin:2px 0">Customer Validation Before Writing Code</b><span class="mono muted">5 min</span></span></a>
+      <a class="rowcard" href="#" data-cat="events"><span class="thumb" style="background:linear-gradient(135deg,#7B1113,#C62F29)"></span><span><span class="mono accent">Event recap</span><b class="h3" style="display:block;font-size:17px;margin:2px 0">Inside Shark Arena: Five Pitches, One Term Sheet</b><span class="mono muted">4 min</span></span></a>
+    </div>
+  </section>
+
+  <!-- 4 · Portfolio -->
+  <section class="sec sand" id="portfolio" data-shader="halftone">
+    <span class="note">04 Portfolio · sand · 2-col compact tiles · shader: halftone</span>
+    <span class="kicker">Venture showcase</span>
+    <h2 class="h2">Built at Galgotias.</h2>
+    <div class="grid2">
+      <article class="card venture"><div class="logo">FV</div><h3 class="h3" style="font-size:16px">FarmVision AI</h3><p class="mono muted" style="margin:4px 0 8px">Agritech / AI</p><span class="badge b-crimson">Seed · ₹75L</span></article>
+      <article class="card venture" style="margin:0"><div class="logo">RH</div><h3 class="h3" style="font-size:16px">ReviveHealth</h3><p class="mono muted" style="margin:4px 0 8px">Healthcare</p><span class="badge b-outline">Pre-seed</span></article>
+      <article class="card venture" style="margin:0"><div class="logo">CC</div><h3 class="h3" style="font-size:16px">CodeCampus</h3><p class="mono muted" style="margin:4px 0 8px">Edtech / Dev</p><span class="badge b-blue">Incubated</span></article>
+      <article class="card venture" style="margin:0;display:grid;place-items:center;text-align:center;border-style:dashed"><div><p class="h3" style="font-size:16px">Yours next?</p><a class="link" href="initiatives.html#apply">Apply to SDP →</a></div></article>
+    </div>
+  </section>
+
+  <!-- 5 · Dispatch -->
+  <section class="sec cream" id="dispatch" data-shader="hatch" data-no-pill>
+    <span class="note">05 Dispatch · cream · inline, pill hides here (docked bin → this block) · shader: hatch</span>
+    <span class="kicker">The GEC Dispatch</span>
+    <h2 class="h2">Hot Off the Press.</h2>
+    <p class="p" style="margin-top:10px">Every issue, printed as a front page. On phones the bin is the Dispatch pill; here it lands on the page.</p>
+    <button class="btn" data-open-dispatch style="margin-top:18px">Read the latest issue →</button>
+    <label class="field" style="margin-top:18px"><span>Subscribe</span><input type="email" inputmode="email" autocomplete="email" placeholder="you@galgotias.edu"></label>
+    <button class="btn ink" style="margin-top:10px">Subscribe</button>
+  </section>
+
+  <!-- 6 · Final CTA -->
+  <section class="sec crimson" data-shader="riso">
+    <span class="note">06 FinalCta · crimson · shader: riso</span>
+    <span class="kicker">Share yours</span>
+    <h2 class="h2">Built Something at Galgotias? Tell Us the Story.</h2>
+    <p class="p" style="margin-top:12px">Failures and experiments count too.</p>
+    <div class="actions"><a class="btn white" href="#">Submit Your Story</a><a class="btn outline-white" href="initiatives.html">Discover Initiatives</a></div>
+  </section>
+</main>
+<script src="m.js?v=2"></script>
+<script src="m-shaders.js?v=1"></script>
+</body>
+</html>
