@@ -772,7 +772,7 @@ html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
   transition: opacity 900ms var(--ease-spring);
 }
 .gec-shader-layer[data-ready] { opacity: var(--gec-shader-strength); }
-.gec-shader-watercolor { --gec-shader-strength: var(--shader-hero); }
+.gec-shader-watercolor { --gec-shader-strength: 0.5; } /* hero puddles; was var(--shader-hero) 0.26 */
 .gec-shader-liquid { --gec-shader-strength: var(--shader-feature); }
 .gec-shader-specular { --gec-shader-strength: var(--shader-light); }
 /* Print families mix ink into the surface colour themselves, so the canvas runs opaque. */
@@ -782,10 +782,10 @@ html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
 /* Finished surfaces without WebGL. */
 .gec-fallback-watercolor {
   background:
-    radial-gradient(circle at 76% 22%, rgba(163,4,15,.10), transparent 34%),
-    radial-gradient(circle at 4% 4%, rgba(163,4,15,.08), transparent 26%),
-    radial-gradient(circle at 88% 72%, rgba(251,202,5,.07), transparent 28%),
-    var(--gec-canvas);
+    radial-gradient(circle at 76% 22%, rgba(149,30,26,.10), transparent 34%),
+    radial-gradient(circle at 4% 4%, rgba(149,30,26,.08), transparent 26%),
+    radial-gradient(circle at 88% 72%, rgba(182,61,49,.08), transparent 28%),
+    #FBF8EE;
 }
 .gec-fallback-liquid {
   background:

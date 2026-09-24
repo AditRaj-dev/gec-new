@@ -39,11 +39,24 @@ void main() {
   gl_FragColor = vec4(mix(uC0, col, w), 1.0);
 }`;
 
-/** Hero: pigment pools towards the top right (texture spec §41 fallback position). */
-const WATERCOLOR = watercolor('0.78, 0.78', '0.2', '1.1',
-  // Second, smaller pool bleeding in from the top-left corner (uv y runs bottom→top).
-  'f += 0.18 * (1.0 - smoothstep(0.0, 0.42, distance(uv, vec2(0.04, 0.96))));',
-  'w = max(w, 1.0 - smoothstep(0.08, 0.5, distance(uv * vec2(uRes.x / uRes.y, 1.0), vec2(0.04 * uRes.x / uRes.y, 0.96))));');
+/** Hero: pigment puddles across the whole section — pale wash, darker cores, dried dark rims, granulation.
+ *  uC0 paper, uC1 deep pigment (cores + rims), uC2 wash pigment. */
+const WATERCOLOR = `${HEAD}
+void main() {
+  vec2 uv = gl_FragCoord.xy / uRes;
+  vec2 p = uv * vec2(uRes.x / uRes.y, 1.0) * 1.35;
+  float t = uTime * 0.02;
+  vec2 q = vec2(fbm(p + t), fbm(p + vec2(5.2, 1.3) - t));
+  float f = fbm(p + 2.2 * q);
+  float pool = smoothstep(0.40, 0.58, f);
+  float core = smoothstep(0.54, 0.78, f);
+  float rim = (1.0 - smoothstep(0.0, 0.035, abs(f - 0.47))) * 0.8;
+  vec3 col = mix(uC0, uC2, pool * 0.7);
+  col = mix(col, uC1, core * 0.85);
+  col = mix(col, uC1 * 0.8, rim * 0.45);
+  col -= (hash(floor(gl_FragCoord.xy * 0.5)) - 0.5) * 0.05 * pool;
+  gl_FragColor = vec4(col, 1.0);
+}`;
 /** Stage Manager: same wash spread across the whole panel (full colour out to every corner; fades only past them). */
 const WASH = watercolor('0.5, 0.6', '0.8', '1.6',
   // Pigment pool over the rail/canvas gap and the canvas's top-left, where the noise alone runs pale.
@@ -146,7 +159,8 @@ const RISO = print(EDGES, `
   gl_FragColor = vec4(col, 1.0);`);
 
 export const PROGRAMS: Record<ShaderFamily, { frag: string; palette: [string, string, string, string] }> = {
-  watercolor: { frag: WATERCOLOR, palette: ['#FCF8ED', '#A3040F', '#C62F29', '#FBCA05'] },
+  // Hero blend (owner-supplied watercolors config): Rose Rice paper, Deep Plum, Wild Plum. No gold.
+  watercolor: { frag: WATERCOLOR, palette: ['#FBF8EE', '#951E1A', '#B63D31', '#B63D31'] },
   wash: { frag: WASH, palette: ['#FCF8ED', '#A3040F', '#C62F29', '#FBCA05'] },
   liquid: { frag: LIQUID, palette: ['#72030A', '#A3040F', '#C62F29', '#FBCA05'] },
   specular: { frag: SPECULAR, palette: ['#18191C', '#222222', '#A3040F', '#FBCA05'] },
