@@ -1,0 +1,55 @@
+/* "Built at Galgotias" portfolio grid (/stories). Plain CSS: Tailwind spacing utilities lose to the
+   unlayered `* { margin:0; padding:0 }` reset in styles/gec.css, so this component doesn't rely on them. */
+
+.pf-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.pf-chip {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px;
+  border-radius: 999px; border: 1px solid var(--gec-border-ink); background: var(--gec-surface-card);
+  font: 700 11px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+  color: var(--gec-ink-muted); cursor: pointer;
+  transition: color var(--duration-micro) var(--ease-spring), background var(--duration-micro) var(--ease-spring);
+}
+.pf-chip:hover { color: var(--gec-ink); }
+.pf-chip.is-active { background: var(--gec-crimson); border-color: var(--gec-crimson); color: #FFFDF8; }
+.pf-chip:focus-visible { outline: 2px solid var(--gec-crimson); outline-offset: 2px; }
+
+.pf-body { position: relative; margin-top: 32px; }
+.pf-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+
+.pf-card { display: flex; flex-direction: column; padding: 24px; }
+.pf-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pf-initials {
+  width: 44px; height: 44px; border-radius: var(--radius-sm); display: grid; place-items: center;
+  font: 900 16px var(--font-display); border: 1px solid var(--pf-accent); color: var(--pf-accent-ink);
+  background: color-mix(in srgb, var(--pf-accent) 12%, transparent);
+}
+.pf-stage {
+  padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+  font: 700 10px/1.4 var(--font-mono); letter-spacing: .05em; text-transform: uppercase;
+  background: var(--pf-badge-bg); color: var(--pf-badge-ink);
+}
+.pf-name { margin-top: 16px; }
+.pf-sector { margin-top: 4px; font: 700 11px var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--gec-ink-muted); }
+.pf-desc { margin-top: 8px; flex: 1; font-size: 14px; line-height: 1.55; }
+.pf-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--gec-border-subtle); font-size: 12px;
+}
+.pf-founders { font-weight: 600; color: var(--gec-ink); }
+.pf-visit { font-weight: 700; color: var(--gec-ink-muted); }
+.pf-empty { padding: 64px 24px; text-align: center; border-style: dashed; }
+.pf-empty .body-editorial { margin: 8px auto 0; max-width: 46ch; }
+
+/* Accent per venture (gold / blue / ink; crimson is reserved for the active chip). */
+.pf-accent-gold { --pf-accent: var(--gec-gold); --pf-accent-ink: var(--gec-ink); --pf-badge-bg: color-mix(in srgb, var(--gec-gold) 30%, transparent); --pf-badge-ink: var(--gec-ink); }
+.pf-accent-blue { --pf-accent: var(--gec-blue); --pf-accent-ink: var(--gec-blue); --pf-badge-bg: var(--gec-blue); --pf-badge-ink: #FFFFFF; }
+.pf-accent-ink { --pf-accent: var(--gec-ink); --pf-accent-ink: var(--gec-ink); --pf-badge-bg: var(--gec-ink); --pf-badge-ink: #FFFFFF; }
+
+@media (max-width: 1024px) { .pf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .pf-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Deep links (/stories#farmvision-ai) land on the card: clear the fixed navbar, pulse once. */
+.pf-card { scroll-margin-top: 110px; }
+.pf-card:target { animation: pf-target 1.6s ease-out 1; outline: 2px solid var(--gec-crimson); outline-offset: 4px; }
+@keyframes pf-target { 0% { outline-color: transparent; } 20% { outline-color: var(--gec-crimson); } }
+@media (prefers-reduced-motion: reduce) { .pf-card:target { animation: none; } }

@@ -65,6 +65,16 @@ export interface Story {
   coverImage?: string;
   tags?: string[];
   readTime?: string;
+  /** Long-form read, rendered on /stories/[slug]. Sections in reading order. */
+  body?: StorySection[];
+  pullQuote?: { text: string; by: string };
+  /** 2–4 headline numbers shown beside the story. */
+  metrics?: { value: string; label: string }[];
+}
+
+export interface StorySection {
+  heading?: string;
+  paragraphs: string[];
 }
 
 export interface Team {

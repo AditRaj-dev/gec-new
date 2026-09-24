@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = fileURLToPath(new URL('../src/', import.meta.url));
 // Ported verbatim from gec-showcase / earlier builds; not ours to restyle.
-const SKIP = ['components/deskfolio/', 'components/ui/', 'components/teams/', 'components/BrandEntranceCurtain.tsx', 'lib/logoData.ts'];
+const SKIP = ['components/deskfolio/', 'components/dispatch-bin/', 'components/ui/', 'components/teams/', 'components/BrandEntranceCurtain.tsx', 'lib/logoData.ts'];
 const RULES = [
   [/\bInter\b(?=['",\s])/, 'Inter is banned'],
   [/Clash Display|Satoshi|Fragment Mono/, 'superseded font family'],

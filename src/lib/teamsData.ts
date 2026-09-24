@@ -33,6 +33,15 @@ export interface TeamStageData {
   previewOpacity: number;
   coordinatorsCount: number;
   membersCount: number;
+  /** Real coordinator roster; until filled, the composition shows `coordinatorsCount` placeholder tiles. */
+  coordinators?: TeamCoordinator[];
+}
+
+export interface TeamCoordinator {
+  name: string;
+  /** Square-ish portrait, e.g. '/team/startup-dev/riya.webp'. */
+  photo?: string;
+  role?: string;
 }
 
 // Professional student-portrait photos (Unsplash, free-to-use)
@@ -48,46 +57,46 @@ const P = {
 
 const G = {
   incubation: [
-    'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&h=900&fit=crop',
   ],
   pr: [
-    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1515169067868-5387ec356754?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1560523159-4a9692d222f8?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1515169067868-5387ec356754?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1560523159-4a9692d222f8?w=1600&h=900&fit=crop',
   ],
   marketing: [
-    'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1531058020387-3be344556be6?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&h=900&fit=crop',
   ],
   events: [
-    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=1600&h=900&fit=crop',
   ],
   media: [
-    'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1493723843671-1d655e66ac1c?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1461151304267-38535e780c79?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1493723843671-1d655e66ac1c?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1461151304267-38535e780c79?w=1600&h=900&fit=crop',
   ],
   tech: [
-    'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1550439062-609e1531270e?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1550439062-609e1531270e?w=1600&h=900&fit=crop',
   ],
   career: [
-    'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1552581234-26160f608093?w=800&h=800&fit=crop',
-    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1552581234-26160f608093?w=1600&h=900&fit=crop',
+    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&h=900&fit=crop',
   ],
 };
 
@@ -110,7 +119,13 @@ export const GEC_TEAMS: TeamStageData[] = [
     applyTarget: 'Startup Development Team',
     previewScale: 0.94,
     previewOpacity: 0.85,
-    coordinatorsCount: 4,
+    coordinatorsCount: 3,
+    // Sample roster — replace with real coordinators (add `photo` for portraits).
+    coordinators: [
+      { name: 'Ananya Rao', role: 'Coordinator' },
+      { name: 'Kabir Mehta', role: 'Coordinator' },
+      { name: 'Priya Nair', role: 'Coordinator' },
+    ],
     membersCount: 8,
     pillars: [
       { name: 'Idea Discovery', desc: 'Campus-wide problem ideation workshops.' },
@@ -139,7 +154,13 @@ export const GEC_TEAMS: TeamStageData[] = [
     applyTarget: 'PR & Networking Team',
     previewScale: 0.96,
     previewOpacity: 0.9,
-    coordinatorsCount: 4,
+    coordinatorsCount: 3,
+    // Sample roster — replace with real coordinators (add `photo` for portraits).
+    coordinators: [
+      { name: 'Rohan Gupta', role: 'Coordinator' },
+      { name: 'Isha Verma', role: 'Coordinator' },
+      { name: 'Arjun Bose', role: 'Coordinator' },
+    ],
     membersCount: 8,
     pillars: [
       { name: 'External Relations', desc: 'Building inter-university and corporate networks.' },
@@ -168,7 +189,13 @@ export const GEC_TEAMS: TeamStageData[] = [
     applyTarget: 'Marketing & CA Team',
     previewScale: 0.98,
     previewOpacity: 1.0,
-    coordinatorsCount: 4,
+    coordinatorsCount: 3,
+    // Sample roster — replace with real coordinators (add `photo` for portraits).
+    coordinators: [
+      { name: 'Sneha Iyer', role: 'Coordinator' },
+      { name: 'Vivaan Jain', role: 'Coordinator' },
+      { name: 'Meera Das', role: 'Coordinator' },
+    ],
     membersCount: 8,
     pillars: [
       { name: 'Campus Marketing', desc: 'On-ground brand blitzes and interactive kiosks.' },
@@ -197,7 +224,13 @@ export const GEC_TEAMS: TeamStageData[] = [
     applyTarget: 'Event Management Team',
     previewScale: 0.96,
     previewOpacity: 0.92,
-    coordinatorsCount: 4,
+    coordinatorsCount: 3,
+    // Sample roster — replace with real coordinators (add `photo` for portraits).
+    coordinators: [
+      { name: 'Aditya Singh', role: 'Coordinator' },
+      { name: 'Kavya Reddy', role: 'Coordinator' },
+      { name: 'Neel Kapoor', role: 'Coordinator' },
+    ],
     membersCount: 8,
     pillars: [
       { name: 'Event Planning', desc: 'End-to-end rundown sheets and master timelines.' },
@@ -226,7 +259,13 @@ export const GEC_TEAMS: TeamStageData[] = [
     applyTarget: 'Digital Media Team',
     previewScale: 0.96,
     previewOpacity: 0.9,
-    coordinatorsCount: 4,
+    coordinatorsCount: 3,
+    // Sample roster — replace with real coordinators (add `photo` for portraits).
+    coordinators: [
+      { name: 'Tara Menon', role: 'Coordinator' },
+      { name: 'Dev Malhotra', role: 'Coordinator' },
+      { name: 'Riya Sen', role: 'Coordinator' },
+    ],
     membersCount: 8,
     pillars: [
       { name: 'Social Media', desc: 'Instagram, LinkedIn & X visual scheduling.' },
@@ -255,7 +294,13 @@ export const GEC_TEAMS: TeamStageData[] = [
     applyTarget: 'Technical Team',
     previewScale: 0.94,
     previewOpacity: 0.86,
-    coordinatorsCount: 4,
+    coordinatorsCount: 3,
+    // Sample roster — replace with real coordinators (add `photo` for portraits).
+    coordinators: [
+      { name: 'Karan Joshi', role: 'Coordinator' },
+      { name: 'Aisha Khan', role: 'Coordinator' },
+      { name: 'Yash Patel', role: 'Coordinator' },
+    ],
     membersCount: 8,
     pillars: [
       { name: 'Web Development', desc: 'High-performance Next.js and Tailwind portals.' },
@@ -284,7 +329,13 @@ export const GEC_TEAMS: TeamStageData[] = [
     applyTarget: 'Career Connect Team',
     previewScale: 0.94,
     previewOpacity: 0.82,
-    coordinatorsCount: 4,
+    coordinatorsCount: 3,
+    // Sample roster — replace with real coordinators (add `photo` for portraits).
+    coordinators: [
+      { name: 'Nisha Pillai', role: 'Coordinator' },
+      { name: 'Aryan Shah', role: 'Coordinator' },
+      { name: 'Diya Chawla', role: 'Coordinator' },
+    ],
     membersCount: 8,
     pillars: [
       { name: 'Internships', desc: 'Curated 8-week summer and winter startup internships.' },

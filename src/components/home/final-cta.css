@@ -29,7 +29,8 @@
   color: var(--gec-crimson);
 }
 
-.final-cta__lede {
+.final-cta .final-cta__lede {
+  color: var(--gec-ink-muted); /* card is cream; beat .surface-crimson .body-editorial */
   margin: 0 auto 32px;
   font-size: 16px;
 }
@@ -43,4 +44,14 @@
 
 .final-cta__cta {
   min-width: 200px;
+}
+
+/* Wide screens: scale with the viewport (laptop untouched). */
+@media (min-width: 1600px) {
+  .final-cta { padding-block: clamp(80px, 9vh, 140px); }
+  .final-cta__card { max-width: min(60vw, 1300px); padding: clamp(56px, 4vw, 96px) clamp(40px, 4vw, 96px); }
+  .final-cta__badge { font-size: clamp(10px, 0.6vw, 13px); padding: 0.4em 1em; }
+  .final-cta__heading { font-size: clamp(2.8rem, 2.8vw, 4.4rem); }
+  .final-cta .final-cta__lede { font-size: clamp(16px, 1.05vw, 21px); max-width: 60ch; }
+  .final-cta__cta { min-width: clamp(200px, 12vw, 260px); height: clamp(48px, 2.8vw, 58px); font-size: clamp(12px, 0.75vw, 15px); }
 }

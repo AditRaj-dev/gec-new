@@ -55,7 +55,7 @@ export function CurtainInterstitial({
       <div data-surface="crimson" className="surface-crimson gec-shader-host gec-fallback-liquid">
         <ShaderLayer family="liquid" />
         <div className="relative flex flex-col items-center justify-center gap-2 px-6 py-20 text-center">
-          <span className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.09em] text-[var(--gec-gold)]">
+          <span className="font-[family-name:var(--font-mono)] text-[clamp(0.875rem,1.1vw,1.125rem)] font-semibold uppercase tracking-[0.14em] text-[var(--gec-gold)]">
             {kicker}
           </span>
           <p className="m-0 max-w-[24ch] text-[length:var(--text-2xl)] font-bold leading-[1.02] text-white">
@@ -81,7 +81,7 @@ export function CurtainInterstitial({
           style={{ opacity: hold, y: lift }}
           className="pointer-events-none absolute inset-0 z-[2] flex flex-col items-center justify-center gap-2 px-6 text-center"
         >
-          <span className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.09em] text-[var(--gec-gold)]">
+          <span className="font-[family-name:var(--font-mono)] text-[clamp(0.875rem,1.1vw,1.125rem)] font-semibold uppercase tracking-[0.14em] text-[var(--gec-gold)]">
             {kicker}
           </span>
           <p className="m-0 max-w-[24ch] text-[length:var(--text-3xl)] font-bold leading-[1.02] text-white">

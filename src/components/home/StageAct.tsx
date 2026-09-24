@@ -9,7 +9,7 @@ import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import { isLive } from '@/lib/act';
 import './act-intro.css';
 
-function StageManager({ progress }: { progress: MotionValue<number> }) {
+function StageManager({ progress, initialTeamIndex }: { progress: MotionValue<number>; initialTeamIndex?: number }) {
   const root = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const [entered, setEntered] = useState(false);
@@ -30,8 +30,17 @@ function StageManager({ progress }: { progress: MotionValue<number> }) {
 
   return (
     <div ref={root} className="stage-act__manager" data-entered={entered || undefined}>
-      <TeamStageManager showHero={false} />
+      <TeamStageManager showHero={false} initialTeamIndex={initialTeamIndex} />
     </div>
+  );
+}
+
+/** The pinned Stage Manager runway on its own; /teams uses this without the home curtain and intro. */
+export function StageRunway({ initialTeamIndex }: { initialTeamIndex?: number }) {
+  return (
+    <FullViewportAct surface="sand" runway={2.4} label="the teams stage" id="stage">
+      {(progress) => <StageManager progress={progress} initialTeamIndex={initialTeamIndex} />}
+    </FullViewportAct>
   );
 }
 
@@ -56,9 +65,7 @@ export function StageAct({ teamCount }: { teamCount: number }) {
           </p>
         </div>
       </div>
-      <FullViewportAct surface="sand" runway={2.4} label="the teams stage" id="stage">
-        {(progress) => <StageManager progress={progress} />}
-      </FullViewportAct>
+      <StageRunway />
       <div className="act-exit surface-sand">
         <ViewTransitionLink href="/teams" className="gec-btn btn-outline-ink">
           Meet the Teams →

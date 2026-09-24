@@ -1,7 +1,7 @@
 import { PROGRAMS, VERTEX } from './programs';
 import { FPS_CAP, frameGuard, hexToRgb, renderScale } from './policy';
 
-export type ShaderFamily = 'watercolor' | 'liquid' | 'specular';
+export type ShaderFamily = 'watercolor' | 'wash' | 'liquid' | 'specular' | 'contour' | 'halftone' | 'hatch' | 'riso' | 'night';
 
 export interface ShaderRenderer {
   /** Run the loop (no-op once frozen). */
@@ -45,6 +45,7 @@ export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily):
 
   const uRes = gl.getUniformLocation(prog, 'uRes');
   const uTime = gl.getUniformLocation(prog, 'uTime');
+  const uScale = gl.getUniformLocation(prog, 'uScale'); // print families only; null elsewhere is a no-op
   (['uC0', 'uC1', 'uC2', 'uC3'] as const).forEach((n, i) => gl.uniform3fv(gl.getUniformLocation(prog, n), hexToRgb(palette[i])));
 
   const resize = () => {
@@ -55,6 +56,7 @@ export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily):
     canvas.height = Math.max(1, Math.round(h * s));
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uScale, s);
   };
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);

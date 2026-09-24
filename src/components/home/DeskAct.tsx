@@ -6,6 +6,15 @@ import { FullViewportAct } from '@/components/FullViewportAct';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import './act-intro.css';
 
+/** The pinned DeskFolio runway on its own; /initiatives uses this without the home curtain and intro. */
+export function DeskRunway() {
+  return (
+    <FullViewportAct surface="cream" runway={2.4} label="the initiatives desk" id="desk">
+      {() => <DeskFolioPage fillViewport />}
+    </FullViewportAct>
+  );
+}
+
 export function DeskAct({ programmeCount }: { programmeCount: number }) {
   return (
     <div className="home-act">
@@ -25,9 +34,7 @@ export function DeskAct({ programmeCount }: { programmeCount: number }) {
           </p>
         </div>
       </div>
-      <FullViewportAct surface="cream" runway={2.4} label="the initiatives desk" id="desk">
-        {() => <DeskFolioPage fillViewport />}
-      </FullViewportAct>
+      <DeskRunway />
       <div className="act-exit surface-cream">
         <ViewTransitionLink href="/initiatives" className="gec-btn btn-outline-ink">
           Explore All Initiatives →

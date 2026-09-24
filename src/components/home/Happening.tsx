@@ -5,7 +5,7 @@ import './happening.css';
 // styled.html 2484–2596 ("1.2 What's Happening").
 export function Happening() {
   return (
-    <section className="wf-section surface-crimson gec-shader-host gec-fallback-liquid" data-surface="crimson">
+    <section className="wf-section surface-crimson gec-shader-host gec-fallback-liquid happening" data-surface="crimson">
       <ShaderLayer family="liquid" />
 
       <div className="happening__intro">
@@ -39,7 +39,7 @@ export function Happening() {
 
           <div className="happening__event-footer">
             <span className="happening__event-free">Admissions Free for Students</span>
-            <ViewTransitionLink href="/initiatives" className="gec-btn btn-crimson happening__event-cta">
+            <ViewTransitionLink href="/initiatives#esummit" className="gec-btn btn-crimson happening__event-cta">
               View Event Details →
             </ViewTransitionLink>
           </div>
@@ -59,7 +59,7 @@ export function Happening() {
             </div>
           </div>
 
-          <ViewTransitionLink href="/initiatives" className="gec-btn btn-crimson happening__apply-cta">
+          <ViewTransitionLink href="/initiatives#apply" className="gec-btn btn-crimson happening__apply-cta">
             Apply Now
           </ViewTransitionLink>
         </div>
@@ -75,7 +75,7 @@ export function Happening() {
             <div className="happening__story-byline">By Aman Sharma · FarmVision AI</div>
           </div>
 
-          <ViewTransitionLink href="/stories" className="gec-btn btn-outline-ink happening__apply-cta">
+          <ViewTransitionLink href="/stories#farmvision-ai" className="gec-btn btn-outline-ink happening__apply-cta">
             Read Story →
           </ViewTransitionLink>
         </div>
@@ -99,7 +99,7 @@ export function Happening() {
             </div>
           </div>
 
-          <ViewTransitionLink href="/stories#portfolio-grid-container" className="gec-btn btn-crimson happening__spotlight-cta">
+          <ViewTransitionLink href="/stories#farmvision-ai" className="gec-btn btn-crimson happening__spotlight-cta">
             Explore Startup →
           </ViewTransitionLink>
         </div>
@@ -107,7 +107,7 @@ export function Happening() {
 
       <div className="happening__cta-row">
         <ViewTransitionLink href="/stories" className="gec-btn btn-white">
-          View All Updates →
+          Read All Stories →
         </ViewTransitionLink>
       </div>
     </section>

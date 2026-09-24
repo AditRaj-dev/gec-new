@@ -41,17 +41,6 @@ const SECONDARY_CARDS = [
   },
 ] as const;
 
-// The featured card's tag, cohort chip, highlight metrics and its own CTA
-// are never touched by `switchHeroCampaign` (styled.html 4715–4762) — there
-// is no field for them in its data — so they stay fixed at the wireframe's
-// static (SDP) values regardless of the active campaign.
-const FEATURED_METRICS = [
-  { label: 'Duration', value: '12 Weeks' },
-  { label: 'Grant Sandbox', value: '₹50L Pool' },
-  { label: 'Mentorship', value: '1-on-1 Access' },
-  { label: 'Incubation', value: 'GICRISE Fast-Track' },
-];
-
 export function Hero({ campaigns }: { campaigns: Record<string, HeroCampaign> }) {
   const [activeId, setActiveId] = useState<string>('sdp');
   const active = campaigns[activeId] ?? campaigns.sdp;
@@ -121,40 +110,58 @@ export function Hero({ campaigns }: { campaigns: Record<string, HeroCampaign> })
           </AnimatePresence>
         </div>
 
-        {/* Right Visual Stage Card (Col 8-12) */}
+        {/* Right Visual Stage Card (Col 8-12): a campaign "ticket" (head band, perforation, lead stat, footer). */}
         <div className="brand-card hero__card">
-          <div className="hero__card-glow" aria-hidden="true" />
-
-          <div className="hero__card-top-row">
-            <span className="status-badge badge-crimson">FEATURED CAMPAIGN</span>
-            <span className="hero__card-cohort">COHORT 04</span>
+          <div className="hero__card-head">
+            <span className="hero__card-head-tag">
+              <span className="hero__card-dot" aria-hidden="true" />
+              FEATURED CAMPAIGN
+            </span>
+            <span className="hero__card-cohort">{active.card.chip}</span>
           </div>
 
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div
-              key={active.id}
-              initial={initial}
-              animate={{ opacity: 1, y: 0 }}
-              exit={exit}
-              transition={{ duration: enterS, ease: EASE.spring }}
-            >
-              <div className="hero__card-title">{active.mediaTitle}</div>
-              <p className="hero__card-subtitle">{active.mediaSubtitle}</p>
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="hero__card-metrics">
-            {FEATURED_METRICS.map((metric) => (
-              <div className="hero__card-metric" key={metric.label}>
-                <div className="hero__card-metric-label">{metric.label}</div>
-                <div className="hero__card-metric-value">{metric.value}</div>
+          {/* Every campaign's copy sits invisibly in the same grid cell (sizers), so the card is always as tall
+              as the longest campaign and never jumps when the billboard switches. */}
+          <div className="hero__card-body hero__stack">
+            {Object.values(campaigns).map((c) => (
+              <div key={c.id} className="hero__sizer" aria-hidden="true">
+                <CardTop campaign={c} />
               </div>
             ))}
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div
+                key={active.id}
+                initial={initial}
+                animate={{ opacity: 1, y: 0 }}
+                exit={exit}
+                transition={{ duration: enterS, ease: EASE.spring }}
+              >
+                <CardTop campaign={active} />
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          <ViewTransitionLink href="/initiatives" className="gec-btn btn-crimson hero__card-cta">
-            Apply for Cohort 04 →
-          </ViewTransitionLink>
+          <div className="hero__card-perf" aria-hidden="true" />
+
+          <div className="hero__card-lower hero__stack">
+            {Object.values(campaigns).map((c) => (
+              <div key={c.id} className="hero__sizer" aria-hidden="true" inert>
+                <CardLower campaign={c} />
+              </div>
+            ))}
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div
+                key={active.id}
+                className="hero__card-lower-live"
+                initial={initial}
+                animate={{ opacity: 1, y: 0 }}
+                exit={exit}
+                transition={{ duration: enterS, ease: EASE.spring }}
+              >
+                <CardLower campaign={active} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
@@ -185,5 +192,41 @@ export function Hero({ campaigns }: { campaigns: Record<string, HeroCampaign> })
         </div>
       </div>
     </section>
+  );
+}
+
+function CardTop({ campaign }: { campaign: HeroCampaign }) {
+  return (
+    <>
+      <div className="hero__card-title">{campaign.mediaTitle}</div>
+      <p className="hero__card-subtitle">{campaign.mediaSubtitle}</p>
+    </>
+  );
+}
+
+function CardLower({ campaign: { card } }: { campaign: HeroCampaign }) {
+  return (
+    <>
+      <div className="hero__card-stats">
+        <div className="hero__card-lead">
+          <div className="hero__card-lead-value">{card.lead.value}</div>
+          <div className="hero__card-metric-label">{card.lead.label}</div>
+        </div>
+        <dl className="hero__card-metrics">
+          {card.metrics.map((metric) => (
+            <div className="hero__card-metric" key={metric.label}>
+              <dt className="hero__card-metric-label">{metric.label}</dt>
+              <dd className="hero__card-metric-value">{metric.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div className="hero__card-foot">
+        <span className="hero__card-deadline">{card.closes}</span>
+        <ViewTransitionLink href={card.ctaHref} className="gec-btn btn-crimson hero__card-cta">
+          {card.ctaText}
+        </ViewTransitionLink>
+      </div>
+    </>
   );
 }
