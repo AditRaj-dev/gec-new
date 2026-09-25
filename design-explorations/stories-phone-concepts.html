@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stories Act · Phone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --canvas:#FCF8ED;--sand:#F4E2CA;--card:#FFFDF8;--crimson:#A3040F;--gold:#FBCA05;--blue:#1F7EC0;--ink:#222;--muted:#5F5650;--subtle:#8A817A;
+  --line:rgba(163,4,15,.16);
+  --walnut-hi:#8a5d3b;--walnut:#5e3a22;--walnut-lo:#3b2314;--walnut-deep:#26150c;--brass:#c9a24a;
+  --display:'Cabinet Grotesk',system-ui,sans-serif;--body:'Manrope',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--canvas);color:var(--ink);font:15px/1.6 var(--body)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+header.doc{padding:44px 0 24px;border-bottom:1px solid var(--line)}
+.kicker{font:700 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--crimson)}
+h1{font:900 clamp(34px,6vw,60px)/1 var(--display);letter-spacing:-.02em;margin:12px 0}
+h1 em{font-style:normal;color:var(--crimson)}
+.lede{max-width:760px;color:var(--muted);font-size:16px}
+.constraints{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:22px}
+.constraints div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--muted)}
+.constraints b{display:block;font:800 14px var(--display);color:var(--ink)}
+section.concept{padding:48px 0;border-bottom:1px solid var(--line)}
+section.concept:nth-of-type(even){background:var(--sand)}
+h2{font:900 clamp(26px,4vw,38px)/1.05 var(--display);margin:8px 0 8px}
+.tag{display:inline-block;font:700 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:var(--ink);color:#fff;margin-left:8px;vertical-align:middle}
+.tag.rec{background:var(--crimson)}
+.split{display:grid;grid-template-columns:auto minmax(0,1fr);gap:40px;align-items:start;margin-top:22px}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.notes h3{font:800 17px var(--display);margin:18px 0 6px}
+.notes p,.notes li{font-size:14px;color:var(--muted)}
+.notes ul{padding-left:18px}
+.notes li+li{margin-top:4px}
+.try{font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--crimson);margin-top:10px;text-align:center}
+
+/* phone frame */
+.phone{width:340px;height:700px;border-radius:44px;background:#141010;padding:10px;box-shadow:0 24px 60px rgba(34,34,34,.22)}
+.screen{position:relative;width:100%;height:100%;border-radius:35px;overflow:hidden;background:var(--canvas)}
+.scroll{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.bar{position:sticky;top:0;z-index:20;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(252,248,237,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.bar b{font:900 19px var(--display);color:var(--crimson)}
+.bar i{width:18px;height:12px;border-top:2px solid var(--crimson);border-bottom:2px solid var(--crimson);position:relative}
+.bar i::after{content:"";position:absolute;left:0;right:0;top:3px;border-top:2px solid var(--crimson)}
+.head{padding:26px 18px 18px}
+.head .k{font:700 10px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--crimson)}
+.head h4{font:900 27px/1.02 var(--display);letter-spacing:-.02em;margin-top:8px}
+.head p{font-size:13px;color:var(--muted);margin-top:8px}
+.after{padding:20px 18px 40px;text-align:center}
+.btn-o{display:inline-flex;min-height:44px;align-items:center;padding:0 18px;border:1.5px solid var(--ink);border-radius:10px;font:700 12px var(--mono);letter-spacing:.04em}
+.spacer{height:220px;background:linear-gradient(var(--canvas),#f5ead4)}
+.spacer span{display:block;padding:24px 18px;font:700 10px var(--mono);letter-spacing:.1em;color:var(--subtle);text-transform:uppercase}
+
+/* ============ A · CARD CATALOGUE ============ */
+.cat{margin:0 14px;border-radius:10px;padding:14px 12px 16px;background:linear-gradient(180deg,var(--walnut),var(--walnut-lo));box-shadow:inset 0 1px 0 rgba(255,230,190,.3),0 14px 26px rgba(38,21,12,.35)}
+.cat-top{text-align:center;margin-bottom:12px}
+.plate{display:inline-block;padding:3px 10px;border-radius:3px;background:linear-gradient(180deg,#e3c574,var(--brass) 55%,#9c7a2e);font:700 9px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#3b2314;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.drawer{position:relative;margin-top:8px}
+.drawer>button{position:relative;z-index:2;width:100%;height:62px;border:0;border-radius:6px;cursor:pointer;background:linear-gradient(180deg,var(--walnut-hi),var(--walnut) 60%,#4d2f1b);box-shadow:inset 0 1px 0 rgba(255,230,190,.35),inset 0 -2px 0 rgba(20,10,5,.4),0 3px 6px rgba(20,10,5,.4);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 12px;transition:transform .45s var(--ease)}
+.drawer .label{grid-column:2;background:#f3ead5;border:2px solid var(--brass);border-radius:3px;padding:3px 12px;text-align:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+.drawer .label b{display:block;font:900 16px/1 var(--display);color:var(--ink)}
+.drawer .label small{font:700 8px var(--mono);letter-spacing:.1em;color:var(--muted)}
+.drawer .pull{grid-column:3;justify-self:end;width:30px;height:12px;border-radius:0 0 12px 12px;border:3px solid var(--brass);border-top:0}
+.drawer .tray{position:relative;z-index:1;overflow:hidden;max-height:0;transition:max-height .5s var(--ease);margin:0 8px;background:linear-gradient(180deg,#3a2415,#2a170c);border-radius:0 0 6px 6px}
+.drawer.open>button{transform:translateY(-2px) scale(1.01)}
+.drawer.open .tray{max-height:260px}
+.cards{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 12px 16px;scrollbar-width:none}
+.cards::-webkit-scrollbar{display:none}
+.icard{flex:0 0 82%;scroll-snap-align:center;background:#fbf6e9;border-radius:4px;padding:12px 12px 10px;min-height:196px;position:relative;box-shadow:0 6px 14px rgba(20,10,5,.4);background-image:repeating-linear-gradient(180deg,transparent 0 21px,rgba(31,126,192,.18) 21px 22px);background-position:0 44px;transform:translateY(18px) rotate(-1.5deg);opacity:0;transition:transform .5s var(--ease),opacity .4s}
+.icard::before{content:"";position:absolute;left:0;right:0;top:34px;border-top:1.5px solid rgba(163,4,15,.55)}
+.icard::after{content:"";position:absolute;left:50%;bottom:8px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#2a170c;box-shadow:inset 0 2px 3px rgba(0,0,0,.4)}
+.drawer.open .icard{transform:none;opacity:1}
+.drawer.open .icard:nth-child(2){transition-delay:.08s}
+.drawer.open .icard:nth-child(3){transition-delay:.16s}
+.icard .no{display:flex;justify-content:space-between;font:700 9px var(--mono);letter-spacing:.08em;color:var(--crimson);text-transform:uppercase}
+.icard h5{font:800 15px/1.25 'Courier New',var(--mono);color:#2b2621;margin-top:16px}
+.icard p{font:12px/22px 'Courier New',var(--mono);color:#5b524a;margin-top:0}
+.icard .stamp{position:absolute;right:10px;bottom:12px;transform:rotate(-12deg);border:2px solid var(--crimson);color:var(--crimson);border-radius:4px;padding:1px 6px;font:800 9px var(--mono);letter-spacing:.08em;opacity:.75}
+.icard.reserve{background-image:none;display:grid;place-items:center;text-align:center;border:2px dashed rgba(163,4,15,.5)}
+.icard.reserve h5{margin:0}
+.readlink{display:inline-block;margin-top:6px;font:800 11px var(--mono);color:var(--crimson)}
+.cat-hint{text-align:center;font:700 9px var(--mono);letter-spacing:.1em;color:rgba(243,234,213,.6);text-transform:uppercase;margin-top:12px}
+
+/* ============ B · THE STACK ============ */
+.stackwrap{position:relative;height:1500px}
+.stick{position:sticky;top:50px;height:600px;overflow:hidden;background:radial-gradient(90% 60% at 50% 30%,#3a2415,#1b0e07);display:flex;flex-direction:column;justify-content:flex-end;padding:0 0 28px}
+.stick .lamp{position:absolute;left:50%;top:-40px;width:260px;height:260px;margin-left:-130px;border-radius:50%;background:radial-gradient(circle,rgba(255,210,140,.35),transparent 65%)}
+.stack{position:relative;margin:0 auto;width:250px}
+.flat{position:relative;height:46px;margin-top:-2px;border-radius:3px 6px 6px 3px;display:flex;align-items:center;padding:0 14px 0 20px;color:#fdf8ee;box-shadow:0 3px 0 rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.18),inset 0 -3px 0 rgba(0,0,0,.2);transition:transform .5s var(--ease);will-change:transform}
+.flat::before{content:"";position:absolute;right:-8px;top:4px;bottom:4px;width:10px;border-radius:0 4px 4px 0;background:repeating-linear-gradient(180deg,#f3ead5 0 2px,#d9ccb0 2px 3px)}
+.flat b{font:800 12px/1.1 var(--display);letter-spacing:.02em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.flat small{font:700 8px var(--mono);letter-spacing:.08em;opacity:.8;margin-left:8px}
+.flat.out{transform:translateX(62px) rotate(-2deg)}
+.plinth{height:16px;margin:0 20px;border-radius:3px;background:linear-gradient(180deg,var(--walnut-hi),var(--walnut-lo));box-shadow:0 10px 18px rgba(0,0,0,.5)}
+.slip{position:absolute;left:16px;right:16px;top:18px;background:#fbf6e9;border-radius:6px;padding:14px;box-shadow:0 10px 24px rgba(0,0,0,.45);transition:opacity .35s,transform .35s var(--ease)}
+.slip .no{font:700 9px var(--mono);letter-spacing:.1em;color:var(--crimson);text-transform:uppercase}
+.slip h5{font:800 17px/1.2 var(--display);margin-top:6px}
+.slip p{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+.slip.swap{opacity:0;transform:translateY(-8px)}
+.stack-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font:700 9px var(--mono);letter-spacing:.1em;color:rgba(243,234,213,.55);text-transform:uppercase}
+
+/* ============ C · FRONT PAGES ============ */
+.reel{position:relative;margin:0 14px;height:470px;border-radius:14px;overflow:hidden;box-shadow:0 16px 30px rgba(34,34,34,.25);touch-action:pan-y}
+.rpage{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;justify-content:flex-end;color:#fdf8ee;opacity:0;transition:opacity .45s;background-size:cover}
+.rpage.on{opacity:1}
+.rpage::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,10,5,.1) 30%,rgba(20,10,5,.85))}
+.rpage>*{position:relative}
+.rpage .cat{all:unset;font:700 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.rpage h5{font:900 24px/1.05 var(--display);margin-top:8px}
+.rpage p{font-size:12.5px;opacity:.85;margin-top:8px;line-height:1.45}
+.rpage .by{font:700 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-top:10px}
+.rpage .read{align-self:flex-start;margin-top:14px;background:var(--canvas);color:var(--crimson);font:800 12px var(--body);padding:10px 14px;border-radius:10px}
+.ticks{position:absolute;z-index:5;left:12px;right:12px;top:12px;display:flex;gap:4px}
+.ticks i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.3);overflow:hidden}
+.ticks i b{display:block;height:100%;width:0;background:#fff}
+.ticks i.done b{width:100%}
+.ticks i.run b{animation:tick 5s linear forwards}
+@keyframes tick{to{width:100%}}
+.tapzone{position:absolute;z-index:4;top:0;bottom:120px;width:35%;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tapzone.l{left:0}.tapzone.r{right:0}
+.masthead{position:absolute;z-index:5;left:14px;right:14px;top:26px;display:flex;justify-content:space-between;font:700 9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="doc"><div class="wrap">
+  <span class="kicker">GEC · stories act · phone · v1</span>
+  <h1>Rethinking the <em>library</em> for phones</h1>
+  <p class="lede">The desktop aisle is a 3D walk. On a phone it's a narrow corridor you can barely look down, and the initiatives act already owns the bookshelf. Three phone-first alternatives below, all interactive, all using the real stories. Each keeps the library's materials (walnut, brass, paper, crimson) so desktop and phone still feel like the same place.</p>
+  <div class="constraints">
+    <div><b>Not another shelf</b>Initiatives is the bookcase now; stories needs its own object.</div>
+    <div><b>One thumb</b>Vertical scroll or horizontal swipe, never both fighting each other.</div>
+    <div><b>Readable titles</b>Story titles are long ("From Dorm-Room Experiment to…"); vertical spines truncate them.</div>
+    <div><b>Grows with the CMS</b>Must hold 3 stories today and 30 next year (grouped by cohort year, like the aisle).</div>
+  </div>
+</div></header>
+
+<!-- ================= A ================= -->
+<section class="concept"><div class="wrap">
+  <span class="kicker">Concept A</span>
+  <h2>The Card Catalogue <span class="tag rec">recommended</span></h2>
+  <p class="lede">A library card-catalogue cabinet. Each drawer is a cohort year; tap a drawer and it slides out, index cards rise out of the tray, and you swipe through them. Every story is a typed index card with its accession number and a "Read →". The last card in the newest drawer is the reserved blank card: "Your story belongs here."</p>
+  <div class="split">
+    <div>
+      <div class="phone"><div class="screen"><div class="scroll">
+        <div class="bar"><b>GEC</b><i></i></div>
+        <div class="head"><div class="k">Act II · the stories archive</div><h4>Every Venture Starts With a Story.</h4><p>Open a drawer. Every card is a founder who started here.</p></div>
+        <div class="cat">
+          <div class="cat-top"><span class="plate">GEC Library · Card Catalogue</span></div>
+          <div class="drawer open" data-drawer>
+            <button type="button" aria-expanded="true"><span class="label"><b>2026</b><small>3 STORIES</small></span><span class="pull"></span></button>
+            <div class="tray"><div class="cards">
+              <article class="icard"><div class="no"><span>Acc. 2026-014</span><span>Founder story</span></div><h5>From Dorm-Room Experiment to Seed Funding</h5><p>Rohan Verma · AeroDynamics AI · ₹75L pre-seed</p><span class="stamp">4 MIN</span><a class="readlink">Read →</a></article>
+              <article class="icard"><div class="no"><span>Acc. 2026-009</span><span>News</span></div><h5>North India's Biggest Student Venture Summit Returns</h5><p>E-Summit 2026 · 60+ venture partners</p><span class="stamp">3 MIN</span><a class="readlink">Read →</a></article>
+              <article class="icard"><div class="no"><span>Acc. 2026-003</span><span>Startup story</span></div><h5>Protecting Student IP: Zero-Cost Patent Filing</h5><p>GEC IP clinic · 4 provisional patents</p><span class="stamp">5 MIN</span><a class="readlink">Read →</a></article>
+              <article class="icard reserve"><div><h5>Your story belongs here.</h5><p>Card 2027-001 · reserved</p><a class="readlink">Start yours at GEC →</a></div></article>
+            </div></div>
+          </div>
+          <div class="drawer" data-drawer>
+            <button type="button" aria-expanded="false"><span class="label"><b>2027</b><small>RESERVED</small></span><span class="pull"></span></button>
+            <div class="tray"><div class="cards">
+              <article class="icard reserve"><div><h5>This drawer is empty.</h5><p>The first card is yours to write.</p><a class="readlink">Start yours at GEC →</a></div></article>
+            </div></div>
+          </div>
+          <p class="cat-hint">Tap a drawer · swipe the cards</p>
+        </div>
+        <div class="after"><span class="btn-o">Explore Stories →</span></div>
+        <div class="spacer"><span>↓ Speakers</span></div>
+      </div></div></div>
+      <p class="try">Tap the drawers · swipe the cards</p>
+    </div>
+    <div class="notes">
+      <h3>Why this one</h3>
+      <ul>
+        <li>Unmistakably a <b>library</b> object, but not a shelf, so it sits next to the initiatives bookcase without repeating it.</li>
+        <li>Titles are <b>horizontal and full-length</b> on the cards; nothing truncates.</li>
+        <li>Scales: one drawer per cohort year (same grouping as the desktop aisle's <code>planAisle</code>), cards swipe inside. Today that's a full 2026 drawer and an empty 2027 one waiting for the next founder.</li>
+        <li>Motion is small and physical: drawer slide (translate), cards rise in with a stagger. Reduced motion: drawers open instantly.</li>
+        <li>Reuses the walnut and brass tokens from the phone bookcase, so both acts read as the same room.</li>
+      </ul>
+      <h3>Build notes</h3>
+      <ul>
+        <li>New <code>StoriesCatalogue</code>, rendered by <code>ShelfAct</code> below 769px instead of <code>StoriesAisle</code>; the aisle stops pinning on phones again.</li>
+        <li>Newest drawer open by default; "Read →" opens the existing <code>StoryReader</code> overlay (already in <code>StoriesAisle.tsx</code>).</li>
+        <li>Curtain: back to the short phone fade-up like the other acts.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= B ================= -->
+<section class="concept"><div class="wrap">
+  <span class="kicker">Concept B</span>
+  <h2>The Reading-Room Stack</h2>
+  <p class="lede">Books lying flat in one tall stack under a reading lamp, with horizontal spines you can actually read. The section pins and your scroll moves through the stack: the book at the lamp slides half out and its checkout slip shows the story. It's the closest match to desktop, where scrolling also "walks".</p>
+  <div class="split">
+    <div>
+      <div class="phone"><div class="screen"><div class="scroll" id="bScroll">
+        <div class="bar"><b>GEC</b><i></i></div>
+        <div class="head"><div class="k">Act II · the reading room</div><h4>Every Venture Starts With a Story.</h4><p>Scroll through the stack.</p></div>
+        <div class="stackwrap" id="bWrap">
+          <div class="stick">
+            <div class="lamp"></div>
+            <div class="slip" id="bSlip"><div class="no" id="bNo"></div><h5 id="bTitle"></h5><p id="bText"></p></div>
+            <div class="stack" id="bStack">
+              <div class="flat" style="background:#7a2a1d;width:236px"><b>Your story belongs here</b><small>2027</small></div>
+              <div class="flat" style="background:#2f3b36;width:250px"><b>Protecting Student IP</b><small>2026</small></div>
+              <div class="flat" style="background:#1F5A86;width:228px"><b>North India's Biggest Summit</b><small>2026</small></div>
+              <div class="flat" style="background:#A3040F;width:244px"><b>From Dorm-Room to Seed Funding</b><small>2026</small></div>
+            </div>
+            <div class="plinth"></div>
+            <div class="stack-hint">Scroll through the stack</div>
+          </div>
+        </div>
+        <div class="after"><span class="btn-o">Explore Stories →</span></div>
+        <div class="spacer"><span>↓ Speakers</span></div>
+      </div></div></div>
+      <p class="try">Scroll inside the phone</p>
+    </div>
+    <div class="notes">
+      <h3>Trade-offs</h3>
+      <ul>
+        <li>Keeps the desktop's <b>scroll-driven</b> feel with a pinned runway, but on a much simpler scene (no 3D corridor).</li>
+        <li>Readable spines; the slip gives the excerpt without opening anything.</li>
+        <li>Pinned sections on phones fight the iOS URL bar and quick flicks; the stack needs about 1.5 screens of runway per 4 stories, so it grows long with 30 stories.</li>
+        <li>A stack of books sits close to the initiatives bookcase visually.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= C ================= -->
+<section class="concept"><div class="wrap">
+  <span class="kicker">Concept C</span>
+  <h2>Front Pages</h2>
+  <p class="lede">Each story as a full-bleed front page you tap through, like stories on Instagram: progress ticks on top, tap the right side for next and the left for back, and it autoplays every 5 seconds. The last page is the invitation. Fastest to scan, and the most familiar gesture on a phone.</p>
+  <div class="split">
+    <div>
+      <div class="phone"><div class="screen"><div class="scroll">
+        <div class="bar"><b>GEC</b><i></i></div>
+        <div class="head"><div class="k">Act II · front pages</div><h4>Every Venture Starts With a Story.</h4></div>
+        <div class="reel" id="cReel">
+          <div class="ticks" id="cTicks"></div>
+          <div class="masthead"><span>GEC Stories</span><span id="cCount"></span></div>
+          <div class="rpage on" style="background:linear-gradient(160deg,#A3040F,#3a0508)"><span class="cat">Founder story · 4 min</span><h5>From Dorm-Room Experiment to Institutional Seed Funding</h5><p>Three Galgotias undergraduates built an autonomous drone delivery platform and raised ₹75 Lakh pre-seed.</p><span class="by">Rohan Verma · AeroDynamics AI</span><span class="read">Read the story →</span></div>
+          <div class="rpage" style="background:linear-gradient(160deg,#1F7EC0,#0b2b45)"><span class="cat">News · 3 min</span><h5>Northern India's Biggest Student Venture Summit Returns</h5><p>E-Summit 2026 dates and keynote line-up: 60+ venture partners, angel networks and breakout founders.</p><span class="by">GEC Newsroom</span><span class="read">Read the story →</span></div>
+          <div class="rpage" style="background:linear-gradient(160deg,#2f3b36,#101815)"><span class="cat">Startup story · 5 min</span><h5>Protecting Student IP: Zero-Cost Patent Filing at GEC</h5><p>How the IP clinic helped four campus ventures file provisional patents before demo days.</p><span class="by">GEC IP Clinic</span><span class="read">Read the story →</span></div>
+          <div class="rpage" style="background:linear-gradient(160deg,#FBCA05,#b27a00);color:var(--ink)"><span class="cat" style="color:var(--crimson)">Page 2027-001 · reserved</span><h5>Your story belongs on the next page.</h5><p style="opacity:.8">Build something at Galgotias and we'll print it here.</p><span class="read">Start yours at GEC →</span></div>
+          <button class="tapzone l" aria-label="Previous story"></button>
+          <button class="tapzone r" aria-label="Next story"></button>
+        </div>
+        <div class="after"><span class="btn-o">Explore Stories →</span></div>
+        <div class="spacer"><span>↓ Speakers</span></div>
+      </div></div></div>
+      <p class="try">Tap the right or left side of the card</p>
+    </div>
+    <div class="notes">
+      <h3>Trade-offs</h3>
+      <ul>
+        <li>The most phone-native and fastest to read; each page has room for a real photo once stories have cover images.</li>
+        <li>Loses the library metaphor: it reads like social media, not the GEC archive.</li>
+        <li>Autoplay needs a pause on touch plus a reduced-motion path (static, arrows only).</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<footer class="wrap" style="padding:32px 16px 60px;color:var(--muted);font-size:14px">Pick A, B or C (or mix: e.g. A's drawers with C's full-page reader) and I'll build it into <code>ShelfAct</code> for phones.</footer>
+
+<script>
+// A · drawers: one open at a time
+document.querySelectorAll('[data-drawer] > button').forEach(btn => btn.addEventListener('click', () => {
+  const d = btn.parentElement, open = !d.classList.contains('open');
+  d.parentElement.querySelectorAll('[data-drawer]').forEach(x => { x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); });
+  if (open) { d.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
+}));
+
+// B · the stack: progress through the pinned runway picks the book at the lamp
+(() => {
+  const sc = document.getElementById('bScroll'), wrap = document.getElementById('bWrap');
+  const books = [...document.querySelectorAll('#bStack .flat')].reverse(); // bottom book first
+  const data = [
+    ['Acc. 2026-014 · Founder story · 4 min', 'From Dorm-Room Experiment to Institutional Seed Funding', 'Rohan Verma · AeroDynamics AI. Three undergrads, an autonomous drone platform, ₹75L pre-seed.'],
+    ['Acc. 2026-009 · News · 3 min', "Northern India's Biggest Student Venture Summit Returns", 'E-Summit 2026: 60+ venture partners, angel networks and breakout founders.'],
+    ['Acc. 2026-003 · Startup story · 5 min', 'Protecting Student IP: Zero-Cost Patent Filing', "GEC's IP clinic helped four ventures file provisional patents before demo days."],
+    ['Card 2027-001 · reserved', 'Your story belongs here.', 'Build something at Galgotias and it joins the stack.'],
+  ];
+  let cur = -1;
+  const slip = document.getElementById('bSlip');
+  const set = i => {
+    if (i === cur) return; cur = i;
+    books.forEach((b, j) => b.classList.toggle('out', j === i));
+    slip.classList.add('swap');
+    setTimeout(() => {
+      document.getElementById('bNo').textContent = data[i][0];
+      document.getElementById('bTitle').textContent = data[i][1];
+      document.getElementById('bText').textContent = data[i][2];
+      slip.classList.remove('swap');
+    }, 180);
+  };
+  const on = () => {
+    const top = wrap.offsetTop - 50, run = wrap.offsetHeight - 600;
+    const p = Math.min(1, Math.max(0, (sc.scrollTop - top) / run));
+    set(Math.min(books.length - 1, Math.floor(p * books.length)));
+  };
+  sc.addEventListener('scroll', on, { passive: true }); on();
+})();
+
+// C · front pages: ticks, tap zones, 5s autoplay
+(() => {
+  const reel = document.getElementById('cReel'), pages = [...reel.querySelectorAll('.rpage')];
+  const ticks = document.getElementById('cTicks'), count = document.getElementById('cCount');
+  ticks.innerHTML = pages.map(() => '<i><b></b></i>').join('');
+  const tk = [...ticks.children];
+  let i = 0, timer;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const show = n => {
+    i = (n + pages.length) % pages.length;
+    pages.forEach((p, j) => p.classList.toggle('on', j === i));
+    tk.forEach((t, j) => { t.className = j < i ? 'done' : ''; void t.offsetWidth; if (j === i && !reduce) t.className = 'run'; });
+    count.textContent = `${i + 1} / ${pages.length}`;
+    clearTimeout(timer); if (!reduce) timer = setTimeout(() => show(i + 1), 5000);
+  };
+  reel.querySelector('.tapzone.r').onclick = () => show(i + 1);
+  reel.querySelector('.tapzone.l').onclick = () => show(i - 1);
+  show(0);
+})();
+</script>
+</body>
+</html>
