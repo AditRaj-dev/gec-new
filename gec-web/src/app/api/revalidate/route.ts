@@ -13,7 +13,10 @@ export async function POST(req: Request) {
     raw,
     process.env.REVALIDATION_HMAC_SECRET,
     {
-      onRevalidateTag: (tag) => revalidateTag(tag, 'max'),
+      // Invalidation arrives from the API's outbox (a webhook), not a Server Action, so
+      // `updateTag` isn't available; expire immediately per revalidateTag.md's guidance for
+      // exactly this case ("a webhook or another service calling a Route Handler").
+      onRevalidateTag: (tag) => revalidateTag(tag, { expire: 0 }),
       onRevalidatePath: (path) => revalidatePath(path),
     },
   );

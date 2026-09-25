@@ -134,15 +134,27 @@ export class OutboxService implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
+    // eventId (the outbox row id) is already a uuidv4() value, so it doubles as the
+    // "eventUuid" the receiver's schema requires (gec-web/src/lib/revalidation.ts,
+    // processRevalidationHandshake step 6: payload.eventUuid must be a non-empty string).
     const bodyString = JSON.stringify({
-      eventId,
+      eventUuid: eventId,
       eventType: 'cache_invalidation',
       tags: payload.tags || [],
       paths: payload.paths || [],
       timestamp: new Date().toISOString(),
     });
 
-    const signature = CryptoUtil.hmacSha256(hmacSecret, bodyString);
+    // A fresh nonce per delivery, tracked by the receiver's NonceTracker to reject replays
+    // within its drift window (gec-web/src/lib/revalidation.ts).
+    const nonce = uuidv4();
+    const timestamp = Date.now().toString();
+
+    // Sign the canonical form the receiver's verifier checks first (and is documented as
+    // the "Primary standard" candidate): `${timestamp}.${nonce}.${rawBody}`
+    // (buildCanonicalPayload / verifyRevalidationSignature in gec-web/src/lib/revalidation.ts).
+    const canonicalPayload = `${timestamp}.${nonce}.${bodyString}`;
+    const signature = CryptoUtil.hmacSha256(hmacSecret, canonicalPayload);
 
     // If url is localhost or mock during tests, avoid actual network errors
     if (revalidationUrl.includes('localhost') || process.env.NODE_ENV === 'test') {
@@ -154,8 +166,8 @@ export class OutboxService implements OnModuleInit, OnModuleDestroy {
       headers: {
         'Content-Type': 'application/json',
         'x-gec-signature': signature,
-        'x-gec-event-id': eventId,
-        'x-gec-timestamp': Date.now().toString(),
+        'x-gec-timestamp': timestamp,
+        'x-gec-nonce': nonce,
       },
       body: bodyString,
     });
