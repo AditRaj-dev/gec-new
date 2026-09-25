@@ -2,6 +2,7 @@ import { getInitiatives, getStories, getTeams } from '@/lib/api';
 import { getSingleton } from '@/lib/content';
 import { HERO_FALLBACK } from '@/content/hero';
 import { HAPPENING_FALLBACK } from '@/content/happening';
+import { IMPACT_FALLBACK } from '@/content/impact';
 import { Hero } from '@/components/home/Hero';
 import { Happening } from '@/components/home/Happening';
 import { DeskAct } from '@/components/home/DeskAct';
@@ -20,12 +21,13 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 const websiteLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: SITE_URL, publisher: { '@id': organizationLd['@id'] } };
 
 export default async function Home() {
-  const [initiatives, stories, teams, hero, happening] = await Promise.all([
+  const [initiatives, stories, teams, hero, happening, impact] = await Promise.all([
     getInitiatives(),
     getStories(),
     getTeams(),
     getSingleton('hero', HERO_FALLBACK),
     getSingleton('happening', HAPPENING_FALLBACK),
+    getSingleton('impact', IMPACT_FALLBACK),
   ]);
 
   return (
@@ -34,7 +36,7 @@ export default async function Home() {
       <Hero campaigns={hero.campaigns} secondaryCards={hero.secondaryCards} />
       <Happening content={happening} />
       <DeskAct programmeCount={initiatives.length} />
-      <Impact />
+      <Impact content={impact} />
       <Milestones />
       <ShelfAct stories={[...stories]} />
       <Speakers />

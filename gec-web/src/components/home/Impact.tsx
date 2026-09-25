@@ -5,17 +5,10 @@ import { animate, useInView, useReducedMotion } from 'motion/react';
 import { EASE } from '@/lib/motion';
 import { parseMetric, formatMetric } from '@/lib/metric';
 import { ShaderLayer } from '@/components/ShaderLayer';
+import type { ImpactContent, ImpactMetric } from '@/content/impact';
 import './impact.css';
 
 // styled.html 2669–2723 ("1.4 Impact").
-const PILLARS = ['Leadership', 'Communication', 'Teamwork', 'Ideation', 'Problem Solving', 'Execution'];
-
-const METRICS = [
-  { value: '35+', title: 'Events & Experiences', subtitle: 'Summits, Hackathons & Mixers' },
-  { value: '12,000+', title: 'Students Engaged', subtitle: 'Campus-Wide Ecosystem Reach' },
-  { value: '45+', title: 'Startups Supported', subtitle: 'Incubated & Mentored Ventures' },
-  { value: '28+', title: 'Speakers & Mentors', subtitle: 'Unicorn Founders & Industry VCs' },
-] as const;
 
 /**
  * Renders the wireframe's final string on the server. Once `active` (the
@@ -46,7 +39,7 @@ function MetricDigit({ value, active }: { value: string; active: boolean }) {
   );
 }
 
-export function Impact() {
+export function Impact({ content }: { content: ImpactContent }) {
   const matrixRef = useRef<HTMLDivElement>(null);
   const inView = useInView(matrixRef, { once: true, amount: 0.4 });
   const prefersReducedMotion = useReducedMotion();
@@ -68,7 +61,7 @@ export function Impact() {
         </p>
 
         <div className="impact__pillars">
-          {PILLARS.map((pillar) => (
+          {content.pillars.map((pillar) => (
             <span className="status-badge impact__pillar" key={pillar}>
               {pillar}
             </span>
@@ -77,7 +70,7 @@ export function Impact() {
       </div>
 
       <div className="metrics-4col-matrix" ref={matrixRef}>
-        {METRICS.map((metric) => (
+        {content.metrics.map((metric: ImpactMetric) => (
           <div className="metric-counter-container" key={metric.title}>
             <MetricDigit value={metric.value} active={animated} />
             <div className="impact__metric-title">{metric.title}</div>
