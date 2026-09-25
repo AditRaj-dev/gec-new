@@ -18,15 +18,14 @@ so check `node_modules/next/dist/docs/` before using a Next API (example: `error
 
 | | |
 |---|---|
-| Standalone repo | `github.com/AditRaj-dev/gec-new`, branch `main` (this app at the repo root) |
-| Source of truth | the monorepo `github.com/AditRaj-dev/gec`, folder `gec-web/` |
-| How gec-new is updated | from the monorepo: `git subtree split --prefix=gec-web -b gec-web-split` then `git push gec-new gec-web-split:main` |
+| Repo | `github.com/AditRaj-dev/gec-new`, branch `main` — the GEC monorepo since 26 Sep 2026 |
+| This app | `gec-web/` (the public site). Siblings: `cms/` (admin app), `api/` (NestJS backend), `docs/` (specs, plans, handoff) |
+| Hosting | The Vercel project must use **Root Directory = `gec-web`** |
+| Older history | `github.com/AditRaj-dev/gec` (the original monorepo, with retired projects). Before 26 Sep 2026, gec-new held only this app at its root, made with `git subtree split`; that workflow is retired. |
 
-- In the monorepo, work only inside `gec-web/`. The sibling folders (`gec-styled-next`, `gec-showcase`, `gec-portfolio*`,
-  `wireframes-v2`, `backend`, `design-explorations`…) are other or older projects. **Never import from them.**
-  `design-explorations/` holds throwaway HTML mockups and the newsletter-bin reference only.
-- If you are working in a clone of `gec-new`, commit and push to `main` there; tell the owner so the monorepo can be synced.
-- Never `git push --force` to `gec-new` `main`.
+- Work in `gec-web/` for the site, `cms/` + `api/` for the CMS. Never import across apps; `cms` and `gec-web` talk to `api` over HTTP.
+- Start with `docs/HANDOFF-2026-09-25-cms.md` and the spec in `docs/superpowers/specs/`.
+- Never `git push --force` to `main`.
 
 ## Stack and commands
 

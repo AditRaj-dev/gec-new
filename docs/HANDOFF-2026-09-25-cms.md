@@ -11,6 +11,8 @@ Read this first if you're picking the work up in a new session. It says what exi
 | `gec-web-clean` | Only `gec-web/` (the public site) + `docs/` + `.gitignore`. | Website work. |
 | `cms-clean` | Only `cms/` (admin app) + `api/` (NestJS) + `docs/`, the CMS design notes (`cms-wireframes/`, `deployment.md`, `architecture.md`, `cms-copilot-integration.md`, `google-forms-agent-integration.md`) + `.gitignore`. `api/dist/` is no longer tracked (it's build output). | CMS and API work. |
 
+**Update 26 Sep:** `gec-clean` was merged into `gec-new` `main`, so `gec-new/main` is now this monorepo (set Vercel Root Directory to `gec-web`).
+
 Both clean branches were cut from `WEBISTE-GETTING-THERE` at the commit that added this file, so they share history. Nothing has been pushed. The monorepo `main` is the original base.
 
 Standalone deploy of the site: `gec-web/AGENTS.md` explains how `gec-web/` is published to the `gec-new` repo with `git subtree split`.
