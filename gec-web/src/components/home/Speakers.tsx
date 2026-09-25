@@ -1,25 +1,11 @@
 import Image from 'next/image';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
+import type { Speaker } from '@/content/speakers';
 import './speakers.css';
 
-// Vertical portrait cards on an infinite trail. Drop a portrait into
-// public/speakers/ and set `photo` on the entry; until then the frame shows initials.
-export type Speaker = { initials: string; name: string; role: string; org: string; photo?: string };
-
-export const SPEAKERS: readonly Speaker[] = [
-  { initials: 'AG', name: 'Ashneer Grover', role: 'Co-Founder', org: 'BharatPe' },
-  { initials: 'AG', name: 'Aman Gupta', role: 'Co-Founder & CMO', org: 'boAt Lifestyle' },
-  { initials: 'SJ', name: 'Sandeep Jain', role: 'Founder & CEO', org: 'GeeksforGeeks' },
-  { initials: 'SB', name: 'Sanjeev Bikhchandani', role: 'Founder & Vice Chairman', org: 'Info Edge / Naukri.com' },
-  { initials: 'DS', name: 'Debojit Sen', role: 'Founder', org: 'Crack-ED' },
-  { initials: 'HA', name: 'Himanshu Adlakha', role: 'Co-Founder', org: 'Winston India' },
-  { initials: 'IS', name: 'Ishant Sachdeva', role: 'Founder', org: 'Being Chief' },
-  { initials: 'TV', name: 'Tushar Vadera', role: 'Founding Member', org: 'Zomato Feeding India' },
-];
-
 /** Infinite portrait trail — shared by the home section and /stories#speakers. */
-export function SpeakersTrail() {
+export function SpeakersTrail({ speakers }: { speakers: Speaker[] }) {
   return (
     <div className="speakers__trail">
       {/* Two identical runs; the track slides by exactly one run for a seamless loop.
@@ -27,8 +13,8 @@ export function SpeakersTrail() {
       <div className="speakers__track">
         {[0, 1].map((run) => (
           <ul className="speakers__run" key={run} aria-hidden={run === 1 || undefined}>
-            {[...SPEAKERS, ...SPEAKERS].map((speaker, i) => (
-              <li className="speakers__card" key={i} aria-hidden={i >= SPEAKERS.length || undefined}>
+            {[...speakers, ...speakers].map((speaker, i) => (
+              <li className="speakers__card" key={i} aria-hidden={i >= speakers.length || undefined}>
                 <div className="speakers__photo">
                   {speaker.photo ? (
                     <Image src={speaker.photo} alt={run === 0 ? speaker.name : ''} fill sizes="240px" className="speakers__img" />
@@ -50,7 +36,7 @@ export function SpeakersTrail() {
   );
 }
 
-export function Speakers() {
+export function Speakers({ speakers }: { speakers: Speaker[] }) {
   return (
     <section
       className="wf-section surface-crimson gec-shader-host gec-fallback-liquid"
@@ -67,7 +53,7 @@ export function Speakers() {
         </p>
       </div>
 
-      <SpeakersTrail />
+      <SpeakersTrail speakers={speakers} />
 
       <div className="speakers__cta-row">
         <ViewTransitionLink href="/stories#speakers" className="gec-btn btn-white">

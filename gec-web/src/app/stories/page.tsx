@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getStories } from '@/lib/api';
+import { getList } from '@/lib/content';
 import { withStoryContent } from '@/lib/storyContent';
+import { SPEAKERS_FALLBACK } from '@/content/speakers';
 import { RouteHero } from '@/components/route/RouteHero';
 import { SubscribeForm } from '@/components/route/SubscribeForm';
 import { FinalCta } from '@/components/home/FinalCta';
@@ -20,8 +22,12 @@ const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString('en-IN', { month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
 
 export default async function StoriesPage() {
+  const [storiesData, speakers] = await Promise.all([
+    getStories(),
+    getList('speakers', SPEAKERS_FALLBACK),
+  ]);
   // Featured = newest story, spread = the next three (route layouts plan, defaults).
-  const [featured, ...more] = (await getStories()).map(withStoryContent);
+  const [featured, ...more] = storiesData.map(withStoryContent);
   const spread = more.slice(0, 3);
 
   return (
@@ -129,7 +135,7 @@ export default async function StoriesPage() {
             </div>
           </div>
         </div>
-        <SpeakersTrail />
+        <SpeakersTrail speakers={speakers} />
       </section>
 
       {/* id="dispatch" is the /newsletter redirect target (next.config.ts). */}
