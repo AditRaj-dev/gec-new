@@ -2,53 +2,15 @@ import Image from 'next/image';
 import { BrandMark } from '@/components/BrandMark';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
+import type { SiteNav } from '@/content/siteNav';
 import './site-footer.css';
-
-const FOOTER_NAV_ROUTES = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About GEC' },
-  { href: '/teams', label: 'The 7 Teams' },
-  { href: '/initiatives', label: 'Initiatives & SDP' },
-  { href: '/stories', label: 'Stories & Portfolio' },
-];
-
-const SOCIALS = [
-  {
-    href: 'https://www.instagram.com/galgotiasecell/',
-    label: 'Instagram',
-    handle: '@galgotiasecell',
-    icon: 'M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Zm5.3-1.8a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z',
-  },
-  {
-    href: 'https://www.linkedin.com/company/ecell-gu/',
-    label: 'LinkedIn',
-    handle: 'Galgotias E-Cell',
-    icon: 'M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4V9.5Z',
-  },
-  {
-    href: 'mailto:contact@ecellgu.in',
-    label: 'Email',
-    handle: 'contact@ecellgu.in',
-    icon: 'M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7.2L4.2 7H4v.9l8 5.3 8-5.3V7h-.2L12 12.2Z',
-  },
-];
-
-// Same files the home Partners strip uses (public/partners/).
-const PARTNERS = [
-  { name: 'Startup India', logo: '/partners/startup-india.png' },
-  { name: 'MSME', logo: '/partners/msme.svg' },
-  { name: 'IIC GU', logo: '/partners/iic-gu.png' },
-  { name: 'AWS Activate', logo: '/partners/aws.svg' },
-  { name: 'GitHub Campus', logo: '/partners/github.svg' },
-  { name: 'Wadhwani', logo: '/partners/wadhwani.png' },
-];
 
 /**
  * Global site footer. Server component, rendered from `layout.tsx` after `{children}`.
  * Charcoal surface with the `night` contour shader, the full GEC logo on a cream plate,
  * a closing CTA, link columns, partner logos and a watermark wordmark.
  */
-export function SiteFooter() {
+export function SiteFooter({ nav }: { nav: SiteNav }) {
   return (
     <footer className="site-footer gec-shader-host" data-surface="charcoal">
       <ShaderLayer family="night" />
@@ -86,7 +48,7 @@ export function SiteFooter() {
         <nav aria-label="Footer">
           <div className="site-footer__heading">Navigation</div>
           <ul className="site-footer__list">
-            {FOOTER_NAV_ROUTES.map((route) => (
+            {nav.footerRoutes.map((route) => (
               <li key={route.href}>
                 <ViewTransitionLink href={route.href} className="site-footer__link">
                   {route.label}
@@ -99,7 +61,7 @@ export function SiteFooter() {
         <div>
           <div className="site-footer__heading">Connect</div>
           <ul className="site-footer__list">
-            {SOCIALS.map((s) => (
+            {nav.socials.map((s) => (
               <li key={s.label}>
                 <a
                   href={s.href}
@@ -139,7 +101,7 @@ export function SiteFooter() {
       <div className="site-footer__partners">
         <span className="site-footer__heading site-footer__partners-label">Built with</span>
         <ul className="site-footer__partner-list">
-          {PARTNERS.map((p) => (
+          {nav.footerPartners.map((p) => (
             <li key={p.name} className="site-footer__partner">
               {/* unoptimized: next/image rejects SVG through the optimizer; logos are tiny anyway. */}
               <Image src={p.logo} alt={p.name} fill sizes="120px" unoptimized />

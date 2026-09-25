@@ -6,6 +6,8 @@ import { BrandEntranceCurtain } from '@/components/BrandEntranceCurtain';
 import { Navbar } from '@/components/Navbar';
 import { SiteFooter } from '@/components/SiteFooter';
 import { DispatchBin } from '@/components/dispatch-bin/DispatchBin';
+import { getSingleton } from '@/lib/content';
+import { SITE_NAV_FALLBACK } from '@/content/siteNav';
 
 const archivo = Archivo({ subsets: ['latin'], weight: ['700', '800', '900'], variable: '--font-archivo', display: 'swap' });
 const manrope = Manrope({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-manrope', display: 'swap' });
@@ -28,7 +30,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: '#A3040F' };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const nav = await getSingleton('site-nav', SITE_NAV_FALLBACK);
   return (
     <html lang="en" className={`${archivo.variable} ${manrope.variable} ${jetbrains.variable} ${blackletter.variable} ${newsHead.variable} ${newsSerif.variable}`}>
       <head>
@@ -39,9 +42,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <BrandEntranceCurtain />
-        <Navbar />
+        <Navbar nav={nav} />
         <div className="flex-1 flex flex-col">{children}</div>
-        <SiteFooter />
+        <SiteFooter nav={nav} />
         <DispatchBin />
       </body>
     </html>

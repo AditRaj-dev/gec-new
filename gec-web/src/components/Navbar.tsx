@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import { cn } from '@/lib/utils';
+import type { SiteNav } from '@/content/siteNav';
 import {
   LOGO_VIEWBOX,
   LOGO_COLORS,
@@ -16,23 +17,7 @@ import {
   PATHS_SUBTITLE,
 } from '@/lib/logoData';
 
-const NAV_ROUTES = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/teams', label: 'Teams' },
-  { href: '/initiatives', label: 'Initiatives' },
-  { href: '/stories', label: 'Stories' },
-];
-
-const MOBILE_NAV_ROUTES = [
-  { href: '/', label: '01. Home' },
-  { href: '/about', label: '02. About' },
-  { href: '/teams', label: '03. Teams' },
-  { href: '/initiatives', label: '04. Initiatives' },
-  { href: '/stories', label: '05. Stories' },
-];
-
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<{ nav: SiteNav }> = ({ nav }) => {
   const pathname = usePathname();
   const [logoVisible, setLogoVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -126,7 +111,7 @@ export const Navbar: React.FC = () => {
         </ViewTransitionLink>
 
         <div className="nav-links">
-          {NAV_ROUTES.map((route) => (
+          {nav.routes.map((route) => (
             <ViewTransitionLink
               key={route.href}
               href={route.href}
@@ -161,7 +146,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       <div id="mobile-nav-drawer" className={cn('mobile-nav-drawer', mobileMenuOpen && 'drawer-open')} role="menu">
-        {MOBILE_NAV_ROUTES.map((route) => (
+        {nav.mobileRoutes.map((route) => (
           <ViewTransitionLink
             key={route.href}
             href={route.href}
