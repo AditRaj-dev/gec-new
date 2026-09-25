@@ -242,7 +242,9 @@ Bottom tabs: **Inbox · Content · ＋ New · Approve · Me**.
 - Plate builder: deterministic output for a fixed input (hash compare, grain seeded).
 
 ## 15. Build order (each phase ships on its own)
-0. **De-hardcode** all §4 content except DeskFolio books into the API via the existing content pipeline (seeded from the site's constants, fallbacks kept), add `/api/revalidate` and the parity gate. Site must read identically. (Books → canvas JSON moves to Phase 3; `data-cms` tags to Phase 1; R2 moves happen per image field from Phase 1.)
+0. **De-hardcode**, via the existing content pipeline (seeded from the site's constants, fallbacks kept), the ten entity types now live: `home-hero` (renamed from `hero` — the API's Hero Spotlight module already owns that entity type), `happening`, `impact`, `milestones`, `speakers`, `partners`, `site-nav`, `team-stage`, `dispatch-issues`, `route-copy`. Added `/api/revalidate` and the parity gate. Site reads identically. (Books → canvas JSON moves to Phase 3; `data-cms` tags to Phase 1; R2 moves happen per image field from Phase 1.)
+
+   Phase 0 did **not** cover every §4 area — the following stay hardcoded in components/pages for a follow-up **Phase 0b**: section intros (kicker/heading/lede) for Impact, Milestones, Speakers, Partners, and StageAct; the Hero dock's kicker; the home `FinalCta`'s default copy; the footer's blurb, CTA and portal links; the entrance curtain's copy; `/about`'s body content (`PIPELINE_STAGES`, leadership bios); `/initiatives`' `PROGRAMMES`, `SCHEDULE` and form field definitions; and `/teams`' `TEAM_PILLS`.
 1. **Live editor**: preview token + draft mode, bridge, layers, inspector, inline text, RBAC locks, review/publish, **version history**.
 2. **Canvas** renderer + editor; first user: hero cards.
 3. **Books**: templates, two-face preview, spine overrides, page editor.
@@ -260,3 +262,4 @@ Bottom tabs: **Inbox · Content · ＋ New · Approve · Me**.
 | Iframe + draft mode across subdomains | Same parent domain chosen (D10); token handshake; CSP frame-ancestors |
 | 100/day email cap slows big sends | Finish date shown before scheduling; Pro is a config change later |
 | `react-moveable` maintenance | Isolated in the Canvas editor only; public renderer has no dependency on it |
+| A phase ships without a working release gate | **Release gate:** seed staging, parity passes with `API_BASE_URL` set, a publish appears within seconds |
