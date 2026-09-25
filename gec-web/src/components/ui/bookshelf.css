@@ -1,0 +1,228 @@
+/* NewsletterBookshelf phone extras. Desktop is untouched: everything here sits under the phone query. */
+
+@media (max-width: 768px) {
+  /* Reader arrows move from the book's flanks (off-screen on phones) into the bottom bar. */
+  .gec-shelf-phone-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--gec-surface-card);
+    color: var(--gec-ink);
+    border: 1px solid var(--gec-border-subtle);
+    box-shadow: var(--shadow-card);
+    font: 700 1rem var(--font-body);
+    cursor: pointer;
+    transition: transform var(--duration-micro) var(--ease-spring), opacity var(--duration-micro);
+  }
+  .gec-shelf-phone-arrow:active { transform: scale(0.94); }
+  .gec-shelf-phone-arrow:disabled { opacity: 0.25; pointer-events: none; }
+}
+
+/* Entrance: the spines drop onto the shelf one after another when the row scrolls into view
+   (data-entered is set by an IntersectionObserver in newsletter-bookshelf.tsx). */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  [data-gec-shelf-row]:not([data-entered]) [data-shelf-book] { opacity: 0; }
+  [data-gec-shelf-row][data-entered] [data-shelf-book] {
+    animation: gec-shelf-drop 620ms var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+}
+
+/* ───────── variant="bookcase": a walnut case around the same shelf ─────────
+   Stage stack (bottom-up): plinth 22px · ledge 44px · book row 320px · upper shelf · crown 30px.
+   Everything here is decoration; the book row, ledge and reader keep their own behaviour. */
+[data-variant='bookcase'] {
+  --walnut-hi: #8a5d3b;
+  --walnut: #5e3a22;
+  --walnut-lo: #3b2314;
+  --walnut-deep: #26150c;
+  --brass: #c9a24a;
+  background: var(--walnut-deep);
+}
+[data-variant='bookcase'] [data-archive-deco] { display: none; }
+
+.gec-case { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+/* Back panel: vertical boards, lit from above, darker in the corners. */
+.gec-case__back {
+  position: absolute;
+  inset: 30px 16px 0;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(255, 214, 150, .16), transparent 60%),
+    linear-gradient(90deg, rgba(20, 10, 5, .45), transparent 18%, transparent 82%, rgba(20, 10, 5, .45)),
+    repeating-linear-gradient(90deg, transparent 0 58px, rgba(20, 10, 5, .35) 58px 60px, rgba(255, 220, 170, .05) 60px 61px),
+    linear-gradient(180deg, #4a2c19, #331d10 70%, #2a170c);
+}
+
+/* Crown moulding with a brass name plate. */
+.gec-case__crown {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, var(--walnut-hi), var(--walnut) 45%, var(--walnut-lo));
+  box-shadow: 0 6px 10px rgba(20, 10, 5, .45), inset 0 1px 0 rgba(255, 230, 190, .35);
+}
+.gec-case__plate {
+  padding: 3px 10px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #e3c574, var(--brass) 55%, #9c7a2e);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 1px 2px rgba(20, 10, 5, .5);
+  font: 700 9px/1.2 var(--font-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #3b2314;
+}
+
+/* Side posts. */
+.gec-case__post {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  z-index: 3;
+  background: linear-gradient(90deg, var(--walnut-lo), var(--walnut-hi) 35%, var(--walnut) 70%, var(--walnut-lo));
+}
+.gec-case__post--l { left: 0; box-shadow: 4px 0 8px rgba(20, 10, 5, .45); }
+.gec-case__post--r { right: 0; box-shadow: -4px 0 8px rgba(20, 10, 5, .45); }
+
+/* Upper shelf: a few objects standing on their own plank. */
+.gec-case__upper {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 30px;
+  bottom: 386px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 0 18px 18px;
+}
+.gec-case__plank {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 18px;
+  background: linear-gradient(180deg, #b58a61 0 3px, var(--walnut-hi) 3px, var(--walnut) 60%, var(--walnut-lo));
+  box-shadow: 0 8px 12px rgba(20, 10, 5, .5);
+}
+/* three books lying flat */
+.gec-case__stack { display: flex; flex-direction: column-reverse; align-items: center; }
+.gec-case__stack i {
+  display: block;
+  width: var(--w);
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .18), transparent 40%, rgba(20, 10, 5, .3)), var(--c);
+  box-shadow: inset 4px 0 0 rgba(255, 240, 210, .75), 0 1px 0 rgba(20, 10, 5, .4);
+}
+.gec-case__stack i:nth-child(2) { transform: translateX(5px); }
+.gec-case__stack i:nth-child(3) { transform: translateX(-4px) rotate(-2deg); }
+/* a small desk globe */
+.gec-case__globe { position: relative; width: 44px; height: 64px; }
+.gec-case__globe::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .45), transparent 40%),
+    radial-gradient(circle at 60% 55%, #3f6b4a 0 22%, transparent 23%),
+    radial-gradient(circle at 30% 70%, #3f6b4a 0 14%, transparent 15%),
+    #1f5a86;
+  box-shadow: inset -5px -4px 8px rgba(10, 20, 30, .5);
+}
+.gec-case__globe::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 26px;
+  height: 22px;
+  margin-left: -13px;
+  background: linear-gradient(180deg, transparent 0 8px, var(--brass) 8px 11px, transparent 11px), linear-gradient(90deg, transparent 11px, var(--brass) 11px 15px, transparent 15px);
+  border-bottom: 5px solid #9c7a2e;
+  border-radius: 2px;
+}
+.gec-case__globe i { display: none; }
+/* a potted plant */
+.gec-case__plant { position: relative; width: 46px; height: 66px; }
+.gec-case__plant::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  bottom: 0;
+  width: 28px;
+  height: 24px;
+  border-radius: 3px 3px 8px 8px;
+  background: linear-gradient(90deg, #8c3b22, #c0613a 40%, #8c3b22);
+}
+.gec-case__plant i {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  width: 16px;
+  height: 36px;
+  margin-left: -8px;
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  background: linear-gradient(180deg, #5f8f4e, #2f5a2c);
+  transform-origin: 50% 100%;
+}
+.gec-case__plant i:nth-child(1) { transform: rotate(-32deg); }
+.gec-case__plant i:nth-child(3) { transform: rotate(30deg); height: 30px; }
+
+/* Lower shelf: books sit between the posts, flanked by brass bookends. */
+[data-variant='bookcase'] [data-gec-shelf-row] { padding: 0 28px; gap: 6px; justify-content: center; }
+[data-variant='bookcase'] [data-gec-shelf-row]::before,
+[data-variant='bookcase'] [data-gec-shelf-row]::after {
+  content: '';
+  flex: none;
+  width: 12px;
+  height: 118px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, #9c7a2e, #e3c574 45%, var(--brass) 70%, #9c7a2e);
+  box-shadow: 0 6px 10px rgba(20, 10, 5, .45);
+}
+
+/* Ledge: walnut plank with a brass label instead of the pale archive ledge. */
+[data-variant='bookcase'] [data-shelf-ledge] > :nth-child(1) {
+  height: 10px;
+  background: linear-gradient(180deg, #c39a6e, #a57a52);
+  border-top: 0;
+}
+[data-variant='bookcase'] [data-shelf-ledge] > :nth-child(2) {
+  height: 26px;
+  background: linear-gradient(180deg, var(--walnut-hi), var(--walnut) 55%, var(--walnut-lo));
+  border-top: 1px solid rgba(255, 230, 190, .3);
+}
+[data-variant='bookcase'] [data-shelf-ledge] > :nth-child(2) span {
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #e3c574, var(--brass) 55%, #9c7a2e);
+  color: #3b2314;
+  font-size: 8px;
+}
+[data-variant='bookcase'] [data-shelf-ledge] > :nth-child(3) {
+  height: 8px;
+  background: linear-gradient(180deg, rgba(20, 10, 5, .55), transparent);
+}
+.gec-case__plinth {
+  position: relative;
+  z-index: 2;
+  height: 22px;
+  background: linear-gradient(180deg, var(--walnut-lo), var(--walnut-deep));
+  box-shadow: inset 0 1px 0 rgba(255, 230, 190, .15);
+}
+
+@keyframes gec-shelf-drop {
+  0% { opacity: 0; transform: translateY(-56px) rotate(-4deg); }
+  60% { opacity: 1; transform: translateY(4px) rotate(0.6deg); }
+  100% { opacity: 1; transform: none; }
+}

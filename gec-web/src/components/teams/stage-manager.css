@@ -1,0 +1,1027 @@
+/* ==========================================================================
+   TEAMS STAGE MANAGER — Editorial polish on top of styled.html spec.
+   Sidebar rail is the macOS Stage-Manager 3D-tilted stack:
+     rotateY(10deg) with per-team --preview-scale & --preview-opacity,
+     sticky at top, active card hidden (it's on the canvas).
+   ========================================================================== */
+
+.team-stage-wrapper {
+  position: relative;
+  width: 100%;
+  --gec-canvas: #FCF8ED;
+  --gec-surface-sand: #F4E2CA;
+  --gec-surface-card: #FFFDF8;
+  --gec-crimson: #A3040F;
+  --gec-crimson-act: #C62F29;
+  --gec-gold: #FBCA05;
+  --gec-blue: #1F7EC0;
+  --gec-ink: #222222;
+  --gec-ink-muted: #5F5650;
+  --gec-ink-subtle: #8A817A;
+  --gec-border: rgba(163, 4, 15, 0.16);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-x: clip;
+}
+
+/* Section container — sticky to screen, locked in place */
+.team-stage-manager-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  column-gap: 32px;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #FFFDF8 0%, #FCF8ED 100%);
+  border: 1px solid rgba(163, 4, 15, 0.1);
+  box-shadow: 0 4px 24px rgba(34, 34, 34, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  isolation: isolate;
+  position: relative;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+@media (min-width: 640px) {
+  .team-stage-manager-section { padding: 28px 32px; }
+}
+
+/* Remove all scrollbars across all stage manager elements */
+.team-stage-manager-section,
+.team-stage-manager-section *,
+.teams-horizontal-stack,
+.detail-canvas,
+.team-item-card {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.team-stage-manager-section::-webkit-scrollbar,
+.team-stage-manager-section *::-webkit-scrollbar,
+.teams-horizontal-stack::-webkit-scrollbar,
+.detail-canvas::-webkit-scrollbar,
+.team-item-card::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.stage-status-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.stage-status-label {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.stage-status-dim { color: var(--gec-ink-subtle); }
+.stage-status-name { color: var(--gec-crimson); }
+
+.stage-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gec-ink);
+  background: #FFFDF8;
+  border: 1px solid rgba(163, 4, 15, 0.2);
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.stage-mode-toggle:hover { background: #FFFFFF; border-color: var(--gec-crimson); color: var(--gec-crimson); }
+
+/* ================= ROSTER (full-width column) ================= */
+.teams-horizontal-stack {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.team-item-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.5fr) minmax(140px, auto);
+  align-items: center;
+  gap: 24px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(163, 4, 15, 0.14);
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF8 100%);
+  box-shadow: 0 1px 2px rgba(34, 34, 34, 0.03), 0 8px 24px rgba(34, 34, 34, 0.035);
+  cursor: pointer;
+  position: relative;
+  transform-origin: left center;
+  transition: transform 320ms var(--ease-spring), box-shadow 240ms ease, border-color 200ms ease;
+}
+/* Mid-range: narrow but 3-column still possible */
+@media (min-width: 901px) and (max-width: 1180px) {
+  .team-item-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 18px;
+    padding: 18px 20px;
+  }
+  .team-card-action { grid-column: 1 / -1; text-align: left; }
+  .team-action-button { width: auto; padding: 0 20px; }
+}
+.team-item-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(163, 4, 15, 0.4);
+  box-shadow: 0 6px 14px rgba(34, 34, 34, 0.04), 0 18px 40px rgba(163, 4, 15, 0.09);
+}
+.team-item-card:focus-visible {
+  outline: 2px solid var(--gec-crimson);
+  outline-offset: 3px;
+}
+
+.team-card-identity { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+
+.team-card-meta-top {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.team-card-num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--gec-crimson);
+  background: rgba(163, 4, 15, 0.08);
+  border: 1px solid rgba(163, 4, 15, 0.22);
+  border-radius: 6px;
+  padding: 2px 8px;
+  line-height: 1.1;
+}
+.team-role-tag {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.team-card-hover-cue {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gec-crimson);
+  letter-spacing: 0.08em;
+  margin-left: auto;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.team-item-card:hover .team-card-hover-cue { opacity: 1; transform: translateX(0); }
+
+.team-card-title {
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 900;
+  color: var(--gec-ink);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 4px 0 2px;
+}
+.team-card-desc {
+  font-size: 13px;
+  color: var(--gec-ink-muted);
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.team-card-meta-bottom {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--gec-ink-muted);
+}
+.team-meta-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-weight: 600; color: var(--gec-ink);
+}
+.team-meta-badge svg { color: var(--gec-crimson); }
+.team-meta-sep { color: rgba(34, 34, 34, 0.3); font-weight: 700; }
+.team-meta-subtle { color: var(--gec-ink-subtle); }
+
+.team-card-responsibilities { min-width: 0; }
+.team-pillars-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.team-pillars-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gec-ink-subtle);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.team-pillars-count-tag {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--gec-crimson);
+  background: rgba(163, 4, 15, 0.08);
+  padding: 2px 7px;
+  border-radius: 6px;
+  letter-spacing: 0.06em;
+}
+.team-chips-container {
+  display: flex; flex-wrap: wrap; gap: 5px;
+}
+.team-focus-tag {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--gec-ink);
+  background: rgba(34, 34, 34, 0.05);
+  border: 1px solid rgba(34, 34, 34, 0.14);
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+
+.team-card-action { text-align: right; }
+.team-action-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 42px; width: 100%;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #FFFDF8;
+  background: var(--gec-crimson);
+  border: 1.5px solid var(--gec-crimson);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.team-action-button:hover { background: var(--gec-crimson-act); border-color: var(--gec-crimson-act); }
+.team-action-button:active { transform: scale(0.98); }
+
+/* Role tags & action slot */
+.element-role-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.role-gold { background: #FBCA05; color: #222222; }
+.role-crimson { background: #A3040F; color: #FFFFFF; }
+.role-orange { background: #F97316; color: #FFFFFF; }
+.role-burgundy { background: #7B020B; color: #FFFFFF; }
+.role-blue { background: #1F7EC0; color: #FFFFFF; }
+.role-slate { background: #334155; color: #FFFFFF; }
+.role-bronze { background: #854D0E; color: #FFFFFF; }
+
+.dim-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--gec-ink-subtle, #8A817A);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wf-action-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
+  user-select: none;
+}
+.action-fill-crimson {
+  background: var(--gec-crimson);
+  color: #FFFDF8;
+  border: 1.5px solid var(--gec-crimson);
+}
+.wf-action-slot:hover {
+  background: var(--gec-crimson-act);
+  border-color: var(--gec-crimson-act);
+}
+.wf-action-slot:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 900px) {
+  .team-item-card { grid-template-columns: 1fr; gap: 14px; padding: 18px 20px; }
+  .team-card-action { text-align: left; }
+  .team-action-button, .wf-action-slot { width: auto; padding: 0 16px; }
+}
+
+/* ================= DETAIL MODE (3D rail + canvas) ================= */
+.team-stage-manager-section.is-detail-active {
+  grid-template-columns: minmax(148px, 20%) minmax(0, 62%);
+  grid-template-rows: auto 1fr;
+  justify-content: start;
+  column-gap: 10%;
+  row-gap: 16px;
+  height: 100%;
+  min-height: calc(100vh - 100px); /* tall stage so the canvas can sit centered */
+  max-height: 100%;
+  overflow: hidden;
+}
+@media (max-width: 900px) {
+  .team-stage-manager-section.is-detail-active {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+}
+
+.team-stage-manager-section.is-detail-active .stage-status-bar {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+/* Sidebar rail — strictly NOT scrollable, no scrollbars */
+.team-stage-manager-section.is-detail-active .teams-horizontal-stack {
+  grid-column: 1;
+  grid-row: 2;
+  position: relative;
+  top: 0;
+  gap: 8px;
+  padding: 4px 4px 4px 0;
+  perspective: 1200px;
+  perspective-origin: left center;
+  transform-style: preserve-3d;
+  height: 100%;
+  max-height: calc(100vh - 100px);
+  overflow: visible !important;
+  overflow-y: visible !important;
+  overflow-x: visible !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Compact card in rail mode */
+.team-stage-manager-section.is-detail-active .team-item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 8px 12px;
+  grid-template-columns: none;
+  opacity: var(--preview-opacity, 0.9);
+  transform: rotateY(8deg) scale(var(--preview-scale, 0.96));
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  transition: transform 300ms var(--ease-spring), opacity 240ms ease, border-color 200ms ease, box-shadow 240ms ease;
+  box-shadow: 0 4px 16px rgba(34, 34, 34, 0.06);
+}
+.team-stage-manager-section.is-detail-active .team-item-card:hover,
+.team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
+  z-index: 5;
+  opacity: 1;
+  transform: translate3d(8px, 0, 0) rotateY(0deg) scale(1.02);
+  border-color: var(--gec-crimson);
+  box-shadow: 0 12px 30px rgba(163, 4, 15, 0.14);
+}
+/* Active card is HIDDEN from rail — it's on the canvas */
+.team-stage-manager-section.is-detail-active .team-item-card.is-active-team { display: none; }
+
+/* In compact rail — hide long desc and bottom meta, keep top num + role + title + chips */
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-desc,
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-meta-bottom,
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-responsibilities,
+.team-stage-manager-section.is-detail-active .team-item-card .team-pillars-header,
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-action,
+.team-stage-manager-section.is-detail-active .team-item-card .element-role-tag,
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-hover-cue {
+  display: none;
+}
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.18;
+  margin: 3px 0 0;
+}
+.team-stage-manager-section.is-detail-active .team-item-card .team-chips-container {
+  gap: 3px;
+  margin-top: 2px;
+  max-height: 38px;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+}
+.team-stage-manager-section.is-detail-active .team-item-card .team-focus-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+@media (max-width: 1100px) {
+  .team-stage-manager-section.is-detail-active {
+    grid-template-columns: minmax(148px, 20%) minmax(0, 62%);
+    column-gap: 10%;
+    row-gap: 16px;
+  }
+  .team-stage-manager-section.is-detail-active .team-item-card {
+    max-width: 100%;
+    transform: rotateY(16deg) scale(var(--preview-scale, 0.95));
+  }
+}
+@media (max-width: 900px) {
+  .team-stage-manager-section.is-detail-active .teams-horizontal-stack {
+    position: static;
+    max-height: none;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 10px;
+    padding: 6px 4px 14px;
+    perspective: 1000px;
+    scrollbar-width: none !important;
+  }
+  .team-stage-manager-section.is-detail-active .teams-horizontal-stack::-webkit-scrollbar { display: none !important; }
+  .team-stage-manager-section.is-detail-active .team-item-card {
+    flex: 0 0 180px;
+    max-width: 180px;
+    min-height: 84px;
+    transform: rotateY(8deg) scale(0.96);
+    padding: 8px 10px;
+  }
+}
+
+/* ---- Rail card skin: team-coloured gradient + line emblem (detail mode only) ---- */
+.team-card-halo,
+.team-card-emblem { display: none; }
+
+.team-stage-manager-section.is-detail-active .team-item-card {
+  --c1: #FFDE59; --c2: #F2AE00; --fg: #2A1F00; --glow: rgba(242, 174, 0, 0.55);
+  overflow: hidden;
+  isolation: isolate;
+  opacity: 1;
+  color: var(--fg);
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%);
+  box-shadow: 0 10px 18px -10px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  padding-right: 76px;
+}
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="2"] { --c1: #D3202C; --c2: #7E020B; --fg: #FFF4EC; --glow: rgba(163, 4, 15, 0.55); }
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="3"] { --c1: #FF9448; --c2: #E0520A; --fg: #FFF7EE; --glow: rgba(249, 115, 22, 0.55); }
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="4"] { --c1: #9A2A38; --c2: #4A0B14; --fg: #FFE9D6; --glow: rgba(112, 26, 36, 0.6); }
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="5"] { --c1: #46A6EA; --c2: #135A8E; --fg: #F2FAFF; --glow: rgba(31, 126, 192, 0.55); }
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="6"] { --c1: #56677F; --c2: #1B2536; --fg: #E8F0FF; --glow: rgba(30, 41, 59, 0.55); }
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="7"] { --c1: #BC7422; --c2: #633406; --fg: #FFF3DF; --glow: rgba(133, 77, 14, 0.55); }
+
+/* dot texture fading toward the emblem */
+.team-stage-manager-section.is-detail-active .team-item-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.28;
+  background-image: radial-gradient(currentColor 1px, transparent 1.3px);
+  background-size: 9px 9px;
+  -webkit-mask-image: linear-gradient(100deg, transparent 30%, #000 95%);
+  mask-image: linear-gradient(100deg, transparent 30%, #000 95%);
+  pointer-events: none;
+}
+/* light sheen that sweeps across on hover */
+.team-stage-manager-section.is-detail-active .team-item-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 700ms ease;
+  pointer-events: none;
+}
+.team-stage-manager-section.is-detail-active .team-item-card:hover,
+.team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
+  border-color: transparent;
+  box-shadow: 0 18px 28px -12px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.team-stage-manager-section.is-detail-active .team-item-card:focus-visible {
+  outline: 2px solid var(--c2);
+  outline-offset: 3px;
+}
+.team-stage-manager-section.is-detail-active .team-item-card:hover::after,
+.team-stage-manager-section.is-detail-active .team-item-card:focus-visible::after { transform: translateX(120%); }
+
+.team-stage-manager-section.is-detail-active .team-card-halo {
+  display: block;
+  position: absolute;
+  right: -30px;
+  bottom: -36px;
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  z-index: -1;
+  transition: transform 450ms ease;
+}
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="1"] .team-card-halo { background: rgba(255, 255, 255, 0.3); }
+.team-stage-manager-section.is-detail-active .team-card-emblem {
+  display: block;
+  position: absolute;
+  right: -10px;
+  bottom: -14px;
+  width: 96px;
+  height: 96px;
+  opacity: 0.95;
+  transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1.3);
+}
+.team-card-emblem .s { fill: rgba(255, 255, 255, 0.28); }
+.team-card-emblem .f { fill: currentColor; stroke: none; }
+.team-stage-manager-section.is-detail-active .team-item-card:hover .team-card-emblem,
+.team-stage-manager-section.is-detail-active .team-item-card:focus-visible .team-card-emblem { transform: rotate(-10deg) scale(1.12); }
+.team-stage-manager-section.is-detail-active .team-item-card:hover .team-card-halo,
+.team-stage-manager-section.is-detail-active .team-item-card:focus-visible .team-card-halo { transform: scale(1.2); }
+
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-num {
+  align-self: flex-start;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+  font-size: 10px;
+  padding: 1px 6px;
+}
+.team-stage-manager-section.is-detail-active .team-item-card[data-team-index="1"] .team-card-num {
+  background: rgba(42, 31, 0, 0.08);
+  border-color: rgba(42, 31, 0, 0.2);
+}
+.team-stage-manager-section.is-detail-active .team-item-card .team-card-title {
+  color: inherit;
+  font-size: 13px;
+}
+.team-stage-manager-section.is-detail-active .team-item-card .team-chips-container { display: none; }
+
+/* ================= DETAIL CANVAS ================= */
+.detail-canvas {
+  grid-column: 2;
+  grid-row: 2;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: calc(100vh - 100px);
+  align-self: center;
+  overflow: hidden;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  animation: canvasIn 400ms var(--ease-spring);
+  /* Bordered card wrapper — matches the visual language of team-item-card */
+  background: linear-gradient(160deg, #FFFFFF 0%, #FFFDF8 100%);
+  border: 1px solid rgba(163, 4, 15, 0.14);
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(34, 34, 34, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.4vh, 20px);
+}
+.detail-canvas::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Roster mode (full list) — also remove scrollbars */
+.team-stage-manager-section:not(.is-detail-active) .teams-horizontal-stack {
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding-bottom: 24px;
+}
+.team-stage-manager-section:not(.is-detail-active) .teams-horizontal-stack::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+@media (min-width: 640px) {
+  .detail-canvas { padding: 28px 32px; }
+}
+@media (max-width: 900px) {
+  .detail-canvas {
+    grid-column: 1;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    overflow: visible;
+    margin-top: 24px;
+    padding: 20px;
+  }
+}
+.team-stage-manager-section:not(.is-detail-active) .detail-canvas { display: none; }
+
+@keyframes canvasIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Bento board inside the canvas ---- */
+.detail-bento {
+  --team-accent: #FBCA05;
+  display: grid;
+  /* Col 1 wider / col 2 narrower (hero spans both, so it keeps its width): gives the
+     coordinator portraits a ~3:4 shape instead of thin slivers. */
+  grid-template-columns: 1.5fr 0.7fr 0.9fr 0.95fr;
+  /* Bottom row sizes to the coordinator portraits; the top rows share what's left. */
+  grid-template-rows: 1.25fr 1fr auto;
+  gap: 12px;
+  height: clamp(460px, calc(100vh - 230px), 720px);
+  min-height: 0;
+}
+.detail-bento > * {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.bento-hero {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 22px;
+  background-size: cover;
+  background-position: center;
+}
+.detail-hero-tag {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  margin-bottom: auto;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.detail-hero-title {
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(22px, 2.6vw, 36px);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: #FFFDF8;
+  text-wrap: balance;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+.detail-hero-desc {
+  max-width: 56ch;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 253, 248, 0.88);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* Portrait tiles — team lead and coordinators share one style */
+.bento-portrait {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(140deg, #A3040F, #7A020B);
+  color: #FFFDF8;
+}
+.bento-portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(20, 15, 15, 0) 40%, rgba(20, 15, 15, 0.85) 100%);
+  pointer-events: none;
+}
+.bento-portrait img { transition: transform 400ms var(--ease-spring); }
+.bento-portrait:hover img { transform: scale(1.04); }
+.bento-portrait-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 12px;
+  min-width: 0;
+}
+.bento-portrait-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #FBCA05;
+}
+.bento-portrait-name {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bento-portrait-role { font-size: 11px; opacity: 0.8; line-height: 1.3; }
+.bento-lead { grid-column: 3; grid-row: 1; border-radius: 14px; }
+
+.bento-apply {
+  grid-column: 4;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  background: var(--gec-crimson);
+  color: #FFFDF8;
+}
+.bento-apply::before {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+.bento-apply-eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.bento-apply-title {
+  font-size: clamp(18px, 1.7vw, 23px);
+  font-weight: 900;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+}
+.bento-apply-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  font-size: 12px;
+  font-weight: 600;
+}
+.bento-apply-live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34D399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+}
+.bento-apply-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #FFFDF8;
+  color: var(--gec-crimson);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.bento-apply-btn:hover { background: #FFFFFF; }
+.bento-apply-btn:active { transform: scale(0.97); }
+.bento-apply-btn:focus-visible { outline: 2px solid #FBCA05; outline-offset: 2px; }
+
+.bento-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #FFFFFF;
+  border: 1px solid rgba(163, 4, 15, 0.14);
+}
+.bento-panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bento-panel-head h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--gec-ink);
+}
+.bento-panel-head span {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--gec-ink-subtle);
+}
+
+.bento-pillars { grid-column: 3 / 5; grid-row: 2; }
+.bento-pillars ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bento-pillars li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--team-accent);
+}
+.bento-pillars .pillar-name {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--gec-ink);
+}
+.bento-pillars .pillar-desc {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--gec-ink-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.bento-coords { grid-column: 1; grid-row: 3; padding: 10px; gap: 8px; }
+.bento-coords .bento-panel-head { padding: 0 4px; }
+.bento-coords ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Passport-photo tiles (35×45mm = 7:9), always filling the panel width 3-across. */
+.coord-portrait {
+  aspect-ratio: 7 / 9;
+  border-radius: 10px;
+}
+.coord-portrait .bento-portrait-text { padding: 8px; }
+/* Panel header already says "Coordinators" — the per-tile role label only truncates here */
+.coord-portrait .bento-portrait-label { display: none; }
+.coord-portrait .bento-portrait-name {
+  font-size: 13px;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.coord-initials {
+  position: absolute;
+  inset: 0 0 30% 0;
+  display: grid;
+  place-items: center;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: clamp(18px, 1.8vw, 28px);
+  font-weight: 700;
+  color: rgba(252, 248, 237, 0.9);
+}
+
+.bento-gallery {
+  grid-row: 3;
+  background: #F4E2CA;
+  transition: transform 260ms var(--ease-spring);
+}
+.bento-gallery::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(20, 15, 15, 0.55));
+  pointer-events: none;
+}
+.bento-gallery:hover { transform: scale(1.02); z-index: 2; }
+.bento-gallery-1 { grid-column: 2; }
+.bento-gallery-2 { grid-column: 3; }
+.bento-gallery-3 { grid-column: 4; }
+.bento-gallery-cap {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  z-index: 1;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 253, 248, 0.92);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 900px) {
+  .detail-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    height: auto;
+  }
+  .bento-hero { grid-column: 1 / -1; grid-row: auto; min-height: 280px; }
+  .bento-lead,
+  .bento-apply { grid-column: auto; grid-row: auto; min-height: 210px; }
+  .bento-pillars,
+  .bento-coords { grid-column: 1 / -1; grid-row: auto; }
+  .bento-gallery { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 3; }
+  .bento-gallery-1 { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+}
+@media (max-width: 520px) {
+  .bento-pillars ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+::view-transition-group(*) {
+  animation-duration: 600ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(team-detail) { animation: 220ms ease both team-detail-out; }
+::view-transition-new(team-detail) { animation: 500ms 100ms cubic-bezier(0.22, 1, 0.36, 1) both team-detail-in; }
+@keyframes team-detail-in {
+  from { opacity: 0; transform: translate3d(40px, 0, 0) scale(0.985); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes team-detail-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Base view-transition-name per rail card so roster ↔ rail morphs stay linked */
+.team-item-card[data-team-index="1"] { view-transition-name: team-card-1; }
+.team-item-card[data-team-index="2"] { view-transition-name: team-card-2; }
+.team-item-card[data-team-index="3"] { view-transition-name: team-card-3; }
+.team-item-card[data-team-index="4"] { view-transition-name: team-card-4; }
+.team-item-card[data-team-index="5"] { view-transition-name: team-card-5; }
+.team-item-card[data-team-index="6"] { view-transition-name: team-card-6; }
+.team-item-card[data-team-index="7"] { view-transition-name: team-card-7; }
+#team-detail-blueprint { view-transition-name: team-detail; }
+.teams-horizontal-stack { view-transition-name: teams-roster; }
+
+@media (prefers-reduced-motion: reduce) {
+  .team-item-card, .team-card-emblem, .bento-gallery, .bento-portrait img {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Watercolor shader behind the stage; a touch stronger than the hero so the white cards lift off it. */
+.team-stage-manager-section > .gec-shader-layer { --gec-shader-strength: 0.4; }

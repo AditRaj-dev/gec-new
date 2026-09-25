@@ -1,0 +1,96 @@
+/* Partners — styled.html 2956–3008. */
+
+.partners__intro {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 32px;
+}
+
+.partners__heading {
+  color: var(--gec-ink);
+  margin-top: 6px;
+}
+
+.partners__lede {
+  margin: 8px auto 0;
+}
+
+.partners__anchor {
+  max-width: 720px;
+  margin: 0 auto 24px;
+  text-align: center;
+  padding: 28px;
+  border: 1.5px solid var(--gec-crimson);
+}
+
+.partners__anchor-badge {
+  margin-bottom: 10px;
+}
+
+.partners__anchor-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gec-crimson);
+  margin-bottom: 4px;
+}
+
+.partners__anchor-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gec-ink);
+}
+
+.partners__anchor-desc {
+  font-size: 12px;
+  color: var(--gec-ink-muted);
+  margin-top: 6px;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.partners__logo-name {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--gec-crimson);
+}
+
+.partners__logo-tag {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--gec-ink-muted);
+}
+
+/* Wide screens: scale with the viewport (laptop untouched). */
+@media (min-width: 1600px) {
+  .partners__intro { max-width: min(50vw, 1000px); margin-bottom: clamp(32px, 2.6vw, 56px); }
+  .partners .editorial-kicker { font-size: clamp(11px, 0.7vw, 14px); }
+  .partners__lede { font-size: clamp(15px, 1vw, 20px); }
+  .partners__anchor { max-width: min(52vw, 1100px); padding: clamp(28px, 2.4vw, 52px); margin-bottom: clamp(24px, 1.8vw, 40px); }
+  .partners__anchor-badge { font-size: clamp(10px, 0.6vw, 13px); padding: 0.4em 1em; }
+  .partners__anchor-name { font-size: clamp(22px, 2vw, 42px); }
+  .partners__anchor-title { font-size: clamp(13px, 1vw, 20px); }
+  .partners__anchor-desc { font-size: clamp(12px, 0.85vw, 17px); max-width: 60ch; }
+  .partners .partner-logos-strip { gap: clamp(16px, 1.2vw, 28px); }
+  .partners .partner-logo-box { height: clamp(84px, 6.5vw, 140px); gap: 4px; }
+  .partners__logo-name { font-size: clamp(14px, 1.05vw, 22px); }
+  .partners__logo-tag { font-size: clamp(10px, 0.65vw, 13px); }
+}
+
+/* Logo slot: fixed box, image contained so any aspect ratio fits. */
+.partners__logo-img {
+  position: relative;
+  width: 70%;
+  height: 48%;
+  margin-bottom: 6px;
+}
+
+.partners__logo-img img { object-fit: contain; }
+
+/* Boxes are links out to each partner. */
+a.partner-logo-box { color: inherit; text-decoration: none; transition: transform 180ms ease, border-color 180ms ease; }
+a.partner-logo-box:hover { transform: translateY(-2px); border-color: var(--gec-crimson); }
+a.partner-logo-box:focus-visible { outline: 2px solid var(--gec-crimson); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { a.partner-logo-box:hover { transform: none; } }

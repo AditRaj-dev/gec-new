@@ -1,0 +1,145 @@
+@import "tailwindcss";
+@import "../styles/gec.css";
+
+:root {
+  /* GEC Calibrated Brand Tokens */
+  --gec-canvas: #FCF8ED;         /* Warm Cream - 60% Main canvas */
+  --gec-surface-sand: #F4E2CA;   /* Soft Sand - Secondary rhythm */
+  --gec-surface-card: #FFFDF8;   /* Soft White - Elevated cards */
+  --gec-surface-elevated: #FFFFFF;
+  --gec-crimson: #A3040F;        /* GEC Crimson - 25% Primary brand */
+  --gec-crimson-act: #C62F29;    /* Bright Action Red */
+  --gec-gold: #FBCA05;           /* GEC Gold - 4% Controlled accent */
+  --gec-blue: #1F7EC0;           /* GEC Blue - 2% Tech accent */
+  --gec-ink: #222222;            /* Deep Charcoal - Body text */
+  --gec-ink-muted: #5F5650;      /* Warm Grey Muted text */
+  --gec-ink-subtle: #8A817A;     /* Subtle captions */
+  --gec-border-subtle: rgba(163, 4, 15, 0.16);
+  --gec-border-strong: #A3040F;
+  --gec-border-ink: rgba(34, 34, 34, 0.18);
+
+  /* Team Accents */
+  --team-startup: #FBCA05;
+  --team-pr: #C62F29;
+  --team-mktg: #E06D1B;
+  --team-event: #7B1113;
+  --team-events: #7B1113;
+  --team-media: #1F7EC0;
+  --team-tech: #222222;
+  --team-career: #D97706;
+
+  /* Blueprint & Guide Tokens */
+  --guide-col: rgba(31, 126, 192, 0.07);
+  --guide-line: rgba(31, 126, 192, 0.22);
+  --guide-dim: #1F7EC0;
+
+  /* Spatial Radii & Shadows */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-ambient: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 1px 2px rgba(34, 34, 34, 0.035), 0 8px 24px rgba(34, 34, 34, 0.045);
+  --shadow-hover: inset 0 1px 0 rgba(255, 255, 255, 0.90), 0 2px 4px rgba(34, 34, 34, 0.04), 0 14px 34px rgba(163, 4, 15, 0.09);
+  --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 1px 2px rgba(34, 34, 34, 0.035), 0 8px 24px rgba(34, 34, 34, 0.05);
+  --shadow-card-refined: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 1px 2px rgba(34, 34, 34, 0.035), 0 8px 24px rgba(34, 34, 34, 0.05);
+  --shadow-card-hover-refined: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 6px rgba(34, 34, 34, 0.04), 0 14px 34px rgba(163, 4, 15, 0.09);
+
+  /* Shader Opacity System (§docs/GEC_Texture_Typography_Shader_Design_Spec.md §25) */
+  --shader-ambient: 0.14;
+  --shader-light: 0.18;
+  --shader-hero: 0.26;
+  --shader-feature: 0.34;
+
+  /* Texture Tokens (§26) */
+  --texture-grain-global: 0.028;
+  --texture-grain-sand: 0.04;
+  --texture-highlight: 0.05;
+  --texture-vignette: 0.025;
+
+  /* Typography Stacks */
+  --font-display: 'Cabinet Grotesk', var(--font-archivo), system-ui, sans-serif;
+  --font-body: var(--font-manrope), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* Motion Curves */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-micro: 180ms;
+  --duration-macro: 320ms;
+
+  /* Temporary compatibility aliases for pre-port components.
+     Remove these as later porting tasks replace the legacy consumers. */
+  --gec-border: var(--gec-border-subtle);
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.5rem, 1.1rem + 1.6vw, 2rem);
+  --text-2xl: clamp(2rem, 1.4rem + 2.6vw, 3rem);
+  --text-3xl: clamp(2.6rem, 1.6rem + 4.2vw, 4.5rem);
+  --text-hero: clamp(3rem, 1.8rem + 5.4vw, 6rem);
+
+  --elev-flush: 0 0 0 1px rgba(163, 4, 15, 0.12);
+  --elev-raised: 0 1px 2px rgba(90, 40, 20, 0.07), 0 2px 5px -2px rgba(90, 40, 20, 0.10);
+  --elev-lifted: 0 1px 1px rgba(90, 40, 20, 0.05), 0 4px 9px -3px rgba(90, 40, 20, 0.13),
+                 0 12px 24px -12px rgba(90, 40, 20, 0.20);
+  --elev-floating: 0 2px 3px rgba(90, 40, 20, 0.07), 0 10px 20px -6px rgba(90, 40, 20, 0.18),
+                   0 26px 48px -18px rgba(90, 40, 20, 0.30);
+
+  --dur-instant: 120ms;
+  --dur-ui: var(--duration-micro);
+  --dur-layout: var(--duration-macro);
+  --dur-act: 480ms;
+  --dur-marquee: 28s;
+  --ease-out: var(--ease-spring);
+  --stagger-card: 40ms;
+}
+
+html { background: var(--gec-canvas); }
+body { background: var(--gec-canvas); color: var(--gec-ink); }
+
+.font-display { font-family: var(--font-display); }
+
+/* Temporary compatibility rules for pre-port components.
+   Remove these as later porting tasks replace the legacy consumers. */
+.gec-stamp {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--gec-crimson);
+}
+.gec-regmark { position: absolute; width: 13px; height: 13px; opacity: 0.5; }
+.gec-regmark::before,
+.gec-regmark::after { content: ''; position: absolute; background: var(--gec-crimson); }
+.gec-regmark::before { width: 100%; height: 1px; top: 0; }
+.gec-regmark::after  { height: 100%; width: 1px; left: 0; }
+
+/* Global paper grain — texture spec §10. One layer for the whole site. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 900;
+  opacity: var(--texture-grain-global, 0.028);
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Route transitions — the `wipe` curtain extended to navigation. */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) {
+  animation: gc-wipe-out var(--duration-macro) var(--ease-spring) both;
+}
+::view-transition-new(root) {
+  animation: gc-wipe-in var(--duration-macro) var(--ease-spring) both;
+}
+@keyframes gc-wipe-out { to { transform: translateX(-6%); opacity: 0; } }
+@keyframes gc-wipe-in  { from { transform: translateX(6%); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+}
