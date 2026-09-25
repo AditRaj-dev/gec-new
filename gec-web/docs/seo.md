@@ -10,7 +10,7 @@ Last updated 2026-09-25. Read with `AGENTS.md`.
 | Title template | `src/app/layout.tsx` | Pages set a short `title`; the layout appends ` \| Galgotias Entrepreneurship Cell`. Don't repeat the suffix in pages. |
 | Canonicals | each `page.tsx` (`alternates.canonical`) | Never set a canonical in the root layout: every page would inherit it. |
 | Open Graph / Twitter | layout (defaults) + `src/app/opengraph-image.tsx` | One branded 1200×630 card for all routes. Stories set `og:type=article`, published time, tags, cover. |
-| Favicon / touch icon | `src/app/icon.png`, `src/app/apple-icon.png` | Generated from `public/gec-full-logo.svg`. |
+| Favicon / touch icon | `src/app/favicon.ico` (16/32/48), `src/app/icon.png` (512), `src/app/apple-icon.png` (180) | The swirled G from `public/gec-full-logo.svg` (the full logo is unreadable at tab size). |
 | Structured data | home: `Organization` + `WebSite`; stories: `Article` | Built in `src/lib/site.ts`; escaped with `jsonLd()`. Logo: `public/gec-logo-512.png` (≥112px, white background, per Google). |
 | `/sitemap.xml` | `src/app/sitemap.ts` | 5 routes + every story from `getStories()`. |
 | `/robots.txt` | `src/app/robots.ts` | Allows all crawlers (including AI crawlers), blocks `/api/`, points to the sitemap. |
