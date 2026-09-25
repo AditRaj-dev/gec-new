@@ -34,7 +34,7 @@ export function getApiBaseUrl(): string {
  * Generic fetch wrapper with next cache tags and robust fallback behavior.
  * Never throws an unhandled exception so the public website is guaranteed to never crash.
  */
-async function fetchPublishedProjection<T>(
+export async function fetchPublishedProjection<T>(
   endpoint: string,
   tag: string,
   fallbackData: T
