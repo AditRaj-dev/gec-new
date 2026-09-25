@@ -33,6 +33,9 @@ export default async function StoriesPage() {
   // Featured = newest story, spread = the next three (route layouts plan, defaults).
   const [featured, ...more] = storiesData.map(withStoryContent);
   const spread = more.slice(0, 3);
+  // headingLine1/headingLine2 are copy-layer-only fields (not real FinalCta props); keep them
+  // out of the spread below and rebuild the two-line heading markup here instead.
+  const { headingLine1, headingLine2, ...finalCtaProps } = cta;
 
   return (
     <main aria-label="GEC Stories">
@@ -155,12 +158,12 @@ export default async function StoriesPage() {
       </section>
 
       <FinalCta
-        {...cta}
+        {...finalCtaProps}
         heading={
           <>
-            Built Something at Galgotias?
+            {headingLine1}
             <br />
-            <span className="final-cta__heading-accent">Tell Us the Story.</span>
+            <span className="final-cta__heading-accent">{headingLine2}</span>
           </>
         }
       />
