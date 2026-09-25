@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import * as fs from 'fs';
-import * as path from 'path';
+// Imported as a module (not read via fs) so `nest build` copies it into dist/
+// next to the compiled file — the seed data ships inside dist, no runtime fs
+// path back into src required.
+import siteContentSeed from './site-content.json';
 
 export type SeedFile = { singletons: Record<string, object>; lists: Record<string, object[]> };
 type ContentLike = {
@@ -44,7 +46,7 @@ if (require.main === module) {
     const { AppModule } = await import('../../app.module');
     const { ContentService } = await import('../../modules/content/content.service');
     const app = await NestFactory.createApplicationContext(AppModule, { logger: ['error', 'warn'] });
-    const seed: SeedFile = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../src/database/seeds/site-content.json'), 'utf8'));
+    const seed = siteContentSeed as unknown as SeedFile;
     const r = await seedSiteContent(app.get(ContentService), seed, console.log);
     console.log(`done: ${r.created.length} created, ${r.skipped.length} skipped`);
     await app.close();
