@@ -9,9 +9,10 @@ import { TeamFan } from '@/components/teams/TeamFan';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import { isLive } from '@/lib/act';
 import { useIsPhone } from '@/lib/useIsPhone';
+import type { TeamStageData } from '@/lib/teamsData';
 import './act-intro.css';
 
-function StageManager({ progress, initialTeamIndex }: { progress: MotionValue<number>; initialTeamIndex?: number }) {
+function StageManager({ progress, initialTeamIndex, teams }: { progress: MotionValue<number>; initialTeamIndex?: number; teams: TeamStageData[] }) {
   const root = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const [entered, setEntered] = useState(false);
@@ -32,7 +33,7 @@ function StageManager({ progress, initialTeamIndex }: { progress: MotionValue<nu
 
   return (
     <div ref={root} className="stage-act__manager" data-entered={entered || undefined}>
-      <TeamStageManager showHero={false} initialTeamIndex={initialTeamIndex} />
+      <TeamStageManager showHero={false} initialTeamIndex={initialTeamIndex} teams={teams} />
     </div>
   );
 }
@@ -41,28 +42,28 @@ function StageManager({ progress, initialTeamIndex }: { progress: MotionValue<nu
  * The pinned Stage Manager runway on its own; /teams uses this without the home curtain and intro.
  * Phones get the team fan instead — the Stage Manager never mounts there.
  */
-export function StageRunway({ initialTeamIndex }: { initialTeamIndex?: number }) {
+export function StageRunway({ initialTeamIndex, teams }: { initialTeamIndex?: number; teams: TeamStageData[] }) {
   const phone = useIsPhone();
   if (phone) {
     return (
       <section id="stage" aria-label="the teams stage" data-surface="sand" className="surface-sand act-phone">
-        <TeamFan initialTeamIndex={initialTeamIndex} />
+        <TeamFan initialTeamIndex={initialTeamIndex} teams={teams} />
       </section>
     );
   }
   return (
     <FullViewportAct surface="sand" runway={2.4} label="the teams stage" id="stage">
-      {(progress) => <StageManager progress={progress} initialTeamIndex={initialTeamIndex} />}
+      {(progress) => <StageManager progress={progress} initialTeamIndex={initialTeamIndex} teams={teams} />}
     </FullViewportAct>
   );
 }
 
-export function StageAct({ teamCount }: { teamCount: number }) {
+export function StageAct({ teams }: { teams: TeamStageData[] }) {
   return (
     <div className="home-act">
       <CurtainInterstitial
         headline="The people behind all of it."
-        count={teamCount}
+        count={teams.length}
         noun="teams"
         effect="doors-h"
       />
@@ -78,7 +79,7 @@ export function StageAct({ teamCount }: { teamCount: number }) {
           </p>
         </div>
       </div>
-      <StageRunway />
+      <StageRunway teams={teams} />
       <div className="act-exit surface-sand">
         <ViewTransitionLink href="/teams" className="gec-btn btn-outline-ink">
           Meet the Teams →

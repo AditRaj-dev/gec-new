@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { RouteHero } from '@/components/route/RouteHero';
 import { StageRunway } from '@/components/home/StageAct';
 import { FinalCta } from '@/components/home/FinalCta';
-import { GEC_TEAMS } from '@/lib/teamsData';
+import { getList } from '@/lib/content';
+import { TEAMS_FALLBACK } from '@/content/teams';
 
 export const metadata: Metadata = {
   title: 'The 7 Teams',
@@ -25,7 +26,8 @@ const TEAM_PILLS = [
 export default async function TeamsPage({ searchParams }: { searchParams: Promise<{ team?: string }> }) {
   const { team } = await searchParams;
   const n = Number(team);
-  const initialTeamIndex = GEC_TEAMS.some((t) => t.index === n) ? n : undefined;
+  const teams = await getList('team-stage', TEAMS_FALLBACK);
+  const initialTeamIndex = teams.some((t) => t.index === n) ? n : undefined;
 
   return (
     <main aria-label="GEC Teams">
@@ -36,7 +38,7 @@ export default async function TeamsPage({ searchParams }: { searchParams: Promis
         lede="Different skills. Different responsibilities. One entrepreneurial ecosystem. Behind every event, startup initiative, campaign, partnership, and opportunity is a team of students making it happen."
         aside={
           <>
-            <div className="rt-stat">0{GEC_TEAMS.length}</div>
+            <div className="rt-stat">0{teams.length}</div>
             <div className="rt-mono rt-muted">Teams · 1 vision</div>
           </>
         }
@@ -50,7 +52,7 @@ export default async function TeamsPage({ searchParams }: { searchParams: Promis
         </nav>
       </RouteHero>
 
-      <StageRunway key={initialTeamIndex ?? 1} initialTeamIndex={initialTeamIndex} />
+      <StageRunway key={initialTeamIndex ?? 1} initialTeamIndex={initialTeamIndex} teams={teams} />
 
       <FinalCta
         shader="riso"

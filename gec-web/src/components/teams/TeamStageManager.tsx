@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useId } from 'react';
 import { createPortal, flushSync } from 'react-dom';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import Image from 'next/image';
-import { GEC_TEAMS, TeamStageData } from '@/lib/teamsData';
+import type { TeamStageData } from '@/lib/teamsData';
 import { TeamEmblem } from './TeamEmblem';
 import { submitForm } from '@/lib/api';
 import './stage-manager.css';
@@ -13,7 +13,7 @@ export interface TeamStageManagerProps {
   initialTeamIndex?: number;
   initialMode?: 'detail' | 'roster';
   showHero?: boolean;
-  teams?: TeamStageData[];
+  teams: TeamStageData[];
   id?: string;
   onApplyClick?: (team: TeamStageData) => void;
 }
@@ -32,7 +32,7 @@ export function TeamStageManager({
   initialTeamIndex = 1,
   initialMode = 'detail',
   showHero = true,
-  teams = GEC_TEAMS,
+  teams,
   id = 'teams-stage-manager',
   onApplyClick,
 }: TeamStageManagerProps) {

@@ -1,25 +1,24 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Blinds, type BlindsItem } from 'feral-blinds';
 import 'feral-blinds/blinds.css';
-import { GEC_TEAMS } from '@/lib/teamsData';
+import type { TeamStageData } from '@/lib/teamsData';
 import './team-fan.css';
-
-const ITEMS: BlindsItem[] = GEC_TEAMS.map((t) => ({ title: t.shortName, subtitle: t.roleTag, image: t.heroImage }));
 
 /**
  * Phone recomposition of the Stage Manager: the seven teams as a fan of cards (feral-blinds).
  * Tap a card to open it; tap the open card again for the team sheet. Rendered by StageRunway below 769px.
  * `initialTeamIndex` is the 1-based team index used by /teams?team=N.
  */
-export function TeamFan({ initialTeamIndex }: { initialTeamIndex?: number }) {
+export function TeamFan({ teams, initialTeamIndex }: { teams: TeamStageData[]; initialTeamIndex?: number }) {
+  const items = useMemo<BlindsItem[]>(() => teams.map((t) => ({ title: t.shortName, subtitle: t.roleTag, image: t.heroImage })), [teams]);
   const rootRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLDialogElement>(null);
   const [active, setActive] = useState<number | null>(null);
-  const start = GEC_TEAMS.findIndex((t) => t.index === initialTeamIndex);
-  const team = active === null ? null : GEC_TEAMS[active];
+  const start = teams.findIndex((t) => t.index === initialTeamIndex);
+  const team = active === null ? null : teams[active];
 
   // Entrance: fade the fan up once it scrolls into view (team-fan.css).
   useEffect(() => {
@@ -42,7 +41,7 @@ export function TeamFan({ initialTeamIndex }: { initialTeamIndex?: number }) {
     <div ref={rootRef} className="team-fan">
       <div className="team-fan__stage">
         <Blinds
-          items={ITEMS}
+          items={items}
           mode="fan"
           labelStyle="steady"
           labelPosition="bottom"

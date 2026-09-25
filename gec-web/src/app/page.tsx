@@ -1,4 +1,4 @@
-import { getInitiatives, getStories, getTeams } from '@/lib/api';
+import { getInitiatives, getStories } from '@/lib/api';
 import { getList, getSingleton } from '@/lib/content';
 import { HERO_FALLBACK } from '@/content/hero';
 import { HAPPENING_FALLBACK } from '@/content/happening';
@@ -6,6 +6,7 @@ import { IMPACT_FALLBACK } from '@/content/impact';
 import { MILESTONES_FALLBACK } from '@/content/milestones';
 import { SPEAKERS_FALLBACK } from '@/content/speakers';
 import { PARTNERS_FALLBACK } from '@/content/partners';
+import { TEAMS_FALLBACK } from '@/content/teams';
 import { Hero } from '@/components/home/Hero';
 import { Happening } from '@/components/home/Happening';
 import { DeskAct } from '@/components/home/DeskAct';
@@ -24,10 +25,10 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 const websiteLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: SITE_URL, publisher: { '@id': organizationLd['@id'] } };
 
 export default async function Home() {
-  const [initiatives, stories, teams, hero, happening, impact, milestones, speakers, partners] = await Promise.all([
+  const [initiatives, stories, stageTeams, hero, happening, impact, milestones, speakers, partners] = await Promise.all([
     getInitiatives(),
     getStories(),
-    getTeams(),
+    getList('team-stage', TEAMS_FALLBACK),
     getSingleton('hero', HERO_FALLBACK),
     getSingleton('happening', HAPPENING_FALLBACK),
     getSingleton('impact', IMPACT_FALLBACK),
@@ -46,7 +47,7 @@ export default async function Home() {
       <Milestones items={milestones} />
       <ShelfAct stories={[...stories]} />
       <Speakers speakers={speakers} />
-      <StageAct teamCount={teams.length} />
+      <StageAct teams={stageTeams} />
       <Partners items={partners} />
       <FinalCta />
     </main>
