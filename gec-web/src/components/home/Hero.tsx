@@ -4,44 +4,12 @@ import { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { DURATION, EASE, exitDuration } from '@/lib/motion';
 import type { HeroCampaign } from '@/lib/siteContent';
+import type { HeroSecondaryCard } from '@/content/hero';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import './hero.css';
 
-// The three wireframe secondary-strip cards (styled.html 2452–2479). Their
-// copy is static wireframe content, independent of `switchHeroCampaign` —
-// only the click target and `active-secondary` state depend on the campaign.
-const SECONDARY_CARDS = [
-  {
-    id: 'sdp',
-    labelClass: 'hero-secondary-card__label--sdp',
-    label: '01 / STARTUP DEVELOPMENT',
-    badgeClass: 'badge-crimson',
-    badgeText: 'P1 ACTIVE',
-    title: 'Cohort 04 Admissions',
-    meta: 'Closes 28 Sep · 12-Week Sprint',
-  },
-  {
-    id: 'ideathon',
-    labelClass: 'hero-secondary-card__label--ideathon',
-    label: '02 / IDEATHON 2026',
-    badgeClass: 'badge-gold',
-    badgeText: 'P0 48H',
-    title: 'Venture Sprint Arena',
-    meta: 'Final Call · 14 Team Slots Left',
-  },
-  {
-    id: 'esummit',
-    labelClass: 'hero-secondary-card__label--esummit',
-    label: '03 / E-SUMMIT 2026',
-    badgeClass: 'badge-blue',
-    badgeText: 'P2 LIVE',
-    title: 'Campus Auditorium',
-    meta: 'Happening Today · 50+ Founders',
-  },
-] as const;
-
-export function Hero({ campaigns }: { campaigns: Record<string, HeroCampaign> }) {
+export function Hero({ campaigns, secondaryCards }: { campaigns: Record<string, HeroCampaign>; secondaryCards: HeroSecondaryCard[] }) {
   const [activeId, setActiveId] = useState<string>('sdp');
   const active = campaigns[activeId] ?? campaigns.sdp;
   const prefersReducedMotion = useReducedMotion();
@@ -173,7 +141,7 @@ export function Hero({ campaigns }: { campaigns: Record<string, HeroCampaign> })
         </div>
 
         <div className="hero-secondary-strip">
-          {SECONDARY_CARDS.map((card) => (
+          {secondaryCards.map((card) => (
             <button
               type="button"
               key={card.id}
