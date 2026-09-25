@@ -5,6 +5,8 @@ import { CurtainInterstitial } from '@/components/CurtainInterstitial';
 import { FullViewportAct } from '@/components/FullViewportAct';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import { aisleRunway, planAisle } from '@/components/stories/aislePlan';
+import { StoriesFrontPages } from '@/components/stories/StoriesFrontPages';
+import { useIsPhone } from '@/lib/useIsPhone';
 import type { Story } from '@/lib/types';
 import './act-intro.css';
 
@@ -14,6 +16,8 @@ const StoriesAisle = dynamic(
 );
 
 export function ShelfAct({ stories }: { stories: Story[] }) {
+  // Phones get front pages instead of the 3D aisle (a narrow corridor you can barely look down).
+  const phone = useIsPhone();
   return (
     <div className="home-act">
       <CurtainInterstitial
@@ -32,9 +36,15 @@ export function ShelfAct({ stories }: { stories: Story[] }) {
           </p>
         </div>
       </div>
-      <FullViewportAct surface="cream" runway={aisleRunway(planAisle(stories).length)} label="the stories aisle" id="shelf">
-        {(progress) => <StoriesAisle progress={progress} stories={stories} />}
-      </FullViewportAct>
+      {phone ? (
+        <section id="shelf" aria-label="the stories" data-surface="cream" className="surface-cream act-phone">
+          <StoriesFrontPages stories={stories} />
+        </section>
+      ) : (
+        <FullViewportAct surface="cream" runway={aisleRunway(planAisle(stories).length)} label="the stories aisle" id="shelf">
+          {(progress) => <StoriesAisle progress={progress} stories={stories} />}
+        </FullViewportAct>
+      )}
       <div className="act-exit surface-cream">
         <ViewTransitionLink href="/stories" className="gec-btn btn-outline-ink">
           Explore Stories →

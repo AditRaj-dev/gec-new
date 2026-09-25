@@ -1,5 +1,5 @@
 import { PROGRAMS, VERTEX } from './programs';
-import { FPS_CAP, frameGuard, hexToRgb, renderScale } from './policy';
+import { FPS_CAP, PHONE_FPS_CAP, frameGuard, hexToRgb, renderScale } from './policy';
 
 export type ShaderFamily = 'watercolor' | 'wash' | 'liquid' | 'specular' | 'contour' | 'halftone' | 'hatch' | 'riso' | 'night';
 
@@ -13,16 +13,24 @@ export interface ShaderRenderer {
   destroy(): void;
 }
 
+const PRINT: ShaderFamily[] = ['contour', 'halftone', 'hatch', 'riso', 'night'];
+
+/** Why the last createRenderer() returned null — surfaced by ShaderLayer's ?shaders=debug overlay. */
+export let lastError = '';
+
 /** Returns null when WebGL is unavailable or the program fails; the caller removes the canvas. */
-export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily): ShaderRenderer | null {
+
+export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily, phone = false): ShaderRenderer | null {
   const gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, powerPreference: 'low-power', preserveDrawingBuffer: false });
-  if (!gl) return null;
+  if (!gl) { lastError = 'no webgl'; return null; }
 
   const compile = (type: number, src: string) => {
     const s = gl.createShader(type)!;
     gl.shaderSource(s, src);
     gl.compileShader(s);
-    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
+    if (gl.getShaderParameter(s, gl.COMPILE_STATUS)) return s;
+    lastError = `compile: ${gl.getShaderInfoLog(s)?.slice(0, 120) || (gl.isContextLost() ? 'context lost' : '?')}`;
+    return null;
   };
   const { frag, palette } = PROGRAMS[family];
   const vs = compile(gl.VERTEX_SHADER, VERTEX);
@@ -32,7 +40,7 @@ export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily):
   gl.attachShader(prog, vs);
   gl.attachShader(prog, fs);
   gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { lastError = `link: ${gl.getProgramInfoLog(prog)?.slice(0, 120)}`; return null; }
   gl.useProgram(prog);
 
   // one oversized triangle covers the viewport
@@ -46,12 +54,13 @@ export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily):
   const uRes = gl.getUniformLocation(prog, 'uRes');
   const uTime = gl.getUniformLocation(prog, 'uTime');
   const uScale = gl.getUniformLocation(prog, 'uScale'); // print families only; null elsewhere is a no-op
+  gl.uniform1f(gl.getUniformLocation(prog, 'uPhone'), phone ? 1 : 0); // phones: patterns run rotated 90° (programs.ts FC/RES)
   (['uC0', 'uC1', 'uC2', 'uC3'] as const).forEach((n, i) => gl.uniform3fv(gl.getUniformLocation(prog, n), hexToRgb(palette[i])));
 
   const resize = () => {
     const dpr = window.devicePixelRatio || 1;
     const w = canvas.clientWidth, h = canvas.clientHeight;
-    const s = renderScale(w, dpr);
+    const s = renderScale(w, dpr, phone, PRINT.includes(family), h);
     canvas.width = Math.max(1, Math.round(w * s));
     canvas.height = Math.max(1, Math.round(h * s));
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -70,7 +79,7 @@ export function createRenderer(canvas: HTMLCanvasElement, family: ShaderFamily):
 
   let raf = 0, last = 0, frozen = false, prevDraw = 0, destroyed = false;
   const samples: number[] = [];
-  const minGap = 1000 / FPS_CAP;
+  const minGap = 1000 / (phone ? PHONE_FPS_CAP : FPS_CAP);
   const loop = (now: number) => {
     raf = requestAnimationFrame(loop);
     if (now - last < minGap) return;

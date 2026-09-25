@@ -35,6 +35,9 @@ export interface NewsletterBookshelfProps {
   activeId?: string;
   /** Pages for an opened volume. Defaults to the Dispatch issue layout (buildDispatchPages). */
   buildBook?: (item: NewsletterBookshelfItem, completionAction: React.ReactNode) => BookshelfVolume;
+  /** 'archive' (default): the light archive wall. 'bookcase': a walnut case with crown, posts, an upper
+   *  shelf of objects and a plinth (bookshelf.css). */
+  variant?: 'archive' | 'bookcase';
 }
 
 export interface BookshelfVolume {
@@ -295,6 +298,8 @@ export function NewsletterBookshelf({
   className,
   onSelect,
   buildBook = buildDispatchPages,
+  brand = 'GEC SHELF ARCHIVE',
+  variant = 'archive',
 }: NewsletterBookshelfProps) {
   const books = useMemo(() => (items.length ? items : defaultNewsletterBooks), [items]);
 
@@ -575,6 +580,8 @@ export function NewsletterBookshelf({
           <span className="font-bold text-[#222222]">
             {stage !== 'shelf' && activeBook
               ? `VOLUME ${activeBook.editionNumber || ''} · ${activeBook.title.toUpperCase()}`
+              : variant === 'bookcase'
+              ? brand
               : 'ARCHIVE BOOKSHELF'}
           </span>
           <span>&middot;</span>
@@ -651,10 +658,12 @@ export function NewsletterBookshelf({
       {/* ===================================================================== */}
       <div
         ref={stageRef}
+        data-variant={variant}
         className="relative w-full min-h-[580px] md:min-h-[620px] flex flex-col justify-end overflow-hidden pt-12 pb-0 px-4 sm:px-8 bg-gradient-to-b from-[#FCF8ED] via-[#FBF4E4] to-[#F5EAD4]"
       >
         {/* Subtle architectural vertical wall stripes */}
         <div
+          data-archive-deco
           className="absolute inset-0 opacity-[0.035] pointer-events-none"
           style={{
             backgroundImage:
@@ -663,11 +672,33 @@ export function NewsletterBookshelf({
         />
 
         {/* Brass coordinate plaque at top center */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 px-3 py-1 rounded bg-[#EBD8B8]/60 border border-[rgba(163,4,15,0.2)] text-[10px] font-mono tracking-widest text-[#7A030B] shadow-2xs uppercase z-10 pointer-events-none">
+        <div data-archive-deco className="absolute top-4 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 px-3 py-1 rounded bg-[#EBD8B8]/60 border border-[rgba(163,4,15,0.2)] text-[10px] font-mono tracking-widest text-[#7A030B] shadow-2xs uppercase z-10 pointer-events-none">
           <span>GEC SHELF ARCHIVE</span>
           <span>&middot;</span>
           <span>CLICK ANY VOLUME TO FLIP</span>
         </div>
+
+        {/* Walnut bookcase furniture (variant="bookcase"); purely decorative, styled in bookshelf.css */}
+        {variant === 'bookcase' && (
+          <div className="gec-case" aria-hidden="true">
+            <div className="gec-case__back" />
+            <div className="gec-case__crown">
+              <span className="gec-case__plate">{brand} &middot; tap a volume</span>
+            </div>
+            <div className="gec-case__post gec-case__post--l" />
+            <div className="gec-case__post gec-case__post--r" />
+            <div className="gec-case__upper">
+              <div className="gec-case__stack">
+                <i style={{ '--w': '78px', '--c': '#6b3a2a' } as React.CSSProperties} />
+                <i style={{ '--w': '70px', '--c': '#2f3b36' } as React.CSSProperties} />
+                <i style={{ '--w': '84px', '--c': '#8a6b4a' } as React.CSSProperties} />
+              </div>
+              <div className="gec-case__globe"><i /></div>
+              <div className="gec-case__plant"><i /><i /><i /></div>
+              <div className="gec-case__plank" />
+            </div>
+          </div>
+        )}
 
         {/* Physical Book Spines Row */}
         {/* data-gec-shelf-row: read by src/components/home/ShelfAct
@@ -871,7 +902,7 @@ export function NewsletterBookshelf({
         </div>
 
         {/* Dimensional Wooden Shelf Ledge */}
-        <div className="relative z-20 w-full mt-0">
+        <div className="relative z-20 w-full mt-0" data-shelf-ledge>
           {/* Top Shelf Bevel Surface */}
           <div className="h-4 bg-gradient-to-r from-[#DFCDB0] via-[#F4E2CA] to-[#DFCDB0] border-t border-[rgba(163,4,15,0.22)] shadow-sm" />
           {/* Wooden Front Edge Profile */}
@@ -883,6 +914,7 @@ export function NewsletterBookshelf({
           {/* Under-shelf Drop Shadow */}
           <div className="h-2 bg-gradient-to-b from-black/15 to-transparent" />
         </div>
+        {variant === 'bookcase' && <div className="gec-case__plinth" aria-hidden="true" />}
 
         {/* ===================================================================== */}
         {/* 3. CREATIVE ATMOSPHERIC BLUR OVERLAY (Depth of Field + Warm Spotlight) */}

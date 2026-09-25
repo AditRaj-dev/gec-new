@@ -777,7 +777,7 @@ html[data-gec-act="live"] .site-navbar { transform: translateY(-110%); }
 .gec-shader-specular { --gec-shader-strength: var(--shader-light); }
 /* Print families mix ink into the surface colour themselves, so the canvas runs opaque. */
 .gec-shader-contour, .gec-shader-halftone, .gec-shader-hatch, .gec-shader-riso, .gec-shader-night { --gec-shader-strength: 1; }
-@media (max-width: 768px) { .gec-shader-layer { display: none; } }
+/* Phones run shaders too (phone mode in ShaderLayer / lib/shaders/policy.ts). */
 
 /* Finished surfaces without WebGL. */
 .gec-fallback-watercolor {

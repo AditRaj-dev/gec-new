@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { Blinds, type BlindsItem } from 'feral-blinds';
 import 'feral-blinds/blinds.css';
@@ -88,14 +89,35 @@ export function TeamFan({ initialTeamIndex }: { initialTeamIndex?: number }) {
 
             <span className="editorial-kicker">Who runs it</span>
             <div className="team-sheet__lead">
-              <strong>{team.headName}</strong>
-              <span>{team.headRole}</span>
+              <div className="team-sheet__photo team-sheet__photo--lead">
+                <Image src={team.headPhoto} alt={team.headName} fill sizes="72px" unoptimized />
+              </div>
+              <div>
+                <strong>{team.headName}</strong>
+                <span>{team.headRole}</span>
+              </div>
             </div>
             {team.coordinators?.length ? (
-              <p className="team-sheet__roster">
-                {team.coordinators.map((c) => c.name).join(', ')} · {team.coordinatorsCount} coordinators ·{' '}
-                {team.membersCount} members
-              </p>
+              <>
+                <ul className="team-sheet__coords">
+                  {team.coordinators.map((c) => (
+                    <li key={c.name}>
+                      <div className="team-sheet__photo">
+                        {c.photo ? (
+                          <Image src={c.photo} alt={c.name} fill sizes="110px" unoptimized />
+                        ) : (
+                          <span aria-hidden="true">{c.name.split(' ').map((w) => w[0]).join('')}</span>
+                        )}
+                      </div>
+                      <strong>{c.name}</strong>
+                      <span>{c.role ?? 'Coordinator'}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="team-sheet__roster">
+                  {team.coordinatorsCount} coordinators · {team.membersCount} members
+                </p>
+              </>
             ) : null}
 
             <div className="team-sheet__actions">

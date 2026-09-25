@@ -4,11 +4,22 @@ export const VERTEX = `
 attribute vec2 aPos;
 void main() { gl_Position = vec4(aPos, 0.0, 1.0); }`;
 
+// highp where the GPU has it: on Android (Mali/Adreno) mediump is a true 16-bit float, which breaks the
+// sin-hash noise and the CSS-px pattern coordinates (flat colour or garbage). Desktop GPUs run mediump at 32 bits.
 const HEAD = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
 precision mediump float;
+#endif
 uniform vec2 uRes;
 uniform float uTime;
 uniform vec3 uC0, uC1, uC2, uC3;
+// Phones: patterns are composed for wide sections; on tall phone sections they run rotated 90°.
+// FC()/RES() are the fragment coord and resolution in that rotated frame (identity on desktop, uPhone = 0).
+uniform float uPhone;
+vec2 FC() { return uPhone > 0.5 ? vec2(gl_FragCoord.y, uRes.x - gl_FragCoord.x) : gl_FragCoord.xy; }
+vec2 RES() { return uPhone > 0.5 ? uRes.yx : uRes; }
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
   vec2 i = floor(p), f = fract(p);
@@ -24,8 +35,8 @@ float fbm(vec2 p) {
 /** Watercolor on paper. `falloff` = pigment focus point + fade radii. */
 const watercolor = (focus: string, inner: string, outer: string, pool = '', extraWeight = '') => `${HEAD}
 void main() {
-  vec2 uv = gl_FragCoord.xy / uRes;
-  vec2 p = uv * vec2(uRes.x / uRes.y, 1.0) * 1.6;
+  vec2 uv = FC() / RES();
+  vec2 p = uv * vec2(RES().x / RES().y, 1.0) * 1.6;
   float t = uTime * 0.02;
   vec2 q = vec2(fbm(p + t), fbm(p + vec2(5.2, 1.3) - t));
   float f = fbm(p + 2.0 * q);
@@ -43,8 +54,8 @@ void main() {
  *  uC0 paper, uC1 deep pigment (cores + rims), uC2 wash pigment. */
 const WATERCOLOR = `${HEAD}
 void main() {
-  vec2 uv = gl_FragCoord.xy / uRes;
-  vec2 p = uv * vec2(uRes.x / uRes.y, 1.0) * 1.35;
+  vec2 uv = FC() / RES();
+  vec2 p = uv * vec2(RES().x / RES().y, 1.0) * 1.35;
   float t = uTime * 0.02;
   vec2 q = vec2(fbm(p + t), fbm(p + vec2(5.2, 1.3) - t));
   float f = fbm(p + 2.2 * q);
@@ -54,7 +65,7 @@ void main() {
   vec3 col = mix(uC0, uC2, pool * 0.7);
   col = mix(col, uC1, core * 0.85);
   col = mix(col, uC1 * 0.8, rim * 0.45);
-  col -= (hash(floor(gl_FragCoord.xy * 0.5)) - 0.5) * 0.05 * pool;
+  col -= (hash(floor(FC() * 0.5)) - 0.5) * 0.05 * pool;
   gl_FragColor = vec4(col, 1.0);
 }`;
 /** Stage Manager: same wash spread across the whole panel (full colour out to every corner; fades only past them). */
@@ -65,7 +76,7 @@ const WASH = watercolor('0.5, 0.6', '0.8', '1.6',
 /** Subtle liquid — red on red. Gold stays under 3% of the frame. */
 const LIQUID = `${HEAD}
 void main() {
-  vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
+  vec2 p = (FC() - 0.5 * RES()) / RES().y;
   float t = uTime * 0.05;
   for (int i = 0; i < 3; i++) {
     p += 0.35 * vec2(sin(p.y * 2.1 + t), cos(p.x * 1.7 - t * 1.3));
@@ -80,7 +91,7 @@ void main() {
 /** Specular lines — charcoal. Fine warped rules with a slow gold sweep. */
 const SPECULAR = `${HEAD}
 void main() {
-  vec2 uv = gl_FragCoord.xy / uRes;
+  vec2 uv = FC() / RES();
   float t = uTime * 0.03;
   float n = fbm(vec2(uv.x * 3.0, uv.y * 1.5) + t);
   float y = uv.y * 18.0 + n * 4.0;
@@ -100,18 +111,27 @@ void main() {
  */
 // `gutter` = both side margins outside the 1320px content column (plus the 48px section padding),
 // so wide screens get pattern down the empty left and right sides without it running under the copy.
-const RIGHT = 'max(smoothstep(0.5, 1.0, uv.x) * (0.4 + 0.6 * uv.y), gutter)';
-const EDGES = 'max(smoothstep(0.28, 0.9, length((uv - 0.5) * vec2(1.5, 1.15))), gutter)';
+// Phones (`phone` = uPhone, set by the renderer at ≤768px) have no gutters and one full-width column of copy: heroes keep ink in the
+// top-right corner; other sections only in `bands`, their top and bottom padding (CSS px, so tall phone
+// sections don't get ink behind the text); the footer all over at half strength, full along the bottom (watermark).
+const RIGHT = 'mix(max(smoothstep(0.5, 1.0, uv.x) * (0.4 + 0.6 * uv.y), gutter), smoothstep(0.25, 1.0, uv.x) * smoothstep(0.35, 1.0, uv.y), phone)';
+const EDGES = 'mix(max(smoothstep(0.28, 0.9, length((uv - 0.5) * vec2(1.5, 1.15))), gutter), bands, phone)';
+const FOOT = 'mix(max(smoothstep(0.28, 0.9, length((uv - 0.5) * vec2(1.5, 1.15))), gutter), max(0.5, 1.0 - smoothstep(40.0, 220.0, sp.y)), phone)';
 const print = (mask: string, body: string) => `${HEAD}
 uniform float uScale;
 mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 void main() {
+  // masks: screen space (uv, sp in CSS px) so ink stays off the copy; pattern: p, rotated on phones
   vec2 uv = gl_FragCoord.xy / uRes;
-  vec2 p = gl_FragCoord.xy / max(uScale, 0.01);
+  vec2 sp = gl_FragCoord.xy / max(uScale, 0.01);
+  vec2 p = FC() / max(uScale, 0.01);
   float t = uTime;
   float w = uRes.x / max(uScale, 0.01);
   float gw = max((w - 1320.0) * 0.5, 0.0) + 48.0;
-  float gutter = max(1.0 - smoothstep(gw * 0.45, gw + 24.0, p.x), smoothstep(w - gw - 24.0, w - gw * 0.45, p.x));
+  float gutter = max(1.0 - smoothstep(gw * 0.45, gw + 24.0, sp.x), smoothstep(w - gw - 24.0, w - gw * 0.45, sp.x));
+  float phone = uPhone;
+  float hgt = uRes.y / max(uScale, 0.01);
+  float bands = max(1.0 - smoothstep(20.0, 84.0, sp.y), smoothstep(hgt - 84.0, hgt - 20.0, sp.y));
   float m = ${mask};
   ${body}
 }`;
@@ -126,7 +146,7 @@ const CONTOUR_BODY = `
   gl_FragColor = vec4(mix(uC0, mix(uC1, uC2, major), a), 1.0);`;
 const CONTOUR = print(RIGHT, CONTOUR_BODY);
 /** Same lines on the charcoal footer, around the edges and gutters; kept low so copy on top stays readable. */
-const NIGHT = print(EDGES, CONTOUR_BODY.replace('0.26 * (1.0', '0.24 * (1.0'));
+const NIGHT = print(FOOT, CONTOUR_BODY.replace('0.26 * (1.0', '0.24 * (1.0'));
 
 /** Newspaper halftone screen at 15°, dot size from slow noise. */
 const HALFTONE = print(EDGES, `
