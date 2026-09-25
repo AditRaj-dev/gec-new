@@ -5,6 +5,7 @@ import { HAPPENING_FALLBACK } from '@/content/happening';
 import { IMPACT_FALLBACK } from '@/content/impact';
 import { MILESTONES_FALLBACK } from '@/content/milestones';
 import { SPEAKERS_FALLBACK } from '@/content/speakers';
+import { PARTNERS_FALLBACK } from '@/content/partners';
 import { Hero } from '@/components/home/Hero';
 import { Happening } from '@/components/home/Happening';
 import { DeskAct } from '@/components/home/DeskAct';
@@ -23,7 +24,7 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 const websiteLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: SITE_URL, publisher: { '@id': organizationLd['@id'] } };
 
 export default async function Home() {
-  const [initiatives, stories, teams, hero, happening, impact, milestones, speakers] = await Promise.all([
+  const [initiatives, stories, teams, hero, happening, impact, milestones, speakers, partners] = await Promise.all([
     getInitiatives(),
     getStories(),
     getTeams(),
@@ -32,6 +33,7 @@ export default async function Home() {
     getSingleton('impact', IMPACT_FALLBACK),
     getList('milestones', MILESTONES_FALLBACK),
     getList('speakers', SPEAKERS_FALLBACK),
+    getList('partners', PARTNERS_FALLBACK),
   ]);
 
   return (
@@ -45,7 +47,7 @@ export default async function Home() {
       <ShelfAct stories={[...stories]} />
       <Speakers speakers={speakers} />
       <StageAct teamCount={teams.length} />
-      <Partners />
+      <Partners items={partners} />
       <FinalCta />
     </main>
   );
