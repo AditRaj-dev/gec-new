@@ -16,6 +16,40 @@ import {
   WorkflowState,
 } from './dto/content.dto';
 
+/**
+ * Entity types already owned by a dedicated API module — each module calls
+ * `createDraft`/`publish` with its own fixed `entityType`, so a generic caller (e.g. the
+ * gec-web content seed) must never reuse one of these, or its docs get treated as that
+ * module's own content (see the `hero` vs `home-hero` collision fixed in CMS Phase 0).
+ * Keep in sync with `entityType: '...'` in each module's service.
+ */
+export const API_MODULE_ENTITY_TYPES = [
+  'hero', // api/src/modules/hero/hero.service.ts — Hero Spotlight
+  'initiatives', // api/src/modules/initiatives/initiatives.service.ts
+  'people', // api/src/modules/people/people.service.ts
+  'stakeholders', // api/src/modules/stakeholders/stakeholders.service.ts
+  'stories', // api/src/modules/stories/stories.service.ts
+  'teams', // api/src/modules/teams/teams.service.ts
+] as const;
+
+/**
+ * Entity types used by the gec-web site's generic CMS content seed
+ * (gec-web/scripts/export-content.mts → api/src/database/seeds/site-content.json).
+ * None of these may collide with `API_MODULE_ENTITY_TYPES` above.
+ */
+export const SITE_CONTENT_ENTITY_TYPES = [
+  'home-hero',
+  'happening',
+  'impact',
+  'milestones',
+  'speakers',
+  'partners',
+  'site-nav',
+  'team-stage',
+  'dispatch-issues',
+  'route-copy',
+] as const;
+
 @Injectable()
 export class ContentService {
   private readonly logger = new Logger(ContentService.name);

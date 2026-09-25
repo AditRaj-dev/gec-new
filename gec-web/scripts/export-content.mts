@@ -16,7 +16,7 @@ const withOrder = <T extends object>(xs: T[]) => xs.map((x, i) => ({ ...x, order
 
 const seed = {
   singletons: {
-    hero: HERO_FALLBACK,
+    'home-hero': HERO_FALLBACK,
     happening: HAPPENING_FALLBACK,
     impact: IMPACT_FALLBACK,
     'site-nav': SITE_NAV_FALLBACK,

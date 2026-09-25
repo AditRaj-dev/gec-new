@@ -123,7 +123,8 @@ full canvas opacity; masks keep ink off the copy (`RIGHT`, `EDGES`, and a `gutte
   on screen and while any full-viewport act is live (`html[data-gec-act="live"]`). Data: `src/lib/dispatchData.ts`.
 - **FullViewportAct**: pinned scroll runway; children are a render function receiving scroll progress. Use
   `DeskRunway` / `StageRunway` (exported from `DeskAct.tsx` / `StageAct.tsx`) on route pages.
-- **Hero** (`home/Hero.tsx`): campaign billboard driven by the `hero` entity (fallback `src/content/hero.ts`,
+- **Hero** (`home/Hero.tsx`): campaign billboard driven by the `home-hero` entity (renamed from `hero` to avoid
+  colliding with the API's Hero Spotlight module, which already owns the `hero` entity type) (fallback `src/content/hero.ts`,
   formerly `HERO_CAMPAIGNS` in `siteContent.ts`), including the featured "ticket" card (`card` field). All campaigns
   are stacked invisibly as sizers so the card never changes height.
 - **FinalCta**: defaults are the home copy; route pages pass `kicker/heading/lede/primary/secondary/shader`.

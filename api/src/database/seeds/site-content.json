@@ -1,6 +1,6 @@
 {
   "singletons": {
-    "hero": {
+    "home-hero": {
       "campaigns": {
         "sdp": {
           "id": "sdp",

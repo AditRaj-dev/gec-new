@@ -29,7 +29,7 @@ export default async function Home() {
     getInitiatives(),
     getStories(),
     getList('team-stage', TEAMS_FALLBACK),
-    getSingleton('hero', HERO_FALLBACK),
+    getSingleton('home-hero', HERO_FALLBACK),
     getSingleton('happening', HAPPENING_FALLBACK),
     getSingleton('impact', IMPACT_FALLBACK),
     getList('milestones', MILESTONES_FALLBACK),

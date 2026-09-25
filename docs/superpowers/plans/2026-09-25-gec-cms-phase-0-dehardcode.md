@@ -33,7 +33,7 @@
 
 | Entity type (cache tag) | Kind | Fallback module (`gec-web/src/content/`) | Export | Read by |
 |---|---|---|---|---|
-| `hero` | singleton | `hero.ts` | `HERO_FALLBACK: HeroContent` | `app/page.tsx` → `Hero` |
+| `home-hero` | singleton | `hero.ts` | `HERO_FALLBACK: HeroContent` | `app/page.tsx` → `Hero` (renamed from `hero`: collided with the API's Hero Spotlight module's `hero` entity type) |
 | `happening` | singleton | `happening.ts` | `HAPPENING_FALLBACK: HappeningContent` | `app/page.tsx` → `Happening` |
 | `impact` | singleton | `impact.ts` | `IMPACT_FALLBACK: ImpactContent` | `app/page.tsx` → `Impact` |
 | `milestones` | list | `milestones.ts` | `MILESTONES_FALLBACK: Milestone[]` | `app/page.tsx` → `Milestones` |
