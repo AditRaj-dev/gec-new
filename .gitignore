@@ -31,3 +31,6 @@ credentials.json
 
 gec-web/node_modules/
 gec-web/.next/
+
+# NestJS build output
+api/dist/
