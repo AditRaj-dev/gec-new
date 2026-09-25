@@ -34,6 +34,7 @@ Let GEC student teams change every word, image, book, shelf, team and hero card 
 | D12 | Dispatch issues are **emailed via Resend**, used only as a sending pipe. **Daily cap on the Free tier** (100/day). |
 | D13 | Library **years are first-class**: editors add years and put books on each year's shelves. Visitors know the year from the **hanging banners only** (no extra year navigation on desktop). Phones get year tabs. |
 | D14 | **Team Heads cannot create books.** Books are created by Content Editors, Core Admin and Super Admin. |
+| D15 | **Media on Cloudflare R2 free tier** (10 GB, no egress fees), compressed in the browser before upload, content-hashed immutable keys. |
 
 ## 3. Non-goals
 
@@ -206,6 +207,15 @@ All outputs are drafts; a person submits/publishes. Model names come from env (`
 ## 11. Dispatch email
 Fully specified in [`docs/dispatch-email-service.md`](../../dispatch-email-service.md). Summary: Resend batch API behind a one-file `EmailProvider` boundary; subscribers, template, unsubscribe, scheduling and history in GEC Postgres; double opt-in; outbox batches of ≤100; **`EMAIL_DAILY_CAP=100`** spreads a send across days (CMS shows the finish date); one-click `List-Unsubscribe`; sending is Core Admin only; editors send tests.
 
+## 11a. Media storage — Cloudflare R2 (free tier)
+- **Buckets** (already named in `deployment.md` §4.5): public `gec-public-media-<env>` behind a Cloudflare media domain (`media.<domain>`, exposed to the site as `NEXT_PUBLIC_MEDIA_BASE_URL`); private `gec-private-submissions-<env>` with no public domain. `r2.dev` URLs disabled in production.
+- **Free tier (verified 2026-09-25):** 10 GB-month storage, 1M Class A (writes) and 10M Class B (reads) operations per month, no egress fees. Enough for GEC if uploads are compressed.
+- **Upload path:** existing `api/modules/media` presigned PUT → browser uploads directly to R2 → API verifies and records the asset. Nothing streams through the API.
+- **Keep it inside 10 GB:** the CMS compresses in the browser before upload (long edge ≤ 2400 px, WebP q≈82; plates are PNG). Keys are content-hashed (`<sha256>.webp`), so identical uploads dedupe and objects are immutable (`Cache-Control: public, max-age=31536000, immutable`).
+- **Serving:** the site renders R2 images through `next/image` (host allowed in `gec-web/next.config.ts` from `NEXT_PUBLIC_MEDIA_BASE_URL`, optimized copies cached 30 days). The email uses the R2 URL directly.
+- **Versions:** a replaced image is a new object; old objects stay while any Version references them. A monthly job deletes objects that no Version or live doc references and that are older than 90 days.
+- **Usage meter:** Settings shows R2 storage used vs 10 GB; warns at 80%.
+
 ## 12. Phone CMS (≤768 px)
 Bottom tabs: **Inbox · Content · ＋ New · Approve · Me**.
 - Content: per-collection lists → form edits (text, image, toggles, drag-handle reorder).
@@ -232,7 +242,7 @@ Bottom tabs: **Inbox · Content · ＋ New · Approve · Me**.
 - Plate builder: deterministic output for a fixed input (hash compare, grain seeded).
 
 ## 15. Build order (each phase ships on its own)
-0. **De-hardcode** all §4 content into the API (seeded), convert 4 books to canvas JSON, add `data-cms` tags. Site must look identical.
+0. **De-hardcode** all §4 content into the API (seeded), convert 4 books to canvas JSON, add `data-cms` tags, move site images that editors will change onto R2. Site must look identical.
 1. **Live editor**: preview token + draft mode, bridge, layers, inspector, inline text, RBAC locks, review/publish, **version history**.
 2. **Canvas** renderer + editor; first user: hero cards.
 3. **Books**: templates, two-face preview, spine overrides, page editor.
