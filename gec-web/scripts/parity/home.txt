@@ -1,8 +1,4 @@
-[href] /_next/static/chunks/%5Broot-of-the-server%5D__1v_vwoy._.css
-[href] /_next/static/chunks/_1vnefu8._.css
-[href] /_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1di75ot._.js
 [href] https://api.fontshare.com/v2/css
-[href] /_next/static/chunks/src_components_route_route_20nmpod.css
 Galgotias Entrepreneurship Cell
 [href] https://ecellgu.in
 [href] /favicon.ico
@@ -203,38 +199,38 @@ NOT JUST AN ORGANISATION. A LAUNCHPAD FOR GROWTH.
 HISTORIC MILESTONES
 Moments That Shaped GEC.
 Not every milestone belongs in a statistic. Explore the events, conversations, competitions, founder interactions, and experiences that have shaped the GEC community over the years.
-[src] /_next/image
+[src] https://images.unsplash.com/photo-1475721027785-f74eccf877e2
 SUMMIT 2023
 YEAR 2023
 CAMPUS HUB
 Foundation Summit &amp; Live Pitch Arena
 The historic inauguration of GEC’s campus incubator network, connecting 400+ student innovators with initial angel mentors.
 Relive the Moment →
-[src] /_next/image
+[src] https://images.unsplash.com/photo-1475721027785-f74eccf877e2
 YEAR 2023 · CAMPUS HUB
 Foundation Summit &amp; Live Pitch Arena
 The historic inauguration of GEC’s campus incubator network, connecting 400+ student innovators with initial angel mentors.
 Close
-[src] /_next/image
+[src] https://images.unsplash.com/photo-1540575467063-178a50c2df87
 E-SUMMIT 2024
 YEAR 2024
 AUDITORIUM 01
 Galgotias E-Summit Scaling to 1,500+
 Keynotes by unicorn founders, live venture pitch rounds, and regional collegiate participation across NCR.
 Relive the Moment →
-[src] /_next/image
+[src] https://images.unsplash.com/photo-1540575467063-178a50c2df87
 YEAR 2024 · AUDITORIUM 01
 Galgotias E-Summit Scaling to 1,500+
 Keynotes by unicorn founders, live venture pitch rounds, and regional collegiate participation across NCR.
 Close
-[src] /_next/image
+[src] https://images.unsplash.com/photo-1515187029135-18ee286d815b
 GICRISE ALLIANCE
 YEAR 2025
 INSTITUTIONAL
 GICRISE Incubation Alliance &amp; Grant Fund
 Formal partnership with Galgotias Incubation Centre establishing the ₹50L student prototype grant pipeline.
 Relive the Moment →
-[src] /_next/image
+[src] https://images.unsplash.com/photo-1515187029135-18ee286d815b
 YEAR 2025 · INSTITUTIONAL
 GICRISE Incubation Alliance &amp; Grant Fund
 Formal partnership with Galgotias Incubation Centre establishing the ₹50L student prototype grant pipeline.

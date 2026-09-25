@@ -1,8 +1,4 @@
-[href] /_next/static/chunks/%5Broot-of-the-server%5D__1v_vwoy._.css
-[href] /_next/static/chunks/src_components_1z_qcmh._.css
-[href] /_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1di75ot._.js
 [href] https://api.fontshare.com/v2/css
-[href] /_next/static/chunks/src_components_route_route_20nmpod.css
 Stories | Galgotias Entrepreneurship Cell
 [href] https://ecellgu.in/stories
 [href] /favicon.ico
