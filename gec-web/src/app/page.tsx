@@ -1,6 +1,7 @@
 import { getInitiatives, getStories, getTeams } from '@/lib/api';
 import { getSingleton } from '@/lib/content';
 import { HERO_FALLBACK } from '@/content/hero';
+import { HAPPENING_FALLBACK } from '@/content/happening';
 import { Hero } from '@/components/home/Hero';
 import { Happening } from '@/components/home/Happening';
 import { DeskAct } from '@/components/home/DeskAct';
@@ -19,18 +20,19 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 const websiteLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: SITE_URL, publisher: { '@id': organizationLd['@id'] } };
 
 export default async function Home() {
-  const [initiatives, stories, teams, hero] = await Promise.all([
+  const [initiatives, stories, teams, hero, happening] = await Promise.all([
     getInitiatives(),
     getStories(),
     getTeams(),
     getSingleton('hero', HERO_FALLBACK),
+    getSingleton('happening', HAPPENING_FALLBACK),
   ]);
 
   return (
     <main aria-label="Galgotias Entrepreneurship Cell" className="relative">
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd([organizationLd, websiteLd])} />
       <Hero campaigns={hero.campaigns} secondaryCards={hero.secondaryCards} />
-      <Happening />
+      <Happening content={happening} />
       <DeskAct programmeCount={initiatives.length} />
       <Impact />
       <Milestones />
