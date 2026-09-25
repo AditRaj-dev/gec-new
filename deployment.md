@@ -348,12 +348,13 @@ Rules:
 
 1. Merge or promote the approved commit to `main`.
 2. Allow Render's pre-deploy command to run backward-compatible database migrations.
-3. Wait for the new API instance to pass `/health/ready`; Render must keep the previous instance serving if readiness fails.
-4. Run API smoke checks against `api.<domain>`.
-5. Deploy/promote the public and CMS Vercel builds from the same commit.
-6. Verify both applications reference the production API and media origins.
-7. Publish a designated test record or perform a safe cache-invalidation test.
-8. Complete the post-deployment checklist.
+3. Run `npm run seed:content` in `api/` (safe to repeat: already-published content types are skipped).
+4. Wait for the new API instance to pass `/health/ready`; Render must keep the previous instance serving if readiness fails.
+5. Run API smoke checks against `api.<domain>`.
+6. Deploy/promote the public and CMS Vercel builds from the same commit.
+7. Verify both applications reference the production API and media origins.
+8. Publish a designated test record or perform a safe cache-invalidation test.
+9. Complete the post-deployment checklist.
 
 ### 9.3 Post-deployment verification
 

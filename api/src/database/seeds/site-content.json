@@ -1,0 +1,1474 @@
+{
+  "singletons": {
+    "hero": {
+      "campaigns": {
+        "sdp": {
+          "id": "sdp",
+          "badgeText": "APPLICATIONS OPEN · COHORT 04",
+          "badgeClass": "badge-crimson",
+          "priorityTag": "P1 FLAGSHIP INITIATIVE",
+          "headlineAccent": "var(--gec-crimson)",
+          "headlineLine1": "IDEAS BEGIN HERE.",
+          "headlineLine2": "BUILDERS GROW HERE.",
+          "subline": "Innovate. Inspire. Impact.",
+          "deadline": "Applications close 28 September · 23:59 IST",
+          "context": "Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.",
+          "primaryCtaText": "Explore Initiatives →",
+          "primaryCtaHref": "/initiatives",
+          "secondaryCtaText": "Discover GEC",
+          "secondaryCtaHref": "/about",
+          "mediaTitle": "STARTUP DEVELOPMENT PROGRAM 2026",
+          "mediaSubtitle": "A 12-week venture acceleration sprint providing dedicated student founder cohorts with faculty mentors, prototyping sandbox access, and pre-seed demo slots.",
+          "card": {
+            "chip": "COHORT 04",
+            "lead": {
+              "value": "₹50L",
+              "label": "Grant sandbox pool"
+            },
+            "metrics": [
+              {
+                "label": "Duration",
+                "value": "12 Weeks"
+              },
+              {
+                "label": "Mentorship",
+                "value": "1-on-1 Access"
+              },
+              {
+                "label": "Incubation",
+                "value": "GICRISE Fast-Track"
+              }
+            ],
+            "closes": "Closes 28 Sep · 23:59 IST",
+            "ctaText": "Apply for Cohort 04 →",
+            "ctaHref": "/initiatives#apply"
+          }
+        },
+        "ideathon": {
+          "id": "ideathon",
+          "badgeText": "48 HOURS LEFT · FINAL WINDOW",
+          "badgeClass": "badge-gold",
+          "priorityTag": "P0 CRITICAL INSTITUTIONAL WINDOW",
+          "headlineAccent": "#b45309",
+          "headlineLine1": "IDEATHON 2026",
+          "headlineLine2": "VENTURE SPRINT",
+          "subline": "48 hours to pitch, prototype, and defend your venture.",
+          "deadline": "Strict Deadline: Closes in 48 Hours · 14 Team Slots Left",
+          "context": "Greater Noida’s premier 48-hour student venture sprint. Fast-track entry for teams building AI, climate-tech, consumer hardware, and fintech solutions.",
+          "primaryCtaText": "Register Team (Final Call) →",
+          "primaryCtaHref": "/initiatives#ideathon-register",
+          "secondaryCtaText": "View Problem Statements",
+          "secondaryCtaHref": "/initiatives#ideathon",
+          "mediaTitle": "IDEATHON 2026 VENTURE SPRINT",
+          "mediaSubtitle": "48 hours of intense hacking, rapid prototyping, and live venture pitches before angel judges.",
+          "card": {
+            "chip": "FINAL WINDOW",
+            "lead": {
+              "value": "48h",
+              "label": "Build window"
+            },
+            "metrics": [
+              {
+                "label": "Team slots",
+                "value": "14 Left"
+              },
+              {
+                "label": "Tracks",
+                "value": "AI · Climate · HW · Fintech"
+              },
+              {
+                "label": "Judging",
+                "value": "Angel Panel"
+              }
+            ],
+            "closes": "Closes in 48 hours",
+            "ctaText": "Register Team →",
+            "ctaHref": "/initiatives#ideathon-register"
+          }
+        },
+        "esummit": {
+          "id": "esummit",
+          "badgeText": "EVENT IS LIVE · MAIN AUDITORIUM",
+          "badgeClass": "badge-blue",
+          "priorityTag": "P2 MAJOR GROUND EXPERIENCE",
+          "headlineAccent": "var(--gec-blue)",
+          "headlineLine1": "GALGOTIAS",
+          "headlineLine2": "E-SUMMIT 2026",
+          "subline": "50+ Founders. 12 Keynotes. Live Venture Arena.",
+          "deadline": "Happening Today · 09:30 AM – 06:00 PM IST",
+          "context": "The annual flagship entrepreneurship summit is currently underway on ground. Campus screens, live stream broadcasting, and investor pitching are in session.",
+          "primaryCtaText": "Event Details →",
+          "primaryCtaHref": "/initiatives#esummit",
+          "secondaryCtaText": "Full Event Schedule",
+          "secondaryCtaHref": "/initiatives#schedule",
+          "mediaTitle": "GALGOTIAS E-SUMMIT 2026",
+          "mediaSubtitle": "The annual flagship entrepreneurship summit bringing founders, investors, and students together.",
+          "card": {
+            "chip": "LIVE NOW",
+            "lead": {
+              "value": "50+",
+              "label": "Founders on stage"
+            },
+            "metrics": [
+              {
+                "label": "Keynotes",
+                "value": "12"
+              },
+              {
+                "label": "Venue",
+                "value": "Main Auditorium"
+              },
+              {
+                "label": "Hours",
+                "value": "09:30 – 18:00 IST"
+              }
+            ],
+            "closes": "Happening today",
+            "ctaText": "See Today’s Schedule →",
+            "ctaHref": "/initiatives#schedule"
+          }
+        },
+        "evergreen": {
+          "id": "evergreen",
+          "badgeText": "GALGOTIAS ENTREPRENEURSHIP CELL",
+          "badgeClass": "badge-outline",
+          "priorityTag": "EVERGREEN BRAND BASELINE",
+          "headlineAccent": "var(--gec-crimson)",
+          "headlineLine1": "IDEAS BEGIN HERE.",
+          "headlineLine2": "BUILDERS GROW HERE.",
+          "subline": "Innovate. Inspire. Impact.",
+          "deadline": "Always Active · Student Community & Venture Ecosystem",
+          "context": "Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.",
+          "primaryCtaText": "Explore Initiatives →",
+          "primaryCtaHref": "/initiatives",
+          "secondaryCtaText": "Discover GEC",
+          "secondaryCtaHref": "/about",
+          "mediaTitle": "STUDENT-DRIVEN LAUNCHPAD",
+          "mediaSubtitle": "Connecting ambitious students with knowledge, mentorship, and the startup ecosystem.",
+          "card": {
+            "chip": "ALWAYS OPEN",
+            "lead": {
+              "value": "7",
+              "label": "Teams to join"
+            },
+            "metrics": [
+              {
+                "label": "Community",
+                "value": "Student-Led"
+              },
+              {
+                "label": "Mentorship",
+                "value": "Founders & Faculty"
+              },
+              {
+                "label": "Incubation",
+                "value": "GICRISE"
+              }
+            ],
+            "closes": "Always active",
+            "ctaText": "Explore Initiatives →",
+            "ctaHref": "/initiatives"
+          }
+        }
+      },
+      "secondaryCards": [
+        {
+          "id": "sdp",
+          "labelClass": "hero-secondary-card__label--sdp",
+          "label": "01 / STARTUP DEVELOPMENT",
+          "badgeClass": "badge-crimson",
+          "badgeText": "P1 ACTIVE",
+          "title": "Cohort 04 Admissions",
+          "meta": "Closes 28 Sep · 12-Week Sprint"
+        },
+        {
+          "id": "ideathon",
+          "labelClass": "hero-secondary-card__label--ideathon",
+          "label": "02 / IDEATHON 2026",
+          "badgeClass": "badge-gold",
+          "badgeText": "P0 48H",
+          "title": "Venture Sprint Arena",
+          "meta": "Final Call · 14 Team Slots Left"
+        },
+        {
+          "id": "esummit",
+          "labelClass": "hero-secondary-card__label--esummit",
+          "label": "03 / E-SUMMIT 2026",
+          "badgeClass": "badge-blue",
+          "badgeText": "P2 LIVE",
+          "title": "Campus Auditorium",
+          "meta": "Happening Today · 50+ Founders"
+        }
+      ]
+    },
+    "happening": {
+      "kicker": "REALTIME ECOSYSTEM DISPATCH",
+      "heading": "Always Something in Motion.",
+      "lede": "Ideas are being pitched. Teams are building. Founders are sharing. Opportunities are opening. Discover what is currently happening across the Galgotias entrepreneurial ecosystem.",
+      "event": {
+        "badge": "UPCOMING EVENT",
+        "date": "APRIL 14, 2026",
+        "title": "Galgotias E-Summit 2026: The Builder Arena",
+        "desc": "Greater Noida’s premier student entrepreneurship summit featuring 50+ founders, live demo rounds, and venture angel mixers across Campus Hub.",
+        "chips": [
+          "Main Auditorium 01",
+          "10:00 AM – 6:00 PM",
+          "480 Seats"
+        ],
+        "note": "Admissions Free for Students",
+        "cta": {
+          "label": "View Event Details →",
+          "href": "/initiatives#esummit"
+        }
+      },
+      "apply": {
+        "badge": "APPLICATIONS OPEN",
+        "title": "SDP Cohort 04",
+        "desc": "Find programs and opportunities currently accepting applications across the campus accelerator.",
+        "metaLabel": "PRE-SEED COHORT",
+        "metaValue": "12 Teams Selected per Batch",
+        "cta": {
+          "label": "Apply Now",
+          "href": "/initiatives#apply"
+        }
+      },
+      "story": {
+        "badge": "LATEST STORY",
+        "title": "From Garage to Seed Round",
+        "desc": "Meet the student builders turning ideas into funded agritech ventures inside Galgotias.",
+        "byline": "By Aman Sharma · FarmVision AI",
+        "cta": {
+          "label": "Read Story →",
+          "href": "/stories#farmvision-ai"
+        }
+      },
+      "spotlight": {
+        "mark": "FV",
+        "badge": "STARTUP SPOTLIGHT",
+        "status": "● ACTIVE VENTURE",
+        "title": "FarmVision AI — Autonomous Multispectral Drone Analytics for Precision Agriculture",
+        "meta": "Founded by Galgotias B.Tech builders · Raised ₹75L Seed Round · Mentored through GEC Cohort 02 & GICRISE",
+        "cta": {
+          "label": "Explore Startup →",
+          "href": "/stories#farmvision-ai"
+        }
+      },
+      "allStories": {
+        "label": "Read All Stories →",
+        "href": "/stories"
+      }
+    },
+    "impact": {
+      "pillars": [
+        "Leadership",
+        "Communication",
+        "Teamwork",
+        "Ideation",
+        "Problem Solving",
+        "Execution"
+      ],
+      "metrics": [
+        {
+          "value": "35+",
+          "title": "Events & Experiences",
+          "subtitle": "Summits, Hackathons & Mixers"
+        },
+        {
+          "value": "12,000+",
+          "title": "Students Engaged",
+          "subtitle": "Campus-Wide Ecosystem Reach"
+        },
+        {
+          "value": "45+",
+          "title": "Startups Supported",
+          "subtitle": "Incubated & Mentored Ventures"
+        },
+        {
+          "value": "28+",
+          "title": "Speakers & Mentors",
+          "subtitle": "Unicorn Founders & Industry VCs"
+        }
+      ]
+    },
+    "site-nav": {
+      "routes": [
+        {
+          "href": "/",
+          "label": "Home"
+        },
+        {
+          "href": "/about",
+          "label": "About"
+        },
+        {
+          "href": "/teams",
+          "label": "Teams"
+        },
+        {
+          "href": "/initiatives",
+          "label": "Initiatives"
+        },
+        {
+          "href": "/stories",
+          "label": "Stories"
+        }
+      ],
+      "mobileRoutes": [
+        {
+          "href": "/",
+          "label": "01. Home"
+        },
+        {
+          "href": "/about",
+          "label": "02. About"
+        },
+        {
+          "href": "/teams",
+          "label": "03. Teams"
+        },
+        {
+          "href": "/initiatives",
+          "label": "04. Initiatives"
+        },
+        {
+          "href": "/stories",
+          "label": "05. Stories"
+        }
+      ],
+      "footerRoutes": [
+        {
+          "href": "/",
+          "label": "Home"
+        },
+        {
+          "href": "/about",
+          "label": "About GEC"
+        },
+        {
+          "href": "/teams",
+          "label": "The 7 Teams"
+        },
+        {
+          "href": "/initiatives",
+          "label": "Initiatives & SDP"
+        },
+        {
+          "href": "/stories",
+          "label": "Stories & Portfolio"
+        }
+      ],
+      "socials": [
+        {
+          "href": "https://www.instagram.com/galgotiasecell/",
+          "label": "Instagram",
+          "handle": "@galgotiasecell",
+          "icon": "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Zm5.3-1.8a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z"
+        },
+        {
+          "href": "https://www.linkedin.com/company/ecell-gu/",
+          "label": "LinkedIn",
+          "handle": "Galgotias E-Cell",
+          "icon": "M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4V9.5Z"
+        },
+        {
+          "href": "mailto:contact@ecellgu.in",
+          "label": "Email",
+          "handle": "contact@ecellgu.in",
+          "icon": "M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7.2L4.2 7H4v.9l8 5.3 8-5.3V7h-.2L12 12.2Z"
+        }
+      ],
+      "footerPartners": [
+        {
+          "name": "Startup India",
+          "logo": "/partners/startup-india.png"
+        },
+        {
+          "name": "MSME",
+          "logo": "/partners/msme.svg"
+        },
+        {
+          "name": "IIC GU",
+          "logo": "/partners/iic-gu.png"
+        },
+        {
+          "name": "AWS Activate",
+          "logo": "/partners/aws.svg"
+        },
+        {
+          "name": "GitHub Campus",
+          "logo": "/partners/github.svg"
+        },
+        {
+          "name": "Wadhwani",
+          "logo": "/partners/wadhwani.png"
+        }
+      ]
+    },
+    "route-copy": {
+      "about": {
+        "hero": {
+          "kicker": "WHO WE ARE",
+          "title": "We Don’t Just Talk About Entrepreneurship.",
+          "accent": "We Create Space to Experience It.",
+          "lede": "Galgotias Entrepreneurship Cell is a student-driven community built around innovation, leadership, creativity, and entrepreneurship. Through mentorship, workshops, startup-focused programs, and collaborative experiences, GEC encourages students to turn curiosity into action.",
+          "anchors": [
+            {
+              "href": "#origin",
+              "label": "Our story"
+            },
+            {
+              "href": "#leadership",
+              "label": "Leadership"
+            }
+          ]
+        },
+        "cta": {
+          "shader": "riso",
+          "primary": {
+            "href": "/teams",
+            "label": "Join GEC"
+          },
+          "secondary": {
+            "href": "/initiatives",
+            "label": "Discover Initiatives"
+          }
+        }
+      },
+      "teams": {
+        "hero": {
+          "kicker": "THE ENGINE BEHIND GEC",
+          "title": "7 Teams.",
+          "accent": "One Vision.",
+          "lede": "Different skills. Different responsibilities. One entrepreneurial ecosystem. Behind every event, startup initiative, campaign, partnership, and opportunity is a team of students making it happen."
+        },
+        "cta": {
+          "shader": "riso",
+          "kicker": "RECRUITMENT",
+          "heading": "Find Your Team.",
+          "lede": "Every team takes new members each semester. Pick the one that matches how you like to build.",
+          "primary": {
+            "href": "/about",
+            "label": "About GEC"
+          },
+          "secondary": {
+            "href": "/initiatives",
+            "label": "See What Teams Run"
+          }
+        }
+      },
+      "initiatives": {
+        "hero": {
+          "kicker": "ACTION OVER THEORY",
+          "title": "Ideas Need More",
+          "accent": "Than Inspiration.",
+          "lede": "Our initiatives are designed to give students opportunities to explore entrepreneurship through building, pitching, learning, collaborating, and connecting with the ecosystem. Every initiative solves a different problem. Every initiative creates a different path forward.",
+          "anchors": [
+            {
+              "href": "#desk",
+              "label": "Open the desk"
+            },
+            {
+              "href": "#programmes",
+              "label": "All programmes"
+            },
+            {
+              "href": "#ideathon",
+              "label": "Ideathon"
+            },
+            {
+              "href": "#esummit",
+              "label": "E-Summit"
+            }
+          ]
+        },
+        "cta": {
+          "shader": "riso",
+          "lede": "Applications for SDP Cohort 04 are open now. Zero fees, zero equity.",
+          "primary": {
+            "href": "#sdp",
+            "label": "Apply to SDP"
+          },
+          "secondary": {
+            "href": "/stories",
+            "label": "Read Founder Stories"
+          }
+        }
+      },
+      "stories": {
+        "hero": {
+          "kicker": "CULTURE & INSIGHTS",
+          "title": "People Build Companies.",
+          "accent": "Stories Build Culture.",
+          "lede": "Ideas, failures, experiments, wins, and lessons from people inside and around the Galgotias entrepreneurial ecosystem.",
+          "anchors": [
+            {
+              "href": "#portfolio",
+              "label": "Portfolio"
+            },
+            {
+              "href": "#dispatch",
+              "label": "The Dispatch"
+            }
+          ]
+        },
+        "cta": {
+          "shader": "riso",
+          "kicker": "SHARE YOURS",
+          "headingLine1": "Built Something at Galgotias?",
+          "headingLine2": "Tell Us the Story.",
+          "lede": "Failures and experiments count too. We feature founders, teams, and events from across the ecosystem.",
+          "primary": {
+            "href": "/about",
+            "label": "Get in Touch"
+          },
+          "secondary": {
+            "href": "/initiatives",
+            "label": "Discover Initiatives"
+          }
+        }
+      }
+    }
+  },
+  "lists": {
+    "milestones": [
+      {
+        "badgeClass": "badge-crimson",
+        "badgeText": "SUMMIT 2023",
+        "yearText": "YEAR 2023",
+        "place": "CAMPUS HUB",
+        "title": "Foundation Summit & Live Pitch Arena",
+        "desc": "The historic inauguration of GEC’s campus incubator network, connecting 400+ student innovators with initial angel mentors.",
+        "swatchClass": "milestones__thumb--crimson",
+        "photo": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&h=750&fit=crop",
+        "order": 1
+      },
+      {
+        "badgeClass": "badge-blue",
+        "badgeText": "E-SUMMIT 2024",
+        "yearText": "YEAR 2024",
+        "place": "AUDITORIUM 01",
+        "title": "Galgotias E-Summit Scaling to 1,500+",
+        "desc": "Keynotes by unicorn founders, live venture pitch rounds, and regional collegiate participation across NCR.",
+        "swatchClass": "milestones__thumb--blue",
+        "photo": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=750&fit=crop",
+        "order": 2
+      },
+      {
+        "badgeClass": "badge-gold",
+        "badgeText": "GICRISE ALLIANCE",
+        "yearText": "YEAR 2025",
+        "place": "INSTITUTIONAL",
+        "title": "GICRISE Incubation Alliance & Grant Fund",
+        "desc": "Formal partnership with Galgotias Incubation Centre establishing the ₹50L student prototype grant pipeline.",
+        "swatchClass": "milestones__thumb--gold",
+        "photo": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1200&h=750&fit=crop",
+        "order": 3
+      }
+    ],
+    "speakers": [
+      {
+        "initials": "AG",
+        "name": "Ashneer Grover",
+        "role": "Co-Founder",
+        "org": "BharatPe",
+        "order": 1
+      },
+      {
+        "initials": "AG",
+        "name": "Aman Gupta",
+        "role": "Co-Founder & CMO",
+        "org": "boAt Lifestyle",
+        "order": 2
+      },
+      {
+        "initials": "SJ",
+        "name": "Sandeep Jain",
+        "role": "Founder & CEO",
+        "org": "GeeksforGeeks",
+        "order": 3
+      },
+      {
+        "initials": "SB",
+        "name": "Sanjeev Bikhchandani",
+        "role": "Founder & Vice Chairman",
+        "org": "Info Edge / Naukri.com",
+        "order": 4
+      },
+      {
+        "initials": "DS",
+        "name": "Debojit Sen",
+        "role": "Founder",
+        "org": "Crack-ED",
+        "order": 5
+      },
+      {
+        "initials": "HA",
+        "name": "Himanshu Adlakha",
+        "role": "Co-Founder",
+        "org": "Winston India",
+        "order": 6
+      },
+      {
+        "initials": "IS",
+        "name": "Ishant Sachdeva",
+        "role": "Founder",
+        "org": "Being Chief",
+        "order": 7
+      },
+      {
+        "initials": "TV",
+        "name": "Tushar Vadera",
+        "role": "Founding Member",
+        "org": "Zomato Feeding India",
+        "order": 8
+      }
+    ],
+    "partners": [
+      {
+        "name": "STARTUP INDIA",
+        "href": "https://www.startupindia.gov.in/",
+        "tag": "DPIIT Recognized",
+        "logo": "/partners/startup-india.png",
+        "order": 1
+      },
+      {
+        "name": "MSME",
+        "href": "https://msme.gov.in/",
+        "tag": "Ministry Host",
+        "logo": "/partners/msme.svg",
+        "order": 2
+      },
+      {
+        "name": "IIC GU",
+        "href": "https://iic.mic.gov.in/",
+        "tag": "Innovation Council",
+        "logo": "/partners/iic-gu.png",
+        "order": 3
+      },
+      {
+        "name": "AWS ACTIVATE",
+        "href": "https://aws.amazon.com/startups/",
+        "tag": "$10k Cloud Credits",
+        "logo": "/partners/aws.svg",
+        "order": 4
+      },
+      {
+        "name": "GITHUB CAMPUS",
+        "href": "https://education.github.com/",
+        "tag": "Dev Tools Tier",
+        "logo": "/partners/github.svg",
+        "order": 5
+      },
+      {
+        "name": "WADHWANI",
+        "href": "https://wadhwanifoundation.org/",
+        "tag": "Curriculum Partner",
+        "logo": "/partners/wadhwani.png",
+        "order": 6
+      }
+    ],
+    "team-stage": [
+      {
+        "index": 1,
+        "id": "startup-development",
+        "slug": "startup-development",
+        "name": "Startup Development & Incubation",
+        "shortName": "Startup Dev",
+        "roleTag": "Team 01",
+        "tagColor": {
+          "bg": "#FBCA05",
+          "text": "#222222"
+        },
+        "route": "/teams/startup-development",
+        "desc": "Fostering student ventures from raw idea to market validation through structured cohorts, incubation alignment with GICRISE, and founder support networks.",
+        "headName": "Aarav Sharma",
+        "headRole": "Lead · Startup Development",
+        "headPhoto": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&h=400&fit=crop&crop=faces",
+        "heroImage": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1600&h=900&fit=crop",
+        "galleryImages": [
+          "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&h=900&fit=crop"
+        ],
+        "applyTarget": "Startup Development Team",
+        "previewScale": 0.94,
+        "previewOpacity": 0.85,
+        "coordinatorsCount": 3,
+        "coordinators": [
+          {
+            "name": "Ananya Rao",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Kabir Mehta",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Priya Nair",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=400&fit=crop&crop=faces"
+          }
+        ],
+        "membersCount": 8,
+        "pillars": [
+          {
+            "name": "Idea Discovery",
+            "desc": "Campus-wide problem ideation workshops."
+          },
+          {
+            "name": "Venture Building",
+            "desc": "Rapid prototype & proof-of-concept testing."
+          },
+          {
+            "name": "Founder Relations",
+            "desc": "Continuous milestone reviews & support."
+          },
+          {
+            "name": "Pitching",
+            "desc": "Decks, demo days, and pitch coaching."
+          },
+          {
+            "name": "Mentorship",
+            "desc": "Pairing teams with alumni & startup experts."
+          },
+          {
+            "name": "Ecosystem",
+            "desc": "Direct pipeline integration into GICRISE."
+          }
+        ],
+        "order": 1
+      },
+      {
+        "index": 2,
+        "id": "pr-and-networking",
+        "slug": "pr-and-networking",
+        "name": "PR & Networking",
+        "shortName": "PR & Net",
+        "roleTag": "Team 02",
+        "tagColor": {
+          "bg": "#A3040F",
+          "text": "#FFFFFF"
+        },
+        "route": "/teams/pr-and-networking",
+        "desc": "Connecting Galgotias with industry pioneers, angel syndicates, corporate accelerators, and peer university e-cells across India.",
+        "headName": "Ananya Roy",
+        "headRole": "Lead · PR & Ecosystem Partnerships",
+        "headPhoto": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=faces",
+        "heroImage": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop",
+        "galleryImages": [
+          "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1515169067868-5387ec356754?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1560523159-4a9692d222f8?w=1600&h=900&fit=crop"
+        ],
+        "applyTarget": "PR & Networking Team",
+        "previewScale": 0.96,
+        "previewOpacity": 0.9,
+        "coordinatorsCount": 3,
+        "coordinators": [
+          {
+            "name": "Rohan Gupta",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Isha Verma",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Arjun Bose",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=400&fit=crop&crop=faces"
+          }
+        ],
+        "membersCount": 8,
+        "pillars": [
+          {
+            "name": "External Relations",
+            "desc": "Building inter-university and corporate networks."
+          },
+          {
+            "name": "Speaker Outreach",
+            "desc": "Curating founders & VC angels for keynotes."
+          },
+          {
+            "name": "Partnerships",
+            "desc": "Formal MoU agreements with accelerators."
+          },
+          {
+            "name": "Networking",
+            "desc": "E-Summit ecosystem mixer operations."
+          },
+          {
+            "name": "Collaborations",
+            "desc": "Cross-chapter initiatives with IEEE / CSI."
+          },
+          {
+            "name": "Ecosystem",
+            "desc": "Representing GEC in regional innovation summits."
+          }
+        ],
+        "order": 2
+      },
+      {
+        "index": 3,
+        "id": "marketing-ca",
+        "slug": "marketing-ca",
+        "name": "Marketing & Campus Ambassador",
+        "shortName": "Marketing",
+        "roleTag": "Team 03",
+        "tagColor": {
+          "bg": "#F97316",
+          "text": "#FFFFFF"
+        },
+        "route": "/teams/marketing-ca",
+        "desc": "Driving campus awareness, student signups, ambassador networks across all academic blocks, and high-conversion cohort recruitment campaigns.",
+        "headName": "Kabir Mehta",
+        "headRole": "Lead · Growth & Ambassador Ops",
+        "headPhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces",
+        "heroImage": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&fit=crop",
+        "galleryImages": [
+          "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&h=900&fit=crop"
+        ],
+        "applyTarget": "Marketing & CA Team",
+        "previewScale": 0.98,
+        "previewOpacity": 1,
+        "coordinatorsCount": 3,
+        "coordinators": [
+          {
+            "name": "Sneha Iyer",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Vivaan Jain",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Meera Das",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=400&fit=crop&crop=faces"
+          }
+        ],
+        "membersCount": 8,
+        "pillars": [
+          {
+            "name": "Campus Marketing",
+            "desc": "On-ground brand blitzes and interactive kiosks."
+          },
+          {
+            "name": "Campaign Strategy",
+            "desc": "Multi-channel launch calendars for E-Week."
+          },
+          {
+            "name": "Community Growth",
+            "desc": "WhatsApp & Discord builder group moderation."
+          },
+          {
+            "name": "Ambassadors",
+            "desc": "Managing 40+ block coordinators across campus."
+          },
+          {
+            "name": "Promotions",
+            "desc": "Merchandise, stickers, and viral flyers."
+          },
+          {
+            "name": "Engagement",
+            "desc": "Pop-up surveys and student feedback loops."
+          }
+        ],
+        "order": 3
+      },
+      {
+        "index": 4,
+        "id": "events-operations",
+        "slug": "events-operations",
+        "name": "Event Management & Operations",
+        "shortName": "Events",
+        "roleTag": "Team 04",
+        "tagColor": {
+          "bg": "#701A24",
+          "text": "#FFFFFF"
+        },
+        "route": "/teams/events-operations",
+        "desc": "Orchestrating large-scale hackathons, founder fireside chats, pitch arenas, auditorium logistics, and frictionless attendee experiences.",
+        "headName": "Vikram Malhotra",
+        "headRole": "Lead · Events & Venue Operations",
+        "headPhoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=faces",
+        "heroImage": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&h=900&fit=crop",
+        "galleryImages": [
+          "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=1600&h=900&fit=crop"
+        ],
+        "applyTarget": "Event Management Team",
+        "previewScale": 0.96,
+        "previewOpacity": 0.92,
+        "coordinatorsCount": 3,
+        "coordinators": [
+          {
+            "name": "Aditya Singh",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Kavya Reddy",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Neel Kapoor",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop&crop=faces"
+          }
+        ],
+        "membersCount": 8,
+        "pillars": [
+          {
+            "name": "Event Planning",
+            "desc": "End-to-end rundown sheets and master timelines."
+          },
+          {
+            "name": "Venues",
+            "desc": "Auditorium booking, AV rigging, acoustic setup."
+          },
+          {
+            "name": "Participants",
+            "desc": "Check-in QR desk, badges, and delegate kits."
+          },
+          {
+            "name": "Operations",
+            "desc": "Stage management and VIP protocol handling."
+          },
+          {
+            "name": "Logistics",
+            "desc": "Equipment procurement and hospitality catering."
+          },
+          {
+            "name": "On-Ground Exec",
+            "desc": "Emergency protocols and live crowd direction."
+          }
+        ],
+        "order": 4
+      },
+      {
+        "index": 5,
+        "id": "digital-media",
+        "slug": "digital-media",
+        "name": "Digital Media & Storytelling",
+        "shortName": "Media",
+        "roleTag": "Team 05",
+        "tagColor": {
+          "bg": "#1F7EC0",
+          "text": "#FFFFFF"
+        },
+        "route": "/teams/digital-media",
+        "desc": "Crafting the visual identity of GEC, producing high-octane reels, founder video interviews, photo archives, and editorial magazine issues.",
+        "headName": "Priya Iyer",
+        "headRole": "Lead · Creative Direction & Media",
+        "headPhoto": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop&crop=faces",
+        "heroImage": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1600&h=900&fit=crop",
+        "galleryImages": [
+          "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1493723843671-1d655e66ac1c?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1461151304267-38535e780c79?w=1600&h=900&fit=crop"
+        ],
+        "applyTarget": "Digital Media Team",
+        "previewScale": 0.96,
+        "previewOpacity": 0.9,
+        "coordinatorsCount": 3,
+        "coordinators": [
+          {
+            "name": "Tara Menon",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Dev Malhotra",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Riya Sen",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=300&h=400&fit=crop&crop=faces"
+          }
+        ],
+        "membersCount": 8,
+        "pillars": [
+          {
+            "name": "Social Media",
+            "desc": "Instagram, LinkedIn & X visual scheduling."
+          },
+          {
+            "name": "Campaigns",
+            "desc": "Creative reels, carousels, and poster systems."
+          },
+          {
+            "name": "Content",
+            "desc": "Editorial storytelling and interview transcripts."
+          },
+          {
+            "name": "Photo & Video",
+            "desc": "HD coverage of all campus events."
+          },
+          {
+            "name": "Motion",
+            "desc": "Motion graphics, Remotion assets, and teasers."
+          },
+          {
+            "name": "Storytelling",
+            "desc": "Founder origin documentation and case studies."
+          }
+        ],
+        "order": 5
+      },
+      {
+        "index": 6,
+        "id": "technical-product-lab",
+        "slug": "technical-product-lab",
+        "name": "Technical & Product Lab",
+        "shortName": "Technical",
+        "roleTag": "Team 06",
+        "tagColor": {
+          "bg": "#334155",
+          "text": "#FFFFFF"
+        },
+        "route": "/teams/technical-product-lab",
+        "desc": "Engineering public web platforms, CMS internal command centers, attendance scanners, registration engines, and student developer micro-tools.",
+        "headName": "Siddharth Nair",
+        "headRole": "Lead · Engineering & Infrastructure",
+        "headPhoto": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=faces",
+        "heroImage": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&h=900&fit=crop",
+        "galleryImages": [
+          "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1550439062-609e1531270e?w=1600&h=900&fit=crop"
+        ],
+        "applyTarget": "Technical Team",
+        "previewScale": 0.94,
+        "previewOpacity": 0.86,
+        "coordinatorsCount": 3,
+        "coordinators": [
+          {
+            "name": "Karan Joshi",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Aisha Khan",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Yash Patel",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=400&fit=crop&crop=faces"
+          }
+        ],
+        "membersCount": 8,
+        "pillars": [
+          {
+            "name": "Web Development",
+            "desc": "High-performance Next.js and Tailwind portals."
+          },
+          {
+            "name": "Infrastructure",
+            "desc": "Serverless deployment, edge caching, and DNS."
+          },
+          {
+            "name": "Internal Tools",
+            "desc": "Applicant triage and CMS back-office tools."
+          },
+          {
+            "name": "Tech Support",
+            "desc": "Live event streaming and registration kiosks."
+          },
+          {
+            "name": "Event Tech",
+            "desc": "Automated QR ticketing and check-in scanner apps."
+          },
+          {
+            "name": "Product Lab",
+            "desc": "Incubating student tech prototypes & APIs."
+          }
+        ],
+        "order": 6
+      },
+      {
+        "index": 7,
+        "id": "career-connect",
+        "slug": "career-connect",
+        "name": "Career Connect & Talent Ops",
+        "shortName": "Career",
+        "roleTag": "Team 07",
+        "tagColor": {
+          "bg": "#854D0E",
+          "text": "#FFFFFF"
+        },
+        "route": "/teams/career-connect",
+        "desc": "Bridging high-growth startups with Galgotias builders for paid internships, live project externships, and venture talent placement.",
+        "headName": "Ishaan Gupta",
+        "headRole": "Lead · Venture Talent & Placements",
+        "headPhoto": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=400&h=400&fit=crop&crop=faces",
+        "heroImage": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1600&h=900&fit=crop",
+        "galleryImages": [
+          "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1552581234-26160f608093?w=1600&h=900&fit=crop",
+          "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&h=900&fit=crop"
+        ],
+        "applyTarget": "Career Connect Team",
+        "previewScale": 0.94,
+        "previewOpacity": 0.82,
+        "coordinatorsCount": 3,
+        "coordinators": [
+          {
+            "name": "Nisha Pillai",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Aryan Shah",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=300&h=400&fit=crop&crop=faces"
+          },
+          {
+            "name": "Diya Chawla",
+            "role": "Coordinator",
+            "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=400&fit=crop&crop=faces"
+          }
+        ],
+        "membersCount": 8,
+        "pillars": [
+          {
+            "name": "Internships",
+            "desc": "Curated 8-week summer and winter startup internships."
+          },
+          {
+            "name": "Career Exposure",
+            "desc": "Founder AMAs on breaking into tech & VC."
+          },
+          {
+            "name": "Startup Hiring",
+            "desc": "Exclusive hiring drives for funded alumni startups."
+          },
+          {
+            "name": "Industry Bridge",
+            "desc": "Corporate shadow days and VC immersions."
+          },
+          {
+            "name": "Opportunities",
+            "desc": "Live freelance projects and startup bounty boards."
+          },
+          {
+            "name": "Talent Ops",
+            "desc": "Resume reviews and mock founder technical interviews."
+          }
+        ],
+        "order": 7
+      }
+    ],
+    "dispatch-issues": [
+      {
+        "id": "dispatch-12",
+        "editionNumber": "#12",
+        "title": "Dorm Room to Term Sheet",
+        "date": "MAY 28, 2026",
+        "category": "Founders & Cap Tables",
+        "readTime": "8 min read",
+        "color": "#A3040F",
+        "foil": "#FBCA05",
+        "subtitle": "How 4 Galgotias undergrads closed a ₹1.2Cr pre-seed round while balancing end-term labs.",
+        "executiveSummary": "An unvarnished teardown of the 14-week fundraising journey: outreach conversion metrics across 32 angel syndicates, balancing academic credit caps with term-sheet diligence, and structured cap table hygiene.",
+        "tags": [
+          "Pre-Seed",
+          "Fundraising",
+          "Student Cap Tables"
+        ],
+        "takeaways": [
+          "Cold outreach conversion: 4.8% reply rate on generic decks vs 42% when leading with customer pilot retention numbers.",
+          "How to structure academic leave and lab access agreements before institutional due diligence begins.",
+          "Avoiding dirty liquidation preferences and early advisory equity traps on campus ventures."
+        ],
+        "href": "#apply",
+        "order": 1
+      },
+      {
+        "id": "dispatch-11",
+        "editionNumber": "#11",
+        "title": "The ₹5L Prototype Corpus",
+        "date": "MAY 14, 2026",
+        "category": "Incubation & Grants",
+        "readTime": "6 min read",
+        "color": "#222222",
+        "foil": "#FBCA05",
+        "subtitle": "Non-dilutive milestone tranches, vendor invoices, and de-risking Day 0 hardware experiments.",
+        "executiveSummary": "A practical deployment guide for the GEC prototype grant: structuring three milestone tranches, clearing vendor audit requirements, and using non-dilutive capital to buy critical proof.",
+        "tags": [
+          "Grants",
+          "Non-Dilutive",
+          "MVP Validation"
+        ],
+        "takeaways": [
+          "Milestone structuring: Tranche 1 (Bill of Materials), Tranche 2 (Bench Testing), Tranche 3 (10 Pilot Users).",
+          "How non-dilutive capital prevents unnecessary pre-seed dilution of 15-25%.",
+          "The single biggest reason grants stall: lack of auditable customer acceptance criteria."
+        ],
+        "href": "#apply",
+        "order": 2
+      },
+      {
+        "id": "dispatch-10",
+        "editionNumber": "#10",
+        "title": "E-Summit '26 Conclave Blueprint",
+        "date": "APR 30, 2026",
+        "category": "Conclave & E-Summit",
+        "readTime": "11 min read",
+        "color": "#1F7EC0",
+        "foil": "#FFFDF8",
+        "subtitle": "Behind the scenes of North India's premier student entrepreneurship conclave uniting 5,000+ delegates.",
+        "executiveSummary": "The operational blueprint behind Northern India's largest campus venture conclave: multi-track curation across AI, climate tech, and student syndicates, plus the real numbers behind the 24-hour BuildSprint.",
+        "tags": [
+          "E-Summit",
+          "Conclave",
+          "Ecosystem"
+        ],
+        "takeaways": [
+          "Pitch Arena anatomy: 50 shortlisted startups, 25 institutional operators, and a ₹12L cash grant pool.",
+          "BuildSprint track mechanics: moving from problem brief to working hardware prototype in 24 continuous hours.",
+          "Converting conclave momentum into sustained monthly cohort office hours."
+        ],
+        "href": "#apply",
+        "order": 3
+      },
+      {
+        "id": "dispatch-09",
+        "editionNumber": "#09",
+        "title": "Campus Hardware & Maker Labs",
+        "date": "APR 16, 2026",
+        "category": "Hardware & DeepTech",
+        "readTime": "7 min read",
+        "color": "#7B020B",
+        "foil": "#FBCA05",
+        "subtitle": "Rapid PCB prototyping, IoT telemetry benches, and mechanical CNC fabrication on university grounds.",
+        "executiveSummary": "An inventory and operating manual for GEC hardware fellows: reserving high-speed solder stations, accessing component lockers, and safely navigating campus fabrication facilities.",
+        "tags": [
+          "Hardware",
+          "Maker Lab",
+          "IoT Prototyping"
+        ],
+        "takeaways": [
+          "Turnaround times: same-day PCB etching vs 4-day external courier cycles.",
+          "Component library inventory: 1,200+ pre-stocked microcontrollers, sensors, and power modules for fellows.",
+          "Thermal and FCC compliance testing before field pilot deployments."
+        ],
+        "href": "#apply",
+        "order": 4
+      },
+      {
+        "id": "dispatch-08",
+        "editionNumber": "#08",
+        "title": "Student Cap Tables & Angel Rounds",
+        "date": "APR 02, 2026",
+        "category": "Founders & Cap Tables",
+        "readTime": "9 min read",
+        "color": "#F4E2CA",
+        "foil": "#A3040F",
+        "subtitle": "Founder vesting schedules, option pools, and avoiding toxic early-stage dilution traps.",
+        "executiveSummary": "Why 4-year vesting with a 1-year cliff is non-negotiable for student co-founders, how to model an unallocated ESOP pool, and navigating university faculty co-founder designations.",
+        "tags": [
+          "Cap Table",
+          "Legal & Tax",
+          "Founder Equity"
+        ],
+        "takeaways": [
+          "Never allocate static equity on day zero: standard 4-year vesting protects against mid-semester departures.",
+          "The 10-15% unallocated option pool: why angels demand it before issuing term sheets.",
+          "Handling IP assignment deeds cleanly between student inventors and newly incorporated private limiteds."
+        ],
+        "href": "#apply",
+        "order": 5
+      },
+      {
+        "id": "dispatch-07",
+        "editionNumber": "#07",
+        "title": "De-risking Day 0 Hypotheses",
+        "date": "MAR 19, 2026",
+        "category": "Incubation & Grants",
+        "readTime": "5 min read",
+        "color": "#145582",
+        "foil": "#FBCA05",
+        "subtitle": "The sharp difference between polite campus applause and genuine customer economic sacrifice.",
+        "executiveSummary": "A tactical framework for testing whether anyone actually wants what you are building: fake doors, pre-order token deposits, and why user interviews fail when you pitch instead of listen.",
+        "tags": [
+          "Customer Discovery",
+          "Validation",
+          "Product-Market Fit"
+        ],
+        "takeaways": [
+          "The Mom Test applied to university ventures: asking about past behavior rather than hypothetical future interest.",
+          "Fake door experiments: setting up a one-page landing page with a pre-order button before writing backend code.",
+          "Ten obsessive users beat a hundred lukewarm signups every single time."
+        ],
+        "href": "#apply",
+        "order": 6
+      },
+      {
+        "id": "dispatch-06",
+        "editionNumber": "#06",
+        "title": "DeepTech Patenting & University IP",
+        "date": "MAR 05, 2026",
+        "category": "Hardware & DeepTech",
+        "readTime": "10 min read",
+        "color": "#C89E04",
+        "foil": "#222222",
+        "subtitle": "Navigating university assignment deeds, provisional patent filings, and technology transfer.",
+        "executiveSummary": "A complete primer on protecting research intellectual property without surrendering startup agility: university technology transfer offices, patent prior-art searches, and global PCT filing windows.",
+        "tags": [
+          "Patents",
+          "University IP",
+          "DeepTech"
+        ],
+        "takeaways": [
+          "Provisional patent filing gives a 12-month priority window to seek venture funding before public disclosure.",
+          "Negotiating institutional equity royalty caps (typically 2-4%) in lieu of cash patent licensing fees.",
+          "Publishing academic papers after filing patent claims, not before."
+        ],
+        "href": "#apply",
+        "order": 7
+      },
+      {
+        "id": "dispatch-05",
+        "editionNumber": "#05",
+        "title": "Micro-SaaS Runway & Cloud Credits",
+        "date": "FEB 19, 2026",
+        "category": "Incubation & Grants",
+        "readTime": "6 min read",
+        "color": "#2D2B29",
+        "foil": "#FBCA05",
+        "subtitle": "Maximizing AWS, GCP, and OpenAI credits to achieve cash-flow breakeven before Series A.",
+        "executiveSummary": "How to stack startup credits effectively across cloud, authentication, monitoring, and AI inference providers to extend runway by 18+ months without raising institutional capital.",
+        "tags": [
+          "Cloud Runway",
+          "Bootstrapping",
+          "Unit Economics"
+        ],
+        "takeaways": [
+          "Staging cloud programs: claim credits in sequence (AWS Activate Portfolio → GCP Startup → Azure Founders Hub).",
+          "Containerizing infrastructure early so migration between credit grants is painless.",
+          "Tracking net unit cost per query/transaction from Day 1 to avoid deceptive margin cliffs."
+        ],
+        "href": "#apply",
+        "order": 8
+      },
+      {
+        "id": "dispatch-04",
+        "editionNumber": "#04",
+        "title": "The Pre-Seed Syndicate Memo",
+        "date": "FEB 05, 2026",
+        "category": "Founders & Cap Tables",
+        "readTime": "8 min read",
+        "color": "#A3040F",
+        "foil": "#FFFDF8",
+        "subtitle": "What angel syndicates actually look for when evaluating student-led venture dossiers.",
+        "executiveSummary": "An inside look at the scoring matrix used by institutional angel networks: founder velocity, distribution asymmetries, technical depth, and signs of unfair campus market advantages.",
+        "tags": [
+          "Angel Network",
+          "Syndicates",
+          "Dealflow"
+        ],
+        "takeaways": [
+          "Angel networks value execution velocity over static pedigree: shipping updates every 14 days proves agency.",
+          "The unfair campus distribution moat: why student founders have unique zero-CAC advantages.",
+          "Red flags: part-time founder commitments, unclear IP splits, and lack of customer access."
+        ],
+        "href": "#apply",
+        "order": 9
+      },
+      {
+        "id": "dispatch-03",
+        "editionNumber": "#03",
+        "title": "Customer Discovery in the Wild",
+        "date": "JAN 22, 2026",
+        "category": "Incubation & Grants",
+        "readTime": "7 min read",
+        "color": "#FCF8ED",
+        "foil": "#A3040F",
+        "subtitle": "Conducting 50 industrial interviews across Greater Noida without pitching solutions.",
+        "executiveSummary": "Field notes from 3 student teams visiting manufacturing units, logistics hubs, and clinic networks to map unaddressed operational pain points before writing a single line of software.",
+        "tags": [
+          "Interviews",
+          "Field Notes",
+          "Discovery"
+        ],
+        "takeaways": [
+          "Never start an interview by pitching your idea; ask them how they solved the problem yesterday.",
+          "Look for homegrown Excel sheets and WhatsApp workarounds: that is where real software demand hides.",
+          "Securing signed Letters of Intent (LOIs) before product build."
+        ],
+        "href": "#apply",
+        "order": 10
+      },
+      {
+        "id": "dispatch-02",
+        "editionNumber": "#02",
+        "title": "Building the First 100 User Test",
+        "date": "JAN 08, 2026",
+        "category": "Conclave & E-Summit",
+        "readTime": "6 min read",
+        "color": "#2A8DD4",
+        "foil": "#FFFDF8",
+        "subtitle": "Campus distribution flywheels, localized ambassador loops, and private beta telemetry.",
+        "executiveSummary": "Strategies for leveraging 30,000+ on-campus students as a fertile initial test ground: peer referral incentives, classroom demos, feedback channels, and actionable cohorts.",
+        "tags": [
+          "Distribution",
+          "Beta Testing",
+          "Campus Flywheel"
+        ],
+        "takeaways": [
+          "High-touch onboarding: setting up the product in person with the first 50 users.",
+          "Creating private feedback loops via closed Telegram/Discord channels.",
+          "Distinguishing between campus-specific viral spikes and durable, repeatable retention."
+        ],
+        "href": "#apply",
+        "order": 11
+      },
+      {
+        "id": "dispatch-01",
+        "editionNumber": "#01",
+        "title": "Genesis of Galgotias E-Cell",
+        "date": "DEC 18, 2025",
+        "category": "Conclave & E-Summit",
+        "readTime": "12 min read",
+        "color": "#8C0C16",
+        "foil": "#FBCA05",
+        "subtitle": "The founding charter, operational ethos, and vision for North India's entrepreneurial core.",
+        "executiveSummary": "The founding manifesto of GEC: bridging the gap between student ambition and tier-one venture capital, providing non-dilutive capital, and building a culture of relentless maker momentum.",
+        "tags": [
+          "Charter",
+          "Manifesto",
+          "Origins"
+        ],
+        "takeaways": [
+          "Our fundamental premise: dorm rooms produce generational companies when backed with conviction.",
+          "The three institutional pillars: Incubation Studio, E-Summit, and Venture Capital Network.",
+          "The unwritten rule of GEC: builders back builders."
+        ],
+        "href": "#apply",
+        "order": 12
+      }
+    ]
+  }
+}

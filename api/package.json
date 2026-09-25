@@ -13,6 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "migration:deploy": "node dist/database/migrate.js",
+    "seed:content": "node dist/src/database/seeds/seed-site-content.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
