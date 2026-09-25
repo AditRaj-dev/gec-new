@@ -5,9 +5,10 @@ import { FinalCta } from '@/components/home/FinalCta';
 import { GEC_TEAMS } from '@/lib/teamsData';
 
 export const metadata: Metadata = {
-  title: 'Teams & Organizational Roster | Galgotias Entrepreneurship Cell',
+  title: 'The 7 Teams',
   description:
-    'Explore the 7 specialized teams driving Galgotias Entrepreneurship Cell. Interactive Stage Manager transition system.',
+    'Meet the seven student teams behind GEC, from Startup Development and PR to the Technical & Product Lab and Career Connect, and apply to join one.',
+  alternates: { canonical: '/teams' },
 };
 
 // Wireframe pill labels + accents (styled.html 3380–3388), in team index order.

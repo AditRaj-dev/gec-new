@@ -5,6 +5,7 @@ import { withStoryContent } from '@/lib/storyContent';
 import { RouteHero } from '@/components/route/RouteHero';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
+import { SITE_URL, jsonLd, organizationLd } from '@/lib/site';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -18,9 +19,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const story = (await getStories()).find((s) => s.slug === slug);
-  return story
-    ? { title: `${story.title} | GEC Stories`, description: story.excerpt }
-    : { title: 'Story not found | GEC Stories' };
+  if (!story) return { title: 'Story not found' };
+  const url = `/stories/${story.slug}`;
+  return {
+    title: story.title,
+    description: story.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title: story.title,
+      description: story.excerpt,
+      publishedTime: story.publishedAt,
+      tags: story.tags,
+      ...(story.coverImage && { images: [{ url: story.coverImage, alt: story.title }] }),
+    },
+  };
 }
 
 /**
@@ -37,6 +51,21 @@ export default async function StoryPage({ params }: Props) {
 
   return (
     <main aria-label={story.title}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLd({
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: story.title,
+          description: story.excerpt,
+          datePublished: story.publishedAt,
+          mainEntityOfPage: `${SITE_URL}/stories/${story.slug}`,
+          ...(story.coverImage && { image: [story.coverImage] }),
+          author: story.authorOrFounder ? { '@type': 'Person', name: story.authorOrFounder } : { '@id': organizationLd['@id'] },
+          publisher: { '@id': organizationLd['@id'] },
+          keywords: story.tags?.join(', '),
+        })}
+      />
       <RouteHero
         kicker={story.category.toUpperCase()}
         title={story.title}

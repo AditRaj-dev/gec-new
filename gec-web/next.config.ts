@@ -1,6 +1,9 @@
 import type { NextConfig } from 'next';
 import path from 'path';
 
+const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL;
+const mediaHost = mediaBase ? new URL(mediaBase).hostname : null;
+
 const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
@@ -16,7 +19,11 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      // CMS media: the public Cloudflare R2 bucket behind its media domain (deployment.md §4.5).
+      ...(mediaHost ? [{ protocol: 'https' as const, hostname: mediaHost }] : []),
     ],
+    // CMS uploads get content-hashed keys and never change, so optimized copies can be cached for 30 days.
+    minimumCacheTTL: 2592000,
   },
   async redirects() {
     return [

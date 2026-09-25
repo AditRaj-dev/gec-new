@@ -11,8 +11,9 @@ import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 import { DockedBin, OpenDispatchButton } from '@/components/dispatch-bin/DispatchBin';
 
 export const metadata: Metadata = {
-  title: 'Stories | Galgotias Entrepreneurship Cell',
-  description: 'Founder chronicles, the GEC Dispatch archive, and the startup portfolio built at Galgotias.',
+  title: 'Stories',
+  description: "Founder stories, startup case studies, the GEC Dispatch newsletter and the portfolio of startups built by Galgotias University students.",
+  alternates: { canonical: '/stories' },
 };
 
 const fmtDate = (iso: string) =>

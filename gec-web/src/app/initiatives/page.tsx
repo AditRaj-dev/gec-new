@@ -6,8 +6,9 @@ import { ShaderLayer } from '@/components/ShaderLayer';
 import { ProgramForm, type ProgramField } from '@/components/route/ProgramForm';
 
 export const metadata: Metadata = {
-  title: 'Initiatives | Galgotias Entrepreneurship Cell',
-  description: 'Startup Development Program, pitching arenas and founder workshops at Galgotias Entrepreneurship Cell.',
+  title: 'Initiatives',
+  description: "Startup Development Program, pitching sessions, founder workshops and the Ideathon at Galgotias University's Entrepreneurship Cell, Greater Noida.",
+  alternates: { canonical: '/initiatives' },
 };
 
 // Wireframe copy, styled.html 3830–3900.

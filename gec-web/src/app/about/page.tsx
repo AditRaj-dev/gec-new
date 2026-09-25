@@ -6,8 +6,9 @@ import { ShaderLayer } from '@/components/ShaderLayer';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
 
 export const metadata: Metadata = {
-  title: 'About | Galgotias Entrepreneurship Cell',
-  description: 'The story, mission and manifesto behind GEC.',
+  title: 'About',
+  description: "How Galgotias University's Entrepreneurship Cell turns student ideas into startups: our story, mission, vision, leadership and milestones.",
+  alternates: { canonical: '/about' },
 };
 
 const PIPELINE_STAGES = [
