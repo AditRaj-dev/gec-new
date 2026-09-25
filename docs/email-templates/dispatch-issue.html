@@ -1,0 +1,115 @@
+<!-- GEC Dispatch issue email. Merge tags in double braces are filled per send/recipient; see docs/dispatch-email-service.md. -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light">
+<title>The GEC Dispatch · Issue {{edition}}</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:0;background:#E9DFC8;-webkit-text-size-adjust:100%}
+a{color:#A3040F}
+@media (max-width:620px){
+ .col{display:block!important;width:100%!important;box-sizing:border-box}
+ .px{padding-left:20px!important;padding-right:20px!important}
+ .hl{font-size:30px!important}.mh{font-size:40px!important}.ear{display:none!important}
+ .gap{padding-left:0!important;padding-top:18px!important}
+}
+</style></head>
+<body style="margin:0;padding:0;background:#E9DFC8">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all">{{preheader}}&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E9DFC8"><tr><td align="center" style="padding:24px 12px">
+
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#F0E8D2;border:1px solid #1d1a17;font-family:'Old Standard TT',Georgia,'Times New Roman',serif;color:#1d1a17">
+
+<!-- top strip -->
+<tr><td class="px" style="padding:10px 28px;border-bottom:1px solid #1d1a17;font:600 10px/1.4 'Courier New',monospace;letter-spacing:1.5px;text-transform:uppercase;color:#6E655F">
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+  <td style="font:600 10px/1.4 'Courier New',monospace;letter-spacing:1.5px;color:#6E655F">Hi {{first_name}} · Issue {{edition}}</td>
+  <td align="right" style="font:600 10px/1.4 'Courier New',monospace;letter-spacing:1.5px"><a href="{{view_in_browser_url}}" style="color:#6E655F">View in browser</a></td>
+ </tr></table>
+</td></tr>
+
+<!-- masthead -->
+<tr><td class="px" style="padding:20px 28px 10px">
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+  <td class="ear" width="110" valign="middle" style="border:1px solid #1d1a17;padding:6px 8px;font:italic 11px/1.3 'Old Standard TT',Georgia,serif">Forecast:<br><b>{{ear_left}}</b></td>
+  <td align="center" valign="middle" class="mh" style="font-family:'UnifrakturMaguntia','Old English Text MT',Georgia,serif;font-size:50px;line-height:1;color:#1d1a17;padding:0 8px">The GEC Dispatch</td>
+  <td class="ear" width="110" valign="middle" align="right" style="border:1px solid #1d1a17;padding:6px 8px;font:italic 11px/1.3 'Old Standard TT',Georgia,serif">Price:<br><b>{{ear_right}}</b></td>
+ </tr></table>
+</td></tr>
+<tr><td class="px" style="padding:0 28px"><div style="border-top:3px double #1d1a17;border-bottom:1px solid #1d1a17;padding:6px 0;text-align:center;font:600 10px/1.4 'Courier New',monospace;letter-spacing:2px;text-transform:uppercase">Galgotias Entrepreneurship Cell · {{issue_date}} · {{category}}</div></td></tr>
+
+<!-- lead -->
+<tr><td class="px" style="padding:24px 28px 8px">
+ <div style="font:700 11px/1 'Courier New',monospace;letter-spacing:2px;text-transform:uppercase;color:#A3040F">The lead · {{read_time}}</div>
+ <h1 class="hl" style="margin:10px 0 10px;font:700 38px/1.05 'Old Standard TT',Georgia,serif;color:#1d1a17">{{headline}}</h1>
+ <p style="margin:0 0 12px;font:italic 18px/1.4 'Old Standard TT',Georgia,serif">{{dek}}</p>
+ <p style="margin:0;font:600 10px/1.4 'Courier New',monospace;letter-spacing:1.5px;text-transform:uppercase;color:#6E655F">By {{byline}}</p>
+</td></tr>
+<tr><td class="px" style="padding:14px 28px 6px"><img src="{{plate_url}}" width="544" alt="{{plate_alt}}" style="display:block;width:100%;max-width:544px;height:auto;border:1px solid #1d1a17;background:#d8cfb8"></td></tr>
+<tr><td class="px" style="padding:0 28px 16px;font:italic 12px/1.4 'Old Standard TT',Georgia,serif;color:#6E655F">{{plate_caption}}</td></tr>
+
+<tr><td class="px" style="padding:0 28px;font:16px/1.65 'Old Standard TT',Georgia,serif;color:#1d1a17">
+ <p style="margin:0 0 14px"><span style="float:left;font:700 58px/0.82 'Old Standard TT',Georgia,serif;color:#A3040F;padding:6px 8px 0 0">{{drop_cap}}</span>{{lead_para_rest}}</p>
+ {{body_html}}
+</td></tr>
+
+<!-- pull quote -->
+<tr><td class="px" style="padding:4px 28px 18px">
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="border-top:2px solid #1d1a17;border-bottom:2px solid #1d1a17;padding:14px 4px;text-align:center;font:italic 700 21px/1.3 'Old Standard TT',Georgia,serif;color:#1d1a17">“{{pull_quote}}”</td></tr></table>
+</td></tr>
+
+<!-- takeaways -->
+<tr><td class="px" style="padding:0 28px 8px">
+ <div style="font:700 11px/1 'Courier New',monospace;letter-spacing:2px;text-transform:uppercase;color:#A3040F;margin-bottom:10px">Three things to steal</div>
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+  <tr><td width="34" valign="top" style="font:800 22px/1 Archivo,Arial,sans-serif;color:#A3040F;padding:2px 0 14px">1</td><td valign="top" style="font:15px/1.5 'Old Standard TT',Georgia,serif;padding-bottom:14px">{{takeaway_1}}</td></tr>
+  <tr><td width="34" valign="top" style="font:800 22px/1 Archivo,Arial,sans-serif;color:#A3040F;padding:2px 0 14px">2</td><td valign="top" style="font:15px/1.5 'Old Standard TT',Georgia,serif;padding-bottom:14px">{{takeaway_2}}</td></tr>
+  <tr><td width="34" valign="top" style="font:800 22px/1 Archivo,Arial,sans-serif;color:#A3040F;padding:2px 0 14px">3</td><td valign="top" style="font:15px/1.5 'Old Standard TT',Georgia,serif;padding-bottom:14px">{{takeaway_3}}</td></tr>
+ </table>
+</td></tr>
+
+<!-- CTA -->
+<tr><td class="px" align="center" style="padding:6px 28px 28px">
+ <table role="presentation" cellpadding="0" cellspacing="0"><tr><td bgcolor="#A3040F" style="border-radius:999px">
+  <a href="{{issue_url}}" style="display:inline-block;padding:14px 28px;font:800 15px/1 Archivo,Arial,sans-serif;color:#FFFFFF;text-decoration:none;border-radius:999px">Read the full issue →</a>
+ </td></tr></table>
+</td></tr>
+
+<!-- also in this issue -->
+<tr><td class="px" style="padding:0 28px"><div style="border-top:3px double #1d1a17;padding-top:16px;font:700 11px/1 'Courier New',monospace;letter-spacing:2px;text-transform:uppercase">Also from the desk</div></td></tr>
+<tr><td class="px" style="padding:14px 28px 22px">
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+  <td class="col" width="50%" valign="top" style="padding-right:12px">
+   <div style="font:700 10px/1 'Courier New',monospace;letter-spacing:1.5px;color:#A3040F;text-transform:uppercase">{{also_kicker}}</div>
+   <div style="font:700 19px/1.15 'Old Standard TT',Georgia,serif;margin:6px 0">{{also_title}}</div>
+   <div style="font:14px/1.5 'Old Standard TT',Georgia,serif;color:#3a342e">{{also_summary}}</div>
+   <a href="{{also_url}}" style="font:700 13px/2 'Old Standard TT',Georgia,serif">Read →</a>
+  </td>
+  <td class="col gap" width="50%" valign="top" style="padding-left:12px;border-left:1px solid #1d1a17">
+   <div style="font:700 10px/1 'Courier New',monospace;letter-spacing:1.5px;color:#1F7EC0;text-transform:uppercase">On the calendar</div>
+   <div style="font:700 19px/1.15 'Old Standard TT',Georgia,serif;margin:6px 0">{{next_event_title}}</div>
+   <div style="font:14px/1.5 'Old Standard TT',Georgia,serif;color:#3a342e">{{next_event_date}} · {{next_event_place}}</div>
+   <a href="{{next_event_url}}" style="font:700 13px/2 'Old Standard TT',Georgia,serif">Save a seat →</a>
+  </td>
+ </tr></table>
+</td></tr>
+
+<!-- open desk -->
+<tr><td class="px" style="padding:0 28px 26px">
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td bgcolor="#FBCA05" style="padding:18px 20px;border:1px solid #1d1a17">
+  <div style="font:700 10px/1 'Courier New',monospace;letter-spacing:2px;text-transform:uppercase;color:#222">Applications open</div>
+  <div style="font:800 22px/1.15 Archivo,Arial,sans-serif;color:#222;margin:8px 0">{{open_call_title}}</div>
+  <div style="font:15px/1.5 'Old Standard TT',Georgia,serif;color:#222">{{open_call_line}}</div>
+  <a href="{{open_call_url}}" style="display:inline-block;margin-top:10px;font:800 14px/1 Archivo,Arial,sans-serif;color:#A3040F">Apply now →</a>
+ </td></tr></table>
+</td></tr>
+
+<!-- footer -->
+<tr><td class="px" style="padding:18px 28px 24px;border-top:1px solid #1d1a17;background:#E9DFC8;font:12px/1.6 Arial,sans-serif;color:#6E655F">
+ <p style="margin:0 0 8px">You're getting the Dispatch because you subscribed at the GEC website. It's written by students of the Galgotias Entrepreneurship Cell, roughly twice a month.</p>
+ <p style="margin:0 0 8px">Galgotias Entrepreneurship Cell · {{postal_address}}</p>
+ <p style="margin:0"><a href="{{instagram_url}}" style="color:#6E655F">Instagram</a> · <a href="{{linkedin_url}}" style="color:#6E655F">LinkedIn</a> · <a href="{{preferences_url}}" style="color:#6E655F">Email preferences</a> · <a href="{{unsubscribe_url}}" style="color:#A3040F">Unsubscribe</a></p>
+</td></tr>
+
+</table>
+</td></tr></table>
+</body></html>
