@@ -17,7 +17,7 @@ import {
   PATHS_SUBTITLE,
 } from '@/lib/logoData';
 
-export const Navbar: React.FC<{ nav: SiteNav }> = ({ nav }) => {
+export const Navbar: React.FC<{ nav: Pick<SiteNav, 'routes' | 'mobileRoutes'> }> = ({ nav }) => {
   const pathname = usePathname();
   const [logoVisible, setLogoVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

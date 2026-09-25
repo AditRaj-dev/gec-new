@@ -46,7 +46,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       </head>
       <body>
         <BrandEntranceCurtain />
-        <Navbar nav={nav} />
+        <Navbar nav={{ routes: nav.routes, mobileRoutes: nav.mobileRoutes }} />
         <div className="flex-1 flex flex-col">{children}</div>
         <SiteFooter nav={nav} />
         <DispatchBin issues={issues} />
