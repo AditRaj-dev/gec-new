@@ -5,16 +5,14 @@ import {
   defaultNewsletterBooks,
 } from '@/components/ui/newsletter-bookshelf';
 
-import { GEC_DISPATCH_ARCHIVE, type GecDispatchItem } from '@/lib/dispatchData';
-
-export { GEC_DISPATCH_ARCHIVE, type GecDispatchItem };
+import type { GecDispatchItem } from '@/lib/dispatchData';
 
 export { defaultNewsletterBooks };
 
-export function NewsletterSection() {
+export function NewsletterSection({ items }: { items: GecDispatchItem[] }) {
   return (
     <NewsletterBookshelf
-      items={GEC_DISPATCH_ARCHIVE}
+      items={items}
       brand="GEC DISPATCH"
     />
   );

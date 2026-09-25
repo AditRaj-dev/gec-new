@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { submitForm } from '@/lib/api';
-import { GEC_DISPATCH_ARCHIVE, type GecDispatchItem } from '@/lib/dispatchData';
+import type { GecDispatchItem } from '@/lib/dispatchData';
 import { mountDispatchBin, registerDock } from './controller';
 import './dispatch-bin.css';
 
@@ -15,36 +15,38 @@ const SCENE: Record<GecDispatchItem['category'], string> = {
 };
 
 // Archive item → broadsheet slots (handoff §3).
-const ISSUES = GEC_DISPATCH_ARCHIVE.map((it) => {
-  const [quote, ...rest] = it.takeaways;
-  return {
-    key: it.id,
-    no: it.editionNumber.replace('#', ''),
-    date: it.date,
-    tag: it.category,
-    scene: SCENE[it.category] ?? 'people',
-    by: 'The GEC Desk',
-    mins: parseInt(it.readTime, 10) || 5,
-    title: it.title,
-    dek: it.subtitle ?? '',
-    cap: it.tags.slice(0, 3).join(' · '),
-    body: [it.executiveSummary, ...(quote ? [`>${quote}`] : []), ...rest],
-    band: it.color,
-  };
-});
+export const toBinIssues = (items: GecDispatchItem[]) =>
+  items.map((it) => {
+    const [quote, ...rest] = it.takeaways;
+    return {
+      key: it.id,
+      no: it.editionNumber.replace('#', ''),
+      date: it.date,
+      tag: it.category,
+      scene: SCENE[it.category] ?? 'people',
+      by: 'The GEC Desk',
+      mins: parseInt(it.readTime, 10) || 5,
+      title: it.title,
+      dek: it.subtitle ?? '',
+      cap: it.tags.slice(0, 3).join(' · '),
+      body: [it.executiveSummary, ...(quote ? [`>${quote}`] : []), ...rest],
+      band: it.color,
+    };
+  });
 
 const subscribe = (email: string) =>
   submitForm({ formType: 'newsletter', fullName: '', email, metadata: { source: 'dispatch-bin' } });
 
 /** Floating newsletter bin + broadsheet reader. Mounted once in the root layout. */
-export function DispatchBin() {
+export function DispatchBin({ issues: items }: { issues: GecDispatchItem[] }) {
   const bin = useRef<HTMLButtonElement>(null);
   const dlg = useRef<HTMLDialogElement>(null);
+  const issues = useMemo(() => toBinIssues(items), [items]);
 
   useEffect(() => {
     if (!bin.current || !dlg.current) return;
-    return mountDispatchBin({ bin: bin.current, dlg: dlg.current, issues: ISSUES, onSubscribe: subscribe });
-  }, []);
+    return mountDispatchBin({ bin: bin.current, dlg: dlg.current, issues, onSubscribe: subscribe });
+  }, [issues]);
 
   return (
     <>
@@ -79,9 +81,10 @@ export function DispatchBin() {
 }
 
 /** The same bin, placed inline and still (e.g. /stories #dispatch). Opens the shared reader. */
-export function DockedBin() {
+export function DockedBin({ issues: items }: { issues: GecDispatchItem[] }) {
   const ref = useRef<HTMLButtonElement>(null);
-  useEffect(() => (ref.current ? registerDock(ref.current) : undefined), []);
+  const issues = useMemo(() => toBinIssues(items), [items]);
+  useEffect(() => (ref.current ? registerDock(ref.current) : undefined), [issues]);
   return <button ref={ref} type="button" className="bin bin-dock" aria-haspopup="dialog" aria-label="Open The GEC Dispatch" />;
 }
 

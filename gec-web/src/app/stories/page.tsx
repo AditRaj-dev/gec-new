@@ -3,6 +3,7 @@ import { getStories } from '@/lib/api';
 import { getList } from '@/lib/content';
 import { withStoryContent } from '@/lib/storyContent';
 import { SPEAKERS_FALLBACK } from '@/content/speakers';
+import { DISPATCH_FALLBACK } from '@/content/dispatch';
 import { RouteHero } from '@/components/route/RouteHero';
 import { SubscribeForm } from '@/components/route/SubscribeForm';
 import { FinalCta } from '@/components/home/FinalCta';
@@ -22,9 +23,10 @@ const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString('en-IN', { month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
 
 export default async function StoriesPage() {
-  const [storiesData, speakers] = await Promise.all([
+  const [storiesData, speakers, issues] = await Promise.all([
     getStories(),
     getList('speakers', SPEAKERS_FALLBACK),
+    getList('dispatch-issues', DISPATCH_FALLBACK),
   ]);
   // Featured = newest story, spread = the next three (route layouts plan, defaults).
   const [featured, ...more] = storiesData.map(withStoryContent);
@@ -153,7 +155,7 @@ export default async function StoriesPage() {
             <SubscribeForm />
           </div>
           <div className="rt-c7 rt-bin-stage">
-            <DockedBin />
+            <DockedBin issues={issues} />
             <div className="rt-mono rt-muted">Click the bin · or catch it in the corner of any page</div>
           </div>
         </div>
