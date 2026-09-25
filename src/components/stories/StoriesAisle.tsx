@@ -226,7 +226,7 @@ export function StoriesAisle({ progress, stories }: { progress: MotionValue<numb
   const hudRef = useRef<HTMLElement>(null);
   const barRef = useRef<HTMLElement>(null);
   const look = useRef({ x: 0, y: 0, s: 1 });
-  const [manual, setManual] = useState(false); // phones + reduced motion walk with buttons, not scroll
+  const [manual, setManual] = useState(false); // reduced motion walks with buttons; everyone else walks by scrolling
   const [stepAt, setStepAt] = useState(0);
   const [reading, setReading] = useState<{ book: Book; from: DOMRect } | null>(null);
 
@@ -261,20 +261,15 @@ export function StoriesAisle({ progress, stories }: { progress: MotionValue<numb
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const mq = matchMedia('(max-width: 768px)');
     const sync = () => {
-      setManual(mq.matches || !!reduce);
+      setManual(!!reduce);
       look.current.s = root.clientHeight / 810;
       render();
     };
     sync();
-    mq.addEventListener('change', sync);
     const ro = new ResizeObserver(sync);
     ro.observe(root);
-    return () => {
-      mq.removeEventListener('change', sync);
-      ro.disconnect();
-    };
+    return () => ro.disconnect();
   }, [reduce, render]);
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -371,7 +366,10 @@ export function StoriesAisle({ progress, stories }: { progress: MotionValue<numb
             <button type="button" onClick={() => setStepAt((v) => Math.min(last, v + 1))} disabled={stepAt === last} aria-label="Walk forward">→</button>
           </div>
         ) : (
-          <span>Scroll to walk · move to look · click a glowing spine</span>
+          <span>
+            <span className="sa-hint--fine">Scroll to walk · move to look · click a glowing spine</span>
+            <span className="sa-hint--touch">Scroll to walk · tap a glowing spine</span>
+          </span>
         )}
         <div className="sa-bar"><i ref={barRef} /></div>
       </div>

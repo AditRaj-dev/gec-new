@@ -158,3 +158,19 @@
 /* Reader scrolls without a visible scrollbar (wheel, touch, keys and the page turns still work). */
 .nl .body{scrollbar-width:none}
 .nl .body::-webkit-scrollbar{display:none}
+/* Phones: the issue list ("In the bin") slides in from the left over the reader instead of trailing the
+   article. controller.js moves .rail into .nl-drawer; the ☰ Issues button and the scrim toggle it. */
+.nl .bar-issues,.nl-drawer,.nl-scrim{display:none}
+@media (max-width:768px){
+  .nl .bar{padding-left:10px}
+  .nl .bar .bar-issues{display:inline-flex;align-items:center;gap:6px;flex:none;border-color:rgba(251,202,5,.55);color:var(--gold)}
+  .nl .bar-label{flex:1;min-width:0}
+  .nl .bar [data-act="full"]{display:none} /* the phone reader is already near full screen */
+  .nl-scrim{display:block;position:absolute;inset:52px 0 0;z-index:9;background:rgba(29,26,23,.45);opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+  .nl-drawer{display:block;position:absolute;top:52px;bottom:0;left:0;z-index:10;width:min(86%,340px);overflow:auto;overscroll-behavior:contain;
+    padding:20px 16px 28px;background:var(--grain),var(--fibre),var(--newsprint);box-shadow:12px 0 32px rgba(40,10,5,.35);
+    transform:translateX(-102%);visibility:hidden;transition:transform .42s var(--ease),visibility 0s linear .42s}
+  .nl.is-drawer .nl-drawer{transform:none;visibility:visible;transition:transform .42s var(--ease)}
+  .nl.is-drawer .nl-scrim{opacity:1;pointer-events:auto}
+  .nl-drawer .rail{border:0;padding:0;margin:0}
+}

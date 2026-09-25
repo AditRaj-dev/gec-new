@@ -59,8 +59,40 @@
 }
 .team-sheet__pillars strong { font-size: 13px; color: var(--gec-ink); }
 
-.team-sheet__lead { display: flex; flex-direction: column; }
-.team-sheet__lead span { font: 600 11px/1.4 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--gec-ink-subtle); }
+/* Portraits: the lead as a round avatar beside the name, coordinators as three portrait cards. */
+.team-sheet__photo {
+  position: relative;
+  overflow: hidden;
+  background: var(--gec-surface-sand);
+  display: grid;
+  place-items: center;
+  font: 800 16px var(--font-display);
+  color: var(--gec-crimson);
+}
+.team-sheet__photo img { object-fit: cover; }
+.team-sheet__lead { display: flex; align-items: center; gap: 14px; }
+.team-sheet__lead > div:last-child { display: flex; flex-direction: column; }
+.team-sheet__photo--lead {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--gec-canvas), 0 0 0 5px var(--team-accent);
+}
+.team-sheet__lead span,
+.team-sheet__coords span { font: 600 11px/1.4 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--gec-ink-subtle); }
+.team-sheet__coords { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; margin-top: 4px; }
+.team-sheet__coords li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 6px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--gec-surface-card);
+  border: 1px solid var(--gec-border-subtle);
+}
+.team-sheet__coords .team-sheet__photo { aspect-ratio: 3 / 4; border-radius: 6px; margin-bottom: 6px; }
+.team-sheet__coords strong { font-size: 13px; line-height: 1.2; }
 .team-sheet__roster { font-size: 13px; color: var(--gec-ink-muted); }
 
 .team-sheet__actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 8px; }

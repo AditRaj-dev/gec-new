@@ -442,7 +442,9 @@
   .sa-spine { transition: none; }
 }
 
-/* Phones: FullViewportAct drops the runway, so the aisle owns its own viewport. */
-@media (max-width: 768px) {
-  .sa { height: 100svh; }
+/* Touch screens (tablets, touch laptops) can't "move to look": swap the hint. Phones get StoriesFrontPages instead. */
+.sa-hint--touch { display: none; }
+@media (pointer: coarse) {
+  .sa-hint--fine { display: none; }
+  .sa-hint--touch { display: inline; }
 }

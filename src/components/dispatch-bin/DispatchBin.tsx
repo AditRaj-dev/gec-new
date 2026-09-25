@@ -58,6 +58,10 @@ export function DispatchBin() {
       </button>
       <dialog ref={dlg} className="nl" aria-label="The GEC Dispatch">
         <div className="bar">
+          {/* Phones: opens the issues drawer (the rail moves into .nl-drawer there; controller.js) */}
+          <button type="button" className="bar-issues" data-act="issues" aria-controls="nl-drawer" aria-expanded="false">
+            ☰ Issues
+          </button>
           <span className="bar-label">
             The Bin · <b data-count />
           </span>
@@ -67,6 +71,8 @@ export function DispatchBin() {
           </div>
         </div>
         <div className="body" />
+        <div className="nl-scrim" data-act="issues-close" aria-hidden="true" />
+        <aside className="nl-drawer" id="nl-drawer" aria-label="Issues in the bin" />
       </dialog>
     </>
   );

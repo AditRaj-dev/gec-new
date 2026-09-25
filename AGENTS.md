@@ -71,7 +71,8 @@ public/                  logos (gec-full-logo.svg), partners/, stickers/, backgr
 - Every page section carries `data-surface="cream|sand|crimson|charcoal"` and uses a `surface-*` class; alternate surfaces.
 - Type classes: `.editorial-kicker`, `.h1-display`, `.h2-section`, `.h3-card`, `.body-editorial`; buttons `.gec-btn .btn-crimson|.btn-outline-ink`; cards `.brand-card`.
 - Animate `transform` and `opacity` only. Every animation needs a `prefers-reduced-motion` path.
-- Mobile floor < 769px: one column, no shaders, no pinned runways.
+- Mobile floor < 769px: one column, no pinned runways. Shaders run in phone mode (see Shaders). The desk, the Stage Manager and the
+  stories aisle are swapped for phone recompositions (`InitiativeShelf`, `TeamFan`, `StoriesFrontPages`); curtains are skipped.
 
 ### ⚠ Tailwind spacing utilities do nothing
 
@@ -84,7 +85,9 @@ tuned around the bug — do it only as its own change with before/after screensh
 
 `<ShaderLayer family="…" />` as the first child of a section with class `gec-shader-host`. Hand-written WebGL1 in
 `src/lib/shaders/programs.ts`; `renderer.ts` + `policy.ts` enforce half-res, 30fps, viewport-only, frame-time guard,
-reduced-motion freeze, none below 769px, CSS fallback on any failure.
+reduced-motion freeze, CSS fallback on any failure. Phones (≤768px) run at 0.35×DPR capped at 480px wide and 24fps,
+create their context only when the section nears the screen, and freeze to a still frame on Save-Data or <4GB devices.
+The print masks switch to a phone form there (hero ink in the top-right corner, a narrow edge ellipse elsewhere, no gutters).
 
 | Family | Where |
 |---|---|

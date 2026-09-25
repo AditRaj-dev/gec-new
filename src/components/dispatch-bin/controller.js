@@ -82,6 +82,14 @@ export function mountDispatchBin({ bin, dlg, issues: ISSUES, onSubscribe }) {
   }
 
   const body = $('.body', dlg);
+  // gec-web: on phones the issue list lives in a drawer that slides in from the left over the reader.
+  const drawer = $('.nl-drawer', dlg);
+  const PHONE = matchMedia('(max-width: 768px)');
+  function setDrawer(open) {
+    dlg.classList.toggle('is-drawer', open);
+    $('[data-act="issues"]', dlg).setAttribute('aria-expanded', String(open));
+    if (open) $('.roll-item.is-on', drawer)?.focus({ preventScroll: true });
+  }
   let cur = 0;
   function setFull(on) {
     dlg.classList.toggle('is-full', on);
@@ -92,6 +100,7 @@ export function mountDispatchBin({ bin, dlg, issues: ISSUES, onSubscribe }) {
     dlg.style.setProperty('--dx', `${r.left + r.width / 2 - innerWidth / 2}px`);
     dlg.style.setProperty('--dy', `${r.top + r.height / 2 - innerHeight / 2}px`);
     setFull(false); // always opens windowed
+    setDrawer(false);
     render();
     dlg.showModal();
   }
@@ -104,7 +113,15 @@ export function mountDispatchBin({ bin, dlg, issues: ISSUES, onSubscribe }) {
     const act = e.target.closest('[data-act]')?.dataset.act;
     if (act === 'close' || e.target === dlg) closeDlg();
     if (act === 'full') setFull(!dlg.classList.contains('is-full'));
+    if (act === 'issues') setDrawer(!dlg.classList.contains('is-drawer'));
+    if (act === 'issues-close') setDrawer(false);
   });
+  // Esc closes the drawer first, the reader second. The keydown catch covers browsers that only honour a
+  // cancelled `cancel` event after a fresh user gesture; `cancel` covers the Android back gesture.
+  const drawerOpen = () => dlg.classList.contains('is-drawer');
+  on(dlg, 'keydown', (e) => { if (e.key === 'Escape' && drawerOpen()) { e.preventDefault(); e.stopPropagation(); setDrawer(false); } }, { capture: true });
+  on(dlg, 'cancel', (e) => { if (drawerOpen()) { e.preventDefault(); setDrawer(false); } });
+  on(PHONE, 'change', () => { setDrawer(false); if (dlg.open) render(); });
 
   function render(dir) {
     const it = ISSUES[cur];
@@ -143,17 +160,19 @@ export function mountDispatchBin({ bin, dlg, issues: ISSUES, onSubscribe }) {
         </form>
       </aside>
     </div></div>`;
+    // phones: the rail becomes the drawer's content; desktop keeps it inline
+    drawer.replaceChildren(...(PHONE.matches ? [$('.rail', body)] : []));
   }
   function turnTo(i) {
     if (i < 0 || i >= ISSUES.length || i === cur) return;
     const dir = i > cur ? 'next' : 'prev'; cur = i;
     render(dir); body.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' });
   }
-  on(body, 'click', (e) => {
-    const roll = e.target.closest('.roll-item'); if (roll) turnTo(+roll.dataset.i);
+  on(dlg, 'click', (e) => {
+    const roll = e.target.closest('.roll-item'); if (roll) { setDrawer(false); turnTo(+roll.dataset.i); }
     const go = e.target.closest('[data-go]'); if (go) turnTo(cur + +go.dataset.go);
   });
-  on(body, 'submit', async (e) => {
+  on(dlg, 'submit', async (e) => {
     e.preventDefault();
     const form = e.target, btn = form.querySelector('button'), email = form.querySelector('input').value;
     btn.disabled = true;

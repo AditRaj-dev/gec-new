@@ -15,6 +15,7 @@ export function InitiativeShelf() {
     <NewsletterBookshelf
       items={SHELF_ITEMS}
       brand="GEC INITIATIVES"
+      variant="bookcase"
       buildBook={(item) => GEC_BOOKS_BY_ID[item.id]}
     />
   );
