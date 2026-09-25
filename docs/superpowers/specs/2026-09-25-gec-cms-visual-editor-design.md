@@ -242,7 +242,7 @@ Bottom tabs: **Inbox · Content · ＋ New · Approve · Me**.
 - Plate builder: deterministic output for a fixed input (hash compare, grain seeded).
 
 ## 15. Build order (each phase ships on its own)
-0. **De-hardcode** all §4 content into the API (seeded), convert 4 books to canvas JSON, add `data-cms` tags, move site images that editors will change onto R2. Site must look identical.
+0. **De-hardcode** all §4 content except DeskFolio books into the API via the existing content pipeline (seeded from the site's constants, fallbacks kept), add `/api/revalidate` and the parity gate. Site must read identically. (Books → canvas JSON moves to Phase 3; `data-cms` tags to Phase 1; R2 moves happen per image field from Phase 1.)
 1. **Live editor**: preview token + draft mode, bridge, layers, inspector, inline text, RBAC locks, review/publish, **version history**.
 2. **Canvas** renderer + editor; first user: hero cards.
 3. **Books**: templates, two-face preview, spine overrides, page editor.

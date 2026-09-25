@@ -56,13 +56,21 @@ src/components/dispatch-bin/   floating newsletter bin + broadsheet reader (see 
 src/components/stories/  PortfolioGrid (+ portfolio.css), StoriesAisle
 src/components/deskfolio/, ui/, teams/   ported showcase components (DeskFolio, bookshelf, Stage Manager)
 src/components/          FullViewportAct, CurtainInterstitial, ShaderLayer, SiteFooter, Navbar, BrandMark
-src/lib/                 api.ts (CMS fetch + frozen fallbacks in fallbackData.ts), siteContent.ts (hero campaigns),
-                         dispatchData.ts (newsletter archive), teamsData.ts, storyContent.ts, shaders/, motion.ts, act.ts
+src/content/             CMS entity fallbacks (pure data, one file per entity type); read through lib/content.ts
+                         getSingleton/getList
+src/lib/                 api.ts (CMS fetch + frozen fallbacks in fallbackData.ts), content.ts + contentPick.ts
+                         (getSingleton/getList over src/content/*), storyContent.ts, shaders/, motion.ts, act.ts.
+                         siteContent.ts (hero campaigns) and teamsData.ts are now seed sources behind
+                         src/content/hero.ts / src/content/teams.ts; dispatchData.ts likewise behind src/content/dispatch.ts
 src/styles/gec.css       global design system (surfaces, type classes, buttons, cards, shader hosts)
 src/app/globals.css      tokens (--gec-*), fonts, Tailwind import
 docs/superpowers/        spec (specs/2026-09-23-gec-web-design.md) and plans (plans/*.md): read the relevant one first
 public/                  logos (gec-full-logo.svg), partners/, stickers/, backgrounds/
 ```
+
+Content pipeline: each CMS entity type doubles as its cache tag; the API's outbox signs a request to
+`src/app/api/revalidate/route.ts`, which calls `revalidateTag(tag, { expire: 0 })`. `scripts/export-content.mts`
+writes the fallbacks to `api/src/database/seeds/site-content.json`; `npm run seed:content` (in `api/`) loads them.
 
 ## Design rules (enforced by review, some by `design-lint`)
 
@@ -115,8 +123,9 @@ full canvas opacity; masks keep ink off the copy (`RIGHT`, `EDGES`, and a `gutte
   on screen and while any full-viewport act is live (`html[data-gec-act="live"]`). Data: `src/lib/dispatchData.ts`.
 - **FullViewportAct**: pinned scroll runway; children are a render function receiving scroll progress. Use
   `DeskRunway` / `StageRunway` (exported from `DeskAct.tsx` / `StageAct.tsx`) on route pages.
-- **Hero** (`home/Hero.tsx`): campaign billboard driven by `HERO_CAMPAIGNS` in `siteContent.ts`, including the
-  featured "ticket" card (`card` field). All campaigns are stacked invisibly as sizers so the card never changes height.
+- **Hero** (`home/Hero.tsx`): campaign billboard driven by the `hero` entity (fallback `src/content/hero.ts`,
+  formerly `HERO_CAMPAIGNS` in `siteContent.ts`), including the featured "ticket" card (`card` field). All campaigns
+  are stacked invisibly as sizers so the card never changes height.
 - **FinalCta**: defaults are the home copy; route pages pass `kicker/heading/lede/primary/secondary/shader`.
 - Forms submit through `submitForm()` in `lib/api.ts`. The API base URL comes from env; without it submissions fail
   closed with a friendly message.
