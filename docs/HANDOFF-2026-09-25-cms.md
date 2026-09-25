@@ -7,6 +7,7 @@ Read this first if you're picking the work up in a new session. It says what exi
 | Branch | Contains | Use it for |
 |---|---|---|
 | `WEBISTE-GETTING-THERE` | The full monorepo: every experiment and old project, plus all the work below. | History and reference. Unrelated uncommitted edits by another session also live in this checkout (`FullViewportAct.tsx`, some `*.css`, `next-env.d.ts`); they aren't part of this work. |
+| `gec-clean` | **Start here.** Both clean branches combined: `gec-web/` + `cms/` + `api/` + shared docs and CMS design notes. `api/dist/` untracked. | All new work. |
 | `gec-web-clean` | Only `gec-web/` (the public site) + `docs/` + `.gitignore`. | Website work. |
 | `cms-clean` | Only `cms/` (admin app) + `api/` (NestJS) + `docs/`, the CMS design notes (`cms-wireframes/`, `deployment.md`, `architecture.md`, `cms-copilot-integration.md`, `google-forms-agent-integration.md`) + `.gitignore`. `api/dist/` is no longer tracked (it's build output). | CMS and API work. |
 
