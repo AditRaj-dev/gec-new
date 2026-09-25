@@ -46,7 +46,8 @@ When you add, remove or reorder a section, **update `scripts/smoke.expect.mjs`**
 
 ```
 src/app/                 routes: / about teams initiatives stories stories/[slug] not-found error; layout.tsx mounts
-                         BrandEntranceCurtain, Navbar, SiteFooter and DispatchBin once for every page
+                         BrandEntranceCurtain, Navbar, SiteFooter and DispatchBin once for every page;
+                         api/revalidate (signed cache invalidation from the API outbox)
 src/components/home/     home sections (Hero, Happening, Impact, Milestones, Speakers, Partners, FinalCta)
                          + the three acts: DeskAct (DeskFolio), ShelfAct (bookshelf), StageAct (teams Stage Manager)
 src/components/route/    shared route-page pieces: RouteHero, ProgramForm, SubscribeForm, route.css (rt-* classes)
