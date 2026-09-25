@@ -1,0 +1,121 @@
+[href] /_next/static/chunks/%5Broot-of-the-server%5D__1v_vwoy._.css
+[href] /_next/static/chunks/_1yt0007._.css
+[href] /_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1di75ot._.js
+[href] https://api.fontshare.com/v2/css
+[href] /_next/static/chunks/src_components_route_route_20nmpod.css
+The 7 Teams | Galgotias Entrepreneurship Cell
+[href] https://ecellgu.in/teams
+[href] /favicon.ico
+[href] /icon.png
+[href] /apple-icon.png
+[href] https://api.fontshare.com
+[href] https://cdn.fontshare.com
+[href] https://api.fontshare.com/v2/css
+[href] /
+[href] /
+Home
+[href] /about
+About
+[href] /teams
+Teams
+[href] /initiatives
+Initiatives
+[href] /stories
+Stories
+[href] /initiatives
+Explore Initiatives
+[href] /
+01. Home
+[href] /about
+02. About
+[href] /teams
+03. Teams
+[href] /initiatives
+04. Initiatives
+[href] /stories
+05. Stories
+[href] /initiatives
+Explore Initiatives
+[surface] cream
+THE ENGINE BEHIND GEC
+7 Teams.
+One Vision.
+Different skills. Different responsibilities. One entrepreneurial ecosystem. Behind every event, startup initiative, campaign, partnership, and opportunity is a team of students making it happen.
+[href] /teams
+Startup Development
+[href] /teams
+PR &amp; Networking
+[href] /teams
+Marketing &amp; CA
+[href] /teams
+Event Management
+[href] /teams
+Digital Media
+[href] /teams
+Technical Team
+[href] /teams
+Internship &amp; Career Connect
+07
+Teams · 1 vision
+Skip past the teams stage
+[surface] sand
+[surface] crimson
+RECRUITMENT
+Find Your Team.
+Every team takes new members each semester. Pick the one that matches how you like to build.
+[href] /about
+About GEC
+[href] /initiatives
+See What Teams Run
+[surface] charcoal
+[href] /
+Innovate. Inspire. Impact.
+Got an idea?
+Start building it here.
+[href] /initiatives
+Explore Initiatives →
+[href] /teams
+Join a Team
+About
+Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.
+Navigation
+[href] /
+Home
+[href] /about
+About GEC
+[href] /teams
+The 7 Teams
+[href] /initiatives
+Initiatives &amp; SDP
+[href] /stories
+Stories &amp; Portfolio
+Connect
+[href] https://www.instagram.com/galgotiasecell/
+Instagram
+@galgotiasecell
+[href] https://www.linkedin.com/company/ecell-gu/
+LinkedIn
+Galgotias E-Cell
+[href] mailto:contact@ecellgu.in
+Email
+contact@ecellgu.in
+Ecosystem Portals
+ecellgu.in
+OFFICIAL
+gicrise.in
+INCUBATOR
+Built with
+[src] /partners/startup-india.png
+[src] /partners/msme.svg
+[src] /partners/iic-gu.png
+[src] /partners/aws.svg
+[src] /partners/github.svg
+[src] /partners/wadhwani.png
+GEC
+Galgotias Entrepreneurship Cell © 2026
+Back to top ↑
+POWERED BY STUDENTS. BUILT FOR BUILDERS.
+☰ Issues
+The Bin ·
+⤢ Full screen
+✕

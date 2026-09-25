@@ -1,0 +1,168 @@
+[href] /_next/static/chunks/%5Broot-of-the-server%5D__1v_vwoy._.css
+[href] /_next/static/chunks/src_components_1y95vob._.css
+[href] /_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1di75ot._.js
+[href] https://api.fontshare.com/v2/css
+[href] /_next/static/chunks/src_components_route_route_20nmpod.css
+About | Galgotias Entrepreneurship Cell
+[href] https://ecellgu.in/about
+[href] /favicon.ico
+[href] /icon.png
+[href] /apple-icon.png
+[href] https://api.fontshare.com
+[href] https://cdn.fontshare.com
+[href] https://api.fontshare.com/v2/css
+[href] /
+[href] /
+Home
+[href] /about
+About
+[href] /teams
+Teams
+[href] /initiatives
+Initiatives
+[href] /stories
+Stories
+[href] /initiatives
+Explore Initiatives
+[href] /
+01. Home
+[href] /about
+02. About
+[href] /teams
+03. Teams
+[href] /initiatives
+04. Initiatives
+[href] /stories
+05. Stories
+[href] /initiatives
+Explore Initiatives
+[surface] cream
+WHO WE ARE
+We Don’t Just Talk About Entrepreneurship.
+We Create Space to Experience It.
+Galgotias Entrepreneurship Cell is a student-driven community built around innovation, leadership, creativity, and entrepreneurship. Through mentorship, workshops, startup-focused programs, and collaborative experiences, GEC encourages students to turn curiosity into action.
+Our story ↓
+Leadership ↓
+[surface] sand
+From Curiosity to Community.
+GEC exists to bring together students who want to think differently, solve problems, and explore entrepreneurship beyond classrooms.
+The community grows around startup development, pitching sessions, workshops, founder interactions, networking, and practical experiences that allow students to learn entrepreneurship by participating in it.
+GEC works within the wider Galgotias innovation ecosystem alongside the
+Galgotias Incubation Centre for Research, Innovation, Startup &amp; Entrepreneurs — GICRISE
+.
+GICRISE supports startups and student innovators through mentorship, exposure, networking, incubation, and growth opportunities.
+Incubation Pipeline Matrix
+Student Idea to Market Venture
+Stage 01 · GEC Community
+Ideation, team formation, hackathons &amp; peer builder cohorts
+Stage 02 · SDP Accelerator
+12-week intensive prototyping, pitch coaching, and MVP validation
+Stage 03 · GICRISE Incubation
+Formal seed grant funding, legal incorporation, and angel demo day
+[surface] cream
+OUR MISSION
+Create Builders, Not Spectators.
+Our mission is to foster an entrepreneurial mindset among students by creating opportunities to ideate, collaborate, experiment, lead, and execute.
+We aim to connect students with the knowledge, mentorship, and ecosystem required to move from curiosity toward meaningful action.
+OUR VISION
+A Campus Where Ideas Have Somewhere to Go.
+Our vision is to build a thriving student entrepreneurship ecosystem where ambitious ideas can find collaborators, guidance, opportunities, and a pathway toward becoming impactful ventures.
+Transforming campus talent into fearless problem solvers ready to lead India’s technology and economic frontier.
+[surface] sand
+GOVERNANCE &amp; GUIDANCE
+Student-Led. Mentor-Guided.
+GEC is driven by students and strengthened by experienced mentors from the wider Galgotias innovation ecosystem.
+Core Leadership
+SJ
+Simran Jaiswal
+President
+Executive direction and strategic vision across all 7 operational teams.
+AG
+Anant Gupta
+Vice President
+Operations oversight, initiative execution, and ecosystem coordination.
+MS
+Mukul Kumar Sharma
+Secretary
+Administrative governance, community affairs, and internal liaison.
+Ecosystem Mentors · GICRISE
+KM
+Mr. Kamal Kishor Malhotra
+CEO
+Galgotias Incubation Centre for Research, Innovation, Startup &amp; Entrepreneurs
+SK
+Mr. Sonu Kadam
+Incubation Manager
+GICRISE · Mentoring, incubation programs, and venture screening.
+SA
+Mr. Sourabh Arya
+Marketing Manager
+GICRISE · Brand communications, external alliances, and investor relations.
+[surface] cream
+[href] /teams
+TEAM ARCHITECTURE
+7 Teams.
+One Vision.
+Seven specialised teams work together to run the community, build opportunities, and execute the initiatives of GEC.
+Meet Our Teams →
+[surface] crimson
+YOUR INVITATION TO BUILD
+Your Idea Doesn’t Need to Be Perfect.
+It Needs a Beginning.
+Whether you want to build a startup, develop entrepreneurial skills, find collaborators, or simply explore what’s possible — there is a place for you here.
+[href] /teams
+Join GEC
+[href] /initiatives
+Discover Initiatives
+[surface] charcoal
+[href] /
+Innovate. Inspire. Impact.
+Got an idea?
+Start building it here.
+[href] /initiatives
+Explore Initiatives →
+[href] /teams
+Join a Team
+About
+Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.
+Navigation
+[href] /
+Home
+[href] /about
+About GEC
+[href] /teams
+The 7 Teams
+[href] /initiatives
+Initiatives &amp; SDP
+[href] /stories
+Stories &amp; Portfolio
+Connect
+[href] https://www.instagram.com/galgotiasecell/
+Instagram
+@galgotiasecell
+[href] https://www.linkedin.com/company/ecell-gu/
+LinkedIn
+Galgotias E-Cell
+[href] mailto:contact@ecellgu.in
+Email
+contact@ecellgu.in
+Ecosystem Portals
+ecellgu.in
+OFFICIAL
+gicrise.in
+INCUBATOR
+Built with
+[src] /partners/startup-india.png
+[src] /partners/msme.svg
+[src] /partners/iic-gu.png
+[src] /partners/aws.svg
+[src] /partners/github.svg
+[src] /partners/wadhwani.png
+GEC
+Galgotias Entrepreneurship Cell © 2026
+Back to top ↑
+POWERED BY STUDENTS. BUILT FOR BUILDERS.
+☰ Issues
+The Bin ·
+⤢ Full screen
+✕

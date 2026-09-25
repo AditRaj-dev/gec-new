@@ -39,6 +39,7 @@ Next 16.3.5 (App Router, Turbopack) · React 19.2 · Tailwind 4 · `motion` for 
 | `npm run check` | node assert checks (`src/lib/*.check.*`) + `scripts/design-lint.mjs` |
 | `BASE=http://localhost:3211 node scripts/smoke.mjs` | every route → 200, required copy present, `data-surface` order matches `scripts/smoke.expect.mjs` |
 | `npx tsc --noEmit -p .` | type-check (ESLint has no config file; `npm run lint` does not work) |
+| `BASE=… node scripts/parity.mjs [--update]` | content parity gate (CMS Phase 0): visible text, links, images, surfaces per route. |
 
 When you add, remove or reorder a section, **update `scripts/smoke.expect.mjs`** (copy and surface order) in the same change.
 

@@ -1,0 +1,325 @@
+[href] /_next/static/chunks/%5Broot-of-the-server%5D__1v_vwoy._.css
+[href] /_next/static/chunks/src_components_1z_qcmh._.css
+[href] /_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1di75ot._.js
+[href] https://api.fontshare.com/v2/css
+[href] /_next/static/chunks/src_components_route_route_20nmpod.css
+Stories | Galgotias Entrepreneurship Cell
+[href] https://ecellgu.in/stories
+[href] /favicon.ico
+[href] /icon.png
+[href] /apple-icon.png
+[href] https://api.fontshare.com
+[href] https://cdn.fontshare.com
+[href] https://api.fontshare.com/v2/css
+[href] /
+[href] /
+Home
+[href] /about
+About
+[href] /teams
+Teams
+[href] /initiatives
+Initiatives
+[href] /stories
+Stories
+[href] /initiatives
+Explore Initiatives
+[href] /
+01. Home
+[href] /about
+02. About
+[href] /teams
+03. Teams
+[href] /initiatives
+04. Initiatives
+[href] /stories
+05. Stories
+[href] /initiatives
+Explore Initiatives
+[surface] cream
+CULTURE &amp; INSIGHTS
+People Build Companies.
+Stories Build Culture.
+Ideas, failures, experiments, wins, and lessons from people inside and around the Galgotias entrepreneurial ecosystem.
+Portfolio ↓
+The Dispatch ↓
+[surface] sand
+AeroDynamics AI
+FEATURED FOUNDER STORY
+From Dorm-Room Experiment to Institutional Seed Funding
+How three Galgotias engineering undergraduates built an autonomous drone delivery platform and secured ₹75 Lakh in pre-seed venture backing.
+Rohan Verma · 4 min read · March 2026
+“Nobody funded the drone. They funded the fourteen delivery logs we had from the campus pharmacy.”
+Rohan Verma, co-founder, AeroDynamics AI
+Pre-seed raised
+₹75L
+Founders, all undergrads
+3
+First pitch to close
+14 wks
+[href] /stories/from-campus-project-to-seed-funding
+Read the story →
+[surface] cream
+FOUNDER VOICES
+Dispatches From the Ground.
+[href] /stories/northern-india-biggest-student-venture-summit
+NEWS
+Northern India&#x27;s Biggest Student Venture Summit Returns for 2026
+Galgotias Entrepreneurship Cell announces the dates and keynote lineup for E-Summit 2026, featuring 60+ venture partners, angel networks, and breakout founders.
+Delegates expected:
+5,000+
+3 min read · March 2026
+Read the story →
+[href] /stories/patent-filing-and-ip-for-student-builders
+STARTUP STORY
+Protecting Student IP: Zero-Cost Patent Filing at GEC
+A breakdown of how GEC&#x27;s legal and intellectual property clinic helped four campus student ventures file provisional patents before entering demo days.
+Provisional patents filed:
+4
+5 min read · February 2026
+Read the story →
+[surface] sand
+VENTURE SHOWCASE
+Built at Galgotias.
+Discover startups and student ventures emerging from the Galgotias entrepreneurial ecosystem.
+All Sectors (6)
+Technology
+Healthcare
+Sustainability
+Consumer
+FV
+SEED · ₹75L
+FarmVision AI
+SECTOR: AGRITECH / AI
+Multispectral drone telemetry analyzing crop disease patterns and pesticide requirements for rural farmers.
+Aman Sharma &amp; Riya Verma
+RH
+PRE-SEED
+ReviveHealth
+SECTOR: HEALTHCARE
+Point-of-care rapid blood analysis diagnostic sensors designed for tier-3 clinics and emergency responders.
+Dr. Siddharth &amp; Team
+CC
+INCUBATED
+CodeCampus
+SECTOR: EDTECH / DEV
+Peer-to-peer software engineering apprenticeship and automated code review platform serving 15k+ students.
+Tanmay Joshi
+CW
+PROTOTYPE
+CirculaWaste
+SECTOR: SUSTAINABILITY
+Smart IoT waste segregation bins using computer vision sensors to sort recyclable polymers automatically.
+Pooja Kulkarni
+QL
+EARLY TRACTION
+QuickLogist
+SECTOR: CONSUMER LOGISTICS
+Automated campus smart parcel lockers and zero-emission micro-hub delivery for university students.
+Arjun Saxena
+BC
+BOOTSTRAPPED
+ByteCraft Studios
+SECTOR: GAMING &amp; TECH
+Indie game development studio producing Indian historical and mythology inspired mobile titles with 250k+ downloads.
+Varun &amp; Team
+[surface] cream
+THE GREEN ROOM
+Founders Who Took Our Stage.
+Entrepreneurs and operators who have spoken to Galgotias students at GEC sessions and the E-Summit.
+AG
+Ashneer Grover
+Co-Founder
+BharatPe
+AG
+Aman Gupta
+Co-Founder &amp; CMO
+boAt Lifestyle
+SJ
+Sandeep Jain
+Founder &amp; CEO
+GeeksforGeeks
+SB
+Sanjeev Bikhchandani
+Founder &amp; Vice Chairman
+Info Edge / Naukri.com
+DS
+Debojit Sen
+Founder
+Crack-ED
+HA
+Himanshu Adlakha
+Co-Founder
+Winston India
+IS
+Ishant Sachdeva
+Founder
+Being Chief
+TV
+Tushar Vadera
+Founding Member
+Zomato Feeding India
+AG
+Ashneer Grover
+Co-Founder
+BharatPe
+AG
+Aman Gupta
+Co-Founder &amp; CMO
+boAt Lifestyle
+SJ
+Sandeep Jain
+Founder &amp; CEO
+GeeksforGeeks
+SB
+Sanjeev Bikhchandani
+Founder &amp; Vice Chairman
+Info Edge / Naukri.com
+DS
+Debojit Sen
+Founder
+Crack-ED
+HA
+Himanshu Adlakha
+Co-Founder
+Winston India
+IS
+Ishant Sachdeva
+Founder
+Being Chief
+TV
+Tushar Vadera
+Founding Member
+Zomato Feeding India
+AG
+Ashneer Grover
+Co-Founder
+BharatPe
+AG
+Aman Gupta
+Co-Founder &amp; CMO
+boAt Lifestyle
+SJ
+Sandeep Jain
+Founder &amp; CEO
+GeeksforGeeks
+SB
+Sanjeev Bikhchandani
+Founder &amp; Vice Chairman
+Info Edge / Naukri.com
+DS
+Debojit Sen
+Founder
+Crack-ED
+HA
+Himanshu Adlakha
+Co-Founder
+Winston India
+IS
+Ishant Sachdeva
+Founder
+Being Chief
+TV
+Tushar Vadera
+Founding Member
+Zomato Feeding India
+AG
+Ashneer Grover
+Co-Founder
+BharatPe
+AG
+Aman Gupta
+Co-Founder &amp; CMO
+boAt Lifestyle
+SJ
+Sandeep Jain
+Founder &amp; CEO
+GeeksforGeeks
+SB
+Sanjeev Bikhchandani
+Founder &amp; Vice Chairman
+Info Edge / Naukri.com
+DS
+Debojit Sen
+Founder
+Crack-ED
+HA
+Himanshu Adlakha
+Co-Founder
+Winston India
+IS
+Ishant Sachdeva
+Founder
+Being Chief
+TV
+Tushar Vadera
+Founding Member
+Zomato Feeding India
+[surface] cream
+THE GEC DISPATCH
+Hot Off the Press.
+Every issue of the Dispatch, printed as a front page and tossed in the bin. The bin follows you around the site; here it lands on the page.
+Read the latest issue →
+Subscribe
+Click the bin · or catch it in the corner of any page
+[surface] crimson
+SHARE YOURS
+Built Something at Galgotias?
+Tell Us the Story.
+Failures and experiments count too. We feature founders, teams, and events from across the ecosystem.
+[href] /about
+Get in Touch
+[href] /initiatives
+Discover Initiatives
+[surface] charcoal
+[href] /
+Innovate. Inspire. Impact.
+Got an idea?
+Start building it here.
+[href] /initiatives
+Explore Initiatives →
+[href] /teams
+Join a Team
+About
+Galgotias Entrepreneurship Cell is a student-driven entrepreneurial community where ideas are explored, skills are built, and aspiring founders find the people, opportunities, and support needed to take their next step.
+Navigation
+[href] /
+Home
+[href] /about
+About GEC
+[href] /teams
+The 7 Teams
+[href] /initiatives
+Initiatives &amp; SDP
+[href] /stories
+Stories &amp; Portfolio
+Connect
+[href] https://www.instagram.com/galgotiasecell/
+Instagram
+@galgotiasecell
+[href] https://www.linkedin.com/company/ecell-gu/
+LinkedIn
+Galgotias E-Cell
+[href] mailto:contact@ecellgu.in
+Email
+contact@ecellgu.in
+Ecosystem Portals
+ecellgu.in
+OFFICIAL
+gicrise.in
+INCUBATOR
+Built with
+[src] /partners/startup-india.png
+[src] /partners/msme.svg
+[src] /partners/iic-gu.png
+[src] /partners/aws.svg
+[src] /partners/github.svg
+[src] /partners/wadhwani.png
+GEC
+Galgotias Entrepreneurship Cell © 2026
+Back to top ↑
+POWERED BY STUDENTS. BUILT FOR BUILDERS.
+☰ Issues
+The Bin ·
+⤢ Full screen
+✕
