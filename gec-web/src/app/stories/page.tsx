@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { getStories } from '@/lib/api';
-import { getList } from '@/lib/content';
+import { getList, getSingleton } from '@/lib/content';
 import { withStoryContent } from '@/lib/storyContent';
 import { SPEAKERS_FALLBACK } from '@/content/speakers';
 import { DISPATCH_FALLBACK } from '@/content/dispatch';
+import { ROUTE_COPY_FALLBACK } from '@/content/routeCopy';
 import { RouteHero } from '@/components/route/RouteHero';
 import { SubscribeForm } from '@/components/route/SubscribeForm';
 import { FinalCta } from '@/components/home/FinalCta';
@@ -23,10 +24,11 @@ const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString('en-IN', { month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
 
 export default async function StoriesPage() {
-  const [storiesData, speakers, issues] = await Promise.all([
+  const [storiesData, speakers, issues, { hero, cta }] = await Promise.all([
     getStories(),
     getList('speakers', SPEAKERS_FALLBACK),
     getList('dispatch-issues', DISPATCH_FALLBACK),
+    getSingleton('route-copy', ROUTE_COPY_FALLBACK).then((r) => r.stories),
   ]);
   // Featured = newest story, spread = the next three (route layouts plan, defaults).
   const [featured, ...more] = storiesData.map(withStoryContent);
@@ -34,16 +36,7 @@ export default async function StoriesPage() {
 
   return (
     <main aria-label="GEC Stories">
-      <RouteHero
-        kicker="CULTURE & INSIGHTS"
-        title="People Build Companies."
-        accent="Stories Build Culture."
-        lede="Ideas, failures, experiments, wins, and lessons from people inside and around the Galgotias entrepreneurial ecosystem."
-        anchors={[
-          { href: '#portfolio', label: 'Portfolio' },
-          { href: '#dispatch', label: 'The Dispatch' },
-        ]}
-      />
+      <RouteHero {...hero} />
 
       {featured && (
         <section className="wf-section surface-sand gec-shader-host" data-surface="sand">
@@ -162,8 +155,7 @@ export default async function StoriesPage() {
       </section>
 
       <FinalCta
-        shader="riso"
-        kicker="SHARE YOURS"
+        {...cta}
         heading={
           <>
             Built Something at Galgotias?
@@ -171,9 +163,6 @@ export default async function StoriesPage() {
             <span className="final-cta__heading-accent">Tell Us the Story.</span>
           </>
         }
-        lede="Failures and experiments count too. We feature founders, teams, and events from across the ecosystem."
-        primary={{ href: '/about', label: 'Get in Touch' }}
-        secondary={{ href: '/initiatives', label: 'Discover Initiatives' }}
       />
     </main>
   );

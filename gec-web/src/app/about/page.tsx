@@ -4,6 +4,8 @@ import { RouteHero } from '@/components/route/RouteHero';
 import { FinalCta } from '@/components/home/FinalCta';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import { ViewTransitionLink } from '@/components/ViewTransitionLink';
+import { getSingleton } from '@/lib/content';
+import { ROUTE_COPY_FALLBACK } from '@/content/routeCopy';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -45,19 +47,12 @@ function Portrait({ person }: { person: Person }) {
   );
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { hero, cta } = (await getSingleton('route-copy', ROUTE_COPY_FALLBACK)).about;
+
   return (
     <main aria-label="About Galgotias Entrepreneurship Cell">
-      <RouteHero
-        kicker="WHO WE ARE"
-        title="We Don’t Just Talk About Entrepreneurship."
-        accent="We Create Space to Experience It."
-        lede="Galgotias Entrepreneurship Cell is a student-driven community built around innovation, leadership, creativity, and entrepreneurship. Through mentorship, workshops, startup-focused programs, and collaborative experiences, GEC encourages students to turn curiosity into action."
-        anchors={[
-          { href: '#origin', label: 'Our story' },
-          { href: '#leadership', label: 'Leadership' },
-        ]}
-      />
+      <RouteHero {...hero} />
 
       <section id="origin" className="wf-section surface-sand gec-shader-host" data-surface="sand">
         <ShaderLayer family="halftone" />
@@ -185,11 +180,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <FinalCta
-        shader="riso"
-        primary={{ href: '/teams', label: 'Join GEC' }}
-        secondary={{ href: '/initiatives', label: 'Discover Initiatives' }}
-      />
+      <FinalCta {...cta} />
     </main>
   );
 }

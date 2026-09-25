@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import { RouteHero } from '@/components/route/RouteHero';
 import { StageRunway } from '@/components/home/StageAct';
 import { FinalCta } from '@/components/home/FinalCta';
-import { getList } from '@/lib/content';
+import { getList, getSingleton } from '@/lib/content';
 import { TEAMS_FALLBACK } from '@/content/teams';
+import { ROUTE_COPY_FALLBACK } from '@/content/routeCopy';
 
 export const metadata: Metadata = {
   title: 'The 7 Teams',
@@ -26,16 +27,19 @@ const TEAM_PILLS = [
 export default async function TeamsPage({ searchParams }: { searchParams: Promise<{ team?: string }> }) {
   const { team } = await searchParams;
   const n = Number(team);
-  const teams = await getList('team-stage', TEAMS_FALLBACK);
+  const [teams, { hero, cta }] = await Promise.all([
+    getList('team-stage', TEAMS_FALLBACK),
+    getSingleton('route-copy', ROUTE_COPY_FALLBACK).then((r) => r.teams),
+  ]);
   const initialTeamIndex = teams.some((t) => t.index === n) ? n : undefined;
 
   return (
     <main aria-label="GEC Teams">
       <RouteHero
-        kicker="THE ENGINE BEHIND GEC"
-        title={<span className="rt-accent">7 Teams.</span>}
-        accent={<span style={{ color: 'var(--gec-ink)' }}>One Vision.</span>}
-        lede="Different skills. Different responsibilities. One entrepreneurial ecosystem. Behind every event, startup initiative, campaign, partnership, and opportunity is a team of students making it happen."
+        kicker={hero.kicker}
+        title={<span className="rt-accent">{hero.title}</span>}
+        accent={<span style={{ color: 'var(--gec-ink)' }}>{hero.accent}</span>}
+        lede={hero.lede}
         aside={
           <>
             <div className="rt-stat">0{teams.length}</div>
@@ -54,14 +58,7 @@ export default async function TeamsPage({ searchParams }: { searchParams: Promis
 
       <StageRunway key={initialTeamIndex ?? 1} initialTeamIndex={initialTeamIndex} teams={teams} />
 
-      <FinalCta
-        shader="riso"
-        kicker="RECRUITMENT"
-        heading="Find Your Team."
-        lede="Every team takes new members each semester. Pick the one that matches how you like to build."
-        primary={{ href: '/about', label: 'About GEC' }}
-        secondary={{ href: '/initiatives', label: 'See What Teams Run' }}
-      />
+      <FinalCta {...cta} />
     </main>
   );
 }

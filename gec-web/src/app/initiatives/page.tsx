@@ -4,6 +4,8 @@ import { DeskRunway } from '@/components/home/DeskAct';
 import { FinalCta } from '@/components/home/FinalCta';
 import { ShaderLayer } from '@/components/ShaderLayer';
 import { ProgramForm, type ProgramField } from '@/components/route/ProgramForm';
+import { getSingleton } from '@/lib/content';
+import { ROUTE_COPY_FALLBACK } from '@/content/routeCopy';
 
 export const metadata: Metadata = {
   title: 'Initiatives',
@@ -115,21 +117,12 @@ const SCHEDULE = [
   },
 ] as const;
 
-export default function InitiativesPage() {
+export default async function InitiativesPage() {
+  const { hero, cta } = (await getSingleton('route-copy', ROUTE_COPY_FALLBACK)).initiatives;
+
   return (
     <main aria-label="GEC Initiatives">
-      <RouteHero
-        kicker="ACTION OVER THEORY"
-        title="Ideas Need More"
-        accent="Than Inspiration."
-        lede="Our initiatives are designed to give students opportunities to explore entrepreneurship through building, pitching, learning, collaborating, and connecting with the ecosystem. Every initiative solves a different problem. Every initiative creates a different path forward."
-        anchors={[
-          { href: '#desk', label: 'Open the desk' },
-          { href: '#programmes', label: 'All programmes' },
-          { href: '#ideathon', label: 'Ideathon' },
-          { href: '#esummit', label: 'E-Summit' },
-        ]}
-      />
+      <RouteHero {...hero} />
 
       <DeskRunway />
 
@@ -299,12 +292,7 @@ export default function InitiativesPage() {
         </div>
       </section>
 
-      <FinalCta
-        shader="riso"
-        lede="Applications for SDP Cohort 04 are open now. Zero fees, zero equity."
-        primary={{ href: '#sdp', label: 'Apply to SDP' }}
-        secondary={{ href: '/stories', label: 'Read Founder Stories' }}
-      />
+      <FinalCta {...cta} />
     </main>
   );
 }
